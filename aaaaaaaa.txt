@@ -1,0 +1,35 @@
+  String demarche = (String)this.j_comb_demarche.getSelectedItem();
+        DateFormat df = new SimpleDateFormat("dd/MM/YYYY");
+        String val_critere = this.j_comb_select_critere_date.getSelectedItem().toString();
+        
+        if(this.j_date_debut.getDate() == null){
+            
+            System.out.println("Veuilez séléctionner une date de saisie");
+        }else{
+            
+            String dateSaisie = df.format(this.j_date_debut.getDate());
+
+
+            if(demarche.equals(comb_demarche)){
+                System.out.println("Veuilez séléctionner une démarche svp");
+            }else if(dateSaisie.equals(null)){
+                System.out.println("Veuilez séléctionner une date de saisie");
+            }else if(val_critere.equals(com_critere_date)){
+                System.out.println("Veuilez séléctionner une critère de date");
+            }else{
+                
+                if(val_critere.equals(com_critere_par_date)){
+                    this.j_date_fin.setEnabled(false);
+                }else{
+                    this.j_date_fin.setEnabled(true);
+                }
+                
+                
+                
+                //System.out.println(demarche + " annee saisie : "+  " date de saisie = "+ dateSaisie + " critere selectionner : " +val_critere);
+            }
+        }
+        
+        
+        
+        
