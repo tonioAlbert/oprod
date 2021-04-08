@@ -32,4 +32,22 @@ public class Hash {
         return hasValue;
     }
     
+    
+    public static String SetHash(byte[] inputBytes, String algorithm){
+        String hasValue = "";
+        
+        try{
+            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
+            messageDigest.update(inputBytes);
+            
+            byte[] digestBytes = messageDigest.digest();
+            
+            hasValue = DatatypeConverter.printHexBinary(digestBytes).toLowerCase();
+            
+        }catch(Exception e){
+            System.out.println("Impossible de lancer de cryptage.");
+        }
+        return hasValue;
+    }
+    
 }

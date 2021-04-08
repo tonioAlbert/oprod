@@ -5,6 +5,7 @@
  */
 package com.main.apps;
 
+import com.allInterfaces.action3saisien.Hash;
 import com.connectDb.ConnectDb;
 import com.allInterfaces.action3saisien.UserFormDialog;
 import java.io.File;
@@ -12,11 +13,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -41,15 +46,20 @@ public class A3_suivi_saisie {
     
     private static PreparedStatement st;
     private static ResultSet rs;
-    
-    
-    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
     
+        lancement();
+        
+    }  // FIN CLASS MAIN
+    
+    
+    
+    private static void lancement(){
+
         String host = "";
         String port = "";
         String dbname  = "";
@@ -95,6 +105,8 @@ public class A3_suivi_saisie {
                           JOptionPane.QUESTION_MESSAGE, null, null, null);
                         
                         if(optionConfigs == 0 ){
+                            
+                            // TRAITEMENT DES DONNEES SAISIE PAR L'UTILISATEUR
 
                         }else{
                             
@@ -105,6 +117,7 @@ public class A3_suivi_saisie {
                             if(option2 == JOptionPane.OK_OPTION){
                                 System.exit(0);
                             }else{
+                                
                                 int optionConfigs2 = JOptionPane.showOptionDialog(null, 
                                 new Object[] {"Nom d'hôte :", HoteName, "Nom de la base de données :", nameBdd, "Port :", portBdd, "Nom d'utilisateur :", userName, "Mot de passe :", passe},
                                 "Connexion",
@@ -114,25 +127,30 @@ public class A3_suivi_saisie {
                         }
                         
                        
-                            System.out.println("Nom d'hôte :" + HoteName.getText()+ "Nom de la base de données :"+ nameBdd.getText()+ "Nom d'utilisateur :"+ userName.getText()+ "Mot de passe :"+ passe.getText());
+                        //System.out.println("Nom d'hôte :" + HoteName.getText()+ "Nom de la base de données :"+ nameBdd.getText()+ "Nom d'utilisateur :"+ userName.getText()+ "Mot de passe :"+ passe.getText());
                        
-                        
+                        String hashHost = Base64.getEncoder().encodeToString(HoteName.getText().getBytes("UTF-8"));
+                        String hashPort = Base64.getEncoder().encodeToString(portBdd.getText().getBytes("UTF-8"));
+                        String hashDbname = Base64.getEncoder().encodeToString(nameBdd.getText().getBytes("UTF-8"));
+                        String hashUser = Base64.getEncoder().encodeToString(userName.getText().getBytes("UTF-8"));
+                        String hashPassword = Base64.getEncoder().encodeToString(passe.getText().getBytes("UTF-8"));
                         
                         // remplissage de l'objet JSON
                         JSONObject j = new JSONObject();
-                        j.put("host",  HoteName.getText());
-                        j.put("port", portBdd.getText());
-                        j.put("dbname", nameBdd.getText());
-                        j.put("user", userName.getText());
-                        j.put("password", passe.getText());
+                        j.put("host",  hashHost);
+                        j.put("port", hashPort);
+                        j.put("dbname", hashDbname);
+                        j.put("user", hashUser);
+                        j.put("password", hashPassword);
                         
   
-                        try(FileWriter fileJson = new FileWriter(filePathAndName)){
+                        try{
                             
+                            FileWriter fileJson = new FileWriter(filePathAndName);
                             System.out.println("Remplissage du fichier de conf ...");
                             
                             fileJson.write(j.toString());
-                            fileJson.flush();
+                            fileJson.close();
                             
                             
                             System.out.println("dossier et fichier conf trouvé ! .......");
@@ -198,17 +216,23 @@ public class A3_suivi_saisie {
                         }
                         
                        
-                            System.out.println("Nom d'hôte :" + HoteName.getText()+ "Nom de la base de données :"+ nameBdd.getText()+ "Nom d'utilisateur :"+ userName.getText()+ "Mot de passe :"+ passe.getText());
+                            //System.out.println("Nom d'hôte :" + HoteName.getText()+ "Nom de la base de données :"+ nameBdd.getText()+ "Nom d'utilisateur :"+ userName.getText()+ "Mot de passe :"+ passe.getText());
                        
+                        //System.out.println("host hashé : " + Hash.getHash(HoteName.getText().getBytes(), "SHA-256"));
                         
+                        String hashHost = Base64.getEncoder().encodeToString(HoteName.getText().getBytes("UTF-8"));
+                        String hashPort = Base64.getEncoder().encodeToString(portBdd.getText().getBytes("UTF-8"));
+                        String hashDbname = Base64.getEncoder().encodeToString(nameBdd.getText().getBytes("UTF-8"));
+                        String hashUser = Base64.getEncoder().encodeToString(userName.getText().getBytes("UTF-8"));
+                        String hashPassword = Base64.getEncoder().encodeToString(passe.getText().getBytes("UTF-8"));
                         
                         // remplissage de l'objet JSON
                         JSONObject j = new JSONObject();
-                        j.put("host",  HoteName.getText());
-                        j.put("port", portBdd.getText());
-                        j.put("dbname", nameBdd.getText());
-                        j.put("user", userName.getText());
-                        j.put("password", passe.getText());
+                        j.put("host",  hashHost);
+                        j.put("port", hashPort);
+                        j.put("dbname", hashDbname);
+                        j.put("user", hashUser);
+                        j.put("password", hashPassword);
                         
   
                         try(FileWriter fileJson = new FileWriter(filePathAndName)){
@@ -216,13 +240,14 @@ public class A3_suivi_saisie {
                             System.out.println("Remplissage du fichier de conf ...");
                             
                             fileJson.write(j.toString());
-                            fileJson.flush();
+                            fileJson.close();
                             
                             
                             System.out.println("dossier et fichier conf trouvé ! .......");
 
                         }catch(IOException e){
                             e.printStackTrace();
+                            
                         }
 
                     }catch(IOException f){
@@ -231,28 +256,120 @@ public class A3_suivi_saisie {
                 }
             }   // FIN !file.exists()
         } // FIN ELSE !folder.exists()
+        
+        
+        
+        
+        // LECTURE DU FICHIER CREER AVANT
+        
+                JSONParser parser = new JSONParser();
 
         try{
             
-            Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://"+"127.0.0.1"+":"+"5432"+"/"+"oprod";
+            FileReader f_read = new FileReader(filePathAndName);
+            
+            Object obj = parser.parse(f_read);
+            JSONObject jsonObject = (JSONObject)obj;
 
-            Connection connexion  = DriverManager.getConnection(url, "postgres", "2021.");
+            byte[] decodHost = Base64.getDecoder().decode(jsonObject.get("host").toString());
+            byte[] decodPort = Base64.getDecoder().decode(jsonObject.get("port").toString());
+            byte[] decodDbname = Base64.getDecoder().decode(jsonObject.get("dbname").toString());
+            byte[] decodUser = Base64.getDecoder().decode(jsonObject.get("user").toString());
+            byte[] decodPassword = Base64.getDecoder().decode(jsonObject.get("password").toString());
+                       
+            
+            String json_host = new String(decodHost, "UTF-8");
+            String json_port = new String(decodPort, "UTF-8");
+            String json_dbname = new String(decodDbname, "UTF-8");
+            String json_user = new String(decodUser, "UTF-8");
+            String json_password = new String(decodPassword, "UTF-8");
+            
+            
+            System.out.println("Les valeur dans le fichier de conf sont : ");
+            System.out.println("json_host " + json_host);
+            System.out.println("json_port " + json_port);
+            System.out.println("json_dbname " + json_dbname);
+            System.out.println("json_user " + json_user);
+            System.out.println("json_password " + json_password);
+            
+            f_read.close();
+            
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://"+json_host+":"+json_port+"/"+json_dbname;
+
+            Connection connexion  = DriverManager.getConnection(url, json_user, json_password);
+            
+            
+            
             
             //System.out.println("Lancement de l'application...  : ");
             UserFormDialog home = new UserFormDialog();
             home.setVisible(true);
             home.setLocationRelativeTo(null);
+            
+            connexion.close();
+            
 
-        }catch(Exception e){
+        }catch(FileNotFoundException exc_file){
             
-            System.out.println(e.getMessage());
+            System.out.println(exc_file.getMessage());
             //JOptionPane.showMessageDialog(null, "Impossible de se connecter à la basez de données !\n\nVérifier votre fichier de configuration", "Connexion dans la base de données impossible", JOptionPane.INFORMATION_MESSAGE);
-            JOptionPane.showMessageDialog(null, "Vérifier votre fichier de configuration\n\n" + e.getMessage(), "Connexion dans la base de données impossible", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Fichier de configuration introuvable\n\n" + exc_file.getMessage(), "Impossible de trouver la fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+
+        }catch(Exception ex){
             
-        }
-        
-        
-    }  // FIN CLASS MAIN
+                        
+            System.out.println(ex.getMessage());
+            
+            
+             if(ex.getMessage().equals("Last unit does not have enough valid bits")){
+                 
+                 
+                try{
+                    
+                    Files.deleteIfExists(Paths.get(filePathAndName));
+                    
+                    System.out.println("Suppression fichier ok");
+             
+                }catch(Exception e){
+
+                }
+
+                lancement();
+                System.out.println("oui mitovy ");
+            }
+
+            //JOptionPane.showMessageDialog(null, "Impossible de se connecter à la basez de données !\n\nVérifier votre fichier de configuration", "Connexion dans la base de données impossible", JOptionPane.INFORMATION_MESSAGE);
+
+            JOptionPane jop_echec_connexion_bdd = new JOptionPane();
+            int option_bdd = jop_echec_connexion_bdd.showConfirmDialog(null, "Une erreur s'est produise lors de la connexion dans la base de données !\nConnexion dans la base de données impossible !\n\nVouslez-vous relancer le processus de création du fichier de conf ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            
+            if(option_bdd == JOptionPane.OK_OPTION){
+                
+                try{
+                    System.out.println("pahtssss ++++++ = =====  777 : " + Paths.get(filePathAndName));
+                        //Files.delete(pathOfConfigFile);
+
+                    ///Files.delete(Paths.get(filePathAndName));
+
+                    Files.deleteIfExists(Paths.get(filePathAndName));
+
+                    lancement();
+
+
+                    System.out.println("Suppression fichier ok");
+             
+                    
+                }catch(Exception e){
+
+                }
+                
+                
+            }else{
+                System.exit(0);
+            }
+            
+        } 
+    }
     
 }
