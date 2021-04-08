@@ -3,11 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisien/Home.java</file>
-            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisien/ExportRegistreAnomalie.java</file>
-            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/classes/action3saisie/Demande.java</file>
-            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisien/Formats.java</file>
-            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/dao/action3saisie/Dao.java</file>
+            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/main/apps/A3_suivi_saisie.java</file>
+            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisien/UserFormDialog.java</file>
         </group>
     </open-files>
 </project-private>
