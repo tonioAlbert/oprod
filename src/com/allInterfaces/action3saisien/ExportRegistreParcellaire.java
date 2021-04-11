@@ -22,6 +22,12 @@ import javax.swing.JOptionPane;
  */
 public class ExportRegistreParcellaire extends javax.swing.JFrame {
     
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
+    
     private static Connection connectDatabase;
     private static PreparedStatement st;
     private static ResultSet rs;
@@ -33,13 +39,19 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
     /**
      * Creates new form ExportRegistreParcellaire
      */
-    public ExportRegistreParcellaire() {
-        
+    public ExportRegistreParcellaire(String HOST, Integer PORT, String DBNAME, String USER, String PWD) {
+       
+        this.BDD_HOST = HOST;
+        this.BDD_PORT = PORT;
+        this.BDD_DBNAME = DBNAME;
+        this.BDD_USER = USER;
+        this.BDD_PWD = PWD;
         initComponents();
         
         this.j_label_folder_export.setText("");
         
-        connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        //connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getConnection();
         this.j_combo_region.removeAllItems();
         this.j_combo_region.addItem(selectRegion);
         this.j_combo_region.addItem("ATSINANANA");
@@ -271,7 +283,7 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
                 
-                HashMap<String, String> reg = new Demande().getRegions(selected);
+                HashMap<String, String> reg = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
                 
                 for (String i : reg.keySet()) {
                   this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -304,7 +316,7 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
                     
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Demande().getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                       this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -347,7 +359,7 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ExportRegistreParcellaire().setVisible(true);
+                //new ExportRegistreParcellaire().setVisible(true);
             }
         });
         

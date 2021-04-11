@@ -29,6 +29,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Demande {
     
+    
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
+    
     PreparedStatement st;
     ResultSet rs;
     private Connection connectDatabase;
@@ -38,7 +45,15 @@ public class Demande {
     
     HashMap <String, String> m = new HashMap <String, String> () ;
     
-    public Demande(){
+    public Demande(String HOST, Integer PORT, String DBNAME, String USER, String PWD){
+        
+        this.BDD_HOST = HOST;
+        this.BDD_PORT = PORT;
+        this.BDD_DBNAME = DBNAME;
+        this.BDD_USER = USER;
+        this.BDD_PWD = PWD;
+        
+        
         connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "root963.0", "gaetan").getConnection();
     }

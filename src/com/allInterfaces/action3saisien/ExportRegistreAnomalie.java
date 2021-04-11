@@ -24,6 +24,12 @@ import javax.swing.JOptionPane;
  */
 public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
+    
     private static Connection connectDatabase;
     private static PreparedStatement st;
     private static ResultSet rs;
@@ -39,11 +45,17 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     /**
      * Creates new form SaisieParOperateur
      */
-    public ExportRegistreAnomalie() {
+    public ExportRegistreAnomalie(String HOST, Integer PORT, String DBNAME, String USER, String PWD) {
+        
+        this.BDD_HOST = HOST;
+        this.BDD_PORT = PORT;
+        this.BDD_DBNAME = DBNAME;
+        this.BDD_USER = USER;
+        this.BDD_PWD = PWD;
         
         initComponents();
         
-        connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         this.j_combo_region.removeAllItems();
         this.j_combo_region.addItem(selectRegion);
@@ -261,7 +273,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
 
-                HashMap<String, String> reg = new Demande().getRegions(selected);
+                HashMap<String, String> reg = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
 
                 for (String i : reg.keySet()) {
                     this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -297,7 +309,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Demande().getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -331,7 +343,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
                     this.j_combo_fokontany.removeAllItems();
                     this.j_combo_fokontany.addItem(selectFokontany);
-                    HashMap<String, String> com = new Demande().getFokontany(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getFokontany(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_fokontany.addItem( i + "  _  " + com.get(i));
@@ -363,7 +375,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
                     this.j_combo_hameau.removeAllItems();
                     this.j_combo_hameau.addItem(selectHameau);
-                    HashMap<String, String> com = new Demande().getHameau(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getHameau(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_hameau.addItem( i + "  _  " + com.get(i));

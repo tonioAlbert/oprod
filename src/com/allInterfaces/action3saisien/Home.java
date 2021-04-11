@@ -7,6 +7,7 @@ package com.allInterfaces.action3saisien;
 
 
 
+import com.classes.action3saisie.Formats;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
 import java.sql.Connection;
@@ -45,14 +46,15 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    public Home(String HOST, String PORT, String DBNAME, String USER, String PWD , String username, String password, String type_op) {
+    public Home(String HOST, Integer PORT, String DBNAME, String USER, String PWD , String username, String password, String type_op) {
         
         
         this.userName = username;
         this.pswd = password;
         this.type_operation = type_op;
+
         this.BDD_HOST = HOST;
-        this.BDD_PORT = Integer.parseInt(PORT);
+        this.BDD_PORT = PORT;
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
@@ -463,7 +465,7 @@ public class Home extends javax.swing.JFrame {
 
     private void j_menu_stat_saisie_par_operateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_stat_saisie_par_operateurActionPerformed
 
-        SaisieParOperateur s_par_op = new SaisieParOperateur();
+        SaisieParOperateur s_par_op = new SaisieParOperateur(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER);
         this.dpContent.add(s_par_op);
         s_par_op.show();
 
@@ -610,10 +612,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     
     
     
-    
-    
-    
-    
     private void j_menu_export_listes_demandeursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_demandeursActionPerformed
          
     }//GEN-LAST:event_j_menu_export_listes_demandeursActionPerformed
@@ -659,7 +657,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             
             this.setVisible(false);
             
-            UserFormDialog userForm = new UserFormDialog("","","","","", dmd);
+            UserFormDialog userForm = new UserFormDialog("",0,"","","", dmd);
             userForm.setLocationRelativeTo(null);
             userForm.setVisible(true);
         }
@@ -769,7 +767,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_export_rp_provisoireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_rp_provisoireActionPerformed
         
-        ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire();
+        ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER);
         
         rp_prov.setLocationRelativeTo(null);
         rp_prov.setVisible(true);
@@ -780,7 +778,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_export_listes_anomaliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_anomaliesActionPerformed
 
-        ExportRegistreAnomalie reg_anomaie = new ExportRegistreAnomalie();
+        ExportRegistreAnomalie reg_anomaie = new ExportRegistreAnomalie(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER);
         this.dpContent.add(reg_anomaie);
         reg_anomaie.show();
         

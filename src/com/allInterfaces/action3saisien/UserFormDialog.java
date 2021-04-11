@@ -5,6 +5,7 @@
  */
 package com.allInterfaces.action3saisien;
 
+import com.classes.action3saisie.Hash;
 import com.classes.action3saisie.Utilisateurs;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -18,7 +19,7 @@ public class UserFormDialog extends javax.swing.JFrame {
     
     
         private String HOST = "";
-        private String PORT = "";
+        private Integer PORT;
         private String DBNAME = "";
         private String USER = "";
         private String PWD = "";
@@ -27,7 +28,7 @@ public class UserFormDialog extends javax.swing.JFrame {
     /**
      * Creates new form UserFormDialog
      */
-    public UserFormDialog(String host, String port, String dbname, String user, String password, List<String> demande) {
+    public UserFormDialog(String host, Integer port, String dbname, String user, String password, List<String> demande) {
         
         this.HOST = host;
         this.PORT = port;
@@ -37,10 +38,9 @@ public class UserFormDialog extends javax.swing.JFrame {
       
         initComponents();
         
-        
-        
         if(demande.isEmpty() || demande == null){
             System.out.println("Impossible de lancer le programme car la table type_op est vide");
+            System.exit(0);
         }else{
             this.j_combo_demarche.removeAllItems();
             this.j_combo_demarche.addItem("Séléctionner une démarche");

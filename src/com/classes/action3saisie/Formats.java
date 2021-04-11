@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.allInterfaces.action3saisien;
+package com.classes.action3saisie;
 
 import java.util.regex.Pattern;
 import org.apache.poi.ss.util.CellRangeAddress;

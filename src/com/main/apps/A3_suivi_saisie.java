@@ -297,7 +297,7 @@ public class A3_suivi_saisie {
             
             
             // recuperation de la démarche
-            Demande d = new Demande();
+            Demande d = new Demande(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password);
             List<String> dmd = new ArrayList<String>();
             
             Iterator it = d.getAllDemarche().entrySet().iterator();
@@ -315,7 +315,7 @@ public class A3_suivi_saisie {
             
             
             System.out.println("\nTout est Ok!\nLancement de l'application...  : ");
-            UserFormDialog home = new UserFormDialog(json_host, json_port, json_dbname, json_user, json_password, dmd);
+            UserFormDialog home = new UserFormDialog(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password, dmd);
             home.setVisible(true);
             home.setLocationRelativeTo(null);
             
@@ -330,12 +330,9 @@ public class A3_suivi_saisie {
 
         }catch(Exception ex){
             
-                        
             System.out.println(ex.getMessage());
             
-            
              if(ex.getMessage().equals("Last unit does not have enough valid bits")){
-                 
                  
                 try{
                     
@@ -350,7 +347,6 @@ public class A3_suivi_saisie {
                 lancement();
                 System.out.println("oui mitovy ");
             }
-             
              
              if(ex.getMessage().equals("Input byte array has wrong 4-byte ending unit")){
 
