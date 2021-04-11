@@ -13,8 +13,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,16 +31,41 @@ public class Home extends javax.swing.JFrame {
     private static Connection connectDatabase;
     private static PreparedStatement st;
     private static ResultSet rs;
+    private String userName;
+    private String pswd;
+    private String type_operation;
+
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
+    
 
     /**
      * Creates new form Home
      */
-    public Home() {
+    public Home(String HOST, String PORT, String DBNAME, String USER, String PWD , String username, String password, String type_op) {
+        
+        
+        this.userName = username;
+        this.pswd = password;
+        this.type_operation = type_op;
+        this.BDD_HOST = HOST;
+        this.BDD_PORT = Integer.parseInt(PORT);
+        this.BDD_DBNAME = DBNAME;
+        this.BDD_USER = USER;
+        this.BDD_PWD = PWD;
         
         initComponents();
+        
+        //System.out.println("Bonjour : " + username + "\nVotre mot de passe est : "+ password + "\nType d'opération : "+ type_op );
+        
+        this.lbl_test.setText("Bonjour " + username + " !");
+        
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
-        //connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getConnection();
     }
 
     /**
@@ -59,6 +85,7 @@ public class Home extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         dpContent = new javax.swing.JDesktopPane();
+        lbl_test = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         j_menu_fichier = new javax.swing.JMenu();
         j_menu_item_deconnexion = new javax.swing.JMenuItem();
@@ -179,16 +206,32 @@ public class Home extends javax.swing.JFrame {
 
         dpContent.setBackground(new java.awt.Color(204, 204, 204));
 
+        lbl_test.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+
+        dpContent.setLayer(lbl_test, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout dpContentLayout = new javax.swing.GroupLayout(dpContent);
         dpContent.setLayout(dpContentLayout);
         dpContentLayout.setHorizontalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1276, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
+                .addContainerGap(1033, Short.MAX_VALUE)
+                .addComponent(lbl_test, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         dpContentLayout.setVerticalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 597, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
+                .addContainerGap(575, Short.MAX_VALUE)
+                .addComponent(lbl_test, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        jMenuBar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jMenuBar1MouseEntered(evt);
+            }
+        });
 
         j_menu_fichier.setText("Fichier");
 
@@ -421,9 +464,7 @@ public class Home extends javax.swing.JFrame {
     private void j_menu_stat_saisie_par_operateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_stat_saisie_par_operateurActionPerformed
 
         SaisieParOperateur s_par_op = new SaisieParOperateur();
-
         this.dpContent.add(s_par_op);
-
         s_par_op.show();
 
     }//GEN-LAST:event_j_menu_stat_saisie_par_operateurActionPerformed
@@ -614,8 +655,11 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment se deconnecter ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
+            List<String> dmd = new ArrayList<String>();
+            
             this.setVisible(false);
-            UserFormDialog userForm = new UserFormDialog();
+            
+            UserFormDialog userForm = new UserFormDialog("","","","","", dmd);
             userForm.setLocationRelativeTo(null);
             userForm.setVisible(true);
         }
@@ -806,16 +850,19 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_j_menu_item_formte_consistance_ActionPerformed
 
     private void j_menu_controles_saisieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_controles_saisieActionPerformed
+        
         ControlleDesSaisies ctrl_saisie = new ControlleDesSaisies();
-
         this.dpContent.add(ctrl_saisie);
-
         ctrl_saisie.show();
     }//GEN-LAST:event_j_menu_controles_saisieActionPerformed
 
     private void j_menu_controllesSaisiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_controllesSaisiesActionPerformed
         System.out.println("click sur btn ");
     }//GEN-LAST:event_j_menu_controllesSaisiesActionPerformed
+
+    private void jMenuBar1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuBar1MouseEntered
+        this.lbl_test.setText("");
+    }//GEN-LAST:event_jMenuBar1MouseEntered
 
     /**
      * @param args the command line arguments
@@ -846,10 +893,10 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-
+            
             public void run() {
                 
-                new Home().setVisible(true);
+                //new Home(userName, pswd, type_operation).setVisible(true);
             }
         });
     }
@@ -887,6 +934,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_stat_anomalies_par_commune;
     private javax.swing.JMenuItem j_menu_stat_saisie_par_operateur;
     private javax.swing.JMenu j_menu_stats;
+    private javax.swing.JLabel lbl_test;
     private javax.swing.JPanel paneChampsLogin;
     // End of variables declaration//GEN-END:variables
 }

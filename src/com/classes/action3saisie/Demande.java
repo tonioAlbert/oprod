@@ -299,6 +299,32 @@ System.out.println("Contenu dans 'm' " + m);
     } 
     
     
+    public HashMap<String, String> getAllDemarche(){
+        
+        HashMap<String, String> demarches = new HashMap<String, String>();
+
+        try {
+            String q = "SELECT id_type_op, abrev_type FROM public.type_op\n" +
+            "order by id_type_op ASC";
+            
+            st = connectDatabase.prepareStatement(q);          
+            rs = st.executeQuery();
+ 
+            while(rs.next()){
+                demarches.put(rs.getString("id_type_op"), rs.getString("abrev_type")); 
+            }    
+
+            st.close();
+            rs.close();
+            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+             
+        return demarches;
+    } 
+     
     
     
     

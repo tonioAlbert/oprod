@@ -5,29 +5,29 @@
  */
 package com.main.apps;
 
-import com.allInterfaces.action3saisien.Hash;
-import com.connectDb.ConnectDb;
 import com.allInterfaces.action3saisien.UserFormDialog;
+import com.classes.action3saisie.Demande;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 
 
@@ -60,11 +60,7 @@ public class A3_suivi_saisie {
     
     private static void lancement(){
 
-        String host = "";
-        String port = "";
-        String dbname  = "";
-        String user  = "";
-        String password  = "";
+        String demarche  = "";
         
 	// VERIFIER SI FICHIER DE CONF EXISTE
         //String racine = new File("").getAbsolutePath();
@@ -285,12 +281,12 @@ public class A3_suivi_saisie {
             String json_password = new String(decodPassword, "UTF-8");
             
             
-            System.out.println("Les valeur dans le fichier de conf sont : ");
-            System.out.println("json_host " + json_host);
-            System.out.println("json_port " + json_port);
-            System.out.println("json_dbname " + json_dbname);
-            System.out.println("json_user " + json_user);
-            System.out.println("json_password " + json_password);
+            //System.out.println("Les valeur dans le fichier de conf sont : ");
+            //System.out.println("json_host " + json_host);
+            //System.out.println("json_port " + json_port);
+            //System.out.println("json_dbname " + json_dbname);
+            //System.out.println("json_user " + json_user);
+            //System.out.println("json_password " + json_password);
             
             f_read.close();
             
@@ -300,10 +296,26 @@ public class A3_suivi_saisie {
             Connection connexion  = DriverManager.getConnection(url, json_user, json_password);
             
             
+            // recuperation de la démarche
+            Demande d = new Demande();
+            List<String> dmd = new ArrayList<String>();
+            
+            Iterator it = d.getAllDemarche().entrySet().iterator();
+
+            
+	    while (it.hasNext()) {
+	        Map.Entry<String, String> val = (Map.Entry)it.next();
+	        System.out.println( " = " + val.getValue().toString());
+                dmd.add(val.getValue().toString());  
+	    }
+            
+       
             
             
-            //System.out.println("Lancement de l'application...  : ");
-            UserFormDialog home = new UserFormDialog();
+            
+            
+            System.out.println("\nTout est Ok!\nLancement de l'application...  : ");
+            UserFormDialog home = new UserFormDialog(json_host, json_port, json_dbname, json_user, json_password, dmd);
             home.setVisible(true);
             home.setLocationRelativeTo(null);
             
@@ -338,25 +350,28 @@ public class A3_suivi_saisie {
                 lancement();
                 System.out.println("oui mitovy ");
             }
+             
+             
+             if(ex.getMessage().equals("Input byte array has wrong 4-byte ending unit")){
+
+                System.out.println("oui mitovy ");
+            }
 
             //JOptionPane.showMessageDialog(null, "Impossible de se connecter à la basez de données !\n\nVérifier votre fichier de configuration", "Connexion dans la base de données impossible", JOptionPane.INFORMATION_MESSAGE);
 
             JOptionPane jop_echec_connexion_bdd = new JOptionPane();
-            int option_bdd = jop_echec_connexion_bdd.showConfirmDialog(null, "Une erreur s'est produise lors de la connexion dans la base de données !\nConnexion dans la base de données impossible !\n\nVouslez-vous relancer le processus de création du fichier de conf ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int option_bdd = jop_echec_connexion_bdd.showConfirmDialog(null, "Une erreur s'est produise lors de la connexion dans la base de données !\n\nConnexion dans la base de données impossible !\n\nVouslez-vous lancer le processus de création du fichier de conf ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             
             if(option_bdd == JOptionPane.OK_OPTION){
                 
                 try{
-                    System.out.println("pahtssss ++++++ = =====  777 : " + Paths.get(filePathAndName));
+                    //System.out.println("pahtssss ++++++ = =====  777 : " + Paths.get(filePathAndName));
                         //Files.delete(pathOfConfigFile);
 
                     ///Files.delete(Paths.get(filePathAndName));
 
                     Files.deleteIfExists(Paths.get(filePathAndName));
-
                     lancement();
-
-
                     System.out.println("Suppression fichier ok");
              
                     

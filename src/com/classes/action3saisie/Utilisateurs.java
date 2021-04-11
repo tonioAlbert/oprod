@@ -24,7 +24,7 @@ public class Utilisateurs {
     private String password;
     private String profil;
     
-    private Connection connectionbase;
+    private Connection connectDatabase;
     
     
     PreparedStatement st;
@@ -33,7 +33,8 @@ public class Utilisateurs {
     public Utilisateurs(String login) {
         
         this.login = login;
-        connectionbase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
     }
     
     
@@ -42,7 +43,7 @@ public class Utilisateurs {
 
         try {
             String q = "SELECT login FROM utilisateur WHERE login = ?";
-            st = connectionbase.prepareStatement(q);    
+            st = connectDatabase.prepareStatement(q);    
             st.setString(1, login);
         
             rs = st.executeQuery();
@@ -76,7 +77,7 @@ public class Utilisateurs {
 
         try {
             String q = "SELECT pwd FROM utilisateur WHERE login = ?";
-            st = connectionbase.prepareStatement(q);    
+            st = connectDatabase.prepareStatement(q);    
             st.setString(1, this.login);
         
             rs = st.executeQuery();
@@ -109,7 +110,7 @@ public class Utilisateurs {
         
         try {
             String q = "SELECT id_profil FROM utilisateur WHERE login = ?";
-            st = connectionbase.prepareStatement(q);    
+            st = connectDatabase.prepareStatement(q);    
             st.setString(1, this.login);
         
             rs = st.executeQuery();

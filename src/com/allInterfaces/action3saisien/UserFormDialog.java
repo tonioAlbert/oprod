@@ -6,6 +6,7 @@
 package com.allInterfaces.action3saisien;
 
 import com.classes.action3saisie.Utilisateurs;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 
@@ -15,11 +16,44 @@ import javax.swing.JOptionPane;
  */
 public class UserFormDialog extends javax.swing.JFrame {
     
+    
+        private String HOST = "";
+        private String PORT = "";
+        private String DBNAME = "";
+        private String USER = "";
+        private String PWD = "";
+    
+    
     /**
      * Creates new form UserFormDialog
      */
-    public UserFormDialog() {
+    public UserFormDialog(String host, String port, String dbname, String user, String password, List<String> demande) {
+        
+        this.HOST = host;
+        this.PORT = port;
+        this.DBNAME = dbname;
+        this.USER = user;
+        this.PWD = password;
+      
         initComponents();
+        
+        
+        
+        if(demande.isEmpty() || demande == null){
+            System.out.println("Impossible de lancer le programme car la table type_op est vide");
+        }else{
+            this.j_combo_demarche.removeAllItems();
+            this.j_combo_demarche.addItem("Séléctionner une démarche");
+            for(String dmd : demande) {
+                //System.out.println("Pouf valeur de demande : " + dmd.toUpperCase());
+                this.j_combo_demarche.addItem(dmd.toUpperCase());
+            }
+        }
+        
+
+
+                        
+        
     }
 
     /**
@@ -38,6 +72,8 @@ public class UserFormDialog extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txt_password = new javax.swing.JPasswordField();
+        j_combo_demarche = new javax.swing.JComboBox<>();
+        j_label_demarche = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Se Connecter");
@@ -71,6 +107,10 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         txt_password.setText("2021+");
 
+        j_combo_demarche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une démarche" }));
+
+        j_label_demarche.setText("Démarche");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -78,15 +118,17 @@ public class UserFormDialog extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txt_username, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_label_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txt_username)
+                    .addComponent(j_combo_demarche, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE)
                     .addComponent(txt_password))
                 .addGap(19, 19, 19))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(91, 91, 91)
                 .addComponent(btn_connexion)
                 .addGap(79, 79, 79)
                 .addComponent(jButton1)
@@ -99,15 +141,19 @@ public class UserFormDialog extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(38, 38, 38)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(j_combo_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_label_demarche))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_connexion)
                     .addComponent(jButton1))
-                .addGap(26, 26, 26))
+                .addGap(32, 32, 32))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -124,6 +170,9 @@ public class UserFormDialog extends javax.swing.JFrame {
         
         String txt_username = this.txt_username.getText();
         String txt_password = String.valueOf(this.txt_password.getPassword());
+        String demarche = this.j_combo_demarche.getSelectedItem().toString();
+        
+        String txt_demarche = "Séléctionner une démarche";
         
         String hash_txt_password = "";
         
@@ -140,6 +189,10 @@ public class UserFormDialog extends javax.swing.JFrame {
         }else if(txt_password.equals("")){
             System.out.println("Champ mot de passe requise !");
             JOptionPane.showMessageDialog(null, "Le champ mot de passe est requise !","Champ mot de passe requise", JOptionPane.INFORMATION_MESSAGE);
+            
+        }else if(demarche.equals(txt_demarche)){
+            System.out.println("Veuillez sélectionner une démarche");
+            JOptionPane.showMessageDialog(null, "Veuillez sélectionner une démarche","Aucune selectione du champ démarche", JOptionPane.INFORMATION_MESSAGE);
         }else{
             
         Utilisateurs user = new Utilisateurs(txt_username);
@@ -159,10 +212,12 @@ public class UserFormDialog extends javax.swing.JFrame {
                    // System.out.println("Votre Mot de passe : "+ user.getPassword() +"\n");
                     //System.out.println("Votee mot de passe hashé vaut : "+ hash_txt_password +"\n");
 
-                    Home home = new Home();
+                    
+                    Home home = new Home(this.HOST, this.PORT, this.DBNAME, this.USER, this.PWD, txt_username, txt_password, demarche);
 
                     home.setVisible(true);
-                   // System.out.println(this.setVisible(false));
+                    
+                    //System.out.println("ity dia démarche : " + demarche);
 
                    this.setVisible(false);
 
@@ -217,7 +272,12 @@ public class UserFormDialog extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserFormDialog().setVisible(true);
+                
+
+                
+                System.out.println("Tonga ato ny lozakaaaa");
+                
+                //new UserFormDialog(HOST, PORT, DBNAME, USER, PWD).setVisible(true);
             }
         });
     }
@@ -228,6 +288,8 @@ public class UserFormDialog extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox<String> j_combo_demarche;
+    private javax.swing.JLabel j_label_demarche;
     private javax.swing.JPasswordField txt_password;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables

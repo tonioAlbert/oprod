@@ -6,7 +6,6 @@
 package com.dao.action3saisie;
 
 
-import com.allInterfaces.action3saisien.Formats;
 import com.classes.action3saisie.Demande;
 import com.connectDb.ConnectDb;
 import java.io.File;
@@ -21,8 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import javax.swing.JOptionPane;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -33,7 +30,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -260,12 +256,10 @@ public List<Demande> getRegistreAnomalie(String reg, String c_dist, String dist,
         String dateAujourdhui = dateFormat.format(new Date());
     
     
-        String realPath = path+"\\"+"RegistreAnomalie_"+formatter.format(date)+"_Region_"+reg+"_Commune_"+com+".xlsx";
+        String realPath = path+"\\"+"RegAnomalie_"+formatter.format(date)+"_REG_"+reg+"_COM_"+com+"_FKT_"+fkt+"_Hameau_"+hameau+".xlsx";
         List<Demande> demandes = new ArrayList<>();
         
         int RowResultSet = 0;
-        int CellResultSet = 16;
-        int incr = 0;
         
         System.out.println("aujourd'hui : "+ dateAujourdhui);
         
@@ -331,31 +325,18 @@ public List<Demande> getRegistreAnomalie(String reg, String c_dist, String dist,
             
             rs = st.executeQuery();
             
-            
- //System.out.println("Ma requette est de : " + sql);
-            
-
-              
                 try{
                     
                     // CREATION DU FICHIER
                     String nameOfSheet = "reg_anomalie";
                     XSSFWorkbook excelDataCreate = new XSSFWorkbook();
                     FileOutputStream out = new FileOutputStream(new File(realPath));
-                    //XSSFSheet excelSheet = excelDataCreate.createSheet(nameOfSheet);
+                    XSSFSheet excelSheet = excelDataCreate.createSheet(nameOfSheet);
 
-                    //XSSFSheet sheet1 = excelDataCreate.getSheetAt(0);
-                    
-                    //sheet1.getRow(0).createCell(1).setCellValue("REGION");
-                    //sheet1.getRow(0).createCell(1).setCellValue("DISTRICT");
-                    //sheet1.getRow(0).createCell(1).setCellValue("COMMUNE");
-                    
                     
                     excelDataCreate.write(out);
                     out.close();
                     
-                    
-               
                     // REMPLISSAGE DANS LE FICHIER
                     File src = new File(realPath);
                     FileInputStream fis = new FileInputStream(src);
@@ -363,23 +344,9 @@ public List<Demande> getRegistreAnomalie(String reg, String c_dist, String dist,
                     XSSFSheet sheet = wb.getSheet(nameOfSheet);
                     
                     
-                    
-                    
                     //sheet.createRow(0).createCell(0).setCellValue("Commune :");
                     //sheet.getRow(0).createCell(1).setCellValue(com);
-                    
-                    //sheet.createRow(0).createCell(2).setCellValue("Code Com :");
-                    //sheet.getRow(0).createCell(3).setCellValue(c_com);
-                    
-                    
-                    //sheet.getRow(0).createCell(6).setCellValue("Code FKT :");
-                    //sheet.getRow(0).createCell(7).setCellValue(c_fkt);
-                    
-                    
-                    //sheet.getRow(0).createCell(8).setCellValue("N° Equipe :");
-                    //sheet.getRow(0).createCell(9).setCellValue(" ");
-                    
-                    
+
         Row headerRow0 = sheet.createRow(0);
  
         
@@ -478,13 +445,7 @@ public List<Demande> getRegistreAnomalie(String reg, String c_dist, String dist,
         headerCell1.setCellValue("Date de retour :");
         headerCell1.setCellStyle(cellStyleBold);
         
-        
-        //headerCell1 = headerRow1.createCell(9);
-        //headerCell1.setCellValue("Date de retour xxxxx");
-        
-        
-        
-        
+
         Row headerRow4 = sheet.createRow(4);
  
         Cell headerCell4 = headerRow4.createCell(0);
@@ -524,8 +485,7 @@ public List<Demande> getRegistreAnomalie(String reg, String c_dist, String dist,
         end3.getRow(), start3.getCol(), end3.getCol());
         sheet.addMergedRegion(address3);
         
-System.out.println("valeur de address3 vaut : " +address3 );
-        
+       
         Row headerRow5 = sheet.createRow(5);
  
         Cell headerCell5 = headerRow5.createCell(0);
@@ -575,14 +535,8 @@ System.out.println("valeur de address3 vaut : " +address3 );
         headerCell5 = headerRow5.createCell(11);
         headerCell5.setCellValue("Signature AFO");
         headerCell5.setCellStyle(cellStyleBold);
-        
-                    //sheet.createRow(1).createCell(0).setCellValue(reg);
-                    //sheet.getRow(1).createCell(1).setCellValue(dist);
-                    //sheet.getRow(1).createCell(2).setCellValue(com);
-                    //sheet.getRow(1).createCell(3).setCellValue(dist);
+
         int n = 6;
-        
-        
         
             while (rs.next()) {
                 
@@ -604,8 +558,6 @@ System.out.println("valeur de address3 vaut : " +address3 );
                                            + " Login = " +rs.getString("login") + " lot : " + rs.getString("lot")+ " anomalie_description = " + rs.getString("anomalie_description"));
 
                     n++;
-                
-
             }
   
   
