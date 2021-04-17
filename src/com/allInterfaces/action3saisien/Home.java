@@ -10,6 +10,8 @@ package com.allInterfaces.action3saisien;
 import com.classes.action3saisie.Formats;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,17 +43,24 @@ public class Home extends javax.swing.JFrame {
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
-    
 
     /**
      * Creates new form Home
+     * @param HOST
+     * @param DBNAME
+     * @param PORT
+     * @param USER
+     * @param PWD
+     * @param username
+     * @param password
+     * @param TYPE_OPERATION
      */
-    public Home(String HOST, Integer PORT, String DBNAME, String USER, String PWD , String username, String password, String type_op) {
+    public Home(String HOST, String DBNAME, Integer PORT, String USER, String PWD , String username, String password, String TYPE_OPERATION) {
         
         
         this.userName = username;
         this.pswd = password;
-        this.type_operation = type_op;
+        this.type_operation = TYPE_OPERATION;
 
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
@@ -62,12 +71,12 @@ public class Home extends javax.swing.JFrame {
         initComponents();
         
         //System.out.println("Bonjour : " + username + "\nVotre mot de passe est : "+ password + "\nType d'opération : "+ type_op );
-        
+        this.lbl_type_operation.setText("Type d'opération séléctionné : "+this.type_operation);
         this.lbl_test.setText("Bonjour " + username + " !");
         
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
     }
 
     /**
@@ -88,6 +97,7 @@ public class Home extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         dpContent = new javax.swing.JDesktopPane();
         lbl_test = new javax.swing.JLabel();
+        lbl_type_operation = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         j_menu_fichier = new javax.swing.JMenu();
         j_menu_item_deconnexion = new javax.swing.JMenuItem();
@@ -108,6 +118,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_export_listes_demandeurs = new javax.swing.JMenuItem();
         j_menu_export_listes_anomalies = new javax.swing.JMenuItem();
         j_menu_export_rp_provisoire = new javax.swing.JMenuItem();
+        j_menu_export_listes_cf_editer_par_commune = new javax.swing.JMenuItem();
         j_menu_stats = new javax.swing.JMenu();
         j_menu_stat_saisie_par_operateur = new javax.swing.JMenuItem();
         j_menu_stat_anomalies_par_commune = new javax.swing.JMenuItem();
@@ -210,7 +221,10 @@ public class Home extends javax.swing.JFrame {
 
         lbl_test.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
+        lbl_type_operation.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+
         dpContent.setLayer(lbl_test, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        dpContent.setLayer(lbl_type_operation, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout dpContentLayout = new javax.swing.GroupLayout(dpContent);
         dpContent.setLayout(dpContentLayout);
@@ -220,12 +234,18 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap(1033, Short.MAX_VALUE)
                 .addComponent(lbl_test, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(dpContentLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         dpContentLayout.setVerticalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
-                .addContainerGap(575, Short.MAX_VALUE)
-                .addComponent(lbl_test, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(541, Short.MAX_VALUE)
+                .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_test, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -381,6 +401,14 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_exports.add(j_menu_export_rp_provisoire);
 
+        j_menu_export_listes_cf_editer_par_commune.setText("Listes CF éditer avec demandeurs");
+        j_menu_export_listes_cf_editer_par_commune.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_export_listes_cf_editer_par_communeActionPerformed(evt);
+            }
+        });
+        j_menu_exports.add(j_menu_export_listes_cf_editer_par_commune);
+
         jMenuBar1.add(j_menu_exports);
 
         j_menu_stats.setText("Statistique(s)");
@@ -464,8 +492,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_j_menu_statsActionPerformed
 
     private void j_menu_stat_saisie_par_operateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_stat_saisie_par_operateurActionPerformed
-
-        SaisieParOperateur s_par_op = new SaisieParOperateur(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER);
+        SaisieParOperateur s_par_op = new SaisieParOperateur(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation);
         this.dpContent.add(s_par_op);
         s_par_op.show();
 
@@ -767,7 +794,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_export_rp_provisoireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_rp_provisoireActionPerformed
         
-        ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER);
+        ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER,this.type_operation);
         
         rp_prov.setLocationRelativeTo(null);
         rp_prov.setVisible(true);
@@ -778,7 +805,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_export_listes_anomaliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_anomaliesActionPerformed
 
-        ExportRegistreAnomalie reg_anomaie = new ExportRegistreAnomalie(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER);
+        ExportRegistreAnomalie reg_anomaie = new ExportRegistreAnomalie(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
         this.dpContent.add(reg_anomaie);
         reg_anomaie.show();
         
@@ -862,6 +889,13 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         this.lbl_test.setText("");
     }//GEN-LAST:event_jMenuBar1MouseEntered
 
+    private void j_menu_export_listes_cf_editer_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
+        
+        ExportCFEditerParCommunes cf_editer = new ExportCFEditerParCommunes(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(cf_editer);
+        cf_editer.show();
+    }//GEN-LAST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -911,6 +945,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_controles_saisie;
     private javax.swing.JMenu j_menu_controllesSaisies;
     private javax.swing.JMenuItem j_menu_export_listes_anomalies;
+    private javax.swing.JMenuItem j_menu_export_listes_cf_editer_par_commune;
     private javax.swing.JMenuItem j_menu_export_listes_demandeurs;
     private javax.swing.JMenuItem j_menu_export_rp_provisoire;
     private javax.swing.JMenu j_menu_exports;
@@ -933,6 +968,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_stat_saisie_par_operateur;
     private javax.swing.JMenu j_menu_stats;
     private javax.swing.JLabel lbl_test;
+    private javax.swing.JLabel lbl_type_operation;
     private javax.swing.JPanel paneChampsLogin;
     // End of variables declaration//GEN-END:variables
 }

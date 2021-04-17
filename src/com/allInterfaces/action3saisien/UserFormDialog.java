@@ -17,42 +17,37 @@ import javax.swing.JOptionPane;
  */
 public class UserFormDialog extends javax.swing.JFrame {
     
-    
-        private String HOST = "";
-        private Integer PORT;
-        private String DBNAME = "";
-        private String USER = "";
-        private String PWD = "";
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
     
     
     /**
      * Creates new form UserFormDialog
      */
-    public UserFormDialog(String host, Integer port, String dbname, String user, String password, List<String> demande) {
+    public UserFormDialog(String host, Integer port, String dbname, String user, String password, List<String> demarches) {
         
-        this.HOST = host;
-        this.PORT = port;
-        this.DBNAME = dbname;
-        this.USER = user;
-        this.PWD = password;
-      
+        this.BDD_HOST = host;
+        this.BDD_PORT = port;
+        this.BDD_DBNAME = dbname;
+        this.BDD_USER = user;
+        this.BDD_PWD = password;
+
         initComponents();
         
-        if(demande.isEmpty() || demande == null){
+        if(demarches.isEmpty() || demarches == null){
             System.out.println("Impossible de lancer le programme car la table type_op est vide");
             System.exit(0);
         }else{
             this.j_combo_demarche.removeAllItems();
             this.j_combo_demarche.addItem("Séléctionner une démarche");
-            for(String dmd : demande) {
+            for(String demarch : demarches) {
                 //System.out.println("Pouf valeur de demande : " + dmd.toUpperCase());
-                this.j_combo_demarche.addItem(dmd.toUpperCase());
+                this.j_combo_demarche.addItem(demarch.toUpperCase());
             }
-        }
-        
-
-
-                        
+        }                   
         
     }
 
@@ -194,12 +189,12 @@ public class UserFormDialog extends javax.swing.JFrame {
             System.out.println("Veuillez sélectionner une démarche");
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner une démarche","Aucune selectione du champ démarche", JOptionPane.INFORMATION_MESSAGE);
         }else{
-            
-        Utilisateurs user = new Utilisateurs(txt_username);
-        String user_login_bdd = user.getLogin();
+        
+
+        Utilisateurs user = new Utilisateurs(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD);
+        String user_login_bdd = user.getLogin(txt_username);
         String user_mot_de_passe_bdd = user.getPassword();
         hash_txt_password = Hash.getHash(txt_password.getBytes(), "MD5");
-        
         
         if(user_login_bdd == null){
             System.out.println("Nom d'utilisateur n'existe pas dans la base de données !");
@@ -213,7 +208,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                     //System.out.println("Votee mot de passe hashé vaut : "+ hash_txt_password +"\n");
 
                     
-                    Home home = new Home(this.HOST, this.PORT, this.DBNAME, this.USER, this.PWD, txt_username, txt_password, demarche);
+                    Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, demarche);
 
                     home.setVisible(true);
                     

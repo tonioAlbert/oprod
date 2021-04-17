@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JFileChooser;
 import com.classes.action3saisie.Demande;
-import com.dao.action3saisie.Dao;
+import com.export.action3saisie.Exports;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
@@ -35,23 +35,27 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
     private final String selectRegion = "Séléctionner un région";
     private final String selectDistrict = "Séléctionner un district";
     private final String selectCommune = "Séléctionner une commune";
+    
+     private String type_operation = "";
 
     /**
      * Creates new form ExportRegistreParcellaire
      */
-    public ExportRegistreParcellaire(String HOST, Integer PORT, String DBNAME, String USER, String PWD) {
+    public ExportRegistreParcellaire(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
        
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
+        this.type_operation = TYPE_OPERATION;
+        
         initComponents();
         
         this.j_label_folder_export.setText("");
         
         //connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
         this.j_combo_region.removeAllItems();
         this.j_combo_region.addItem(selectRegion);
         this.j_combo_region.addItem("ATSINANANA");
@@ -260,11 +264,9 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
             
             //Boolean RP = new Demande().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
             
-            System.out.println(" Dans btn exporter ... "+new Dao().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText()));
+            System.out.println(" Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText()));
         }
         
-        
-
     }//GEN-LAST:event_j_button_exporterActionPerformed
 
     private void j_combo_regionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_regionItemStateChanged

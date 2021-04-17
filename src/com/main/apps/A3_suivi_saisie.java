@@ -310,10 +310,6 @@ public class A3_suivi_saisie {
 	    }
             
        
-            
-            
-            
-            
             System.out.println("\nTout est Ok!\nLancement de l'application...  : ");
             UserFormDialog home = new UserFormDialog(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password, dmd);
             home.setVisible(true);

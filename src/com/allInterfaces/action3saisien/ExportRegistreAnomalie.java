@@ -12,8 +12,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JFileChooser;
 import com.classes.action3saisie.Demande;
-import com.dao.action3saisie.Dao;
+import com.classes.action3saisie.Region;
+import com.export.action3saisie.Exports;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 
@@ -39,28 +42,51 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     private final String selectCommune = "Séléctionner une commune";
     private final String selectFokontany = "Séléctionner une fokontany";
     private final String selectHameau = "Séléctionner un hameau";
-
+    
+    private String type_operation = "";
     
     
     /**
      * Creates new form SaisieParOperateur
      */
-    public ExportRegistreAnomalie(String HOST, Integer PORT, String DBNAME, String USER, String PWD) {
+    public ExportRegistreAnomalie(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
+        this.type_operation = TYPE_OPERATION;
         
         initComponents();
-        
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getConnection();
+
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         this.j_combo_region.removeAllItems();
-        this.j_combo_region.addItem(selectRegion);
-        this.j_combo_region.addItem("ATSINANANA");
-        this.j_combo_region.addItem("ANALANJIROFO");
+        
+        // RECUPERATION DE TOUS LES REGIONS DANS LA BASE
+        
+        HashMap<String, String> regions = new Region(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getAllRegions();
+        
+        if(regions.isEmpty()){
+            System.out.println("Impossible de récupérér les regions dans la base de données!");
+            System.exit(0);
+        }else{
+            
+            this.j_combo_region.addItem(selectRegion);
+            System.out.println("tous les regions : "+ regions.isEmpty());
+
+            Iterator it = regions.entrySet().iterator();
+
+            while (it.hasNext()) {
+                Map.Entry<String, String> val = (Map.Entry)it.next();
+                //System.out.println( " = " + val.getValue().toString());
+                this.j_combo_region.addItem(val.getValue().toString());
+            }
+        
+        }
+        
+
     }
 
     /**
@@ -72,8 +98,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         j_combo_region = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
@@ -91,12 +115,8 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
         setResizable(true);
-        setTitle("Export Registre Anomalie");
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setText("Export Registre Anomalie Saisie");
+        setTitle("Exportation Registre Anomalie Saisie");
 
         jLabel2.setText("Région");
 
@@ -171,56 +191,40 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-                                .addComponent(j_label_folder_export)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jSeparator1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(j_combo_commune, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(j_combo_region, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(j_combo_district, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(j_combo_fokontany, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(j_combo_hameau, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(76, 76, 76)
-                                .addComponent(jLabel1)))
-                        .addGap(0, 114, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                            .addComponent(j_label_folder_export)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(23, 23, 23)))
+                        .addGap(33, 33, 33)
+                        .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(j_combo_commune, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(j_combo_region, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(j_combo_district, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addGap(18, 18, 18)
+                            .addComponent(j_combo_fokontany, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(18, 18, 18)
+                            .addComponent(j_combo_hameau, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(274, 274, 274))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -402,10 +406,11 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             locationFile += fc.getSelectedFile().toString();
 
             //System.out.println("LOCATION = " + locationFile );
-        }else{
-
-            j_label_folder_export.setText("");
         }
+        //else{
+
+            //j_label_folder_export.setText("");
+        //}
 
         locationFile = "";
 
@@ -464,7 +469,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
             //Boolean RP = new Demande().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
 
-            System.out.println("System Dans btn exporter ... "+new Dao().getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
+            System.out.println("System Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
         }
 
     }//GEN-LAST:event_j_button_exporterActionPerformed
@@ -475,14 +480,12 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton j_button_exporter;
     private javax.swing.JButton j_button_folder_export;
     private javax.swing.JComboBox<String> j_combo_commune;

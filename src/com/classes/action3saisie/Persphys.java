@@ -19,6 +19,12 @@ import java.util.logging.Logger;
  */
 public class Persphys {
     
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
+    
     private static String str_idPersphys = "";
     private static String str_prenom = "";
     private static PreparedStatement st;
@@ -28,12 +34,18 @@ public class Persphys {
     
     
     // CONSTRUCTEUR
-    public Persphys(String idPersohys, String prenom) {
+    public Persphys(String HOST, String DBNAME, Integer PORT, String USER, String PWD, String idPersohys, String prenom) {
+        this.BDD_HOST = HOST;
+        this.BDD_PORT = PORT;
+        this.BDD_DBNAME = DBNAME;
+        this.BDD_USER = USER;
+        this.BDD_PWD = PWD;
         
         this.str_idPersphys = idPersohys;
         this.str_prenom = prenom;
         
-        connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        //connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
         
     }
 

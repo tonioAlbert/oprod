@@ -10,6 +10,7 @@ import com.classes.action3saisie.Demande;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,10 +32,11 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
+    private String demarche = "";
     /**
      * Creates new form SaisieParOperateur
      */
-    public SaisieParOperateur(String HOST, Integer PORT, String DBNAME, String USER, String PWD ) {
+    public SaisieParOperateur(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String demarche) {
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
@@ -46,6 +48,10 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         initComponents();
         
         this.j_date_debut.setEnabled(false);
+        this.j_comb_demarche.removeAllItems();
+        this.j_comb_demarche.addItem(demarche);
+        this.demarche = demarche;
+        
     }
 
     /**
@@ -258,7 +264,8 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         dateDebut += df.format(this.j_date_debut.getDate());
                         //System.out.println("ok simple date : "+ com_critere_par_date + dateDebut);
                         
-                        HashMap <String, String> saisieDesOperateurs  = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieParOperateur(dateDebut, dateDebut, true);
+                        HashMap <String, String> saisieDesOperateurs  = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSimpleSaisieParOperateur(dateDebut, this.demarche);
+                        System.out.println("ok simple date : "+ saisieDesOperateurs);
                     }
 
                      
@@ -282,6 +289,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         
                         //String d  = new Demande().getSaisieParOperateur(dateDebut, dateFin);
                         HashMap <String, String> saisieDesOperateursBetweenTwoDate  = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieParOperateur(dateDebut, dateFin, false);
+                        System.out.println("ok intervale date : "+ saisieDesOperateursBetweenTwoDate);
                     }
                     
                     

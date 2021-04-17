@@ -12,8 +12,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JFileChooser;
 import com.classes.action3saisie.Demande;
-import com.dao.action3saisie.Dao;
+import com.classes.action3saisie.Region;
+import com.export.action3saisie.Exports;
+import java.awt.Desktop;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 
@@ -22,7 +31,7 @@ import javax.swing.JOptionPane;
  *
  * @author RAP
  */
-public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
+public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
     
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -39,28 +48,51 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     private final String selectCommune = "Séléctionner une commune";
     private final String selectFokontany = "Séléctionner une fokontany";
     private final String selectHameau = "Séléctionner un hameau";
-
+    
+    private String type_operation = "";
     
     
     /**
      * Creates new form SaisieParOperateur
      */
-    public ExportRegistreAnomalie(String HOST, Integer PORT, String DBNAME, String USER, String PWD) {
+    public ExportCFEditerParCommunes(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
+        this.type_operation = TYPE_OPERATION;
         
         initComponents();
-        
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getConnection();
+
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         this.j_combo_region.removeAllItems();
-        this.j_combo_region.addItem(selectRegion);
-        this.j_combo_region.addItem("ATSINANANA");
-        this.j_combo_region.addItem("ANALANJIROFO");
+        
+        // RECUPERATION DE TOUS LES REGIONS DANS LA BASE
+        
+        HashMap<String, String> regions = new Region(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getAllRegions();
+        
+        if(regions.isEmpty()){
+            System.out.println("Impossible de récupérér les regions dans la base de données!");
+            System.exit(0);
+        }else{
+            
+            this.j_combo_region.addItem(selectRegion);
+            //System.out.println("tous les regions : "+ regions.isEmpty());
+
+            Iterator it = regions.entrySet().iterator();
+
+            while (it.hasNext()) {
+                Map.Entry<String, String> val = (Map.Entry)it.next();
+                //System.out.println( " = " + val.getValue().toString());
+                this.j_combo_region.addItem(val.getValue().toString());
+            }
+        
+        }
+        
+
     }
 
     /**
@@ -72,8 +104,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         j_combo_region = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
@@ -81,22 +111,15 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         j_combo_commune = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        j_combo_fokontany = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
-        j_combo_hameau = new javax.swing.JComboBox<>();
+        j_combo_date_edition = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         j_label_folder_export = new javax.swing.JTextField();
         j_button_folder_export = new javax.swing.JButton();
-        j_button_exporter = new javax.swing.JButton();
+        j_button_exporter_cf_editer = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
-        setTitle("Export Registre Anomalie");
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setText("Export Registre Anomalie Saisie");
+        setTitle("Exportation CF éditer par commune");
 
         jLabel2.setText("Région");
 
@@ -127,20 +150,15 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel5.setText("Fokontany");
+        jLabel5.setText("Date édition");
 
-        j_combo_fokontany.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une fokontany" }));
-        j_combo_fokontany.setEnabled(false);
-        j_combo_fokontany.addItemListener(new java.awt.event.ItemListener() {
+        j_combo_date_edition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une date" }));
+        j_combo_date_edition.setEnabled(false);
+        j_combo_date_edition.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                j_combo_fokontanyItemStateChanged(evt);
+                j_combo_date_editionItemStateChanged(evt);
             }
         });
-
-        jLabel6.setText("Hameau");
-
-        j_combo_hameau.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un hameau" }));
-        j_combo_hameau.setEnabled(false);
 
         jLabel7.setText("Emplacement de l'export");
 
@@ -156,10 +174,10 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }
         });
 
-        j_button_exporter.setText("Exporter");
-        j_button_exporter.addActionListener(new java.awt.event.ActionListener() {
+        j_button_exporter_cf_editer.setText("Exporter");
+        j_button_exporter_cf_editer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_button_exporterActionPerformed(evt);
+                j_button_exporter_cf_editerActionPerformed(evt);
             }
         });
 
@@ -170,57 +188,37 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(j_combo_district, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(j_combo_commune, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(j_combo_region, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addGap(18, 18, 18)
+                            .addComponent(j_combo_date_edition, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-                                .addComponent(j_label_folder_export)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jSeparator1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(j_combo_commune, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(j_combo_region, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(j_combo_district, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(j_combo_fokontany, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(j_combo_hameau, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(76, 76, 76)
-                                .addComponent(jLabel1)))
-                        .addGap(0, 114, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                            .addComponent(j_label_folder_export)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(j_button_exporter_cf_editer, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(24, 24, 24)))
+                        .addGap(33, 33, 33)
+                        .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(274, 274, 274))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -234,13 +232,9 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_combo_fokontany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_combo_date_edition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_combo_hameau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(18, 18, 18)
+                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -248,7 +242,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                         .addComponent(j_label_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(j_button_folder_export, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(j_button_exporter_cf_editer, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -266,8 +260,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             if(selected.equals(selectRegion)){
                 this.j_combo_district.setEnabled(false);
                 this.j_combo_commune.setEnabled(false);
-                this.j_combo_fokontany.setEnabled(false);
-                this.j_combo_hameau.setEnabled(false);
             }else{
 
                 this.j_combo_district.removeAllItems();
@@ -281,8 +273,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
                 this.j_combo_district.setEnabled(true);
                 this.j_combo_commune.setEnabled(false);
-                this.j_combo_fokontany.setEnabled(false);
-                this.j_combo_hameau.setEnabled(false);
             }
         }
 
@@ -299,8 +289,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
             if(selected.equals(selectCommune)){
                 this.j_combo_commune.setEnabled(false);
-                this.j_combo_fokontany.setEnabled(false);
-                this.j_combo_hameau.setEnabled(false);
             }else{
 
                 this.j_combo_commune.setEnabled(false);
@@ -316,8 +304,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                     }
 
                     this.j_combo_commune.setEnabled(true);
-                    this.j_combo_fokontany.setEnabled(false);
-                    this.j_combo_hameau.setEnabled(false);
                 }
 
             }
@@ -327,66 +313,8 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     private void j_combo_communeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_communeItemStateChanged
         String selected = "";
 
-        if(evt.getStateChange() == ItemEvent.SELECTED){
 
-            selected += evt.getItem();
-            boolean containsStr = selected.contains("  _  ");
-
-            if(selected.equals(selectFokontany)){
-                this.j_combo_fokontany.setEnabled(false);
-                this.j_combo_hameau.setEnabled(false);
-            }else{
-
-                this.j_combo_fokontany.setEnabled(false);
-
-                if(containsStr){
-
-                    this.j_combo_fokontany.removeAllItems();
-                    this.j_combo_fokontany.addItem(selectFokontany);
-                    HashMap<String, String> com = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getFokontany(selected.split("  _  ")[1]);
-
-                    for (String i : com.keySet()) {
-                        this.j_combo_fokontany.addItem( i + "  _  " + com.get(i));
-                    }
-
-                    this.j_combo_fokontany.setEnabled(true);
-                    this.j_combo_hameau.setEnabled(false);
-                }
-
-            }
-        }
     }//GEN-LAST:event_j_combo_communeItemStateChanged
-
-    private void j_combo_fokontanyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_fokontanyItemStateChanged
-        String selected = "";
-
-        if(evt.getStateChange() == ItemEvent.SELECTED){
-
-            selected += evt.getItem();
-            boolean containsStr = selected.contains("  _  ");
-
-            if(selected.equals(selectHameau)){
-                this.j_combo_hameau.setEnabled(false);
-            }else{
-
-                this.j_combo_hameau.setEnabled(false);
-
-                if(containsStr){
-
-                    this.j_combo_hameau.removeAllItems();
-                    this.j_combo_hameau.addItem(selectHameau);
-                    HashMap<String, String> com = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getHameau(selected.split("  _  ")[1]);
-
-                    for (String i : com.keySet()) {
-                        this.j_combo_hameau.addItem( i + "  _  " + com.get(i));
-                    }
-
-                    this.j_combo_hameau.setEnabled(true);
-                }
-
-            }
-        }
-    }//GEN-LAST:event_j_combo_fokontanyItemStateChanged
 
     private void j_button_folder_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_folder_exportActionPerformed
 
@@ -402,22 +330,21 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             locationFile += fc.getSelectedFile().toString();
 
             //System.out.println("LOCATION = " + locationFile );
-        }else{
-
-            j_label_folder_export.setText("");
         }
+        //else{
+
+            //j_label_folder_export.setText("");
+        //}
 
         locationFile = "";
 
     }//GEN-LAST:event_j_button_folder_exportActionPerformed
 
-    private void j_button_exporterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_exporterActionPerformed
+    private void j_button_exporter_cf_editerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_exporter_cf_editerActionPerformed
 
         String selected_region = (String)this.j_combo_region.getSelectedItem();
         String selected_district = (String)this.j_combo_district.getSelectedItem();
         String selected_commune = (String)this.j_combo_commune.getSelectedItem();
-        String selected_fokontany = (String)this.j_combo_fokontany.getSelectedItem();
-        String selected_hameau = (String)this.j_combo_hameau.getSelectedItem();
 
         if(selected_region.equals(selectRegion)){
             //this.setAlwaysOnTop(false);
@@ -431,14 +358,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             //this.setAlwaysOnTop(false);
             JOptionPane.showMessageDialog(null, "Veuillez selectionner une commune","Séléction Commune", JOptionPane.INFORMATION_MESSAGE);
             //this.setAlwaysOnTop(true);
-        }else if(selected_fokontany.equals(selectFokontany)){
-            //this.setAlwaysOnTop(false);
-            JOptionPane.showMessageDialog(null, "Veuillez selectionner un fokontany","Séléction Fokontany", JOptionPane.INFORMATION_MESSAGE);
-            //this.setAlwaysOnTop(true);
-        }else if(selected_hameau.equals(selectHameau)){
-            //this.setAlwaysOnTop(false);
-            JOptionPane.showMessageDialog(null, "Veuillez selectionner un hameau","Séléction Hameau", JOptionPane.INFORMATION_MESSAGE);
-            //this.setAlwaysOnTop(true);
         }else if(this.j_label_folder_export.getText().equals("")){
             //this.setAlwaysOnTop(false);
             JOptionPane.showMessageDialog(null, "Veuillez selectionner le dossier de destination de l'export","Séléction Emplacement", JOptionPane.INFORMATION_MESSAGE);
@@ -451,23 +370,46 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             
             String code_district = selected_district.split("  _  ")[0].trim();
             String code_commune = selected_commune.split("  _  ")[0].trim();
-            String code_fokontany = selected_fokontany.split("  _  ")[0].trim();
-            String code_hameau = selected_hameau.split("  _  ")[0].trim();
             
             
             String district = selected_district.split("  _  ")[1].trim();
             String commune = selected_commune.split("  _  ")[1].trim();
-            String fokontany = selected_fokontany.split("  _  ")[1].trim();
-            String hameau = selected_hameau.split("  _  ")[1].trim();
             
             //System.out.println("Code hameau :" + code_hameau );
 
             //Boolean RP = new Demande().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
 
-            System.out.println("System Dans btn exporter ... "+new Dao().getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
+            //System.out.println("System Dans btn exporter ... ");
+            
+            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getListesCfEditer(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+            //System.out.println("Le retour de la réponse est : " + reponse.get(0));
+            
+            if(reponse.get(0).equals("success")){
+                
+                int export = JOptionPane.showConfirmDialog(null, "Listes CF éditer exporté avec succès \nVoulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                
+                    if(export == JOptionPane.YES_OPTION){
+                        // ouverture de l'emplacement selectionner par l'utiisateur
+                        try {
+                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                        }catch(Exception ee){
+                            JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Listes CF éditer annuler\nAucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+            }
         }
 
-    }//GEN-LAST:event_j_button_exporterActionPerformed
+    }//GEN-LAST:event_j_button_exporter_cf_editerActionPerformed
+
+    private void j_combo_date_editionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_date_editionItemStateChanged
+        String selected = "";
+
+     
+    }//GEN-LAST:event_j_combo_date_editionItemStateChanged
 
  
     
@@ -475,20 +417,16 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JButton j_button_exporter;
+    private javax.swing.JButton j_button_exporter_cf_editer;
     private javax.swing.JButton j_button_folder_export;
     private javax.swing.JComboBox<String> j_combo_commune;
+    private javax.swing.JComboBox<String> j_combo_date_edition;
     private javax.swing.JComboBox<String> j_combo_district;
-    private javax.swing.JComboBox<String> j_combo_fokontany;
-    private javax.swing.JComboBox<String> j_combo_hameau;
     private javax.swing.JComboBox<String> j_combo_region;
     private javax.swing.JTextField j_label_folder_export;
     // End of variables declaration//GEN-END:variables

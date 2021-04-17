@@ -14,13 +14,14 @@ import java.sql.DriverManager;
  */
 public class ConnectDb {
     
-    final private String host;
-    final private Integer port;
-    final private String dbname;
-    final private String password;
-    final private String user;
+    private String host = "";
+    private Integer port = 0;
+    private String dbname = "";
+    private String password = "";
+    private String user = "";
     
-    public ConnectDb(String HOST, Integer PORT, String DBNAME, String PASSWORD, String USERNAME){
+    public ConnectDb(String HOST, String DBNAME, Integer PORT, String USERNAME, String PASSWORD){
+        
         this.host = HOST;
         this.port = PORT;
         this.dbname = DBNAME;
@@ -31,9 +32,7 @@ public class ConnectDb {
 
     
     public Connection getConnection(){
-        
-        //System.out.println("I méthode appeler ...");
-        
+                
         Connection connexion = null;
         
         try{
@@ -69,7 +68,5 @@ public class ConnectDb {
         
         //return  connexion;
     }
-    
-
 
 }

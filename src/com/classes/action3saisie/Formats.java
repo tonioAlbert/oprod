@@ -64,8 +64,8 @@ public class Formats {
                           || comp_ch2.equals("R.N.5")|| comp_ch2.equals("R/N/5")|| comp_ch2.equals("CR")|| comp_ch2.equals("C.R")|| comp_ch2.equals("PI")|| comp_ch2.equals("P.I")
                           || comp_ch2.equals("P.N.D")|| comp_ch2.equals("(F)")|| comp_ch2.equals("( F )")|| comp_ch2.equals("( F)")|| comp_ch2.equals("(F )")|| comp_ch2.equals("ET")
                           || comp_ch2.equals("SP")|| comp_ch2.equals("C/R")|| comp_ch2.equals("C.R.")|| comp_ch2.equals("C/R.")|| comp_ch2.equals("DPE")|| comp_ch2.equals("D.P.E")
-                          || comp_ch2.equals("E.P.P")|| comp_ch2.equals("EPP")|| comp_ch2.equals("C.E.G")|| comp_ch2.equals("CEG")|| comp_ch2.equals("FKT")|| comp_ch2.equals("IVE")
-                          || comp_ch2.equals("BIS")|| comp_ch2.equals("B.I.S")){
+                          || comp_ch2.equals("E.P.P")|| comp_ch2.equals("EPP")|| comp_ch2.equals("(EPP)")|| comp_ch2.equals("C.E.G")|| comp_ch2.equals("(C.E.G)")|| comp_ch2.equals("CEG")|| comp_ch2.equals("FKT")|| comp_ch2.equals("IVE")
+                          || comp_ch2.equals("BIS")|| comp_ch2.equals("B.I.S")|| comp_ch2.equals("FLM")|| comp_ch2.equals("(FLM)")|| comp_ch2.equals("F.L.M")|| comp_ch2.equals("FJKM")|| comp_ch2.equals("F.J.K.M")){
                       
                       
                       // Mise en majuscule des chaines trouvé
@@ -102,6 +102,15 @@ public class Formats {
         end.getRow(), start.getCol(), end.getCol());
         
         return address;
+    }
+    
+    
+    public static String ConvertSlashToUnderscore(String textToConvert){
+        
+        String txt1 = textToConvert.replace("/","");
+        String replaceString = txt1.replace(" ","_");
+        
+        return replaceString;
     }
     
     

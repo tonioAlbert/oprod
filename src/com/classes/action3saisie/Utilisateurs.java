@@ -20,6 +20,12 @@ import java.util.logging.Logger;
  */
 public class Utilisateurs {
     
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
+    
     private String login;
     private String password;
     private String profil;
@@ -30,18 +36,26 @@ public class Utilisateurs {
     PreparedStatement st;
     ResultSet rs;
 
-    public Utilisateurs(String login) {
+    public Utilisateurs(String HOST, String DBNAME, Integer PORT, String USER, String PWD) {
         
-        this.login = login;
-        connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        this.BDD_HOST = HOST;
+        this.BDD_PORT = PORT;
+        this.BDD_DBNAME = DBNAME;
+        this.BDD_USER = USER;
+        this.BDD_PWD = PWD;
+        
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
     }
     
     
 
-    public String getLogin() {
+    public String getLogin(String login) {
+        
+        System.out.println("votre login est le : "+ login);
 
         try {
+            
             String q = "SELECT login FROM utilisateur WHERE login = ?";
             st = connectDatabase.prepareStatement(q);    
             st.setString(1, login);
@@ -64,6 +78,7 @@ public class Utilisateurs {
             
             
         } catch (SQLException ex) {
+            System.out.println("Eurreur ato annn");
             Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
         }
         

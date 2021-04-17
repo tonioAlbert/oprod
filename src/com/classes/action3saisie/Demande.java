@@ -31,7 +31,7 @@ public class Demande {
     
     
     private String BDD_HOST = "";
-    private Integer BDD_PORT;
+    private Integer BDD_PORT ;
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
@@ -53,10 +53,81 @@ public class Demande {
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
         
-        
-        connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "root963.0", "gaetan").getConnection();
     }
+    
+  
+    public HashMap <String, String> getSimpleSaisieParOperateur(String dateDebut, String demarche){
+        
+            
+            //System.out.println("dans la méthode getSaisieParOperateur");
+            
+            try {
+
+                String sql = "SELECT utilisateur.login, commune.nom AS commune,   \n" +
+"                             COUNT(*) AS nombre_de_saisie\n" +
+"                             FROM commune,  \n" +
+"                                  fokontany, \n" +
+"                                  hameau,   \n" +
+"                                  demande, utilisateur  \n" +
+"                              WHERE commune.id_commune::text = fokontany.id_commune::text  \n" +
+"                              AND fokontany.id_fokontany::text = hameau.id_fokontany::text  \n" +
+"                              AND demande.id_hameau::text = hameau.id_hameau::text  \n" +
+"                              AND demande.demande_user = utilisateur.id_utilisateur  \n" +
+"                              AND demande.demande_date::TIMESTAMP::DATE = '19-03-2020'\n" +
+"							  AND demande.type_op = 'ogcf'\n" +
+"                              GROUP BY utilisateur.login, commune.nom";
+
+                
+                
+                DateFormat dateFormatYMD = new SimpleDateFormat("yyyy/MM/dd");
+                String vDateYMD = dateFormatYMD.format(dateDebut);
+                
+                System.out.println("SimpleDateFormat: " +vDateYMD);
+                
+                java.sql.Date date = new java.sql.Date(0000-00-00);
+                System.out.println("(Req simple) sans param " + date.valueOf(vDateYMD));
+                st = connectDatabase.prepareStatement(sql);    
+                //st.setDate(1, date.valueOf(vDateYMD));
+                //st.setString(2, demarche);
+
+                
+
+                rs = st.executeQuery();
+                
+System.out.println("SQL avec param : " +sql);
+
+                if (rs.next()){
+
+                    //System.out.println("resultat rs " +rs.getString("commune"));
+                    //this.login = rs.getString("login");
+                    //p = "kkkk";
+                    
+                    //m.put("login", rs.getString("operateur"));
+                    //m.put("commune", rs.getString("commune")); 
+                    //m.put("nombre_de_saisie", rs.getString("nombre_de_saisie")); 
+
+                }else{
+                    System.out.println("Impossible de récupérer le saisie des opérateur ! (Req simple) ");
+                }
+                
+                
+                                
+//System.out.println("Contenu dans 'm' " + m);
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        return m;
+    }
+    
+    
+    
     
     
     public HashMap <String, String> getSaisieParOperateur(String dateDebut, String DateFin, Boolean etatRequette){
@@ -68,18 +139,19 @@ public class Demande {
             
             try {
 
-                String sql = "SELECT utilisateur.login, commune.nom AS commune, \n" +
-                "             COUNT(*) AS nombre_de_saisie\n" +
-                "             FROM commune, \n" +
-                    "              fokontany, \n" +
-                    "              hameau, \n" +
-                    "              demande, utilisateur \n" +
-                "              WHERE commune.id_commune::text = fokontany.id_commune::text  \n" +
-                "              AND fokontany.id_fokontany::text = hameau.id_fokontany::text \n" +
-                "              AND demande.id_hameau::text = hameau.id_hameau::text \n" +
-                "              AND demande.demande_user = utilisateur.id_utilisateur \n" +
-                "              AND demande.demande_date::TIMESTAMP::DATE = ? \n" +
-                "              GROUP BY utilisateur.login, commune.nom";
+                String sql = "SELECT utilisateur.login, commune.nom AS commune,   \n" +
+"                             COUNT(*) AS nombre_de_saisie\n" +
+"                             FROM commune,  \n" +
+"                                  fokontany, \n" +
+"                                  hameau,   \n" +
+"                                  demande, utilisateur  \n" +
+"                              WHERE commune.id_commune::text = fokontany.id_commune::text  \n" +
+"                              AND fokontany.id_fokontany::text = hameau.id_fokontany::text  \n" +
+"                              AND demande.id_hameau::text = hameau.id_hameau::text  \n" +
+"                              AND demande.demande_user = utilisateur.id_utilisateur  \n" +
+"                              AND demande.demande_date::TIMESTAMP::DATE = ? \n" +
+"							  AND demande.type_op = ? \n" +
+"                              GROUP BY utilisateur.login, commune.nom";
 
                 
                 
@@ -87,8 +159,9 @@ public class Demande {
                 String vDateYMD = dateFormatYMD.format(dateDebut);
                 
                 java.sql.Date date = new java.sql.Date(0000-00-00);
-System.out.println("(Req simple) sans param " + date.valueOf(vDateYMD));
+                System.out.println("(Req simple) sans param " + date.valueOf(vDateYMD));
                 st = connectDatabase.prepareStatement(sql);    
+                st.setDate(1, date.valueOf(vDateYMD));
                 st.setDate(1, date.valueOf(vDateYMD));
 
                 
@@ -210,7 +283,7 @@ System.out.println("Contenu dans 'm' " + m);
             
             
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());;
+            System.out.println(ex.getMessage());
         }
              
         return regions;
@@ -340,10 +413,7 @@ System.out.println("Contenu dans 'm' " + m);
         return demarches;
     } 
      
-    
-    
-    
-    
+ 
     
 public Boolean getRegistreParcellaireProvisoire(String reg, String dist, String com, String path){
     
