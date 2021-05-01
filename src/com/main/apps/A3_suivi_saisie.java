@@ -5,7 +5,7 @@
  */
 package com.main.apps;
 
-import com.allInterfaces.action3saisien.UserFormDialog;
+import com.allInterfaces.action3saisies.UserFormDialog;
 import com.classes.action3saisie.Querry;
 import java.io.File;
 import java.io.FileNotFoundException;
