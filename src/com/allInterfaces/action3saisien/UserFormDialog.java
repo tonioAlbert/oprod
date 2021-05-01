@@ -95,6 +95,11 @@ public class UserFormDialog extends javax.swing.JFrame {
                 btn_connexionActionPerformed(evt);
             }
         });
+        btn_connexion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btn_connexionKeyPressed(evt);
+            }
+        });
 
         jLabel1.setText("Nom d'utilisateur");
 
@@ -161,8 +166,8 @@ public class UserFormDialog extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void btn_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_connexionActionPerformed
-        
+    
+    private void ChargeLogin(){
         String txt_username = this.txt_username.getText();
         String txt_password = String.valueOf(this.txt_password.getPassword());
         String demarche = this.j_combo_demarche.getSelectedItem().toString();
@@ -223,6 +228,10 @@ public class UserFormDialog extends javax.swing.JFrame {
 
             }
         }
+    }
+    private void btn_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_connexionActionPerformed
+        
+        ChargeLogin();
 
     }//GEN-LAST:event_btn_connexionActionPerformed
 
@@ -236,6 +245,18 @@ public class UserFormDialog extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_txt_usernameKeyPressed
+
+    private void btn_connexionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_connexionKeyPressed
+
+        if(evt.getKeyCode() == 10){
+        System.out.println("Key code vaut : "+ evt.getKeyCode());
+        ChargeLogin();
+
+        }else{
+                    System.out.println("Autres touche touché ..." + evt.getKeyCode());
+
+        }
+    }//GEN-LAST:event_btn_connexionKeyPressed
 
     /**
      * @param args the command line arguments

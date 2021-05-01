@@ -6,12 +6,14 @@
 package com.allInterfaces.action3saisien;
 
 
-import com.classes.action3saisie.Demande;
+import com.classes.action3saisie.Formats;
+import com.classes.action3saisie.Querry;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,12 +22,14 @@ import javax.swing.JOptionPane;
 public class SaisieParOperateur extends javax.swing.JInternalFrame {
     
     private final String comb_demarche = "Séléctionner une démarche";
-    //static String comb_annee_saisie = "Séléctionner une année";
     private final String com_critere_date = "Séléctionner une critère de date";
     private final String com_critere_par_date = "Par Date";
     private final String com_critere_intervale_de_date = "Intervale de date";
+    private final String com_par_login = "Par Utilisateurs";
+    private final String com_select_username = "Séléctionner un nom d'utilisateur";
     String dateDebut = "";
     String dateFin = "";
+    String username = "";
     
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -52,6 +56,10 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         this.j_comb_demarche.addItem(demarche);
         this.demarche = demarche;
         
+        
+        this.j_label_login.setVisible(false);
+        this.j_comb_login.setVisible(false);
+        
     }
 
     /**
@@ -76,20 +84,18 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         j_date_fin = new com.toedter.calendar.JDateChooser();
         j_comb_select_critere_date = new javax.swing.JComboBox<>();
         j_label_annee_saisie2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
+        j_comb_login = new javax.swing.JComboBox<>();
+        j_label_login = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
-        setTitle("Saisie Par Opérateur");
+        setTitle("Recherche saisie(s) des opérateurs");
 
+        j_table_saisie_par_operateur.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        j_table_saisie_par_operateur.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
         j_table_saisie_par_operateur.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Opérateur", "Commune", "Nombre de Saisie"
@@ -131,13 +137,18 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         });
 
         j_button_reset.setText("Réinitialiser");
+        j_button_reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_button_resetActionPerformed(evt);
+            }
+        });
 
         j_label_date_saisie1.setText("Date de fin");
 
         j_date_fin.setDateFormatString("dd/MM/yyyy");
         j_date_fin.setEnabled(false);
 
-        j_comb_select_critere_date.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère de date", "Par Date", "Intervale de date" }));
+        j_comb_select_critere_date.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère de date", "Par Date", "Intervale de date", "Par Utilisateurs" }));
         j_comb_select_critere_date.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_comb_select_critere_dateActionPerformed(evt);
@@ -145,6 +156,10 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         });
 
         j_label_annee_saisie2.setText("Critère Date");
+
+        j_comb_login.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un nom d'utilisateur" }));
+
+        j_label_login.setText("Sélectionner un Login");
 
         javax.swing.GroupLayout j_panel_saisie_par_opLayout = new javax.swing.GroupLayout(j_panel_saisie_par_op);
         j_panel_saisie_par_op.setLayout(j_panel_saisie_par_opLayout);
@@ -154,31 +169,28 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(j_label_date_saisie1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_annee_saisie1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_annee_saisie2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_date_saisie, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_login, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(j_comb_login, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(j_date_fin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(j_date_debut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(j_comb_demarche, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(j_comb_select_critere_date, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
+                        .addGap(86, 86, 86)
                         .addComponent(j_bouton_search)
                         .addGap(18, 18, 18)
-                        .addComponent(j_button_reset)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                                .addComponent(j_label_date_saisie1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(j_date_fin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                                .addComponent(j_label_date_saisie, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(j_date_debut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                                .addComponent(j_label_annee_saisie1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(j_comb_demarche, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, j_panel_saisie_par_opLayout.createSequentialGroup()
-                                .addComponent(j_label_annee_saisie2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(j_comb_select_critere_date, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 18, Short.MAX_VALUE)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addComponent(j_button_reset)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 765, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         j_panel_saisie_par_opLayout.setVerticalGroup(
             j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,14 +211,18 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                 .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(j_label_date_saisie1)
                     .addComponent(j_date_fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(j_comb_login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_label_login))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_bouton_search)
                     .addComponent(j_button_reset))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 79, Short.MAX_VALUE))
+                .addGap(46, 46, 46))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -214,21 +230,15 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(274, 274, 274))
+                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -237,7 +247,10 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
  
     
     private void j_bouton_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_searchActionPerformed
-
+        
+        List <String[]> saisieDesOperateurs;
+        Object rowData[] = new Object[3];
+        
         String demarche = (String)this.j_comb_demarche.getSelectedItem();
         DateFormat df = new SimpleDateFormat("dd/MM/YYYY");
         String val_critere = this.j_comb_select_critere_date.getSelectedItem().toString();
@@ -260,18 +273,37 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         System.out.println("Veuillez remplir le date fin");
                         JOptionPane.showMessageDialog(null, "Date début de saisie vide ou incorrect !","Erreur lors remplissage date de début de saisie", JOptionPane.INFORMATION_MESSAGE); 
                     }else{
-
-                        dateDebut += df.format(this.j_date_debut.getDate());
-                        //System.out.println("ok simple date : "+ com_critere_par_date + dateDebut);
                         
-                        HashMap <String, String> saisieDesOperateurs  = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSimpleSaisieParOperateur(dateDebut, this.demarche);
-                        System.out.println("ok simple date : "+ saisieDesOperateurs);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getSimpleSaisieParOperateur( this.j_date_debut, this.demarche);
+
+                        DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
+
+                        
+                        if(saisieDesOperateurs.size() <1){
+                        
+                            System.out.println("Aucune saisie à été trouvé !");
+                            JOptionPane.showMessageDialog(null, "Aucune saisie à été trouvé !","Aucun résultat trouvé", JOptionPane.INFORMATION_MESSAGE); 
+                      
+                        }else{
+                            
+                            Formats.resetTable(tableau);
+
+                            // BOUCLE POUR INSERTION DES DONNEES DANS LE TABLEAU
+                            for (int a = 0; a < saisieDesOperateurs.size(); a++) {
+
+                                rowData[0] = saisieDesOperateurs.get(a)[0].toUpperCase();
+                                rowData[1] = saisieDesOperateurs.get(a)[1];
+                                rowData[2] = saisieDesOperateurs.get(a)[2];
+                                tableau.addRow(rowData);
+                            }
+                        }
+                                
+
                     }
 
                      
-                }else{
-                    
-                    
+                }else if(val_critere.equals(com_critere_intervale_de_date)){
+
                     if(this.j_date_debut.getDate() == null && this.j_date_fin.getDate() == null){
                         System.out.println("Veuillez remplir les dates (début et fin) de saisie");
                         JOptionPane.showMessageDialog(null, "Dates (début et/ou fin) de saisie vide ou incorrect !","Séléctionner les dates de saisie", JOptionPane.INFORMATION_MESSAGE); 
@@ -283,16 +315,70 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(null, "Date fin de saisie vide ou incorrect !","SErreur lors remplissage date Fin de saisie", JOptionPane.INFORMATION_MESSAGE); 
                     }else{
                         
-                        dateDebut += df.format(this.j_date_debut.getDate());
-                        dateFin += df.format(this.j_date_fin.getDate());
-                        //System.out.println("ok intervale : \n\n"+ "date début = "+ dateDebut + " date fin = " + dateFin);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getSaisieParOperateurBetweenTwoDate(this.j_date_debut, this.j_date_fin, this.demarche);
                         
-                        //String d  = new Demande().getSaisieParOperateur(dateDebut, dateFin);
-                        HashMap <String, String> saisieDesOperateursBetweenTwoDate  = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieParOperateur(dateDebut, dateFin, false);
-                        System.out.println("ok intervale date : "+ saisieDesOperateursBetweenTwoDate);
+                        DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
+                        
+                        if(saisieDesOperateurs.size() <1){
+                        
+                            System.out.println("Aucune saisie à été trouvé !");
+                            JOptionPane.showMessageDialog(null, "Aucune saisie à été trouvé !","Aucun résultat trouvé", JOptionPane.INFORMATION_MESSAGE);
+                      
+                        }else{
+
+                            // réinisialisation des cjhamps
+                            Formats.resetTable(tableau);
+
+
+                            // BOUCLE POUR INSERTION DES DONNEES DANS LE TABLEAU
+                            for (int a = 0; a < saisieDesOperateurs.size(); a++) {
+
+                                rowData[0] = saisieDesOperateurs.get(a)[0].toUpperCase();
+                                rowData[1] = saisieDesOperateurs.get(a)[1];
+                                rowData[2] = saisieDesOperateurs.get(a)[2];
+                                tableau.addRow(rowData);
+                            }
+                        }
+                        
                     }
                     
                     
+                }else{
+                    
+                    String selected = this.j_comb_login.getSelectedItem().toString();
+                    
+                    if(selected.equals(com_select_username)){
+                            System.out.println("Aucun Nom d'utilisateur sélectionné !");
+                            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un nom d'utilisateur !","Aucun nom d'utilisateur sélectionné", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        
+                        username = selected.split("  _  ")[1];
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getSaisieWithLogin(this.demarche, username);
+                        
+                        if(saisieDesOperateurs.size() <1){
+                        
+                            System.out.println("Aucune saisie à été trouvé !");
+                            JOptionPane.showMessageDialog(null, "Aucune saisie à été effectué par l'utilisateur : "+username.toUpperCase()+" pendant l'opération "+this.demarche.toUpperCase()+" !","Aucune saisie trouvé", JOptionPane.INFORMATION_MESSAGE);
+                      
+                        }else{
+                            
+                            DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
+                            
+                            Formats.resetTable(tableau);
+
+
+                            // BOUCLE POUR INSERTION DES DONNEES DANS LE TABLEAU
+                            for (int a = 0; a < saisieDesOperateurs.size(); a++) {
+
+                                rowData[0] = saisieDesOperateurs.get(a)[0].toUpperCase();
+                                rowData[1] = saisieDesOperateurs.get(a)[1];
+                                rowData[2] = saisieDesOperateurs.get(a)[2];
+                                tableau.addRow(rowData);
+                            }
+                        }
+                    }
+                    
+
                 }
 
             }
@@ -307,41 +393,108 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         this.j_date_fin.setEnabled(false);
         String selectedValue = this.j_comb_select_critere_date.getSelectedItem().toString();
         
+        System.out.println("selectedValue vaut : " + selectedValue);
+        
         
         switch(selectedValue){
             
-            case  com_critere_date : 
+            case  com_critere_par_date : 
 
-                this.j_date_debut.setCalendar(null);
                 this.j_date_fin.setCalendar(null);
-                this.j_date_debut.setEnabled(false);
                 this.j_date_fin.setEnabled(false);
+                
+                
+                this.j_date_debut.setCalendar(null);
+                this.j_date_debut.setEnabled(true);
+                
+                
+                this.j_label_login.setVisible(false);
+                this.j_comb_login.setVisible(false);
+                
                 break;
                 
             case  com_critere_intervale_de_date : 
                 
                 this.j_date_debut.setEnabled(true);
                 this.j_date_fin.setEnabled(true);
+                
+                this.j_date_fin.setCalendar(null);
+                this.j_date_debut.setCalendar(null);
+                
+                this.j_label_login.setVisible(false);
+                this.j_comb_login.setVisible(false);
                 break;
-            
+               
+            // SI LA SELECTION EST UNE LOGIN ALORS : 
+            case com_par_login :
+                
+                this.j_date_debut.setDate(null);
+                this.j_date_debut.setEnabled(false);
+
+                this.j_date_fin.setDate(null);
+                this.j_date_fin.setEnabled(false);
+                
+                this.j_comb_login.removeAllItems();
+                
+
+                this.j_comb_login.addItem(com_select_username);
+                    
+                    
+                HashMap<String, String> users = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getAllUsers();
+
+                for (String i : users.keySet()) {
+                    this.j_comb_login.addItem("Id : "+ i + "  _  " + users.get(i));
+                    //System.out.println("IDDDDD : " + users.get(i));
+                 } 
+                this.j_label_login.setVisible(true);
+                this.j_comb_login.setVisible(true);
+                break;
+                
+                
             default :
                 
                 this.j_date_fin.setCalendar(null);
-                this.j_date_debut.setEnabled(true);
+                this.j_date_fin.setEnabled(false);
+                
+                
+                this.j_date_debut.setCalendar(null);
+                this.j_date_debut.setEnabled(false);
+                
+                
+                this.j_label_login.setVisible(false);
+                this.j_comb_login.setVisible(false);
+                
                 break;
         }
-
     }//GEN-LAST:event_j_comb_select_critere_dateActionPerformed
+
+    private void j_button_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_resetActionPerformed
+       
+        this.j_date_debut.setDate(null);
+        this.j_date_debut.setEnabled(false);
+        
+        this.j_date_fin.setDate(null);
+        this.j_date_fin.setEnabled(false);
+        
+        this.j_comb_login.setVisible(false);
+        this.j_label_login.setVisible(false);
+        
+        DefaultTableModel my_model = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
+        
+        for(int i = my_model.getRowCount(); i > 0; --i){
+            my_model.removeRow(i-1);  
+        }
+    }//GEN-LAST:event_j_button_resetActionPerformed
 
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton j_bouton_search;
     private javax.swing.JButton j_button_reset;
     private javax.swing.JComboBox<String> j_comb_demarche;
+    private javax.swing.JComboBox<String> j_comb_login;
     private javax.swing.JComboBox<String> j_comb_select_critere_date;
     private com.toedter.calendar.JDateChooser j_date_debut;
     private com.toedter.calendar.JDateChooser j_date_fin;
@@ -349,6 +502,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
     private javax.swing.JLabel j_label_annee_saisie2;
     private javax.swing.JLabel j_label_date_saisie;
     private javax.swing.JLabel j_label_date_saisie1;
+    private javax.swing.JLabel j_label_login;
     private javax.swing.JPanel j_panel_saisie_par_op;
     private javax.swing.JTable j_table_saisie_par_operateur;
     // End of variables declaration//GEN-END:variables

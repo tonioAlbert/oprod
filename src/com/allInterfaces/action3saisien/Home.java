@@ -7,6 +7,7 @@ package com.allInterfaces.action3saisien;
 
 
 
+import com.classes.action3saisie.BarreDeProgression;
 import com.classes.action3saisie.Formats;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
@@ -56,7 +57,7 @@ public class Home extends javax.swing.JFrame {
      * @param TYPE_OPERATION
      */
     public Home(String HOST, String DBNAME, Integer PORT, String USER, String PWD , String username, String password, String TYPE_OPERATION) {
-        
+
         
         this.userName = username;
         this.pswd = password;
@@ -69,7 +70,10 @@ public class Home extends javax.swing.JFrame {
         this.BDD_PWD = PWD;
         
         initComponents();
-        
+
+        this.jProgressBar_home.setVisible(false);
+        this.j_labal_perc.setVisible(false);
+
         //System.out.println("Bonjour : " + username + "\nVotre mot de passe est : "+ password + "\nType d'opération : "+ type_op );
         this.lbl_type_operation.setText("Type d'opération séléctionné : "+this.type_operation);
         this.lbl_test.setText("Bonjour " + username + " !");
@@ -98,6 +102,8 @@ public class Home extends javax.swing.JFrame {
         dpContent = new javax.swing.JDesktopPane();
         lbl_test = new javax.swing.JLabel();
         lbl_type_operation = new javax.swing.JLabel();
+        jProgressBar_home = new javax.swing.JProgressBar();
+        j_labal_perc = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         j_menu_fichier = new javax.swing.JMenu();
         j_menu_item_deconnexion = new javax.swing.JMenuItem();
@@ -122,6 +128,11 @@ public class Home extends javax.swing.JFrame {
         j_menu_stats = new javax.swing.JMenu();
         j_menu_stat_saisie_par_operateur = new javax.swing.JMenuItem();
         j_menu_stat_anomalies_par_commune = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        j_menu_cf_editable = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         j_menu_controllesSaisies = new javax.swing.JMenu();
         j_menu_controles_saisie = new javax.swing.JMenuItem();
 
@@ -223,30 +234,43 @@ public class Home extends javax.swing.JFrame {
 
         lbl_type_operation.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
+        j_labal_perc.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_labal_perc.setText("100 %");
+
         dpContent.setLayer(lbl_test, javax.swing.JLayeredPane.DEFAULT_LAYER);
         dpContent.setLayer(lbl_type_operation, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        dpContent.setLayer(jProgressBar_home, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        dpContent.setLayer(j_labal_perc, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout dpContentLayout = new javax.swing.GroupLayout(dpContent);
         dpContent.setLayout(dpContentLayout);
         dpContentLayout.setHorizontalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
-                .addContainerGap(1033, Short.MAX_VALUE)
-                .addComponent(lbl_test, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(dpContentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 790, Short.MAX_VALUE)
+                .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_test, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jProgressBar_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_labal_perc, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(83, 83, 83))
         );
         dpContentLayout.setVerticalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
-                .addContainerGap(541, Short.MAX_VALUE)
-                .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(488, Short.MAX_VALUE)
+                .addComponent(j_labal_perc, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jProgressBar_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_test, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_test, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34))
         );
 
         jMenuBar1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -256,8 +280,10 @@ public class Home extends javax.swing.JFrame {
         });
 
         j_menu_fichier.setText("Fichier");
+        j_menu_fichier.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
         j_menu_item_deconnexion.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        j_menu_item_deconnexion.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_deconnexion.setText("Déconnexion");
         j_menu_item_deconnexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -267,6 +293,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_fichier.add(j_menu_item_deconnexion);
 
         j_menu_item_quitter_application.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        j_menu_item_quitter_application.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_quitter_application.setText("Quitter");
         j_menu_item_quitter_application.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -278,6 +305,7 @@ public class Home extends javax.swing.JFrame {
         jMenuBar1.add(j_menu_fichier);
 
         j_menu_formatages.setText(" Formatage des données");
+        j_menu_formatages.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
         j_menu_item_formate_nom.setText("Nom des demandeurs");
         j_menu_item_formate_nom.addActionListener(new java.awt.event.ActionListener() {
@@ -373,9 +401,11 @@ public class Home extends javax.swing.JFrame {
 
         jMenuBar1.add(j_menu_formatages);
 
-        j_menu_exports.setText(" Exports");
+        j_menu_exports.setText(" Listes");
+        j_menu_exports.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
         j_menu_export_listes_demandeurs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        j_menu_export_listes_demandeurs.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_listes_demandeurs.setText("Listes des demandeurs");
         j_menu_export_listes_demandeurs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -385,6 +415,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_exports.add(j_menu_export_listes_demandeurs);
 
         j_menu_export_listes_anomalies.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        j_menu_export_listes_anomalies.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_listes_anomalies.setText("Listes Anomalies");
         j_menu_export_listes_anomalies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -393,6 +424,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_exports.add(j_menu_export_listes_anomalies);
 
+        j_menu_export_rp_provisoire.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_rp_provisoire.setText("Registre Parcellaire Provisoire");
         j_menu_export_rp_provisoire.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -401,6 +433,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_exports.add(j_menu_export_rp_provisoire);
 
+        j_menu_export_listes_cf_editer_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_listes_cf_editer_par_commune.setText("Listes CF éditer avec demandeurs");
         j_menu_export_listes_cf_editer_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -412,13 +445,15 @@ public class Home extends javax.swing.JFrame {
         jMenuBar1.add(j_menu_exports);
 
         j_menu_stats.setText("Statistique(s)");
+        j_menu_stats.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_stats.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_statsActionPerformed(evt);
             }
         });
 
-        j_menu_stat_saisie_par_operateur.setText("Saisie Par Opérateur");
+        j_menu_stat_saisie_par_operateur.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_stat_saisie_par_operateur.setText(" Saisies");
         j_menu_stat_saisie_par_operateur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_stat_saisie_par_operateurActionPerformed(evt);
@@ -426,18 +461,37 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_stats.add(j_menu_stat_saisie_par_operateur);
 
+        j_menu_stat_anomalies_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_stat_anomalies_par_commune.setText("Anomalie Saisie par Commune(s)");
         j_menu_stats.add(j_menu_stat_anomalies_par_commune);
+        j_menu_stats.add(jSeparator1);
+
+        j_menu_cf_editable.setText(" CF éditable");
+        j_menu_stats.add(j_menu_cf_editable);
+        j_menu_stats.add(jSeparator2);
+
+        jMenuItem1.setText("Rapport Saisie par commune(s)");
+        j_menu_stats.add(jMenuItem1);
+
+        jMenuItem2.setText("Rapport Vectorisation par commune(s)");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        j_menu_stats.add(jMenuItem2);
 
         jMenuBar1.add(j_menu_stats);
 
-        j_menu_controllesSaisies.setText("Contrôles");
+        j_menu_controllesSaisies.setText("Contrôles Traitement(s)");
+        j_menu_controllesSaisies.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_controllesSaisies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_controllesSaisiesActionPerformed(evt);
             }
         });
 
+        j_menu_controles_saisie.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_controles_saisie.setText("Contrôles des saisies");
         j_menu_controles_saisie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -796,11 +850,9 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         
         ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER,this.type_operation);
         
-        rp_prov.setLocationRelativeTo(null);
-        rp_prov.setVisible(true);
-        rp_prov.setResizable(false);
-        rp_prov.setAlwaysOnTop(true);
-        
+        this.dpContent.add(rp_prov);
+        rp_prov.show();
+               
     }//GEN-LAST:event_j_menu_export_rp_provisoireActionPerformed
 
     private void j_menu_export_listes_anomaliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_anomaliesActionPerformed
@@ -841,7 +893,15 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             this.j_menu_exports.setEnabled(false);
             this.j_menu_formatages.setEnabled(false);
             this.j_menu_stats.setEnabled(false);
+            this.j_menu_controllesSaisies.setEnabled(false);
             
+            
+            //this.jProgressBar_home.setVisible(true);
+            //this.j_labal_perc.setVisible(true);
+            
+            //BarreDeProgression pBar = new BarreDeProgression(this.jProgressBar_home, this.j_labal_perc);
+            //pBar.run();
+     
             this.formatsToUpper("id_persphys", "persphys", "nom");
         }
     }//GEN-LAST:event_j_menu_item_formate_nomActionPerformed
@@ -896,6 +956,12 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         cf_editer.show();
     }//GEN-LAST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        RapportSIG v_rapport = new RapportSIG(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(v_rapport);
+        v_rapport.show();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -940,8 +1006,15 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JProgressBar jProgressBar_home;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel j_labal_perc;
+    private javax.swing.JMenuItem j_menu_cf_editable;
     private javax.swing.JMenuItem j_menu_controles_saisie;
     private javax.swing.JMenu j_menu_controllesSaisies;
     private javax.swing.JMenuItem j_menu_export_listes_anomalies;

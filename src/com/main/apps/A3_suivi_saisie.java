@@ -6,7 +6,7 @@
 package com.main.apps;
 
 import com.allInterfaces.action3saisien.UserFormDialog;
-import com.classes.action3saisie.Demande;
+import com.classes.action3saisie.Querry;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -43,7 +43,6 @@ import org.json.simple.parser.JSONParser;
 public class A3_suivi_saisie {
     
     private static Connection connectDatabase;
-    
     private static PreparedStatement st;
     private static ResultSet rs;
 
@@ -70,6 +69,7 @@ public class A3_suivi_saisie {
         File folder = new File(path);
         File file = new File(filePathAndName);
         
+        // SI LE DOSSIER DE CONF N'EXISTE PAS
         if(!folder.exists()){
             
             System.out.println("Dossier de configuration introuvable !");
@@ -170,6 +170,7 @@ public class A3_suivi_saisie {
                 
                 JOptionPane jop2 = new JOptionPane();
                 int option2 = jop2.showConfirmDialog(null, "Fichier de configuration introuvable !\nVoulez-vous maintenant procéder à la création du fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                
                 if(option2 == JOptionPane.OK_OPTION){
 
                     
@@ -203,7 +204,7 @@ public class A3_suivi_saisie {
                             if(optionFileCreate == JOptionPane.OK_OPTION){
                                 System.exit(0);
                             }else{
-                                int optionConfigs2 = JOptionPane.showOptionDialog(null, 
+                                JOptionPane.showOptionDialog(null, 
                                 new Object[] {"Nom d'hôte :", HoteName, "Nom de la base de données :", nameBdd, "Port :", portBdd, "Nom d'utilisateur :", userName, "Mot de passe :", passe},
                                 "Connexion",
                                 JOptionPane.OK_CANCEL_OPTION,
@@ -212,10 +213,7 @@ public class A3_suivi_saisie {
                         }
                         
                        
-                            //System.out.println("Nom d'hôte :" + HoteName.getText()+ "Nom de la base de données :"+ nameBdd.getText()+ "Nom d'utilisateur :"+ userName.getText()+ "Mot de passe :"+ passe.getText());
-                       
-                        //System.out.println("host hashé : " + Hash.getHash(HoteName.getText().getBytes(), "SHA-256"));
-                        
+                        // ENCODAGE DES DONNEES
                         String hashHost = Base64.getEncoder().encodeToString(HoteName.getText().getBytes("UTF-8"));
                         String hashPort = Base64.getEncoder().encodeToString(portBdd.getText().getBytes("UTF-8"));
                         String hashDbname = Base64.getEncoder().encodeToString(nameBdd.getText().getBytes("UTF-8"));
@@ -258,7 +256,7 @@ public class A3_suivi_saisie {
         
         // LECTURE DU FICHIER CREER AVANT
         
-                JSONParser parser = new JSONParser();
+        JSONParser parser = new JSONParser();
 
         try{
             
@@ -281,23 +279,25 @@ public class A3_suivi_saisie {
             String json_password = new String(decodPassword, "UTF-8");
             
             
-            //System.out.println("Les valeur dans le fichier de conf sont : ");
-            //System.out.println("json_host " + json_host);
-            //System.out.println("json_port " + json_port);
-            //System.out.println("json_dbname " + json_dbname);
-            //System.out.println("json_user " + json_user);
-            //System.out.println("json_password " + json_password);
+            System.out.println("Les valeur dans le fichier de conf sont : ");
+            System.out.println("json_host " + json_host);
+            System.out.println("json_port " + json_port);
+            System.out.println("json_dbname " + json_dbname);
+            System.out.println("json_user " + json_user);
+            System.out.println("json_password " + json_password);
             
             f_read.close();
             
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://"+json_host+":"+json_port+"/"+json_dbname;
+            
+            System.out.println("URL : " +url);
 
             Connection connexion  = DriverManager.getConnection(url, json_user, json_password);
             
             
             // recuperation de la démarche
-            Demande d = new Demande(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password);
+            Querry d = new Querry(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password);
             List<String> dmd = new ArrayList<String>();
             
             Iterator it = d.getAllDemarche().entrySet().iterator();

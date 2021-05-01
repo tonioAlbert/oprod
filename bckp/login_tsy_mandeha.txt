@@ -1,0 +1,57 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.connectDb;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+/**
+ *
+ * @author RAP
+ */
+public class ConnectDb {
+    
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
+    
+    public ConnectDb(String HOST, String DBNAME, Integer PORT, String USERNAME, String PASSWORD){
+        this.BDD_HOST = HOST;
+        this.BDD_PORT = PORT;
+        this.BDD_DBNAME = DBNAME;
+        this.BDD_USER = USERNAME;
+        this.BDD_PWD = PASSWORD;
+    }
+
+
+    
+    public Connection getConnection(){
+                        
+        Connection connexion = null;
+        
+        try{
+            
+            Class.forName("org.postgresql.Driver");
+            
+            String url = "jdbc:postgresql://"+this.BDD_HOST+":"+this.BDD_PORT+"/"+this.BDD_DBNAME;
+            
+            connexion = DriverManager.getConnection(url, this.BDD_USER, this.BDD_PWD);
+            
+            
+            return connexion;
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            
+            return null;
+        }
+        
+        //return  connexion;
+    }
+
+}

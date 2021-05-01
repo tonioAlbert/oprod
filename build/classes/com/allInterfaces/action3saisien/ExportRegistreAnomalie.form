@@ -4,7 +4,6 @@
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
     <Property name="iconifiable" type="boolean" value="true"/>
-    <Property name="resizable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" value="Exportation Registre Anomalie Saisie"/>
   </Properties>
   <SyntheticProperties>
@@ -226,6 +225,10 @@
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="j_label_folder_exportMouseClicked"/>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="j_label_folder_exportMouseEntered"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="j_button_folder_export">
       <Properties>

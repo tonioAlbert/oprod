@@ -11,13 +11,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JFileChooser;
-import com.classes.action3saisie.Demande;
+import com.classes.action3saisie.Querry;
 import com.classes.action3saisie.Region;
 import com.export.action3saisie.Exports;
 import java.awt.Desktop;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -163,6 +161,14 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         jLabel7.setText("Emplacement de l'export");
 
         j_label_folder_export.setEditable(false);
+        j_label_folder_export.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                j_label_folder_exportMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                j_label_folder_exportMouseEntered(evt);
+            }
+        });
 
         j_button_folder_export.setIcon(new javax.swing.ImageIcon("C:\\Users\\RAP\\Documents\\NetBeansProjects\\A3_suivi_saisie\\ressources\\img\\Webp.net-resizeimage.png")); // NOI18N
         j_button_folder_export.setBorderPainted(false);
@@ -265,7 +271,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
 
-                HashMap<String, String> reg = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
+                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
 
                 for (String i : reg.keySet()) {
                     this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -297,7 +303,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -316,8 +322,9 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_j_combo_communeItemStateChanged
 
-    private void j_button_folder_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_folder_exportActionPerformed
-
+    
+    private void GetLocationToSaveFile(){
+        
         String locationFile = "";
         JFileChooser fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -337,6 +344,12 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         //}
 
         locationFile = "";
+    }
+    
+    
+    private void j_button_folder_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_folder_exportActionPerformed
+
+        this.GetLocationToSaveFile();
 
     }//GEN-LAST:event_j_button_folder_exportActionPerformed
 
@@ -368,16 +381,16 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
             //this.setAlwaysOnTop(true);
             //System.out.println("Export RP en cours ..." );
             
-            String code_district = selected_district.split("  _  ")[0].trim();
-            String code_commune = selected_commune.split("  _  ")[0].trim();
+            String code_district = selected_district.split("  _  ")[0];
+            String code_commune = selected_commune.split("  _  ")[0];
             
             
-            String district = selected_district.split("  _  ")[1].trim();
-            String commune = selected_commune.split("  _  ")[1].trim();
+            String district = selected_district.split("  _  ")[1];
+            String commune = selected_commune.split("  _  ")[1];
             
             //System.out.println("Code hameau :" + code_hameau );
 
-            //Boolean RP = new Demande().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
+            //Boolean RP = new Querry().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
 
             //System.out.println("System Dans btn exporter ... ");
             
@@ -398,7 +411,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                     }
 
             }else{
-                JOptionPane.showMessageDialog(null, "Listes CF éditer annuler\nAucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
  
             }
         }
@@ -410,6 +423,14 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
      
     }//GEN-LAST:event_j_combo_date_editionItemStateChanged
+
+    private void j_label_folder_exportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_j_label_folder_exportMouseClicked
+        this.GetLocationToSaveFile();
+    }//GEN-LAST:event_j_label_folder_exportMouseClicked
+
+    private void j_label_folder_exportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_j_label_folder_exportMouseEntered
+        this.j_label_folder_export.setToolTipText("Cliquer pour séléctionner le dossier de destionation de l'export");
+    }//GEN-LAST:event_j_label_folder_exportMouseEntered
 
  
     

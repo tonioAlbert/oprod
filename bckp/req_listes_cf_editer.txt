@@ -1,0 +1,66 @@
+SELECT 
+                region.nom AS region,
+                district.nom AS district,
+                commune.code_commune AS c_com,
+                commune.nom AS commune,
+                fokontany.code_fokontany AS c_fkt,
+                fokontany.nom AS fokontany,
+                hameau.code_hameau AS c_hameau,
+                hameau.nom AS hameau,
+                demande.id_registre,
+                demande.id_parcelle,
+                demande.val_cf_edit_date AS date_edition_pdf,
+                demande.num_registre AS numero_demande,
+                demande.num_certificat AS numero_certificat,
+                demande.id_certificat,
+                proprietaire_pp.type_demandeur,
+                persphys.nom AS nom_demandeur,
+                CASE 
+					WHEN persphys.prenom IS NULL THEN ''
+					ELSE persphys.prenom
+				END AS prenom_demandeur,
+                persphys.sexe,
+                persphys.naissance_date,
+                persphys.naissance_lieu,
+				CASE 
+					WHEN persphys.cni_num IS NULL THEN ''
+					ELSE persphys.cni_num
+				END,
+				CASE 
+					WHEN persphys.cni_lieu IS NULL THEN ''
+					ELSE persphys.cni_lieu
+				END,
+				CASE 
+					WHEN persphys.acn_num IS NULL THEN ''
+					ELSE persphys.acn_num
+				END,
+                persphys.acn_date,
+				CASE 
+					WHEN persphys.acn_lieu IS NULL THEN ''
+					ELSE persphys.acn_lieu
+				END,
+				CASE 
+					WHEN persphys.d_naiss_approx IS TRUE THEN CONCAT('Vers ', EXTRACT(YEAR FROM persphys.naissance_date))
+					ELSE ''
+				END AS nee_vers
+               FROM demande,
+                commune,
+                district,
+                region,
+                fokontany,
+                hameau,
+                proprietaire_pp,
+                persphys
+              WHERE demande.id_hameau = hameau.id_hameau 
+                   AND hameau.id_fokontany= fokontany.id_fokontany 
+                   AND district.id_district = commune.id_district 
+                   AND commune.id_commune = fokontany.id_commune 
+                   AND region.id_region = district.id_region 
+                   AND proprietaire_pp.id_demande= demande.id_demande 
+                   AND persphys.id_persphys = proprietaire_pp.id_persphys 
+                  AND demande.val_cf_edit IS TRUE
+           AND region.nom = 'ATSINANANA'
+           AND district.nom = 'VATOMANDRY'
+           AND commune.nom = 'AMBODITAVOLO'
+           AND demande.type_op = 'ogcf'
+           ORDER BY demande.num_certificat ASC

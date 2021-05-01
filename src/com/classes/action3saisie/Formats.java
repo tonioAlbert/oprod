@@ -6,6 +6,7 @@
 package com.classes.action3saisie;
 
 import java.util.regex.Pattern;
+import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 
@@ -111,6 +112,21 @@ public class Formats {
         String replaceString = txt1.replace(" ","_");
         
         return replaceString;
+    }
+    
+    
+    public static java.sql.Date convertUtilToSql(java.util.Date uDate) {
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        return sDate;
+    }
+    
+    
+    
+    public static void resetTable(DefaultTableModel table){
+        // VIDAGE DU table passé en paramètre 
+        for(int i = table.getRowCount(); i > 0; --i){
+            table.removeRow(i-1);  
+        }
     }
     
     

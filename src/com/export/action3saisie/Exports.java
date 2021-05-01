@@ -6,7 +6,7 @@
 package com.export.action3saisie;
 
 
-import com.classes.action3saisie.Demande;
+import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +18,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -41,6 +40,7 @@ import java.util.TreeMap;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import com.classes.action3saisie.Querry;
 
 /**
  *
@@ -76,171 +76,410 @@ public class Exports {
     
     
     
-public List<Demande> getRegistreParcellaireProvisoire(String reg, String dist, String com, String path){
+public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, String dist, String c_com,String com, String path){
 
+        List retour = new ArrayList();
+        
+        if(this.TYPE_OPERATION.equals("OCM")){
+            this.op = "OCFM";
+        }else{
+            this.op = "OGCF";
+        }
+        
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
         Date date = new Date(System.currentTimeMillis());
-        //System.out.println(formatter.format(date));
-        String realPath = path+"\\"+"RP_prov_"+formatter.format(date)+"_Region_"+reg+"_Commune_"+com+".xlsx";
-        List<Demande> demandes = new ArrayList<>();
+    
+    
+        String realPath = path+"\\"+"RP_prov_"+formatter.format(date)+"_"+this.op+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+".xls";
+
+        
+        System.out.println("realPath : " + realPath);
         
         int RowResultSet = 0;
-        int CellResultSet = 28;
-        int incr = 0;
-        
-        
-        HashMap<String, String> rp = new HashMap<String, String>();
-          
         
         try {
             
-            String sql = " SELECT commune.nom AS commune,\n" +
-            "    demande.id_registre as numero_demande,\n" +
-            "    demande.id_parcelle as numero_parcelle,\n" +
-            "    demande.date_demande as date_demande,\n" +
-            "    demande.date_crl as date_rl,\n" +
-            "    persphys.nom,\n" +
-            "    persphys.prenom,\n" +
-            "	persphys.naissance_date as date_de_naissance,\n" +
-            "	persphys.naissance_lieu as lieu_de_naissance,\n" +
-            "	persphys.adresse,\n" +
-            "    persphys.cni_num as numero_cin,\n" +
-            "    persphys.cni_date as date_delivrance_cin,\n" +
-            "    persphys.cni_lieu as lieu_delivrance_cin,\n" +
-            "    persphys.acn_num as numero_acte_naissance,\n" +
-            "    persphys.acn_date as date_delivrance_acte_naissance,\n" +
-            "    persphys.acn_lieu as lieu_delivrance_acte_naissance,\n" +
-            "	fokontany.nom as fokontany,\n" +
-            "	hameau.nom as hameau,\n" +
-            "	parcelle_cf.superficie as surface,\n" +
-            "	parcelle_cf.coord_x,\n" +
-            "	parcelle_cf.coord_y,\n" +
-            "	demande.v_nord as nord,\n" +
-            "	demande.v_sud as sud,\n" +
-            "	demande.v_ouest as ouest,\n" +
-            "	demande.v_est as est,\n" +
-            "	demande.charges,\n" +
-            "    proprietaire_pp.type_demandeur,\n" +
-            "    persphys.cin_ok\n" +
-            "   FROM \n" +
-            "   region,\n" +
-            "   district,\n" +
-            "   demande,\n" +
-            "    hameau,\n" +
-            "    fokontany,\n" +
-            "    commune,\n" +
-            "    parcelle_cf,\n" +
-            "    persphys,\n" +
-            "    proprietaire_pp\n" +
-            "  WHERE \n" +
-            "  region.id_region = district.id_region\n" +
-            "  AND district.id_district = commune.id_district\n" +
-            "  AND demande.id_hameau::text = hameau.id_hameau::text \n" +
-            "  AND fokontany.id_fokontany::text = hameau.id_fokontany::text \n" +
-            "  AND commune.id_commune::text = fokontany.id_commune::text \n" +
-            "  AND demande.id_parcelle::text = parcelle_cf.c_parcelle::text \n" +
-            "  AND persphys.id_persphys::text = proprietaire_pp.id_persphys::text \n" +
-            "  AND proprietaire_pp.id_demande::text = demande.id_demande::text \n" +
-            "  AND demande.val_anomalie IS FALSE \n" +
-            "  AND demande.cqi_complet IS TRUE \n" +
-            "  AND demande.date_soumission_cqe IS NULL \n" +
-            "  AND demande.val_cqe IS NULL \n" +
-            "  AND parcelle_cf.anomalie IS FALSE \n" +
-            "  AND parcelle_cf.limitrophe IS FALSE \n" +
-            "  AND (demande.date_crl - demande.date_affichage) >= 15\n" +
-            "  AND region.nom = ? \n" +
-            "  AND district.nom = ? \n" +
-            "  AND commune.nom = ? \n" +
-            "  ORDER BY demande.num_registre";
+            String sql = " SELECT demande.id_registre, TO_CHAR(demande.date_demande, 'DD/MM/YYYY') AS date_demande ,\n" +
+                "	CONCAT(persphys.nom,' ',persphys.prenom) AS nom_et_prenom,\n" +
+                "    \n" +
+                "CASE \n" +
+                "	WHEN persphys.d_naiss_approx IS TRUE THEN CONCAT('Vers ', EXTRACT(YEAR FROM persphys.naissance_date))\n" +
+                "	ELSE TO_CHAR(persphys.naissance_date, 'DD/MM/YYYY')\n" +
+                "END AS naissance_date,\n" +
+                "\n" +
+                "    persphys.naissance_lieu,persphys.adresse,\n" +
+                "    \n" +
+                "CASE\n" +
+                "	WHEN     persphys.cni_num IS NULL THEN ''\n" +
+                "	ELSE     persphys.cni_num\n" +
+                "END, \n" +
+                "     TO_CHAR(persphys.cni_date, 'DD/MM/YYYY') AS cni_date , \n" +
+                "     \n" +
+                "CASE\n" +
+                "	WHEN     persphys.cni_lieu IS NULL THEN ''\n" +
+                "	ELSE     persphys.cni_lieu\n" +
+                "END\n" +
+                ",\n" +
+                "CASE\n" +
+                "	WHEN     persphys.acn_num IS NULL THEN ''\n" +
+                "	ELSE     persphys.acn_num\n" +
+                "END\n" +
+                ", \n" +
+                "TO_CHAR(persphys.acn_date, 'DD/MM/YYYY') AS acn_date \n" +
+                ",  \n" +
+                "CASE\n" +
+                "	WHEN     persphys.acn_lieu IS NULL THEN ''\n" +
+                "	ELSE     persphys.acn_lieu\n" +
+                "END\n" +
+                ",\n" +
+                "      region.nom AS region,\n" +
+                "      district.nom AS district,\n" +
+                "      commune.nom AS commune,\n" +
+                "    fokontany.nom AS fokontany,\n" +
+                "    hameau.nom AS hameau,\n" +
+                "	parcelle_cf.superficie,	\n" +
+                "    parcelle_cf.coord_x, \n" +
+                "    parcelle_cf.coord_y,\n" +
+                "    demande.v_nord, \n" +
+                "	demande.v_sud, \n" +
+                "    demande.v_ouest, \n" +
+                "    demande.v_est,\n" +
+                "    TO_CHAR(demande.date_crl, 'DD/MM/YYYY') AS date_crl ,\n" +
+                "CASE\n" +
+                "	WHEN     demande.charges IS NULL THEN ''\n" +
+                "	ELSE     demande.charges\n" +
+                "END\n" +
+                "\n" +
+                "	\n" +
+                "    FROM  public.proprietaire_pp, public.persphys,public.district,\n" +
+                "     public.region,public.commune,public.fokontany,\n" +
+                "      public.hameau,public.demande  \n" +
+                "      INNER JOIN public.parcelle_cf ON public.demande.id_parcelle=public.parcelle_cf.c_parcelle \n" +
+                "	WHERE \n" +
+                "    region.id_region = district.id_region\n" +
+                "    AND district.id_district= commune.id_district \n" +
+                "    AND commune.id_commune=fokontany.id_commune \n" +
+                "    AND fokontany.id_fokontany=hameau.id_fokontany \n" +
+                "    AND demande.id_hameau=hameau.id_hameau and\n" +
+                "	demande.id_parcelle=parcelle_cf.c_parcelle \n" +
+                "    AND demande.id_demande=proprietaire_pp.id_demande \n" +
+                "    AND proprietaire_pp.id_persphys=persphys.id_persphys\n" +
+                "	AND demande.val_anomalie='false'\n" +
+                "    AND parcelle_cf.limitrophe='false' \n" +
+                "    AND parcelle_cf.anomalie='false' \n" +
+                "    AND demande.opposition='false' \n" +
+                "    AND demande.val_chef_equipe='true' \n" +
+                "    AND avis_crl='true' \n" +
+                "    AND val_cqe is null \n" +
+                "    AND region.nom = ?\n" +
+                "    AND district.nom = ?\n" +
+                "    AND commune.nom = ?\n" +
+                "    AND demande.type_op = ? \n" +
+                "	AND demande.date_crl-demande.date_demande >= 15  \n" +
+                "    ORDER BY demande.num_registre  ASC";
             
             st = connectDatabase.prepareStatement(sql);    
             st.setString(1, reg);
             st.setString(2, dist);
-            st.setString(3, com);
+            st.setString(3, com);;
+            st.setString(4, this.TYPE_OPERATION.toLowerCase());
             
-           
-        
             rs = st.executeQuery();
             
- //System.out.println("Ma requette est de : " + sql);
-            while (rs.next()) {
-                RowResultSet++;                 
-            }
+            //System.out.println(st);
             
-            
-            if (RowResultSet < 1) {
-                JOptionPane.showMessageDialog(null, "Impossible d'exporter le registre parcellaire provisoir car aucun dossier est prêt CQE sur la commune "+com,"Export Registre Parcellaire Provisoire Impossible", JOptionPane.INFORMATION_MESSAGE);
-
-            }else{
-                
                 try{
                     
                     // CREATION DU FICHIER
-                    String nameOfSheet = "rp_provisoire";
-                    XSSFWorkbook excelDataCreate = new XSSFWorkbook();
-                    FileOutputStream out = new FileOutputStream(new File(realPath));
-                    XSSFSheet excelSheet = excelDataCreate.createSheet(nameOfSheet);
-
-                    excelDataCreate.write(out);
-                    out.close();
+                    String nameOfSheet = "cf_editer";
                     
                     
                     // REMPLISSAGE DANS LE FICHIER
-                    System.out.print("kakakka path : "+realPath);
-                    File src = new File(realPath);
-                    FileInputStream fis = new FileInputStream(src);
-                    XSSFWorkbook  wb = new XSSFWorkbook(fis);
-                    XSSFSheet sheet = wb.getSheet(nameOfSheet);
-                    
-                    
-                    sheet.createRow(0).createCell(0).setCellValue("REGION");
-                    sheet.getRow(0).createCell(1).setCellValue("DISTRICT");
-                    sheet.getRow(0).createCell(2).setCellValue("COMMUNE");
-                    
-                    sheet.createRow(1).createCell(0).setCellValue(reg);
-                    sheet.getRow(1).createCell(1).setCellValue(dist);
-                    sheet.getRow(1).createCell(2).setCellValue(com);
-                    
-            while (rs.next()) {
-                
-                //incr++;
-                
-                for(int a=0; a < CellResultSet; a++){
-                    sheet.createRow(incr+++4).createCell(CellResultSet).setCellValue(rs.getString("numero_demande"));
-                }
 
-                //System.out.println("Méthode get commune : " + rs.getString("commune") + " ::  " + rs.getString("numero_demande") 
-                 //       + " type_demandeur = " +rs.getString("type_demandeur") + " cin ok ? = " + rs.getString("cin_ok")+ " charges = " + rs.getString("charges"));
+            HSSFWorkbook   wb = new HSSFWorkbook ();
+            HSSFSheet  sheet = wb.createSheet(nameOfSheet);
+                    
+                    
+            //sheet.createRow(0).createCell(0).setCellValue("Commune :");
+           //sheet.getRow(0).createCell(1).setCellValue(com);
 
-                //rp.put(rs.getString("commune"), rs.getString("numero_demande"));
-                 
+            Row headerRow0 = sheet.createRow(0);
+ 
+        
+            HSSFCellStyle cellStyleBold = wb.createCellStyle();
+            Font headerFont = wb.createFont();
+            headerFont.setBold(true);
+            cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
+            cellStyleBold.setFont(headerFont);
+            
+            // create table with data
+            HSSFCellStyle cadre = wb.createCellStyle();
+            cadre.setBorderBottom(BorderStyle.THIN);  
+        
+            cellStyleBold.setBorderBottom(BorderStyle.THIN);  
+            cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setBorderRight(BorderStyle.THIN);  
+            cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
+            
+            cellStyleBold.setBorderTop(BorderStyle.THIN);  
+            cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
+
+        
+            cellStyleBold.setBorderLeft(BorderStyle.THIN);  
+            cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            Cell headerCell0 = headerRow0.createCell(0);
+            headerCell0.setCellValue("Région :");
+            headerCell0.setCellStyle(cellStyleBold);
+            headerCell0.setCellStyle(cadre);
+            
+            //new MiseEnFormes().MiseEnGras(wb);
+
+
+            headerCell0 = headerRow0.createCell(1);
+            headerCell0.setCellValue(reg);
+            headerCell0.setCellStyle(cadre);
+
+
+            headerCell0 = headerRow0.createCell(2);
+            headerCell0.setCellValue("Type Opération : ");
+            headerCell0.setCellStyle(cadre);
+
+            headerCell0 = headerRow0.createCell(3);
+            headerCell0.setCellValue(this.op);
+            headerCell0.setCellStyle(cadre);
+
+//==============================================================================
+            Row headerRow1 = sheet.createRow(1);
+
+            Cell headerCell1 = headerRow1.createCell(0);
+            headerCell1.setCellValue("District :");
+            headerCell1.setCellStyle(cellStyleBold);
+            headerCell1.setCellStyle(cadre);
+
+
+            headerCell1 = headerRow1.createCell(1);
+            headerCell1.setCellValue(dist);
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(2);
+            headerCell1.setCellValue("Commune : ");
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(3);
+            headerCell1.setCellValue(com);
+            headerCell1.setCellStyle(cadre);
+// ============================================================================
+            Row headerRow2 = sheet.createRow(2);
+
+            Cell headerCell2 = headerRow2.createCell(0);
+            headerCell2.setCellValue("Code Dist :");
+            headerCell2.setCellStyle(cellStyleBold);
+            headerCell2.setCellStyle(cadre);
+
+
+            headerCell2 = headerRow2.createCell(1);
+            headerCell2.setCellValue(Integer.parseInt(c_dist));
+            headerCell2.setCellStyle(cadre);
+
+            headerCell2 = headerRow2.createCell(2);
+            headerCell2.setCellValue("Code Com :");
+            headerCell2.setCellStyle(cadre);
+
+            headerCell2 = headerRow2.createCell(3);
+            headerCell2.setCellValue(Integer.parseInt(c_com));
+            headerCell2.setCellStyle(cadre);
+// ============================================================================ 
+
+            String[] TextEnTeteTableau = {"id_registre", "date_demande"
+                    , "nom_et_prenom","naissance_lieu", "naissance_date", "adresse"
+                    , "cni_num", "cni_date", "cni_lieu", "acn_num", "acn_date", "acn_lieu", "fokontany"
+                    , "hameau", "superficie (m2)", "coord_x", "coord_y", "v_nord"
+                    , "v_sud", "v_ouest", "v_est", "date_crl", "charges"};
+
+            TreeMap<Integer, String> EnTeteTableauAExporter = new TreeMap<Integer, String>();
+
+            for (int i = 0; i < TextEnTeteTableau.length; i++) {
+              EnTeteTableauAExporter.put(i, TextEnTeteTableau[i]);
             }
+
+            //System.out.println("EnTeteTableauAExporter vaut : " + EnTeteTableauAExporter);
+
+            Row headerRow3 = sheet.createRow(4);
+
+            for (Map.Entry<Integer, String> textTab : EnTeteTableauAExporter.entrySet()) {
+                Cell headerCell0Ligne3 = headerRow3.createCell(textTab.getKey());
+                headerCell0Ligne3.setCellValue(textTab.getValue());
+                headerCell0Ligne3.setCellStyle(cellStyleBold);
+            }
+
+
+            
+                    int n = 5;
                     
-                    FileOutputStream fout = new FileOutputStream(src);
                     
+                    
+                    while (rs.next()) {
+
+                        RowResultSet++;
+                        
+                        Row headerRow4 = sheet.createRow(n);
+                        
+                            Cell headerCell7 = headerRow4.createCell(0);
+                            headerCell7.setCellValue(rs.getString("id_registre"));
+                            headerCell7.setCellStyle(cadre);
+
+                            
+                            Cell headerCell8 = headerRow4.createCell(1);
+                            headerCell8.setCellValue(rs.getString("date_demande"));
+                            headerCell8.setCellStyle(cadre);
+
+                            
+                            Cell headerCell9 = headerRow4.createCell(2);
+                            headerCell9.setCellValue(rs.getString("nom_et_prenom"));
+                            headerCell9.setCellStyle(cadre);
+                            
+                            Cell headerCell10 = headerRow4.createCell(3);
+                            headerCell10.setCellValue(rs.getString("naissance_lieu"));
+                            headerCell10.setCellStyle(cadre);
+                            
+
+                            
+                            Cell headerCell_11 = headerRow4.createCell(4);
+                            headerCell_11.setCellValue(rs.getString("naissance_date"));
+                            headerCell_11.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_12 = headerRow4.createCell(5);
+                            headerCell_12.setCellValue(rs.getString("adresse"));
+                            headerCell_12.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_13 = headerRow4.createCell(6);
+                            headerCell_13.setCellValue(rs.getString("cni_num"));
+                            headerCell_13.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_14 = headerRow4.createCell(7);
+                            headerCell_14.setCellValue(rs.getString("cni_date"));
+                            headerCell_14.setCellStyle(cadre);
+                            
+                            Cell headerCell_15 = headerRow4.createCell(8);
+                            headerCell_15.setCellValue(rs.getString("cni_lieu"));
+                            headerCell_15.setCellStyle(cadre);
+                            
+                            Cell headerCell_16 = headerRow4.createCell(9);
+                            headerCell_16.setCellValue(rs.getString("acn_num"));
+                            headerCell_16.setCellStyle(cadre);
+                            
+                            Cell headerCell_17 = headerRow4.createCell(10);
+                            headerCell_17.setCellValue(rs.getString("acn_date"));
+                            headerCell_17.setCellStyle(cadre);
+                            
+                            Cell headerCell_18 = headerRow4.createCell(11);
+                            headerCell_18.setCellValue(rs.getString("acn_lieu"));
+                            headerCell_18.setCellStyle(cadre);
+                            
+
+                            Cell headerCell_19 = headerRow4.createCell(12);
+                            headerCell_19.setCellValue(rs.getString("fokontany"));
+                            headerCell_19.setCellStyle(cadre);
+                            
+                            Cell headerCell_20 = headerRow4.createCell(13);
+                            headerCell_20.setCellValue(rs.getString("hameau"));
+                            headerCell_20.setCellStyle(cadre);
+                            
+                            Cell headerCell_21 = headerRow4.createCell(14);
+                            headerCell_21.setCellValue(rs.getString("superficie"));
+                            headerCell_21.setCellStyle(cadre);
+                            
+                            Cell headerCell_22 = headerRow4.createCell(15);
+                            headerCell_22.setCellValue(rs.getString("coord_x"));
+                            headerCell_22.setCellStyle(cadre);
+                            
+                            Cell headerCell_23 = headerRow4.createCell(16);
+                            headerCell_23.setCellValue(rs.getString("coord_y"));
+                            headerCell_23.setCellStyle(cadre);
+
+                            Cell headerCell_24 = headerRow4.createCell(17);
+                            headerCell_24.setCellValue(rs.getString("v_nord"));
+                            headerCell_24.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_25 = headerRow4.createCell(18);
+                            headerCell_25.setCellValue(rs.getString("v_sud"));
+                            headerCell_25.setCellStyle(cadre);
+
+                            
+                            Cell headerCell_26 = headerRow4.createCell(19);
+                            headerCell_26.setCellValue(rs.getString("v_ouest"));
+                            headerCell_26.setCellStyle(cadre);
+
+                            Cell headerCell_27 = headerRow4.createCell(20);
+                            headerCell_27.setCellValue(rs.getString("v_ouest"));
+                            headerCell_27.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_28 = headerRow4.createCell(21);
+                            headerCell_28.setCellValue(rs.getString("date_crl"));
+                            headerCell_28.setCellStyle(cadre);
+
+                            
+                            Cell headerCell_29 = headerRow4.createCell(22);
+                            headerCell_29.setCellValue(rs.getString("charges"));
+                            headerCell_29.setCellStyle(cadre);
+
+
+                            //System.out.println("Get commune : " + rs.getString("commune") + " ::  " + rs.getString("numero_demande") 
+                             //                      + " Login = " +rs.getString("login") + " lot : " + rs.getString("lot")+ " anomalie_description = " + rs.getString("anomalie_description"));
+
+                             
+                             
+                        n++;
+                    }
+  
+                    FileOutputStream fout = new FileOutputStream(realPath);
+
                     wb.write(fout);
                     wb.close();
+                    fout.close();
 
 
                 }catch(Exception createFileErreur){
+                    
+                    JOptionPane.showMessageDialog(null, createFileErreur.getMessage(), "Erreur SQL trouvé !", JOptionPane.INFORMATION_MESSAGE);
 
-                    System.out.println(createFileErreur.getMessage());
+                    //System.out.println(createFileErreur.getMessage());
                 }
-   
-            }
-            
-
-            
+                     
             rs.close();
             st.close();
             
+            if(RowResultSet == 0){
+                //System.out.println("val fiale de RowResultSet = " + RowResultSet);
+                retour.add("error");
+                retour.add(realPath);
+                // SUPPRESSION DU FICHIER EXPORTE CAR IL Y AVAIT UNE ERREUR LORS DE L'EXPORT
+                Files.deleteIfExists(Paths.get(realPath));
+                //System.out.println("votre commune : "+ com);
+
+            }else{
+                retour.add("success");
+                //JOptionPane.showMessageDialog(null, "Listes CF éditer exporté avec succès !", "Listes CF éditer exporté avec succès ", JOptionPane.INFORMATION_MESSAGE);
+                // ouverture de l'emplacement selectionner par l'utiisateur
+                //Desktop.getDesktop().open(new File(path));
+            }
+  
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException();
+            //ex.printStackTrace();
+            //throw new RuntimeException();
+            retour.add("error");
+            retour.add("Error executing query: " +ex.getMessage());
         }
         
         //System.out.println(demandes);
-        return demandes;
+        return retour;
     }
     
     
@@ -266,7 +505,7 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
     
     
         String realPath = path+"\\"+this.op+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xls";
-        List<Demande> demandes = new ArrayList<>();
+        List<Querry> demandes = new ArrayList<>();
         
         int RowResultSet = 0;
         
@@ -440,7 +679,7 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
 
 
             headerCell1 = headerRow1.createCell(5);
-            headerCell1.setCellValue("Nom de l'atelier");   
+            headerCell1.setCellValue(new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getNomAtelier());   
 
             headerCell1 = headerRow1.createCell(6);
             headerCell1.setCellValue("Date d’envoi :");
@@ -592,7 +831,7 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
                 retour.add(realPath);
                 Files.deleteIfExists(Paths.get(realPath));
                 
-                JOptionPane.showMessageDialog(null, "Export registre d'anomalie annuler\nAucune anomalie a été trouvé sur la : \n\ncommune: "+com+"\n"+"Fokontany : "+fkt+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.op, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Aucune anomalie a été trouvé sur la : \n\ncommune: "+com+"\n"+"Fokontany : "+fkt+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.op, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
  
             }else{
                 retour.add("success");

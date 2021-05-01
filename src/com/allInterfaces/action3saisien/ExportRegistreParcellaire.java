@@ -11,16 +11,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JFileChooser;
-import com.classes.action3saisie.Demande;
+import com.classes.action3saisie.Querry;
+import com.classes.action3saisie.Region;
 import com.export.action3saisie.Exports;
+import java.awt.Desktop;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
+
+
 
 /**
  *
  * @author RAP
  */
-public class ExportRegistreParcellaire extends javax.swing.JFrame {
+public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
     
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -36,13 +45,14 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
     private final String selectDistrict = "Séléctionner un district";
     private final String selectCommune = "Séléctionner une commune";
     
-     private String type_operation = "";
-
+    private String type_operation = "";
+    
+    
     /**
-     * Creates new form ExportRegistreParcellaire
+     * Creates new form SaisieParOperateur
      */
     public ExportRegistreParcellaire(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
-       
+        
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
         this.BDD_DBNAME = DBNAME;
@@ -51,15 +61,34 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
         this.type_operation = TYPE_OPERATION;
         
         initComponents();
-        
-        this.j_label_folder_export.setText("");
-        
-        //connectDatabase = new ConnectDb("127.0.0.1", 5432, "oprod", "2021.", "postgres").getConnection();
+
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
+        //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         this.j_combo_region.removeAllItems();
-        this.j_combo_region.addItem(selectRegion);
-        this.j_combo_region.addItem("ATSINANANA");
-        this.j_combo_region.addItem("ANALANJIROFO");
+        
+        // RECUPERATION DE TOUS LES REGIONS DANS LA BASE
+        
+        HashMap<String, String> regions = new Region(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getAllRegions();
+        
+        if(regions.isEmpty()){
+            System.out.println("Impossible de récupérér les regions dans la base de données!");
+            System.exit(0);
+        }else{
+            
+            this.j_combo_region.addItem(selectRegion);
+            System.out.println("tous les regions : "+ regions.isEmpty());
+
+            Iterator it = regions.entrySet().iterator();
+
+            while (it.hasNext()) {
+                Map.Entry<String, String> val = (Map.Entry)it.next();
+                //System.out.println( " = " + val.getValue().toString());
+                this.j_combo_region.addItem(val.getValue().toString());
+            }
+        
+        }
+        
+
     }
 
     /**
@@ -71,23 +100,23 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        j_combo_region = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        j_combo_region = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        j_combo_commune = new javax.swing.JComboBox<>();
         j_combo_district = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
+        j_combo_commune = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
         j_label_folder_export = new javax.swing.JTextField();
-        j_button_exporter = new javax.swing.JButton();
         j_button_folder_export = new javax.swing.JButton();
+        j_button_exporter_rp_provisoire = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setClosable(true);
+        setIconifiable(true);
+        setResizable(true);
         setTitle("Exportation Registre Parcellaire Provisoire");
-        setName("export_rp_prov"); // NOI18N
 
-        jLabel1.setText("Région");
+        jLabel2.setText("Région");
 
         j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un région" }));
         j_combo_region.addItemListener(new java.awt.event.ItemListener() {
@@ -96,12 +125,7 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("District");
-
-        jLabel3.setText("Commune");
-
-        j_combo_commune.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une commune" }));
-        j_combo_commune.setEnabled(false);
+        jLabel3.setText("District");
 
         j_combo_district.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un district" }));
         j_combo_district.setEnabled(false);
@@ -111,14 +135,20 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Emplacement de l'export");
+        jLabel4.setText("Commune");
+
+        j_combo_commune.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une commune" }));
+        j_combo_commune.setEnabled(false);
+
+        jLabel7.setText("Emplacement de l'export");
 
         j_label_folder_export.setEditable(false);
-
-        j_button_exporter.setText("Exporter");
-        j_button_exporter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_button_exporterActionPerformed(evt);
+        j_label_folder_export.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                j_label_folder_exportMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                j_label_folder_exportMouseEntered(evt);
             }
         });
 
@@ -132,248 +162,238 @@ public class ExportRegistreParcellaire extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 105, Short.MAX_VALUE))
-                            .addComponent(j_label_folder_export))
-                        .addGap(18, 18, 18)
-                        .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(j_combo_region, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(j_combo_district, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(j_combo_commune, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(169, 169, 169)
-                .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_combo_district, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_combo_commune, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(49, 49, 49)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(j_label_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58))
-        );
+        j_button_exporter_rp_provisoire.setText("Exporter");
+        j_button_exporter_rp_provisoire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_button_exporter_rp_provisoireActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                            .addComponent(j_label_folder_export)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(j_button_exporter_rp_provisoire, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(23, 23, 23)))
+                        .addGap(33, 33, 33)
+                        .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(j_combo_commune, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(j_combo_region, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(j_combo_district, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(j_combo_district, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(j_combo_commune, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(62, 62, 62)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(j_label_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(j_button_folder_export, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(j_button_exporter_rp_provisoire, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void j_button_folder_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_folder_exportActionPerformed
-       
-        String locationFile = "";
-        JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int response = fc.showOpenDialog(this);
-        
-        if(response == JFileChooser.APPROVE_OPTION){
-            
-            j_label_folder_export.setText(fc.getSelectedFile().toString());
-            
-            locationFile += fc.getSelectedFile().toString();
-            
-            
-            //System.out.println("LOCATION = " + locationFile );
-        }else{
-            
-            j_label_folder_export.setText("");
-        }
-        
-        
-        locationFile = "";
-        
-    }//GEN-LAST:event_j_button_folder_exportActionPerformed
-
-    private void j_button_exporterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_exporterActionPerformed
-
-        String selected_region = (String)this.j_combo_region.getSelectedItem();
-        String selected_district = (String)this.j_combo_district.getSelectedItem();
-        String selected_commune = (String)this.j_combo_commune.getSelectedItem();
-        
-        
-        if(selected_region.equals(selectRegion)){
-            this.setAlwaysOnTop(false);
-            JOptionPane.showMessageDialog(null, "Veuillez selectionner une région","Séléction Région", JOptionPane.INFORMATION_MESSAGE);
-            this.setAlwaysOnTop(true);
-        }else if(selected_district.equals(selectDistrict)){
-            this.setAlwaysOnTop(false);
-            JOptionPane.showMessageDialog(null, "Veuillez selectionner un district","Séléction District", JOptionPane.INFORMATION_MESSAGE);
-            this.setAlwaysOnTop(true);
-        }else if(selected_commune.equals(selectCommune)){
-            this.setAlwaysOnTop(false);
-            JOptionPane.showMessageDialog(null, "Veuillez selectionner une commune","Séléction Commune", JOptionPane.INFORMATION_MESSAGE);
-            this.setAlwaysOnTop(true);
-        }else if(this.j_label_folder_export.getText().equals("")){
-            this.setAlwaysOnTop(false);
-            JOptionPane.showMessageDialog(null, "Veuillez selectionner le dossier de destination de l'export","Séléction Emplacement", JOptionPane.INFORMATION_MESSAGE);
-            this.setAlwaysOnTop(true);
-        }else{
-            //this.setAlwaysOnTop(false);
-            //JOptionPane.showMessageDialog(null, "Tout est OK","OK", JOptionPane.INFORMATION_MESSAGE);
-            //this.setAlwaysOnTop(true);
-            //System.out.println("Export RP en cours ..." );
-            
-            //Boolean RP = new Demande().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
-            
-            System.out.println(" Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText()));
-        }
-        
-    }//GEN-LAST:event_j_button_exporterActionPerformed
-
     private void j_combo_regionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_regionItemStateChanged
-        
+
         String selected = "";
-        
+
         if(evt.getStateChange() == ItemEvent.SELECTED){
-            
+
             selected += evt.getItem();
-            
+
             if(selected.equals(selectRegion)){
                 this.j_combo_district.setEnabled(false);
                 this.j_combo_commune.setEnabled(false);
             }else{
-                
+
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
-                
-                HashMap<String, String> reg = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
-                
+
+                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
+
                 for (String i : reg.keySet()) {
-                  this.j_combo_district.addItem( i + "  _  " + reg.get(i));
+                    this.j_combo_district.addItem( i + "  _  " + reg.get(i));
                 }
-                
+
                 this.j_combo_district.setEnabled(true);
                 this.j_combo_commune.setEnabled(false);
-            } 
+            }
         }
-       
+
     }//GEN-LAST:event_j_combo_regionItemStateChanged
 
     private void j_combo_districtItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_districtItemStateChanged
-        
+
         String selected = "";
-        
+
         if(evt.getStateChange() == ItemEvent.SELECTED){
 
             selected += evt.getItem();
             boolean containsStr = selected.contains("  _  ");
-            
-            
+
             if(selected.equals(selectCommune)){
                 this.j_combo_commune.setEnabled(false);
             }else{
-                
+
                 this.j_combo_commune.setEnabled(false);
-                
+
                 if(containsStr){
-                    
+
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Demande(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
-                      this.j_combo_commune.addItem( i + "  _  " + com.get(i));
+                        this.j_combo_commune.addItem( i + "  _  " + com.get(i));
                     }
 
-                    this.j_combo_commune.setEnabled(true);                    
+                    this.j_combo_commune.setEnabled(true);
                 }
 
-            } 
+            }
         }
     }//GEN-LAST:event_j_combo_districtItemStateChanged
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ExportRegistreParcellaire.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ExportRegistreParcellaire.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ExportRegistreParcellaire.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ExportRegistreParcellaire.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new ExportRegistreParcellaire().setVisible(true);
-            }
-        });
+    
+    private void GetLocationToSaveFile(){
         
+        String locationFile = "";
+        JFileChooser fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int response = fc.showOpenDialog(this);
+
+        if(response == JFileChooser.APPROVE_OPTION){
+
+            j_label_folder_export.setText(fc.getSelectedFile().toString());
+
+            locationFile += fc.getSelectedFile().toString();
+
+            //System.out.println("LOCATION = " + locationFile );
+        }
+        //else{
+
+            //j_label_folder_export.setText("");
+        //}
+
+        locationFile = "";
     }
+    
+    
+    private void j_button_folder_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_folder_exportActionPerformed
+        this.GetLocationToSaveFile();
+    }//GEN-LAST:event_j_button_folder_exportActionPerformed
+
+    private void j_button_exporter_rp_provisoireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_button_exporter_rp_provisoireActionPerformed
+
+        String selected_region = (String)this.j_combo_region.getSelectedItem();
+        String selected_district = (String)this.j_combo_district.getSelectedItem();
+        String selected_commune = (String)this.j_combo_commune.getSelectedItem();
+
+        if(selected_region.equals(selectRegion)){
+            //this.setAlwaysOnTop(false);
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner une région","Séléction Région", JOptionPane.INFORMATION_MESSAGE);
+            //this.setAlwaysOnTop(true);
+        }else if(selected_district.equals(selectDistrict)){
+            //this.setAlwaysOnTop(false);
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner un district","Séléction District", JOptionPane.INFORMATION_MESSAGE);
+            //this.setAlwaysOnTop(true);
+        }else if(selected_commune.equals(selectCommune)){
+            //this.setAlwaysOnTop(false);
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner une commune","Séléction Commune", JOptionPane.INFORMATION_MESSAGE);
+            //this.setAlwaysOnTop(true);
+        }else if(this.j_label_folder_export.getText().equals("")){
+            //this.setAlwaysOnTop(false);
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner le dossier de destination de l'export","Séléction Emplacement", JOptionPane.INFORMATION_MESSAGE);
+            //this.setAlwaysOnTop(true);
+        }else{
+
+            String code_district = selected_district.split("  _  ")[0];
+            String code_commune = selected_commune.split("  _  ")[0];
+            
+            String district = selected_district.split("  _  ")[1];
+            String commune = selected_commune.split("  _  ")[1];
+            
+            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreParcellaireProvisoire(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+
+            if(reponse.get(0).equals("success")){
+                
+                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "RP provisoire exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                
+                    if(export == JOptionPane.YES_OPTION){
+                        // ouverture de l'emplacement selectionner par l'utiisateur
+                        try {
+                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                        }catch(Exception ee){
+                            JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\n"+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Aucune RP prêt à exporté sur la : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            
+        
+        
+        }
+
+    }//GEN-LAST:event_j_button_exporter_rp_provisoireActionPerformed
+
+    private void j_label_folder_exportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_j_label_folder_exportMouseClicked
+        //System.out.println("Click sur chemin emplacement...");
+        this.GetLocationToSaveFile();
+    }//GEN-LAST:event_j_label_folder_exportMouseClicked
+
+    private void j_label_folder_exportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_j_label_folder_exportMouseEntered
+        this.j_label_folder_export.setToolTipText("Cliquer pour séléctionner le dossier de destionation de l'export");
+    }//GEN-LAST:event_j_label_folder_exportMouseEntered
+
+ 
+    
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton j_button_exporter;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JButton j_button_exporter_rp_provisoire;
     private javax.swing.JButton j_button_folder_export;
     private javax.swing.JComboBox<String> j_combo_commune;
     private javax.swing.JComboBox<String> j_combo_district;
