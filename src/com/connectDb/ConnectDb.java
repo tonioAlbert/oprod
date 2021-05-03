@@ -20,7 +20,7 @@ public class ConnectDb {
     private String password = "";
     private String user = "";
     
-    public ConnectDb(String HOST, String DBNAME, Integer PORT, String USERNAME, String PASSWORD){
+    public ConnectDb(String HOST, Integer PORT, String DBNAME, String USERNAME, String PASSWORD){
         
         this.host = HOST;
         this.port = PORT;

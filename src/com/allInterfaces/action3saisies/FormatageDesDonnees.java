@@ -60,7 +60,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
         
         initComponents();
 
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         this.j_combo_region.removeAllItems();
         
@@ -165,6 +165,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
         jLabel7.setText("Emplacement de l'export");
 
         j_label_folder_export.setEditable(false);
+        j_label_folder_export.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         j_button_folder_export.setIcon(new javax.swing.ImageIcon("C:\\Users\\RAP\\Documents\\NetBeansProjects\\A3_suivi_saisie\\ressources\\img\\Webp.net-resizeimage.png")); // NOI18N
         j_button_folder_export.setBorderPainted(false);
@@ -469,7 +470,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
 
             //Boolean RP = new Querry().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
 
-            System.out.println("System Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
+            System.out.println("System Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
         }
 
     }//GEN-LAST:event_j_button_exporterActionPerformed

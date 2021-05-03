@@ -47,12 +47,207 @@ public class Querry {
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
         
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
+    }
+    
+
+    
+public List <String[] > AnomaliesSaisieParCommune(String reg, String operation){
+                   
+        List <String[]> anomalies = new ArrayList<String[]>() ;
+
+        
+            try {
+
+                String sql = "  SELECT DISTINCT region.nom AS region,\n" +
+                "    district.nom AS district,\n" +
+                "    commune.nom AS commune,\n" +
+                "    COUNT(*) AS nbre_anomalie\n" +
+                "   FROM commune,\n" +
+                "    fokontany,\n" +
+                "    hameau,\n" +
+                "    demande,\n" +
+                "    region,\n" +
+                "    district\n" +
+                "  WHERE region.id_region::text = district.id_region::text\n" +
+                "  AND commune.id_district::text = district.id_district::text \n" +
+                "  AND commune.id_commune::text = fokontany.id_commune::text \n" +
+                "  AND fokontany.id_fokontany::text = hameau.id_fokontany::text \n" +
+                "  AND demande.id_hameau::text = hameau.id_hameau::text \n" +
+                "  AND demande.val_anomalie = TRUE\n" +
+                "  AND demande.cf_annule IS NOT TRUE\n" +
+                "  AND region.nom = ? \n" +
+                "  AND demande.type_op = ? \n" +
+                "  GROUP BY region.nom, district.nom, commune.nom\n" +
+                "  ORDER BY region.nom, district.nom, commune.nom";
+            
+
+                st = connectDatabase.prepareStatement(sql);    
+                st.setString(1, reg);
+                st.setString(2, operation.toLowerCase());
+                rs = st.executeQuery();
+            
+            //System.out.println("SAISIE :: " + sql);
+            
+                int n = 0;
+
+                while(rs.next()){
+                    
+                    String[] traitements_saisies = { rs.getString("region"), rs.getString("district"), rs.getString("commune") , rs.getString("nbre_anomalie")};          
+                    
+                    anomalies.add(traitements_saisies);
+                    
+                    n++;
+                    
+                }
+                
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+
+        return anomalies;
+    }
+  
+    
+    
+public List <String[] > RapportCfEditableParCommune(String reg, String operation){
+                   
+        List <String[]> saisies = new ArrayList<String[]>() ;
+
+        
+            try {
+
+                String sql = "  SELECT region.nom AS region,\n" +
+                "    district.nom AS district,\n" +
+                "    commune.nom AS commune,\n" +
+                "    count(*) AS cf\n" +
+                "   FROM region,\n" +
+                "    district,\n" +
+                "    commune,\n" +
+                "    fokontany,\n" +
+                "    hameau,\n" +
+                "    demande\n" +
+                "     JOIN parcelle_cf ON demande.id_parcelle::text = parcelle_cf.c_parcelle::text\n" +
+                "  WHERE demande.val_anomalie = false AND parcelle_cf.limitrophe = false \n" +
+                "  AND parcelle_cf.anomalie = false AND demande.val_chef_equipe = true \n" +
+                "  AND commune.id_commune::text = fokontany.id_commune::text \n" +
+                "  AND fokontany.id_fokontany::text = hameau.id_fokontany::text \n" +
+                "  AND commune.id_district::text = district.id_district::text \n" +
+                "  AND demande.id_hameau::text = hameau.id_hameau::text \n" +
+                "  AND region.id_region::text = district.id_region::text\n" +
+                "  AND demande.num_certificat IS NULL \n" +
+                "  AND (demande.date_crl - demande.date_demande) >= 15\n" +
+                "  AND region.nom = ? \n" +
+                "  AND demande.type_op = ? \n" +
+                "  GROUP BY region.nom, district.nom, commune.nom\n" +
+                "  ORDER BY region.nom, district.nom, commune.nom";
+            
+
+                st = connectDatabase.prepareStatement(sql);    
+                st.setString(1, reg);
+                st.setString(2, operation.toLowerCase());
+                rs = st.executeQuery();
+            
+            //System.out.println("SAISIE :: " + sql);
+            
+                int n = 0;
+
+                while(rs.next()){
+                    
+                    String[] traitements_saisies = { rs.getString("region"), rs.getString("district"), rs.getString("commune") , rs.getString("cf")};          
+                    
+                    saisies.add(traitements_saisies);
+                    
+                    n++;
+                    
+                }
+                
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+
+        return saisies;
     }
     
     
+    public List <String[] > getRapportSAISIE(String reg, String operation){
+                   
+        List <String[]> saisies = new ArrayList<String[]>() ;
+
+        
+            try {
+
+                String sql = "  SELECT  DISTINCT region.nom AS region,\n" +
+                "    district.nom AS district,\n" +
+                "    commune.nom AS commune,\n" +
+                "    count(*) AS nbre_saisie\n" +
+                "   FROM commune,\n" +
+                "    fokontany,\n" +
+                "    hameau,\n" +
+                "    demande,\n" +
+                "    region,\n" +
+                "    district\n" +
+                "  WHERE commune.id_commune::text = fokontany.id_commune::text "+
+                "AND commune.id_district::text = district.id_district::text "+
+                "AND region.id_region::text = district.id_region::text\n" +
+                "AND fokontany.id_fokontany::text = hameau.id_fokontany::text "+
+                "AND demande.id_hameau::text = hameau.id_hameau::text "+
+                "AND region.nom = ? \n" +
+                "AND demande.type_op = ? \n" +
+                "  GROUP BY region.nom, district.nom, commune.nom\n" +
+                "  ORDER BY region.nom, district.nom, commune.nom";
+            
+
+                st = connectDatabase.prepareStatement(sql);    
+                st.setString(1, reg);
+                st.setString(2, operation.toLowerCase());
+                rs = st.executeQuery();
+            
+            System.out.println("SAISIE :: " + sql);
+            
+                int n = 0;
+
+                while(rs.next()){
+                    
+                    String[] traitements_saisies = { rs.getString("region"), rs.getString("district"), rs.getString("commune") , rs.getString("nbre_saisie")};          
+                    
+                    saisies.add(traitements_saisies);
+                    
+                    n++;
+                    
+                }
+                
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+
+        return saisies;
+    }
     
-    public List <String[] > getRapportSIG(String reg){
+
+    
+    public List <String[] > getRapportSIG(String reg, String operation){
+        
+        String newFilterQuerry = "";
+        
+        if(operation.equals("OGCF")){
+            newFilterQuerry = "AND t1.type_op IS NOT TRUE";
+        }else{
+            newFilterQuerry = "AND t1.type_op IS TRUE";
+        }
+        
         
         List <String[]> sig = new ArrayList<String[]>() ;
 
@@ -79,8 +274,7 @@ public class Querry {
                 "  WHERE region.id_region::text = district.id_region::text \n" +
                 "  AND district.id_district::text = commune.id_district::text \n" +
                 "  AND t1.c_district::text = district.code_district::text \n" +
-                "  AND t1.c_commune::text = commune.code_commune::text \n" +
-                "  AND t1.type_op IS NOT FALSE\n" +
+                "  AND t1.c_commune::text = commune.code_commune::text \n" + newFilterQuerry +
                 "  AND region.nom = ?\n" +
                 "  GROUP BY region.nom, district.nom, commune.nom\n" +
                 "  ORDER BY region.nom, district.nom, commune.nom";
@@ -88,10 +282,9 @@ public class Querry {
 
                 st = connectDatabase.prepareStatement(sql);    
                 st.setString(1, reg);
-
                 rs = st.executeQuery();
             
-            System.out.println("RSIG :: " + rs);
+            System.out.println("RSIG :: " + sql);
             
                 int n = 0;
 
@@ -510,5 +703,54 @@ public class Querry {
              
         return newNameAtelier;
     }
+    
+
+    public List <String[] > getDistinctDateEditionCF(String reg, String dist, String com, String demarche){
+        
+        List <String[]> dateEditionCF = new ArrayList<String[]>() ;
+            
+            try {
+
+                String sql = "SELECT DISTINCT TO_CHAR(demande.val_cf_edit_date, 'DD / MM / YYYY') AS date_edition \n" +
+                "FROM \n" +
+                "public.demande, region, district, commune, fokontany, hameau\n" +
+                "WHERE region.id_region::text = district.id_region::text\n" +
+                "AND district.id_district::text = commune.id_district::text\n" +
+                "AND commune.id_commune::text = fokontany.id_commune::text\n" +
+                "AND fokontany.id_fokontany::text = hameau.id_fokontany::text\n" +
+                "AND hameau.id_hameau::text = demande.id_hameau::text\n" +
+                "AND demande.val_cf_edit_date IS NOT NULL\n" +
+                "AND region. nom = ?\n" +
+                "AND district.nom = ?\n" +
+                "AND commune.nom = ?\n" +
+                "AND demande.type_op = ?\n" +
+                "ORDER BY date_edition ASC";
+            
+                st = connectDatabase.prepareStatement(sql);
+                st.setString(1, reg);
+                st.setString(2, dist);
+                st.setString(3, com);
+                st.setString(4, demarche);
+                rs = st.executeQuery();
+                
+                while(rs.next()){
+                    String[] saisie = { rs.getString("date_edition")};          
+                    dateEditionCF.add( saisie);
+                }
+                
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+
+                JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de récupération des dates édition CF (getDistinctDateEditionCF) ", JOptionPane.INFORMATION_MESSAGE);
+            } 
+
+        return dateEditionCF;
+    }
+    
+    
 
 }  // FIN DE LA CLASSE

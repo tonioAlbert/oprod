@@ -1,0 +1,55 @@
+private void j_button_exporter_rp_provisoireActionPerformed(java.awt.event.ActionEvent evt) {                                                                
+
+        String selected_region = (String)this.j_combo_region.getSelectedItem();
+        String selected_district = (String)this.j_combo_district.getSelectedItem();
+        String selected_commune = (String)this.j_combo_commune.getSelectedItem();
+
+        if(selected_region.equals(selectRegion)){
+            //this.setAlwaysOnTop(false);
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner une région","Séléction Région", JOptionPane.INFORMATION_MESSAGE);
+            //this.setAlwaysOnTop(true);
+        }else if(selected_district.equals(selectDistrict)){
+            //this.setAlwaysOnTop(false);
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner un district","Séléction District", JOptionPane.INFORMATION_MESSAGE);
+            //this.setAlwaysOnTop(true);
+        }else if(selected_commune.equals(selectCommune)){
+            //this.setAlwaysOnTop(false);
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner une commune","Séléction Commune", JOptionPane.INFORMATION_MESSAGE);
+            //this.setAlwaysOnTop(true);
+        }else if(this.j_label_folder_export.getText().equals("")){
+            //this.setAlwaysOnTop(false);
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner le dossier de destination de l'export","Séléction Emplacement", JOptionPane.INFORMATION_MESSAGE);
+            //this.setAlwaysOnTop(true);
+        }else{
+
+            String code_district = selected_district.split("  _  ")[0];
+            String code_commune = selected_commune.split("  _  ")[0];
+            
+            String district = selected_district.split("  _  ")[1];
+            String commune = selected_commune.split("  _  ")[1];
+            
+            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreParcellaireProvisoire(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+
+            if(reponse.get(0).equals("success")){
+                
+                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "RP provisoire exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                
+                    if(export == JOptionPane.YES_OPTION){
+                        // ouverture de l'emplacement selectionner par l'utiisateur
+                        try {
+                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                        }catch(Exception ee){
+                            JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\n"+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Aucune RP prêt à exporté sur la : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            
+        
+        
+        }
+
+    }

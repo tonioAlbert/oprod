@@ -9,6 +9,7 @@ package com.allInterfaces.action3saisies;
 
 import com.classes.action3saisie.BarreDeProgression;
 import com.classes.action3saisie.Formats;
+import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
 import java.awt.Dimension;
@@ -19,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -75,12 +77,29 @@ public class Home extends javax.swing.JFrame {
         this.j_labal_perc.setVisible(false);
 
         //System.out.println("Bonjour : " + username + "\nVotre mot de passe est : "+ password + "\nType d'opération : "+ type_op );
-        this.lbl_type_operation.setText("Type d'opération séléctionné : "+this.type_operation);
+        if(this.type_operation.equals("OGCF")){
+            this.lbl_type_operation.setText("Type d'opération séléctionné : "+this.type_operation);
+        }else{
+            this.lbl_type_operation.setText("Type d'opération séléctionné : OCFM");
+        }
+        
         this.lbl_test.setText("Bonjour " + username + " !");
+        
+        
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        System.out.println("Nom de latelier sur home : " + nomAtelier);
+        if(nomAtelier.equals("ATS")){
+            this.j_menu_item_rapport_sig.setEnabled(true);
+        }else{
+            this.j_menu_item_rapport_sig.setEnabled(false);
+        }
         
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
+        
+     
+
     }
 
     /**
@@ -131,8 +150,8 @@ public class Home extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         j_menu_cf_editable = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        j_menu_item_rapport_saisie = new javax.swing.JMenuItem();
+        j_menu_item_rapport_sig = new javax.swing.JMenuItem();
         j_menu_controllesSaisies = new javax.swing.JMenu();
         j_menu_controles_saisie = new javax.swing.JMenuItem();
 
@@ -434,7 +453,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_exports.add(j_menu_export_rp_provisoire);
 
         j_menu_export_listes_cf_editer_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_export_listes_cf_editer_par_commune.setText("Listes CF éditer avec demandeurs");
+        j_menu_export_listes_cf_editer_par_commune.setText("Listes CF éditer");
         j_menu_export_listes_cf_editer_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_export_listes_cf_editer_par_communeActionPerformed(evt);
@@ -463,23 +482,38 @@ public class Home extends javax.swing.JFrame {
 
         j_menu_stat_anomalies_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_stat_anomalies_par_commune.setText("Anomalie Saisie par Commune(s)");
+        j_menu_stat_anomalies_par_commune.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_stat_anomalies_par_communeActionPerformed(evt);
+            }
+        });
         j_menu_stats.add(j_menu_stat_anomalies_par_commune);
         j_menu_stats.add(jSeparator1);
 
         j_menu_cf_editable.setText(" CF éditable");
+        j_menu_cf_editable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_cf_editableActionPerformed(evt);
+            }
+        });
         j_menu_stats.add(j_menu_cf_editable);
         j_menu_stats.add(jSeparator2);
 
-        jMenuItem1.setText("Rapport Saisie par commune(s)");
-        j_menu_stats.add(jMenuItem1);
-
-        jMenuItem2.setText("Rapport Vectorisation par commune(s)");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        j_menu_item_rapport_saisie.setText("Saisie par commune(s)");
+        j_menu_item_rapport_saisie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                j_menu_item_rapport_saisieActionPerformed(evt);
             }
         });
-        j_menu_stats.add(jMenuItem2);
+        j_menu_stats.add(j_menu_item_rapport_saisie);
+
+        j_menu_item_rapport_sig.setText("Vectorisation par commune(s)");
+        j_menu_item_rapport_sig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_item_rapport_sigActionPerformed(evt);
+            }
+        });
+        j_menu_stats.add(j_menu_item_rapport_sig);
 
         jMenuBar1.add(j_menu_stats);
 
@@ -734,11 +768,18 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment se deconnecter ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            List<String> dmd = new ArrayList<String>();
+            // recuperation des démarches
+            Iterator it = new Querry(this.BDD_HOST,this.BDD_PORT,this.BDD_DBNAME,this.BDD_USER,this.BDD_PWD).getAllDemarche().entrySet().iterator();
+            List<String> demarches = new ArrayList<String>();
+
+	    while (it.hasNext()) {
+	        Map.Entry<String, String> val = (Map.Entry)it.next();
+                demarches.add(val.getValue().toString());  
+	    }
             
             this.setVisible(false);
             
-            UserFormDialog userForm = new UserFormDialog("",0,"","","", dmd);
+            UserFormDialog userForm = new UserFormDialog(this.BDD_HOST,this.BDD_PORT,this.BDD_DBNAME,this.BDD_USER,this.BDD_PWD, demarches);
             userForm.setLocationRelativeTo(null);
             userForm.setVisible(true);
         }
@@ -951,16 +992,40 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_export_listes_cf_editer_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
         
-        ExportCFEditerParCommunes cf_editer = new ExportCFEditerParCommunes(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        ExportCFEditerParCommunes cf_editer = new ExportCFEditerParCommunes(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, type_operation);
         this.dpContent.add(cf_editer);
         cf_editer.show();
+        
+        //System.out.println("BDD_HOST : " + BDD_HOST);
+        //System.out.println("BDD_PORT : " + BDD_PORT);
+        //System.out.println("BDD_DBNAME : " + BDD_DBNAME);
+        //System.out.println("BDD_USER : " + BDD_USER);
+        //System.out.println("BDD_PWD : " + BDD_PWD);
     }//GEN-LAST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        RapportSIG v_rapport = new RapportSIG(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
-        this.dpContent.add(v_rapport);
-        v_rapport.show();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void j_menu_item_rapport_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_rapport_sigActionPerformed
+        RapportSIG v_rapport_sig = new RapportSIG(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(v_rapport_sig);
+        v_rapport_sig.show();
+    }//GEN-LAST:event_j_menu_item_rapport_sigActionPerformed
+
+    private void j_menu_item_rapport_saisieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_rapport_saisieActionPerformed
+        RapportSAISIE v_rapport_saisie = new RapportSAISIE(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(v_rapport_saisie);
+        v_rapport_saisie.show();
+    }//GEN-LAST:event_j_menu_item_rapport_saisieActionPerformed
+
+    private void j_menu_cf_editableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_cf_editableActionPerformed
+        RapportCfEditableParCommune v_rapport_saisie_par_commune = new RapportCfEditableParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(v_rapport_saisie_par_commune);
+        v_rapport_saisie_par_commune.show();
+    }//GEN-LAST:event_j_menu_cf_editableActionPerformed
+
+    private void j_menu_stat_anomalies_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_stat_anomalies_par_communeActionPerformed
+        RapportAnomalieSaisieParCommune v_rapport_anomalies_saisie_par_commune = new RapportAnomalieSaisieParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+        v_rapport_anomalies_saisie_par_commune.show();
+    }//GEN-LAST:event_j_menu_stat_anomalies_par_communeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1006,8 +1071,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar_home;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -1037,6 +1100,8 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_item_lieu_dit;
     private javax.swing.JMenuItem j_menu_item_nom_parents;
     private javax.swing.JMenuItem j_menu_item_quitter_application;
+    private javax.swing.JMenuItem j_menu_item_rapport_saisie;
+    private javax.swing.JMenuItem j_menu_item_rapport_sig;
     private javax.swing.JMenuItem j_menu_stat_anomalies_par_commune;
     private javax.swing.JMenuItem j_menu_stat_saisie_par_operateur;
     private javax.swing.JMenu j_menu_stats;

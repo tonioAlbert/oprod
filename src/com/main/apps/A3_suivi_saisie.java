@@ -42,9 +42,9 @@ import org.json.simple.parser.JSONParser;
 
 public class A3_suivi_saisie {
     
-    private static Connection connectDatabase;
-    private static PreparedStatement st;
-    private static ResultSet rs;
+    //private static Connection connectDatabase;
+    //private static PreparedStatement st;
+    //private static ResultSet rs;
 
     /**
      * @param args the command line arguments
@@ -59,7 +59,7 @@ public class A3_suivi_saisie {
     
     private static void lancement(){
 
-        String demarche  = "";
+        //String demarche  = "";
         
 	// VERIFIER SI FICHIER DE CONF EXISTE
         //String racine = new File("").getAbsolutePath();
@@ -114,7 +114,7 @@ public class A3_suivi_saisie {
                                 System.exit(0);
                             }else{
                                 
-                                int optionConfigs2 = JOptionPane.showOptionDialog(null, 
+                                JOptionPane.showOptionDialog(null, 
                                 new Object[] {"Nom d'hôte :", HoteName, "Nom de la base de données :", nameBdd, "Port :", portBdd, "Nom d'utilisateur :", userName, "Mot de passe :", passe},
                                 "Connexion",
                                 JOptionPane.OK_CANCEL_OPTION,
@@ -279,12 +279,12 @@ public class A3_suivi_saisie {
             String json_password = new String(decodPassword, "UTF-8");
             
             
-            System.out.println("Les valeur dans le fichier de conf sont : ");
-            System.out.println("json_host " + json_host);
-            System.out.println("json_port " + json_port);
-            System.out.println("json_dbname " + json_dbname);
-            System.out.println("json_user " + json_user);
-            System.out.println("json_password " + json_password);
+            //System.out.println("Les valeur dans le fichier de conf sont : ");
+            //System.out.println("json_host " + json_host);
+            //System.out.println("json_port " + json_port);
+            //System.out.println("json_dbname " + json_dbname);
+            //System.out.println("json_user " + json_user);
+            //System.out.println("json_password " + json_password);
             
             f_read.close();
             
@@ -296,9 +296,9 @@ public class A3_suivi_saisie {
             Connection connexion  = DriverManager.getConnection(url, json_user, json_password);
             
             
-            // recuperation de la démarche
+            // recuperation des démarches
             Querry d = new Querry(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password);
-            List<String> dmd = new ArrayList<String>();
+            List<String> demarches = new ArrayList<String>();
             
             Iterator it = d.getAllDemarche().entrySet().iterator();
 
@@ -306,12 +306,12 @@ public class A3_suivi_saisie {
 	    while (it.hasNext()) {
 	        Map.Entry<String, String> val = (Map.Entry)it.next();
 	        System.out.println( " = " + val.getValue().toString());
-                dmd.add(val.getValue().toString());  
+                demarches.add(val.getValue().toString());  
 	    }
             
        
             System.out.println("\nTout est Ok!\nLancement de l'application...  : ");
-            UserFormDialog home = new UserFormDialog(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password, dmd);
+            UserFormDialog home = new UserFormDialog(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password, demarches);
             home.setVisible(true);
             home.setLocationRelativeTo(null);
             

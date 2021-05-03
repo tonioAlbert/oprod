@@ -14,8 +14,11 @@ import javax.swing.JFileChooser;
 import com.classes.action3saisie.Querry;
 import com.classes.action3saisie.Region;
 import com.export.action3saisie.Exports;
+import java.awt.Desktop;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -60,7 +63,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         
         initComponents();
 
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         this.j_combo_region.removeAllItems();
         
@@ -164,6 +167,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         jLabel7.setText("Emplacement de l'export");
 
         j_label_folder_export.setEditable(false);
+        j_label_folder_export.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_label_folder_export.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 j_label_folder_exportMouseClicked(evt);
@@ -414,10 +418,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
             //System.out.println("LOCATION = " + locationFile );
         }
-        //else{
-
-            //j_label_folder_export.setText("");
-        //}
 
         locationFile = "";
     }
@@ -460,11 +460,6 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Veuillez selectionner le dossier de destination de l'export","Séléction Emplacement", JOptionPane.INFORMATION_MESSAGE);
             //this.setAlwaysOnTop(true);
         }else{
-            //this.setAlwaysOnTop(false);
-            //JOptionPane.showMessageDialog(null, "Tout est OK","OK", JOptionPane.INFORMATION_MESSAGE);
-            //this.setAlwaysOnTop(true);
-            //System.out.println("Export RP en cours ..." );
-            
             String code_district = selected_district.split("  _  ")[0].trim();
             String code_commune = selected_commune.split("  _  ")[0].trim();
             String code_fokontany = selected_fokontany.split("  _  ")[0].trim();
@@ -476,11 +471,28 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             String fokontany = selected_fokontany.split("  _  ")[1].trim();
             String hameau = selected_hameau.split("  _  ")[1].trim();
             
-            //System.out.println("Code hameau :" + code_hameau );
+            List reponse = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText());
 
-            //Boolean RP = new Querry().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
+            
+            if(reponse.get(0).equals("success")){
+                
+                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Registre anomalie exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                
+                    if(export == JOptionPane.YES_OPTION){
+                        // ouverture de l'emplacement selectionner par l'utiisateur
+                        try {
+                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                        }catch(Exception ee){
+                            JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
 
-            System.out.println("System Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
+            }if(reponse.get(0).equals("error-empty")){
+                
+                JOptionPane.showMessageDialog(null, "Aucune anomalie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export registre anomalie impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+            }
+        
         }
 
     }//GEN-LAST:event_j_button_exporterActionPerformed

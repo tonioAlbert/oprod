@@ -44,8 +44,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
     private final String selectRegion = "Séléctionner un région";
     private final String selectDistrict = "Séléctionner un district";
     private final String selectCommune = "Séléctionner une commune";
-    private final String selectFokontany = "Séléctionner une fokontany";
-    private final String selectHameau = "Séléctionner un hameau";
+    private final String selectDateEdition = "Séléctionner une date";
     
     private String type_operation = "";
     
@@ -64,13 +63,13 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         
         initComponents();
 
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         this.j_combo_region.removeAllItems();
         
         // RECUPERATION DE TOUS LES REGIONS DANS LA BASE
         
-        HashMap<String, String> regions = new Region(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getAllRegions();
+        HashMap<String, String> regions = new Region(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getAllRegions();
         
         if(regions.isEmpty()){
             System.out.println("Impossible de récupérér les regions dans la base de données!");
@@ -161,6 +160,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         jLabel7.setText("Emplacement de l'export");
 
         j_label_folder_export.setEditable(false);
+        j_label_folder_export.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_label_folder_export.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 j_label_folder_exportMouseClicked(evt);
@@ -266,12 +266,13 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
             if(selected.equals(selectRegion)){
                 this.j_combo_district.setEnabled(false);
                 this.j_combo_commune.setEnabled(false);
+                this.j_combo_date_edition.setEnabled(false);
             }else{
 
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
 
-                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
+                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getRegions(selected);
 
                 for (String i : reg.keySet()) {
                     this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -293,8 +294,9 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
             selected += evt.getItem();
             boolean containsStr = selected.contains("  _  ");
 
-            if(selected.equals(selectCommune)){
+            if(selected.equals(selectDistrict)){
                 this.j_combo_commune.setEnabled(false);
+                this.j_combo_date_edition.setEnabled(false);
             }else{
 
                 this.j_combo_commune.setEnabled(false);
@@ -303,7 +305,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -317,8 +319,54 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_j_combo_districtItemStateChanged
 
     private void j_combo_communeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_communeItemStateChanged
+        
         String selected = "";
+        String selected_region = (String)this.j_combo_region.getSelectedItem();
+        String selected_district = (String)this.j_combo_district.getSelectedItem();
+        String district = selected_district.split("  _  ")[1].trim();
+        List <String[]> dateEditionCF;
 
+        
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+
+            selected += evt.getItem();
+
+            if(selected.equals(selectCommune)){
+                this.j_combo_date_edition.setEnabled(false);
+            }else{
+                
+                this.j_combo_date_edition.removeAllItems();
+                this.j_combo_date_edition.addItem(selectDateEdition);
+                
+                String selected_commune = (String)this.j_combo_commune.getSelectedItem();
+                String commune = selected_commune.split("  _  ")[1].trim();
+                        
+                //System.out.println("j_combo_communeItemStateChanged selected_region vaut  = " + selected_region);
+                //System.out.println("j_combo_communeItemStateChanged district vaut  = " + district);
+                //System.out.println("j_combo_communeItemStateChanged commune vaut  = " + commune);
+                //System.out.println("j_combo_communeItemStateChanged this.type_operation vaut  = " +  this.type_operation.toLowerCase());
+        
+                dateEditionCF  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getDistinctDateEditionCF(selected_region, district,commune , this.type_operation.toLowerCase());
+                
+                if(dateEditionCF.size() < 1){
+                    this.j_combo_date_edition.setEnabled(false);
+                    this.j_button_exporter_cf_editer.setEnabled(false);
+                    
+                    JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+                }else{
+                
+                    this.j_combo_date_edition.setEnabled(true);
+                    this.j_button_exporter_cf_editer.setEnabled(true);
+
+                    for (int i =0; i < dateEditionCF.size(); i++) {
+                        this.j_combo_date_edition.addItem(dateEditionCF.get(i)[0]);
+                    }
+                }
+
+
+            }
+        }
 
     }//GEN-LAST:event_j_combo_communeItemStateChanged
 
@@ -376,44 +424,59 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Veuillez selectionner le dossier de destination de l'export","Séléction Emplacement", JOptionPane.INFORMATION_MESSAGE);
             //this.setAlwaysOnTop(true);
         }else{
-            //this.setAlwaysOnTop(false);
-            //JOptionPane.showMessageDialog(null, "Tout est OK","OK", JOptionPane.INFORMATION_MESSAGE);
-            //this.setAlwaysOnTop(true);
-            //System.out.println("Export RP en cours ..." );
             
             String code_district = selected_district.split("  _  ")[0];
             String code_commune = selected_commune.split("  _  ")[0];
-            
-            
             String district = selected_district.split("  _  ")[1];
             String commune = selected_commune.split("  _  ")[1];
-            
-            //System.out.println("Code hameau :" + code_hameau );
-
-            //Boolean RP = new Querry().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
-
-            //System.out.println("System Dans btn exporter ... ");
-            
-            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getListesCfEditer(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
-            //System.out.println("Le retour de la réponse est : " + reponse.get(0));
-            
-            if(reponse.get(0).equals("success")){
+                       
+            if(this.j_combo_date_edition.getSelectedItem().equals(selectDateEdition)){
                 
-                int export = JOptionPane.showConfirmDialog(null, "Listes CF éditer exporté avec succès \nVoulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                
-                    if(export == JOptionPane.YES_OPTION){
-                        // ouverture de l'emplacement selectionner par l'utiisateur
-                        try {
-                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
-                        }catch(Exception ee){
-                            JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
+                System.out.println("sans date edition appelé");
+
+                List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getListesCfEditerWithoutFilterDate(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+
+                if(reponse.get(0).equals("success")){
+
+                    int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                        if(export == JOptionPane.YES_OPTION){
+                            // ouverture de l'emplacement selectionner par l'utiisateur
+                            try {
+                                Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                            }catch(Exception ee){
+                                JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
+                            }
                         }
-                    }
 
+                }else{
+                    JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                }
             }else{
-                JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
- 
+                
+                
+                System.out.println("avec date edition CF appelé");
+                String dateEdition = (String)this.j_combo_date_edition.getSelectedItem();
+                List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getListesCfEditerWithFilterDate(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText(), dateEdition.replace(" ", "")));
+
+                if(reponse.get(0).equals("success")){
+
+                    int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                        if(export == JOptionPane.YES_OPTION){
+                            // ouverture de l'emplacement selectionner par l'utiisateur
+                            try {
+                                Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                            }catch(Exception ee){
+                                JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+
+                }else{
+                    JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+            
         }
 
     }//GEN-LAST:event_j_button_exporter_cf_editerActionPerformed
@@ -430,6 +493,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
     private void j_label_folder_exportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_j_label_folder_exportMouseEntered
         this.j_label_folder_export.setToolTipText("Cliquer pour séléctionner le dossier de destionation de l'export");
+       // this.j_label_folder_export.setCursor();
     }//GEN-LAST:event_j_label_folder_exportMouseEntered
 
  

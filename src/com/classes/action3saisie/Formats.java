@@ -5,6 +5,10 @@
  */
 package com.classes.action3saisie;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Pattern;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -40,7 +44,7 @@ public class Formats {
                   String ch2 = sousChaines[i].substring(0, 1);
                   ch2 = ch2.toUpperCase();
                   ch2+= sousChaines[i].substring(1).toLowerCase() + " "; // on ajoute 1 espace entre les 2 sous-chaines
-                  // mais aussi apres la derniere ***
+                  // mais aussi apres la derniere
                   //System.out.println("oui identique : "+ ch2.toUpperCase()+"\n");
 
                   String comp_ch2 = ch2.toUpperCase().trim();
@@ -99,27 +103,64 @@ public class Formats {
         CellReference start = new CellReference(cellStrings[0]);
         CellReference end = new CellReference(cellStrings[1]);
 
-        CellRangeAddress address = new CellRangeAddress(start.getRow(),
-        end.getRow(), start.getCol(), end.getCol());
-        
-        return address;
+        //CellRangeAddress address = new CellRangeAddress(start.getRow(), end.getRow(), start.getCol(), end.getCol());
+        //return address;
+        return new CellRangeAddress(start.getRow(), end.getRow(), start.getCol(), end.getCol());
     }
     
     
     public static String ConvertSlashToUnderscore(String textToConvert){
         
         String txt1 = textToConvert.replace("/","");
-        String replaceString = txt1.replace(" ","_");
+        return txt1.replace(" ","_");
         
-        return replaceString;
+        //return replaceString;
     }
     
     
     public static java.sql.Date convertUtilToSql(java.util.Date uDate) {
-        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-        return sDate;
+        //java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        //return sDate;
+        return new java.sql.Date(uDate.getTime());
     }
     
+    
+    public static java.sql.Date convertStringToSql(String StringDate) {
+        String[] tabDate = StringDate.split("/");
+        
+        DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
+       
+        
+        Date daty = new Date();
+        //daty.setMonth(Integer.parseInt(tabDate[1]));
+        //daty.setYear(Integer.parseInt(tabDate[2]));
+        //daty.setDate(Integer.parseInt(tabDate[0]));
+        
+        
+        daty.setMonth(11);
+        daty.setYear(2020);
+        daty.setDate(11);
+
+        Calendar c = null;
+        
+        c.set(2020, 11, 24);
+        
+        //c.get
+        
+//System.out.println("daty = "+ daty);
+
+
+        //daty.setDate(Integer.parseInt(StringDate.replace("/", "")));
+        
+        //System.out.println("daty = "+ StringDate.replace("/", ""));
+        
+        java.util.Date d;
+        d = new java.util.Date(df.format(daty));
+        
+        java.sql.Date sDate = new java.sql.Date(d.getTime());
+        
+        return sDate;
+    }
     
     
     public static void resetTable(DefaultTableModel table){

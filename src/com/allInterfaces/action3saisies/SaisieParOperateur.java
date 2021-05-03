@@ -40,7 +40,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
     /**
      * Creates new form SaisieParOperateur
      */
-    public SaisieParOperateur(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String demarche) {
+    public SaisieParOperateur(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String DEM) {
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
@@ -53,8 +53,8 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         
         this.j_date_debut.setEnabled(false);
         this.j_comb_demarche.removeAllItems();
-        this.j_comb_demarche.addItem(demarche);
-        this.demarche = demarche;
+        this.j_comb_demarche.addItem(DEM);
+        this.demarche = DEM;
         
         
         this.j_label_login.setVisible(false);
@@ -274,7 +274,8 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(null, "Date début de saisie vide ou incorrect !","Erreur lors remplissage date de début de saisie", JOptionPane.INFORMATION_MESSAGE); 
                     }else{
                         
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getSimpleSaisieParOperateur( this.j_date_debut, this.demarche);
+
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSimpleSaisieParOperateur( this.j_date_debut, this.demarche);
 
                         DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
 
@@ -315,7 +316,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(null, "Date fin de saisie vide ou incorrect !","SErreur lors remplissage date Fin de saisie", JOptionPane.INFORMATION_MESSAGE); 
                     }else{
                         
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getSaisieParOperateurBetweenTwoDate(this.j_date_debut, this.j_date_fin, this.demarche);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieParOperateurBetweenTwoDate(this.j_date_debut, this.j_date_fin, this.demarche);
                         
                         DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
                         
@@ -353,7 +354,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     }else{
                         
                         username = selected.split("  _  ")[1];
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getSaisieWithLogin(this.demarche, username);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieWithLogin(this.demarche, username);
                         
                         if(saisieDesOperateurs.size() <1){
                         
@@ -393,7 +394,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         this.j_date_fin.setEnabled(false);
         String selectedValue = this.j_comb_select_critere_date.getSelectedItem().toString();
         
-        System.out.println("selectedValue vaut : " + selectedValue);
+        //System.out.println("selectedValue vaut : " + selectedValue);
         
         
         switch(selectedValue){
@@ -440,7 +441,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                 this.j_comb_login.addItem(com_select_username);
                     
                     
-                HashMap<String, String> users = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getAllUsers();
+                HashMap<String, String> users = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getAllUsers();
 
                 for (String i : users.keySet()) {
                     this.j_comb_login.addItem("Id : "+ i + "  _  " + users.get(i));

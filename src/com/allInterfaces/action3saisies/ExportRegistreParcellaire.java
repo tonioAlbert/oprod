@@ -62,7 +62,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
         
         initComponents();
 
-        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD).getConnection();
+        connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         this.j_combo_region.removeAllItems();
         
@@ -143,6 +143,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
         jLabel7.setText("Emplacement de l'export");
 
         j_label_folder_export.setEditable(false);
+        j_label_folder_export.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_label_folder_export.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 j_label_folder_exportMouseClicked(evt);
@@ -348,7 +349,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             String district = selected_district.split("  _  ")[1];
             String commune = selected_commune.split("  _  ")[1];
             
-            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreParcellaireProvisoire(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreParcellaireProvisoire(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
 
             if(reponse.get(0).equals("success")){
                 
