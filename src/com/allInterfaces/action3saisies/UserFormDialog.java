@@ -75,7 +75,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         setName("jf_login"); // NOI18N
         setResizable(false);
 
-        txt_username.setText("gaetan");
+        txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_usernameKeyPressed(evt);
@@ -105,7 +105,7 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         jLabel2.setText("Mot de passe");
 
-        txt_password.setText("2021+");
+        txt_password.setToolTipText("Mot de passe");
 
         j_combo_demarche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une démarche" }));
 
@@ -199,6 +199,9 @@ public class UserFormDialog extends javax.swing.JFrame {
         Utilisateurs user = new Utilisateurs(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD);
         String user_login_bdd = user.getLogin(txt_username);
         String user_mot_de_passe_bdd = user.getPassword();
+        String user_id_profil_bdd = user.getProfil();
+        
+
         hash_txt_password = Hash.getHash(txt_password.getBytes(), "MD5");
         
         if(user_login_bdd == null){
@@ -207,23 +210,19 @@ public class UserFormDialog extends javax.swing.JFrame {
         }else{
             
                 if (hash_txt_password.equals(user_mot_de_passe_bdd)){
-
-                    //System.out.println("Votre Nom d'utilisateur : "+ user.getLogin() +"\n");
-                   // System.out.println("Votre Mot de passe : "+ user.getPassword() +"\n");
-                    //System.out.println("Votee mot de passe hashé vaut : "+ hash_txt_password +"\n");
-
                     
-                    Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, demarche);
-
+                    
+        System.out.println("mon profil est : "+ user_id_profil_bdd);
+                System.out.println("user_login_bdd est : "+ user_login_bdd);
+                        System.out.println("user_mot_de_passe_bdd est : "+ user_mot_de_passe_bdd);
+                   
+                    Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, demarche, user_id_profil_bdd);
                     home.setVisible(true);
-                    
-                    //System.out.println("ity dia démarche : " + demarche);
-
-                   this.setVisible(false);
+                    this.setVisible(false);
 
                 }else{
                     System.out.print("Mot de passe saisie incorrect !");
-                    JOptionPane.showMessageDialog(null, "Mot de passe saisie incorrect !","Mot de passe incorrect", JOptionPane.INFORMATION_MESSAGE); 
+                    JOptionPane.showMessageDialog(null, "Mot de passe saisie incorrect !","Erreur Mot de passe", JOptionPane.INFORMATION_MESSAGE); 
                 }
 
             }

@@ -5,7 +5,7 @@
  */
 package com.classes.action3saisie;
 
-import com.connectDb.ConnectDb;
+
 import com.connectDb.ConnectDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,7 +52,7 @@ public class Utilisateurs {
 
     public String getLogin(String login) {
         
-        System.out.println("votre login est le : "+ login);
+        //System.out.println("votre login est le : "+ login);
 
         try {
             
@@ -78,7 +78,7 @@ public class Utilisateurs {
             
             
         } catch (SQLException ex) {
-            System.out.println("Eurreur ato annn");
+            //System.out.println("Eurreur ato annn");
             Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -135,10 +135,11 @@ public class Utilisateurs {
                     //System.out.println("OKKKK" );
                     this.profil = rs.getString("id_profil");
                     //p = "kkkk";
-                    this.profil = null;
+                    
 
             }else{
-                    System.out.println("Impossible de récupérer l'Utilisateur");
+                    System.out.println("Impossible de récupérer le profil de l'utilisateur");
+                    this.profil = null;
             }
 
             st.close();

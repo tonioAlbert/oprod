@@ -32,7 +32,7 @@ import javax.swing.JOptionPane;
  *
  * @author RAP
  */
-public class Home extends javax.swing.JFrame {
+public class Home1 extends javax.swing.JFrame {
     
     private static Connection connectDatabase;
     private static PreparedStatement st;
@@ -46,7 +46,6 @@ public class Home extends javax.swing.JFrame {
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
-    private String BDD_ID_PROFIL = "";
 
     /**
      * Creates new form Home
@@ -58,9 +57,8 @@ public class Home extends javax.swing.JFrame {
      * @param username
      * @param password
      * @param TYPE_OPERATION
-     * @param ID_PROFIL
      */
-    public Home(String HOST, String DBNAME, Integer PORT, String USER, String PWD , String username, String password, String TYPE_OPERATION, String ID_PROFIL) {
+    public Home1(String HOST, String DBNAME, Integer PORT, String USER, String PWD , String username, String password, String TYPE_OPERATION) {
 
         
         this.userName = username;
@@ -72,22 +70,8 @@ public class Home extends javax.swing.JFrame {
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
-        this.BDD_ID_PROFIL = ID_PROFIL;
         
         initComponents();
-        
-        this.j_menu_controllesSaisies.setEnabled(false);
-        this.j_menu_export_listes_demandeurs.setEnabled(false);
-        if(this.BDD_ID_PROFIL != null && this.BDD_ID_PROFIL.equals("2")){
-            
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_cf_editable.setEnabled(false);
-            this.j_menu_item_rapport_saisie.setEnabled(false);
-            this.j_menu_item_rapports_sig.setEnabled(false);
-            
-            //this.j_menu_controllesSaisies.setEnabled(false);
-        }
 
         this.jProgressBar_home.setVisible(false);
         this.j_labal_perc.setVisible(false);
@@ -105,9 +89,9 @@ public class Home extends javax.swing.JFrame {
         String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
         System.out.println("Nom de latelier sur home : " + nomAtelier);
         if(nomAtelier.equals("ATS")){
-            this.j_menu_item_rapports_sig.setEnabled(true);
+            this.j_menu_item_rapport_sig.setEnabled(true);
         }else{
-            this.j_menu_item_rapports_sig.setEnabled(false);
+            this.j_menu_item_rapport_sig.setEnabled(false);
         }
         
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -142,7 +126,6 @@ public class Home extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         j_menu_fichier = new javax.swing.JMenu();
         j_menu_item_deconnexion = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         j_menu_item_quitter_application = new javax.swing.JMenuItem();
         j_menu_formatages = new javax.swing.JMenu();
         j_menu_item_formate_nom = new javax.swing.JMenuItem();
@@ -158,11 +141,8 @@ public class Home extends javax.swing.JFrame {
         j_menu_item_formte_leiu_acte_naissance = new javax.swing.JMenuItem();
         j_menu_exports = new javax.swing.JMenu();
         j_menu_export_listes_demandeurs = new javax.swing.JMenuItem();
-        jSeparator4 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_anomalies = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_rp_provisoire = new javax.swing.JMenuItem();
-        jSeparator6 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_cf_editer_par_commune = new javax.swing.JMenuItem();
         j_menu_stats = new javax.swing.JMenu();
         j_menu_stat_saisie_par_operateur = new javax.swing.JMenuItem();
@@ -171,7 +151,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_cf_editable = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         j_menu_item_rapport_saisie = new javax.swing.JMenuItem();
-        j_menu_item_rapports_sig = new javax.swing.JMenuItem();
+        j_menu_item_rapport_sig = new javax.swing.JMenuItem();
         j_menu_controllesSaisies = new javax.swing.JMenu();
         j_menu_controles_saisie = new javax.swing.JMenuItem();
 
@@ -330,7 +310,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_fichier.add(j_menu_item_deconnexion);
-        j_menu_fichier.add(jSeparator3);
 
         j_menu_item_quitter_application.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
         j_menu_item_quitter_application.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
@@ -453,7 +432,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_exports.add(j_menu_export_listes_demandeurs);
-        j_menu_exports.add(jSeparator4);
 
         j_menu_export_listes_anomalies.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         j_menu_export_listes_anomalies.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
@@ -464,7 +442,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_exports.add(j_menu_export_listes_anomalies);
-        j_menu_exports.add(jSeparator5);
 
         j_menu_export_rp_provisoire.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_rp_provisoire.setText("Registre Parcellaire Provisoire");
@@ -474,7 +451,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_exports.add(j_menu_export_rp_provisoire);
-        j_menu_exports.add(jSeparator6);
 
         j_menu_export_listes_cf_editer_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_listes_cf_editer_par_commune.setText("Listes CF éditer");
@@ -531,14 +507,13 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_stats.add(j_menu_item_rapport_saisie);
 
-        j_menu_item_rapports_sig.setText("Vectorisation par commune(s)");
-        j_menu_item_rapports_sig.setName("setEnabled"); // NOI18N
-        j_menu_item_rapports_sig.addActionListener(new java.awt.event.ActionListener() {
+        j_menu_item_rapport_sig.setText("Vectorisation par commune(s)");
+        j_menu_item_rapport_sig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_menu_item_rapports_sigActionPerformed(evt);
+                j_menu_item_rapport_sigActionPerformed(evt);
             }
         });
-        j_menu_stats.add(j_menu_item_rapports_sig);
+        j_menu_stats.add(j_menu_item_rapport_sig);
 
         jMenuBar1.add(j_menu_stats);
 
@@ -1028,11 +1003,11 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         //System.out.println("BDD_PWD : " + BDD_PWD);
     }//GEN-LAST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
 
-    private void j_menu_item_rapports_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_rapports_sigActionPerformed
+    private void j_menu_item_rapport_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_rapport_sigActionPerformed
         RapportSIG v_rapport_sig = new RapportSIG(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
         this.dpContent.add(v_rapport_sig);
         v_rapport_sig.show();
-    }//GEN-LAST:event_j_menu_item_rapports_sigActionPerformed
+    }//GEN-LAST:event_j_menu_item_rapport_sigActionPerformed
 
     private void j_menu_item_rapport_saisieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_rapport_saisieActionPerformed
         RapportSAISIE v_rapport_saisie = new RapportSAISIE(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
@@ -1069,14 +1044,15 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Home1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Home1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Home1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Home1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -1100,10 +1076,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JProgressBar jProgressBar_home;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JPopupMenu.Separator jSeparator5;
-    private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel j_labal_perc;
     private javax.swing.JMenuItem j_menu_cf_editable;
@@ -1130,7 +1102,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_item_nom_parents;
     private javax.swing.JMenuItem j_menu_item_quitter_application;
     private javax.swing.JMenuItem j_menu_item_rapport_saisie;
-    private javax.swing.JMenuItem j_menu_item_rapports_sig;
+    private javax.swing.JMenuItem j_menu_item_rapport_sig;
     private javax.swing.JMenuItem j_menu_stat_anomalies_par_commune;
     private javax.swing.JMenuItem j_menu_stat_saisie_par_operateur;
     private javax.swing.JMenu j_menu_stats;

@@ -471,7 +471,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             String fokontany = selected_fokontany.split("  _  ")[1].trim();
             String hameau = selected_hameau.split("  _  ")[1].trim();
             
-            List reponse = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText());
+            List reponse = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.type_operation).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText());
 
             
             if(reponse.get(0).equals("success")){
@@ -487,11 +487,12 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                         }
                     }
 
-            }if(reponse.get(0).equals("error-empty")){
-                
-                JOptionPane.showMessageDialog(null, "Aucune anomalie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export registre anomalie impossible", JOptionPane.INFORMATION_MESSAGE);
- 
             }
+            //if(reponse.get(0).equals("error-empty")){
+                
+                //JOptionPane.showMessageDialog(null, "Aucune anomalie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export registre anomalie impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+            //}
         
         }
 

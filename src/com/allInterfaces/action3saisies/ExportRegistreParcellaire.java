@@ -345,11 +345,11 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
 
             String code_district = selected_district.split("  _  ")[0];
             String code_commune = selected_commune.split("  _  ")[0];
-            
             String district = selected_district.split("  _  ")[1];
             String commune = selected_commune.split("  _  ")[1];
             
-            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreParcellaireProvisoire(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+            
+            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.type_operation.toLowerCase()).getRegistreParcellaireProvisoire(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
 
             if(reponse.get(0).equals("success")){
                 
@@ -365,7 +365,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                     }
 
             }else{
-                JOptionPane.showMessageDialog(null, "Aucune RP prêt à exporté sur la : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
             }
             
             

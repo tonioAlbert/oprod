@@ -39,7 +39,9 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import com.classes.action3saisie.Querry;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.PrintSetup;
+import org.apache.poi.ss.util.RegionUtil;
 
 /**
  *
@@ -88,17 +90,6 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
         }
         
         
-        System.out.println("méthode getRegistreAnomalie || reg = "+ reg);
-        System.out.println("méthode getRegistreAnomalie || dist = "+ dist);
-        System.out.println("méthode getRegistreAnomalie || com = "+ com);
-        System.out.println("méthode getRegistreAnomalie || fkt = "+ fkt);
-        System.out.println("méthode getRegistreAnomalie || hameau = "+ hameau);
-        System.out.println("méthode getRegistreAnomalie || this.op = "+ this.TYPE_OPERATION.toLowerCase());
-        
-        //System.out.println("Nom atelier = "+ new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier());
-        
-        
-        
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
         Date date = new Date(System.currentTimeMillis());
         
@@ -108,8 +99,26 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
         String dateAujourdhui = dateFormat.format(new Date());
     
     
-        String realPath = path+"\\"+this.op+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xls";
-        List<Querry> demandes = new ArrayList<>();
+        String realPath = path+"\\"+this.op+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAntenne = "";
+        
+        switch (nomAtelier){
+            case "ATS":
+                nomAntenne= "ANTENNE : ATSINANANA";
+                break;
+            case "VAK":
+                nomAntenne= "ANTENNE : VAKINANKARATRA";
+                break;
+            default:
+                if (reg.toUpperCase().equals("ANALAMANGA")) {
+                    nomAntenne= "ANTENNE : ANALAMANGA";
+                }else{
+                    nomAntenne= "ANTENNE : ITASY";
+                }
+                
+                break;
+        }
         
         int RowResultSet = 0;
         
@@ -172,12 +181,8 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
             st.setString(4, fkt);
             st.setString(5, hameau);
             st.setString(6, this.TYPE_OPERATION.toLowerCase());
-            
-            
             rs = st.executeQuery();
-            
-            System.out.println(rs);
-            
+
                 try{
                     
                     // CREATION DU FICHIER
@@ -196,9 +201,38 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
                     XSSFWorkbook  wb = new XSSFWorkbook(fis);
                     XSSFSheet sheet = wb.getSheet(nameOfSheet);
                     
-                    
-                    //sheet.createRow(0).createCell(0).setCellValue("Commune :");
-                    //sheet.getRow(0).createCell(1).setCellValue(com);
+
+                // MISE EN PAGE ET MISE EN FORME DU FICHIER
+                sheet.getHeader().setRight("Fiche 9 – LISTE DES ANOMALIES SUR LES FORMULAIRES");
+                sheet.getHeader().setLeft("CASEF / GEOX2");
+                sheet.getFooter().setLeft(nomAntenne);
+                sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
+                
+                sheet.getPrintSetup().setLandscape(true);
+                PrintSetup printsetup = sheet.getPrintSetup();
+                sheet.getPrintSetup().setPaperSize(printsetup.A3_PAPERSIZE);
+
+                String[] cellAFixer = ("$1:$6").split(":");
+                CellReference startCellFixed = new CellReference(cellAFixer[0]);
+                CellReference endCellFixed = new CellReference(cellAFixer[1]);
+                CellRangeAddress addressCellAFixer = new CellRangeAddress(startCellFixed.getRow(),
+                endCellFixed.getRow(), startCellFixed.getCol(), endCellFixed.getCol());
+
+                sheet.setRepeatingRows(addressCellAFixer);
+                
+                
+                
+                // FIN MISE EN PAGE ET MISE EN FORME DU FICHIER
+                
+                // create table with data
+                XSSFCellStyle cadre = wb.createCellStyle();
+                cadre.setBorderBottom(BorderStyle.THIN);
+                cadre.setBorderTop(BorderStyle.THIN);
+                cadre.setBorderLeft(BorderStyle.THIN);
+                cadre.setBorderRight(BorderStyle.THIN);
+                
+            //RegionUtil.setBorderBottom(BorderStyle.DOUBLE,
+            //CellRangeAddress.valueOf("A1:B7"), sheet);
 
             Row headerRow0 = sheet.createRow(0);
 
@@ -208,7 +242,7 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
             headerFont.setBold(true);
             cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
             cellStyleBold.setFont(headerFont);
-        
+
         
             cellStyleBold.setBorderBottom(BorderStyle.THIN);  
             cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
@@ -223,39 +257,54 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
             cellStyleBold.setBorderLeft(BorderStyle.THIN);  
             cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
             
+            cellStyleBold.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            cellStyleBold.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
+            
             Cell headerCell0 = headerRow0.createCell(0);
             headerCell0.setCellValue("Commune :");
+            headerCell0.setCellStyle(cadre);
             headerCell0.setCellStyle(cellStyleBold);
 
-
+            
             headerCell0 = headerRow0.createCell(1);
             headerCell0.setCellValue(com);
+            headerCell0.setCellStyle(cadre);
 
  
             headerCell0 = headerRow0.createCell(2);
             headerCell0.setCellValue("Code Com : " + c_com);
+            headerCell0.setCellStyle(cadre);
 
             //headerCell0 = headerRow0.createCell(3);
             //headerCell0.setCellValue(c_com);
 
             headerCell0 = headerRow0.createCell(4);
             headerCell0.setCellValue("Fokontany :");
+            headerCell0.setCellStyle(cadre);
             headerCell0.setCellStyle(cellStyleBold);
+            
         
-
             headerCell0 = headerRow0.createCell(5);
-            headerCell0.setCellValue(fkt);   
+            headerCell0.setCellValue(fkt);
+            headerCell0.setCellStyle(cadre);
 
             headerCell0 = headerRow0.createCell(6);
             headerCell0.setCellValue("Code FKT :");
+            headerCell0.setCellStyle(cadre);
             headerCell0.setCellStyle(cellStyleBold);
+            
 
             headerCell0 = headerRow0.createCell(7);
             headerCell0.setCellValue(c_fkt);
+            headerCell0.setCellStyle(cadre);
+            
+            
 
             headerCell0 = headerRow0.createCell(8);
             headerCell0.setCellValue("N° Equipe :");
+            headerCell0.setCellStyle(cadre);
             headerCell0.setCellStyle(cellStyleBold);
+            
 
             //headerCell0 = headerRow0.createCell(9);
             //headerCell0.setCellValue("xxxxx n° equipe");
@@ -265,45 +314,59 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
 
             Cell headerCell1 = headerRow1.createCell(0);
             headerCell1.setCellValue("Hameau :");
+            headerCell1.setCellStyle(cadre);
             headerCell1.setCellStyle(cellStyleBold);
+            
 
 
             headerCell1 = headerRow1.createCell(1);
             headerCell1.setCellValue(hameau);
+            headerCell1.setCellStyle(cadre);
 
             headerCell1 = headerRow1.createCell(2);
             headerCell1.setCellValue("Code Ham : " + (String) c_hameau);
+            headerCell1.setCellStyle(cadre);
 
             //headerCell1 = headerRow1.createCell(3);
             //headerCell1.setCellValue(c_hameau);
 
             headerCell1 = headerRow1.createCell(4);
             headerCell1.setCellValue("Atelier :");
+            headerCell1.setCellStyle(cadre);
             headerCell1.setCellStyle(cellStyleBold);
+            
 
             
             headerCell1 = headerRow1.createCell(5);
-            headerCell1.setCellValue(new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier());   
+            headerCell1.setCellValue(nomAtelier);
+            headerCell1.setCellStyle(cadre);
 
             headerCell1 = headerRow1.createCell(6);
             headerCell1.setCellValue("Date d’envoi :");
+            headerCell1.setCellStyle(cadre);
             headerCell1.setCellStyle(cellStyleBold);
+            
 
         
         
             headerCell1 = headerRow1.createCell(7);
             headerCell1.setCellValue(dateAujourdhui);
+            headerCell1.setCellStyle(cadre);
 
             headerCell1 = headerRow1.createCell(8);
             headerCell1.setCellValue("Date de retour :");
+            headerCell1.setCellStyle(cadre);
             headerCell1.setCellStyle(cellStyleBold);
+            
 
 
             Row headerRow4 = sheet.createRow(4);
 
             Cell headerCell4 = headerRow4.createCell(0);
             headerCell4.setCellValue("Atelier");
+            headerCell4.setCellStyle(cadre);
             headerCell4.setCellStyle(cellStyleBold);
+            
 
             // fusionnage des cellules pour atelier
             String[] cellStrings = ("A5:C5").split(":");
@@ -315,7 +378,9 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
 
             headerCell4 = headerRow4.createCell(3);
             headerCell4.setCellValue("Correction (Antenne / Terrain)");
+            headerCell4.setCellStyle(cadre);
             headerCell4.setCellStyle(cellStyleBold);
+            
 
             // fusionnage des cellules pour antenne / terrain
             String[] cellStrings2 = ("D5:H5").split(":");
@@ -327,7 +392,9 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
 
             headerCell4 = headerRow4.createCell(8);
             headerCell4.setCellValue("Contrôles");
+            headerCell4.setCellStyle(cadre);
             headerCell4.setCellStyle(cellStyleBold);
+            
             //headerCell4.setCellStyle(cellStyleCenter);
 
             // fusionnage des cellules pour contrôle ( signature AGF, AFO, ect.
@@ -343,51 +410,76 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
 
             Cell headerCell5 = headerRow5.createCell(0);
             headerCell5.setCellValue("Lot");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(1);
             headerCell5.setCellValue("N° Demande");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(2);
             headerCell5.setCellValue("Description anomalie");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(3);
             headerCell5.setCellValue("Corrigé");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
  
             headerCell5 = headerRow5.createCell(4);
             headerCell5.setCellValue("Non corrigé");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(5);
             headerCell5.setCellValue("Date correction");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(6);
             headerCell5.setCellValue("Observation sur la correction");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(7);
             headerCell5.setCellValue("Signature ADA");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(8);
             headerCell5.setCellValue("Date");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
+            
 
             headerCell5 = headerRow5.createCell(9);
             headerCell5.setCellValue("Signature AGF");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(10);
             headerCell5.setCellValue("Date");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
             headerCell5 = headerRow5.createCell(11);
             headerCell5.setCellValue("Signature AFO");
+            headerCell5.setCellStyle(cadre);
             headerCell5.setCellStyle(cellStyleBold);
+            
 
         int n = 6;
         
@@ -399,19 +491,46 @@ public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, 
 
                     Cell headerCell7 = headerRow7.createCell(0);
                     headerCell7.setCellValue(rs.getString("lot"));
+                    headerCell7.setCellStyle(cadre);
 
 
                     Cell headerCell8 = headerRow7.createCell(1);
                     headerCell8.setCellValue(rs.getString("numero_demande"));
+                    headerCell8.setCellStyle(cadre);
 
                     Cell headerCell9 = headerRow7.createCell(2);
                     headerCell9.setCellValue(rs.getString("anomalie_description"));
+                    headerCell9.setCellStyle(cadre);
                     
-                    //System.out.println("Get commune : " + rs.getString("commune") + " ::  " + rs.getString("numero_demande") 
-                    //                       + " Login = " +rs.getString("login") + " lot : " + rs.getString("lot")+ " anomalie_description = " + rs.getString("anomalie_description"));
-
+                    
                     n++;
             }
+            
+            
+                String[] CelluleAMettreDeBordure = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+
+
+                for(int i = 0; i < CelluleAMettreDeBordure.length; i++){
+
+                    for(int a = 5; a<n+1; a++){
+
+                        String rangCellule = CelluleAMettreDeBordure[i]+a;
+
+                        RegionUtil.setBorderBottom(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderTop(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderRight(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderLeft(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet); 
+                    }
+
+                }
+
   
                     FileOutputStream fout = new FileOutputStream(src);
                     
@@ -564,7 +683,7 @@ public List<String> getListesCfEditerWithoutFilterDate(String reg, String c_dist
                 HSSFSheet  sheet = wb.createSheet(nameOfSheet);
 
                 // MISE EN PAGE DU FICHIER
-                sheet.getHeader().setCenter("Listes des CF éditer sur la \nRégion : "+reg+", Commune: "+com);
+                sheet.getHeader().setCenter("Listes des CF éditer");
                 sheet.getFooter().setCenter("CASEF / GEOX2");
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -713,7 +832,7 @@ public List<String> getListesCfEditerWithoutFilterDate(String reg, String c_dist
                             headerCell_10.setCellStyle(cadre);
                             
                             Cell headerCell_11 = headerRow4.createCell(4);
-                            headerCell_11.setCellValue(rs.getString("nom_et_prenom"));
+                            headerCell_11.setCellValue(rs.getString("nom_et_prénom(s)"));
                             headerCell_11.setCellStyle(cadre);
                             
                             Cell headerCell_12 = headerRow4.createCell(5);
@@ -1153,8 +1272,6 @@ public List<String> getListesCfEditerWithFilterDate(String reg, String c_dist, S
 
 
 
-
-
     
 public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, String dist, String c_com,String com, String path){
 
@@ -1170,8 +1287,28 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
         Date date = new Date(System.currentTimeMillis());
     
     
-        String realPath = path+"\\"+"RP_prov_"+formatter.format(date)+"_"+this.op+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+".xls";
-
+        String realPath = path+"\\"+"RP_prov ( LISTING )_"+formatter.format(date)+"_"+this.op+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+".xls";
+        
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAntenne = "";
+        
+        switch (nomAtelier){
+            case "ATS":
+                nomAntenne= "ANTENNE : ATSINANANA";
+                break;
+            case "VAK":
+                nomAntenne= "ANTENNE : VAKINANKARATRA";
+                break;
+            default:
+                if (reg.equals("ANALAMANGA")) {
+                    nomAntenne= "ANTENNE : ANALAMANGA";
+                }else{
+                    nomAntenne= "ANTENNE : ITASY";
+                }
+                
+                break;
+        }
+        
         
         int RowResultSet = 0;
         
@@ -1256,27 +1393,49 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
 "              	AND demande.date_crl-demande.date_demande >= 15  \n" +
 "                 ORDER BY demande.num_registre  ASC";
             
+            
+            
             st = connectDatabase.prepareStatement(sql);    
             st.setString(1, reg);
             st.setString(2, dist);
             st.setString(3, com);
             st.setString(4, this.TYPE_OPERATION.toLowerCase());
-            
             rs = st.executeQuery();
-            
-            System.out.println("RP PROV = "+ rs);
             
                 try{
                     
                     // CREATION DU FICHIER
-                    String nameOfSheet = "cf_editer";
+                    String nameOfSheet = "LISTING";
                     
                     
                     // REMPLISSAGE DANS LE FICHIER
 
             HSSFWorkbook   wb = new HSSFWorkbook ();
             HSSFSheet  sheet = wb.createSheet(nameOfSheet);
-                    
+            
+            
+            
+                // MISE EN PAGE ET MISE EN FORME DU FICHIER
+                sheet.getHeader().setRight("LISTING DES DOSSERS A CONTROLER");
+                sheet.getHeader().setLeft("CASEF / GEOX2");
+                sheet.getFooter().setLeft(nomAntenne);
+                sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
+                
+                sheet.getPrintSetup().setLandscape(true);
+                PrintSetup printsetup = sheet.getPrintSetup();
+                sheet.getPrintSetup().setPaperSize(printsetup.A3_PAPERSIZE);
+
+                String[] cellAFixer = ("$1:$5").split(":");
+                CellReference startCellFixed = new CellReference(cellAFixer[0]);
+                CellReference endCellFixed = new CellReference(cellAFixer[1]);
+                CellRangeAddress addressCellAFixer = new CellRangeAddress(startCellFixed.getRow(),
+                endCellFixed.getRow(), startCellFixed.getCol(), endCellFixed.getCol());
+
+                sheet.setRepeatingRows(addressCellAFixer);
+                
+                
+                
+                // FIN MISE EN PAGE ET MISE EN FORME DU FICHIER      
             
             Row headerRow0 = sheet.createRow(0);
  
@@ -1356,7 +1515,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
 
 
             headerCell2 = headerRow2.createCell(1);
-            headerCell2.setCellValue(Integer.parseInt(c_dist));
+            headerCell2.setCellValue(c_dist);
             headerCell2.setCellStyle(cadre);
 
             headerCell2 = headerRow2.createCell(2);
@@ -1364,7 +1523,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
             headerCell2.setCellStyle(cadre);
 
             headerCell2 = headerRow2.createCell(3);
-            headerCell2.setCellValue(Integer.parseInt(c_com));
+            headerCell2.setCellValue(c_com);
             headerCell2.setCellStyle(cadre);
 // ============================================================================ 
 

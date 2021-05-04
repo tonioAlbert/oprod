@@ -16,8 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
@@ -291,7 +289,7 @@ public class A3_suivi_saisie {
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://"+json_host+":"+json_port+"/"+json_dbname;
             
-            System.out.println("URL : " +url);
+            //System.out.println("URL : " +url);
 
             Connection connexion  = DriverManager.getConnection(url, json_user, json_password);
             
