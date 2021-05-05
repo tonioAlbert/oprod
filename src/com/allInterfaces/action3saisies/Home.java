@@ -70,10 +70,13 @@ public class Home extends javax.swing.JFrame {
         this.BDD_PWD = PWD;
         this.BDD_ID_PROFIL = ID_PROFIL;
         
+        
         initComponents();
         
         this.j_menu_controllesSaisies.setEnabled(false);
         this.j_menu_export_listes_demandeurs.setEnabled(false);
+        this.j_menu_parametres.setEnabled(false);
+        
         if(this.BDD_ID_PROFIL != null && this.BDD_ID_PROFIL.equals("2")){
             
             this.j_menu_formatages.setEnabled(false);
@@ -172,6 +175,8 @@ public class Home extends javax.swing.JFrame {
         j_menu_item_rapports_sig = new javax.swing.JMenuItem();
         j_menu_controllesSaisies = new javax.swing.JMenu();
         j_menu_controles_saisie = new javax.swing.JMenuItem();
+        j_menu_parametres = new javax.swing.JMenu();
+        j_menu_config_bdd = new javax.swing.JMenuItem();
 
         JLogin.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         JLogin.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
@@ -263,7 +268,12 @@ public class Home extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SUIVI SAISIE");
+        setTitle("SUIVI ACTION 3");
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         dpContent.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -295,12 +305,11 @@ public class Home extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 790, Short.MAX_VALUE)
                         .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_test, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jProgressBar_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
+                            .addComponent(jProgressBar_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(j_label_loading)
-                        .addContainerGap())))
+                        .addComponent(j_label_loading)))
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -570,6 +579,18 @@ public class Home extends javax.swing.JFrame {
         j_menu_controllesSaisies.add(j_menu_controles_saisie);
 
         jMenuBar1.add(j_menu_controllesSaisies);
+
+        j_menu_parametres.setText("Paramètres");
+
+        j_menu_config_bdd.setText("Configuration base de données");
+        j_menu_config_bdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_config_bddActionPerformed(evt);
+            }
+        });
+        j_menu_parametres.add(j_menu_config_bdd);
+
+        jMenuBar1.add(j_menu_parametres);
 
         setJMenuBar(jMenuBar1);
 
@@ -1093,6 +1114,22 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         v_rapport_anomalies_saisie_par_commune.show();
     }//GEN-LAST:event_j_menu_stat_anomalies_par_communeActionPerformed
 
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if (evt.isControlDown() && evt.isShiftDown() && evt.getKeyChar() != 'p'&& evt.getKeyChar() != 'P' && evt.getKeyCode() == 80) {
+                System.out.println("CTRL + SHIFT + p"); 
+                this.j_menu_parametres.setEnabled(true);
+                
+                ///this.j_menu_parametres.set
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void j_menu_config_bddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_config_bddActionPerformed
+        ModificationConfigurationBaseDeDonnees v_rapport_anomalies_saisie_par_commune = new ModificationConfigurationBaseDeDonnees(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER);
+        this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+        v_rapport_anomalies_saisie_par_commune.show();
+        
+    }//GEN-LAST:event_j_menu_config_bddActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1104,7 +1141,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -1149,6 +1186,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JLabel j_label_loading;
     private javax.swing.JLabel j_label_texte_loading;
     private javax.swing.JMenuItem j_menu_cf_editable;
+    private javax.swing.JMenuItem j_menu_config_bdd;
     private javax.swing.JMenuItem j_menu_controles_saisie;
     private javax.swing.JMenu j_menu_controllesSaisies;
     private javax.swing.JMenuItem j_menu_export_listes_anomalies;
@@ -1173,6 +1211,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_item_quitter_application;
     private javax.swing.JMenuItem j_menu_item_rapport_saisie;
     private javax.swing.JMenuItem j_menu_item_rapports_sig;
+    private javax.swing.JMenu j_menu_parametres;
     private javax.swing.JMenuItem j_menu_stat_anomalies_par_commune;
     private javax.swing.JMenuItem j_menu_stat_saisie_par_operateur;
     private javax.swing.JMenu j_menu_stats;

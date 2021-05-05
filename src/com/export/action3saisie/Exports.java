@@ -832,7 +832,7 @@ public List<String> getListesCfEditerWithoutFilterDate(String reg, String c_dist
                             headerCell_10.setCellStyle(cadre);
                             
                             Cell headerCell_11 = headerRow4.createCell(4);
-                            headerCell_11.setCellValue(rs.getString("nom_et_prénom(s)"));
+                            headerCell_11.setCellValue(rs.getString("nom_et_prenom"));
                             headerCell_11.setCellStyle(cadre);
                             
                             Cell headerCell_12 = headerRow4.createCell(5);

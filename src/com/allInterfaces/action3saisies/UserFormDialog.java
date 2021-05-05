@@ -37,6 +37,8 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         initComponents();
         
+        
+        
         if(demarches.isEmpty() || demarches == null){
             System.out.println("Impossible de lancer le programme car la table type_op est vide");
             System.exit(0);
@@ -47,7 +49,10 @@ public class UserFormDialog extends javax.swing.JFrame {
                 //System.out.println("Pouf valeur de demande : " + dmd.toUpperCase());
                 this.j_combo_demarche.addItem(demarch.toUpperCase());
             }
-        }                   
+        } 
+        
+        
+        
         
     }
 
@@ -333,7 +338,7 @@ public class UserFormDialog extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -353,11 +358,6 @@ public class UserFormDialog extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 
-
-                
-                System.out.println("Tonga ato ny lozakaaaa");
-                
-                //new UserFormDialog(HOST, PORT, DBNAME, USER, PWD).setVisible(true);
             }
         });
     }
