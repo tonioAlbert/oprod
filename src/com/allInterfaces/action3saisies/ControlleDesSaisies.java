@@ -62,6 +62,7 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Contrôles Des Saisies");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
 
         j_table_saisie_par_operateur.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

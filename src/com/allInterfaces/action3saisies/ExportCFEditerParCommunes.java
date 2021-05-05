@@ -170,7 +170,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
             }
         });
 
-        j_button_folder_export.setIcon(new javax.swing.ImageIcon("C:\\Users\\RAP\\Documents\\NetBeansProjects\\A3_suivi_saisie\\ressources\\img\\Webp.net-resizeimage.png")); // NOI18N
+        j_button_folder_export.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/Webp.net-resizeimage.png"))); // NOI18N
         j_button_folder_export.setBorderPainted(false);
         j_button_folder_export.setContentAreaFilled(false);
         j_button_folder_export.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

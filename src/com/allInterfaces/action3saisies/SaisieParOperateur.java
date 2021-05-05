@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class SaisieParOperateur extends javax.swing.JInternalFrame {
     
     private final String comb_demarche = "Séléctionner une démarche";
-    private final String com_critere_date = "Séléctionner une critère de date";
+    private final String com_critere_date = "Séléctionner une critère";
     private final String com_critere_par_date = "Par Date";
     private final String com_critere_intervale_de_date = "Intervale de date";
     private final String com_par_login = "Par Utilisateurs";
@@ -47,7 +47,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
-        
+
         
         initComponents();
         
@@ -88,8 +88,8 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         j_label_login = new javax.swing.JLabel();
 
         setClosable(true);
-        setIconifiable(true);
         setTitle("Recherche saisie(s) des opérateurs");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
 
         j_table_saisie_par_operateur.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         j_table_saisie_par_operateur.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
@@ -148,14 +148,14 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         j_date_fin.setDateFormatString("dd/MM/yyyy");
         j_date_fin.setEnabled(false);
 
-        j_comb_select_critere_date.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère de date", "Par Date", "Intervale de date", "Par Utilisateurs" }));
+        j_comb_select_critere_date.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère", "Par Date", "Intervale de date", "Par Utilisateurs" }));
         j_comb_select_critere_date.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_comb_select_critere_dateActionPerformed(evt);
             }
         });
 
-        j_label_annee_saisie2.setText("Critère Date");
+        j_label_annee_saisie2.setText("Critères");
 
         j_comb_login.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un nom d'utilisateur" }));
 

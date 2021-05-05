@@ -88,6 +88,11 @@ public class UserFormDialog extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });
 
         btn_connexion.setText("Connexion");
         btn_connexion.addActionListener(new java.awt.event.ActionListener() {
@@ -106,8 +111,18 @@ public class UserFormDialog extends javax.swing.JFrame {
         jLabel2.setText("Mot de passe");
 
         txt_password.setToolTipText("Mot de passe");
+        txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_passwordKeyPressed(evt);
+            }
+        });
 
         j_combo_demarche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une démarche" }));
+        j_combo_demarche.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                j_combo_demarcheKeyPressed(evt);
+            }
+        });
 
         j_label_demarche.setText("Démarche");
 
@@ -230,32 +245,82 @@ public class UserFormDialog extends javax.swing.JFrame {
     }
     private void btn_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_connexionActionPerformed
         
-        ChargeLogin();
+        this.ChargeLogin();
 
     }//GEN-LAST:event_btn_connexionActionPerformed
 
     private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
         
-        Integer keyCode = evt.getKeyCode();
+        if(evt.getKeyCode() == 10){
         
-        if(keyCode == 10 && this.txt_username.equals("")){
-            System.out.print("Touche tapez : "+ evt.getKeyCode());
+            this.ChargeLogin();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
         }
-        
-        
     }//GEN-LAST:event_txt_usernameKeyPressed
 
     private void btn_connexionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_connexionKeyPressed
 
         if(evt.getKeyCode() == 10){
-        System.out.println("Key code vaut : "+ evt.getKeyCode());
-        ChargeLogin();
+        
+            this.ChargeLogin();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
 
         }else{
-                    System.out.println("Autres touche touché ..." + evt.getKeyCode());
-
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
         }
     }//GEN-LAST:event_btn_connexionKeyPressed
+
+    private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed
+        if(evt.getKeyCode() == 10 || evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_jButton1KeyPressed
+
+    private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
+        if(evt.getKeyCode() == 10){
+        
+            this.ChargeLogin();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }    
+    }//GEN-LAST:event_txt_passwordKeyPressed
+
+    private void j_combo_demarcheKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_j_combo_demarcheKeyPressed
+        if(evt.getKeyCode() == 10){
+        
+            this.ChargeLogin();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_j_combo_demarcheKeyPressed
 
     /**
      * @param args the command line arguments

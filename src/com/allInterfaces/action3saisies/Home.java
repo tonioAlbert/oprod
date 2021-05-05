@@ -6,14 +6,10 @@
 package com.allInterfaces.action3saisies;
 
 
-
-import com.classes.action3saisie.BarreDeProgression;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -90,7 +86,8 @@ public class Home extends javax.swing.JFrame {
         }
 
         this.jProgressBar_home.setVisible(false);
-        this.j_labal_perc.setVisible(false);
+        this.j_label_texte_loading.setVisible(false);
+        this.j_label_loading.setVisible(false);
 
         //System.out.println("Bonjour : " + username + "\nVotre mot de passe est : "+ password + "\nType d'opération : "+ type_op );
         if(this.type_operation.equals("OGCF")){
@@ -138,7 +135,8 @@ public class Home extends javax.swing.JFrame {
         lbl_test = new javax.swing.JLabel();
         lbl_type_operation = new javax.swing.JLabel();
         jProgressBar_home = new javax.swing.JProgressBar();
-        j_labal_perc = new javax.swing.JLabel();
+        j_label_texte_loading = new javax.swing.JLabel();
+        j_label_loading = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         j_menu_fichier = new javax.swing.JMenu();
         j_menu_item_deconnexion = new javax.swing.JMenuItem();
@@ -273,13 +271,17 @@ public class Home extends javax.swing.JFrame {
 
         lbl_type_operation.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
-        j_labal_perc.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_labal_perc.setText("100 %");
+        j_label_texte_loading.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_label_texte_loading.setText("Veuillez patientez ...");
+
+        j_label_loading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/Eclipse-0.4s-200px (1).gif"))); // NOI18N
+        j_label_loading.setText(" ");
 
         dpContent.setLayer(lbl_test, javax.swing.JLayeredPane.DEFAULT_LAYER);
         dpContent.setLayer(lbl_type_operation, javax.swing.JLayeredPane.DEFAULT_LAYER);
         dpContent.setLayer(jProgressBar_home, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        dpContent.setLayer(j_labal_perc, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        dpContent.setLayer(j_label_texte_loading, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        dpContent.setLayer(j_label_loading, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout dpContentLayout = new javax.swing.GroupLayout(dpContent);
         dpContent.setLayout(dpContentLayout);
@@ -287,22 +289,30 @@ public class Home extends javax.swing.JFrame {
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dpContentLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 790, Short.MAX_VALUE)
                 .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_test, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jProgressBar_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(dpContentLayout.createSequentialGroup()
+                        .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 790, Short.MAX_VALUE)
+                        .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_test, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jProgressBar_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(j_label_loading)
+                        .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(j_labal_perc, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
+                .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47))
         );
         dpContentLayout.setVerticalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
-                .addContainerGap(488, Short.MAX_VALUE)
-                .addComponent(j_labal_perc, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(276, Short.MAX_VALUE)
+                .addComponent(j_label_loading)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jProgressBar_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -757,11 +767,14 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_j_menu_export_listes_demandeursActionPerformed
 
     private void j_menu_item_formate_prenomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formate_prenomActionPerformed
-        
+
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des prenom(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
+            this.j_label_texte_loading.setVisible(true);
+            this.j_label_loading.setVisible(true);
+        
             this.j_menu_item_formate_prenom.setEnabled(false);
             this.j_menu_exports.setEnabled(false);
             this.j_menu_formatages.setEnabled(false);
@@ -769,6 +782,9 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             
             this.formats("id_persphys", "persphys", "prenom");
         }
+        
+        this.j_label_texte_loading.setVisible(false);
+        this.j_label_loading.setVisible(false);
     }//GEN-LAST:event_j_menu_item_formate_prenomActionPerformed
 
     private void j_menu_item_lieu_ditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_lieu_ditActionPerformed
@@ -840,11 +856,13 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_j_menu_item_formte_voisinsActionPerformed
 
     private void j_menu_item_nom_parentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_nom_parentsActionPerformed
-        
+
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des voisin(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
-            
+            this.j_label_texte_loading.setVisible(true);
+            this.j_label_loading.setVisible(true);
+        
             this.j_menu_item_formate_prenom.setEnabled(false);
             this.j_menu_exports.setEnabled(false);
             this.j_menu_formatages.setEnabled(false);
@@ -858,7 +876,8 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             System.out.println("Formatage Nom Mère");
             this.formats("id_persphys", "persphys", "nom_mere");
         }
-        
+        this.j_label_texte_loading.setVisible(false);
+        this.j_label_loading.setVisible(false);
     }//GEN-LAST:event_j_menu_item_nom_parentsActionPerformed
 
     private void j_menu_item_formte_chargesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formte_chargesActionPerformed
@@ -939,7 +958,9 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage l'adresse des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
-            
+            this.j_label_texte_loading.setVisible(true);
+            this.j_label_loading.setVisible(true);
+        
             this.j_menu_item_formate_prenom.setEnabled(false);
             this.j_menu_exports.setEnabled(false);
             this.j_menu_formatages.setEnabled(false);
@@ -947,13 +968,23 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             
             this.formats("id_persphys", "persphys", "adresse");
         }
+        
+            this.j_label_texte_loading.setVisible(false);
+            this.j_label_loading.setVisible(false);
+        
     }//GEN-LAST:event_j_menu_item_adresse_demandeurActionPerformed
 
     private void j_menu_item_formate_nomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formate_nomActionPerformed
+
         
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage de nom(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
+            
+
+        this.j_label_texte_loading.setVisible(true);
+        this.j_label_loading.setVisible(true);
+
             
             this.j_menu_item_formate_prenom.setEnabled(false);
             this.j_menu_exports.setEnabled(false);
@@ -970,13 +1001,20 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
      
             this.formatsToUpper("id_persphys", "persphys", "nom");
         }
+        
+        
+        this.j_label_texte_loading.setVisible(false);
+        this.j_label_loading.setVisible(false);
     }//GEN-LAST:event_j_menu_item_formate_nomActionPerformed
 
     private void j_menu_item_formate_lieu_naissance_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formate_lieu_naissance_ActionPerformed
+
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage du lieu de naissance des demandeurs ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
-            
+            this.j_label_texte_loading.setVisible(true);
+            this.j_label_loading.setVisible(true);
+        
             this.j_menu_item_formate_prenom.setEnabled(false);
             this.j_menu_exports.setEnabled(false);
             this.j_menu_formatages.setEnabled(false);
@@ -984,6 +1022,9 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             
             this.formats("id_persphys", "persphys", "naissance_lieu");
         }
+        
+        this.j_label_texte_loading.setVisible(false);
+        this.j_label_loading.setVisible(false);
     }//GEN-LAST:event_j_menu_item_formate_lieu_naissance_ActionPerformed
 
     private void j_menu_item_formte_consistance_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formte_consistance_ActionPerformed
@@ -1105,7 +1146,8 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel j_labal_perc;
+    private javax.swing.JLabel j_label_loading;
+    private javax.swing.JLabel j_label_texte_loading;
     private javax.swing.JMenuItem j_menu_cf_editable;
     private javax.swing.JMenuItem j_menu_controles_saisie;
     private javax.swing.JMenu j_menu_controllesSaisies;

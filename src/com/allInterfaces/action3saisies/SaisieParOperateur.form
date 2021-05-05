@@ -3,8 +3,10 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
-    <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" value="Recherche saisie(s) des op&#xe9;rateurs"/>
+    <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+      <Image iconType="3" name="/ressources/logo geox2~2.png"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -234,7 +236,7 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
-                <StringItem index="0" value="S&#xe9;l&#xe9;ctionner une crit&#xe8;re de date"/>
+                <StringItem index="0" value="S&#xe9;l&#xe9;ctionner une crit&#xe8;re"/>
                 <StringItem index="1" value="Par Date"/>
                 <StringItem index="2" value="Intervale de date"/>
                 <StringItem index="3" value="Par Utilisateurs"/>
@@ -250,7 +252,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="j_label_annee_saisie2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Crit&#xe8;re Date"/>
+            <Property name="text" type="java.lang.String" value="Crit&#xe8;res"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="j_comb_login">

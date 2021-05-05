@@ -103,6 +103,7 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jButton1KeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_connexion">
@@ -128,6 +129,9 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Mot de passe"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_passwordKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="j_combo_demarche">
           <Properties>
@@ -137,6 +141,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="j_combo_demarcheKeyPressed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
