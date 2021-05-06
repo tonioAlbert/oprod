@@ -472,12 +472,21 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             String fokontany = selected_fokontany.split("  _  ")[1].trim();
             String hameau = selected_hameau.split("  _  ")[1].trim();
             
-            List reponse = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText());
-
             
-            if(reponse.get(0).equals("success")){
+            
+            List reponseAnomaliesBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText());
+            
+            String responseBloquante = (String)reponseAnomaliesBloquantes.get(0);
+            String EmplacementFichierExcelExporterAnomalieBloquante = (String)reponseAnomaliesBloquantes.get(1);
+            
+            if(responseBloquante.equals("success-anomalie-bloquante")){
                 
-                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Registre anomalie exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                // ON ESSEAI DE RECUPERER LES ANOMALIES NON BLOQUANTES S'IL EXISTE
+                List reponseAnomaliesNonBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
+            System.out.println("suze anomalie nom bloquante vaut = "+ reponseAnomaliesNonBloquantes.size());
+                //String responseNonBloquante = (String)reponseAnomaliesBloquantes.get(0);
+                
+                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Registre anomalie(s) exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 
                     if(export == JOptionPane.YES_OPTION){
                         // ouverture de l'emplacement selectionner par l'utiisateur
@@ -488,6 +497,23 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                         }
                     }
 
+            }else if(responseBloquante.equals("error-empty-anomalie-bloquante")){
+                List ReRecuperationDesAnomaliesNonBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
+                String ReresponseNonBloquante = (String)reponseAnomaliesBloquantes.get(0);
+                
+                if(ReresponseNonBloquante.equals("success-anomalie-non-bloquante")){
+                    
+                    int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Registre anomalie(s) exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                
+                    if(export == JOptionPane.YES_OPTION){
+                        // ouverture de l'emplacement selectionner par l'utiisateur
+                        try {
+                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                        }catch(Exception ee){
+                            JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }  
+                }
             }
             //if(reponse.get(0).equals("error-empty")){
                 

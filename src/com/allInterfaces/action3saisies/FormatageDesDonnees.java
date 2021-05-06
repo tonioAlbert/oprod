@@ -470,7 +470,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
 
             //Boolean RP = new Querry().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
 
-            System.out.println("System Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalie(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
+            System.out.println("System Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalieBloquanteSeulement(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
         }
 
     }//GEN-LAST:event_j_button_exporterActionPerformed

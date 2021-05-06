@@ -78,7 +78,1013 @@ public class Exports {
     
 
     
-public List<String> getRegistreAnomalie(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String path){
+
+public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String path){
+
+List retour = new ArrayList();
+        
+        if(this.TYPE_OPERATION.equals("OCM")){
+            this.op = "OCFM";
+        }else{
+            this.op = "OGCF";
+        }
+        
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
+        Date date = new Date(System.currentTimeMillis());
+        
+        
+        //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
+        String dateAujourdhui = dateFormat.format(new Date());
+    
+    
+        String realPath = path+"\\"+this.op+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAntenne = "";
+        
+        switch (nomAtelier){
+            case "ATS":
+                nomAntenne= "ANTENNE : ATSINANANA";
+                break;
+            case "VAK":
+                nomAntenne= "ANTENNE : VAKINANKARATRA";
+                break;
+            default:
+                if (reg.toUpperCase().equals("ANALAMANGA")) {
+                    nomAntenne= "ANTENNE : ANALAMANGA";
+                }else{
+                    nomAntenne= "ANTENNE : ITASY";
+                }
+                
+                break;
+        }
+        
+        int RowResultSet = 0;
+        
+        try {
+            
+            String sql = "  SELECT region.nom AS region,\n" +
+            "    commune.code_commune,\n" +
+            "    commune.nom AS commune,\n" +
+            "    fokontany.code_fokontany,\n" +
+            "    fokontany.nom AS fokontany,\n" +
+            "    hameau.code_hameau,\n" +
+            "    hameau.nom AS hameau,\n" +
+            "    demande.code_equipe,\n" +
+            "    demande.num_registre ,\n" +
+            "    demande.id_registre as numero_demande,\n" +
+            "    demande.id_parcelle,\n" +
+            "    persphys.nom AS nom_demandeur,\n" +
+            "    persphys.prenom AS prenom_demandeur,\n" +
+            "    anomalie.description AS anomalie_description,\n" +
+            "    utilisateur.login,\n" +
+            "    demande.lot,\n" +
+            "    demande.planche_plof\n" +
+            "   FROM hameau,\n" +
+            "    anomalie,\n" +
+            "    demande,\n" +
+            "    utilisateur,\n" +
+            "    lst_type_anomalie,\n" +
+            "    fokontany,\n" +
+            "    commune,\n" +
+            "    district,\n" +
+            "    region,\n" +
+            "    proprietaire_pp,\n" +
+            "    persphys\n" +
+            "  WHERE hameau.id_hameau::text = demande.id_hameau::text \n" +
+            "  AND demande.id_demande::text = anomalie.id_demande::text \n" +
+            "  AND demande.demande_user::text = utilisateur.id_utilisateur::text \n" +
+            "  AND fokontany.id_fokontany::text = hameau.id_fokontany::text \n" +
+            "  AND commune.id_commune::text = fokontany.id_commune::text \n" +
+            "  AND district.id_district::text = commune.id_district::text \n" +
+            "  AND region.id_region::text = district.id_region::text \n" +
+            "  AND lst_type_anomalie.id_lst_type_anomalie::text = anomalie.id_lst_type_anomalie::text \n" +
+            "  AND proprietaire_pp.id_demande::text = demande.id_demande::text \n" +
+            "  AND proprietaire_pp.id_persphys::text = persphys.id_persphys::text \n" +
+            "  AND proprietaire_pp.type_demandeur::text = 'DM'::text \n" +
+            "  AND demande.val_anomalie IS TRUE \n" +
+            "  AND anomalie.resolu IS FALSE \n" +
+            "  AND demande.cf_annule IS NOT TRUE\n" +
+            "  AND region.nom = ? \n" +
+            "  AND district.nom = ? \n" +
+            "  AND commune.nom = ? \n" +
+            "  AND fokontany.nom = ? \n" +
+            "  AND hameau.nom = ? \n" +
+            "  AND demande.type_op = ? \n" +
+            "  ORDER BY demande.num_registre";
+            
+            st = connectDatabase.prepareStatement(sql);    
+            st.setString(1, reg);
+            st.setString(2, dist);
+            st.setString(3, com);
+            st.setString(4, fkt);
+            st.setString(5, hameau);
+            st.setString(6, this.TYPE_OPERATION.toLowerCase());
+            rs = st.executeQuery();
+
+                try{
+                    
+                    // CREATION DU FICHIER
+                    String nameOfSheet = "anomalies_bloquantes";
+                    XSSFWorkbook excelDataCreate = new XSSFWorkbook();
+                    FileOutputStream out = new FileOutputStream(new File(realPath));
+                    XSSFSheet excelSheet = excelDataCreate.createSheet(nameOfSheet);
+
+                    
+                    excelDataCreate.write(out);
+                    out.close();
+                    
+                    // REMPLISSAGE DANS LE FICHIER
+                    File src = new File(realPath);
+                    FileInputStream fis = new FileInputStream(src);
+                    XSSFWorkbook  wb = new XSSFWorkbook(fis);
+                    XSSFSheet sheet = wb.getSheet(nameOfSheet);
+                    
+
+                // MISE EN PAGE ET MISE EN FORME DU FICHIER
+                sheet.getHeader().setRight("Fiche 9 – LISTE DES ANOMALIES SUR LES FORMULAIRES");
+                sheet.getHeader().setLeft("CASEF / GEOX2");
+                sheet.getFooter().setLeft(nomAntenne);
+                sheet.getFooter().setCenter("LISTES DES ANOMALIES BLOQUANTE");
+                sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
+                
+                sheet.getPrintSetup().setLandscape(true);
+                PrintSetup printsetup = sheet.getPrintSetup();
+                sheet.getPrintSetup().setPaperSize(printsetup.A3_PAPERSIZE);
+
+                String[] cellAFixer = ("$1:$6").split(":");
+                CellReference startCellFixed = new CellReference(cellAFixer[0]);
+                CellReference endCellFixed = new CellReference(cellAFixer[1]);
+                CellRangeAddress addressCellAFixer = new CellRangeAddress(startCellFixed.getRow(),
+                endCellFixed.getRow(), startCellFixed.getCol(), endCellFixed.getCol());
+
+                sheet.setRepeatingRows(addressCellAFixer);
+                
+                
+                
+                // FIN MISE EN PAGE ET MISE EN FORME DU FICHIER
+                
+                // create table with data
+                XSSFCellStyle cadre = wb.createCellStyle();
+                cadre.setBorderBottom(BorderStyle.THIN);
+                cadre.setBorderTop(BorderStyle.THIN);
+                cadre.setBorderLeft(BorderStyle.THIN);
+                cadre.setBorderRight(BorderStyle.THIN);
+                
+            //RegionUtil.setBorderBottom(BorderStyle.DOUBLE,
+            //CellRangeAddress.valueOf("A1:B7"), sheet);
+
+            Row headerRow0 = sheet.createRow(0);
+
+
+            XSSFCellStyle cellStyleBold = wb.createCellStyle();
+            Font headerFont = wb.createFont();
+            headerFont.setBold(true);
+            cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
+            cellStyleBold.setFont(headerFont);
+
+        
+            cellStyleBold.setBorderBottom(BorderStyle.THIN);  
+            cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setBorderRight(BorderStyle.THIN);  
+            cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
+            
+            cellStyleBold.setBorderTop(BorderStyle.THIN);  
+            cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
+
+        
+            cellStyleBold.setBorderLeft(BorderStyle.THIN);  
+            cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            cellStyleBold.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
+            
+            Cell headerCell0 = headerRow0.createCell(0);
+            headerCell0.setCellValue("Commune :");
+            headerCell0.setCellStyle(cadre);
+            headerCell0.setCellStyle(cellStyleBold);
+
+            
+            headerCell0 = headerRow0.createCell(1);
+            headerCell0.setCellValue(com);
+            headerCell0.setCellStyle(cadre);
+
+ 
+            headerCell0 = headerRow0.createCell(2);
+            headerCell0.setCellValue("Code Com : " + c_com);
+            headerCell0.setCellStyle(cadre);
+
+            //headerCell0 = headerRow0.createCell(3);
+            //headerCell0.setCellValue(c_com);
+
+            headerCell0 = headerRow0.createCell(4);
+            headerCell0.setCellValue("Fokontany :");
+            headerCell0.setCellStyle(cadre);
+            headerCell0.setCellStyle(cellStyleBold);
+            
+        
+            headerCell0 = headerRow0.createCell(5);
+            headerCell0.setCellValue(fkt);
+            headerCell0.setCellStyle(cadre);
+
+            headerCell0 = headerRow0.createCell(6);
+            headerCell0.setCellValue("Code FKT :");
+            headerCell0.setCellStyle(cadre);
+            headerCell0.setCellStyle(cellStyleBold);
+            
+
+            headerCell0 = headerRow0.createCell(7);
+            headerCell0.setCellValue(c_fkt);
+            headerCell0.setCellStyle(cadre);
+            
+            
+
+            headerCell0 = headerRow0.createCell(8);
+            headerCell0.setCellValue("N° Equipe :");
+            headerCell0.setCellStyle(cadre);
+            headerCell0.setCellStyle(cellStyleBold);
+            
+
+            //headerCell0 = headerRow0.createCell(9);
+            //headerCell0.setCellValue("xxxxx n° equipe");
+
+
+            Row headerRow1 = sheet.createRow(1);
+
+            Cell headerCell1 = headerRow1.createCell(0);
+            headerCell1.setCellValue("Hameau :");
+            headerCell1.setCellStyle(cadre);
+            headerCell1.setCellStyle(cellStyleBold);
+            
+
+
+            headerCell1 = headerRow1.createCell(1);
+            headerCell1.setCellValue(hameau);
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(2);
+            headerCell1.setCellValue("Code Ham : " + (String) c_hameau);
+            headerCell1.setCellStyle(cadre);
+
+            //headerCell1 = headerRow1.createCell(3);
+            //headerCell1.setCellValue(c_hameau);
+
+            headerCell1 = headerRow1.createCell(4);
+            headerCell1.setCellValue("Atelier :");
+            headerCell1.setCellStyle(cadre);
+            headerCell1.setCellStyle(cellStyleBold);
+            
+
+            
+            headerCell1 = headerRow1.createCell(5);
+            headerCell1.setCellValue(nomAtelier);
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(6);
+            headerCell1.setCellValue("Date d’envoi :");
+            headerCell1.setCellStyle(cadre);
+            headerCell1.setCellStyle(cellStyleBold);
+            
+
+        
+        
+            headerCell1 = headerRow1.createCell(7);
+            headerCell1.setCellValue(dateAujourdhui);
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(8);
+            headerCell1.setCellValue("Date de retour :");
+            headerCell1.setCellStyle(cadre);
+            headerCell1.setCellStyle(cellStyleBold);
+            
+
+
+            Row headerRow4 = sheet.createRow(4);
+
+            Cell headerCell4 = headerRow4.createCell(0);
+            headerCell4.setCellValue("Atelier");
+            headerCell4.setCellStyle(cadre);
+            headerCell4.setCellStyle(cellStyleBold);
+            
+
+            // fusionnage des cellules pour atelier
+            String[] cellStrings = ("A5:C5").split(":");
+            CellReference start = new CellReference(cellStrings[0]);
+            CellReference end = new CellReference(cellStrings[1]);
+            CellRangeAddress address = new CellRangeAddress(start.getRow(),
+            end.getRow(), start.getCol(), end.getCol());
+            sheet.addMergedRegion(address);
+
+            headerCell4 = headerRow4.createCell(3);
+            headerCell4.setCellValue("Correction (Antenne / Terrain)");
+            headerCell4.setCellStyle(cadre);
+            headerCell4.setCellStyle(cellStyleBold);
+            
+
+            // fusionnage des cellules pour antenne / terrain
+            String[] cellStrings2 = ("D5:H5").split(":");
+            CellReference start2 = new CellReference(cellStrings2[0]);
+            CellReference end2 = new CellReference(cellStrings2[1]);
+            CellRangeAddress address2 = new CellRangeAddress(start2.getRow(),
+            end2.getRow(), start2.getCol(), end2.getCol());
+            sheet.addMergedRegion(address2);
+
+            headerCell4 = headerRow4.createCell(8);
+            headerCell4.setCellValue("Contrôles");
+            headerCell4.setCellStyle(cadre);
+            headerCell4.setCellStyle(cellStyleBold);
+            
+            //headerCell4.setCellStyle(cellStyleCenter);
+
+            // fusionnage des cellules pour contrôle ( signature AGF, AFO, ect.
+            String[] cellStrings3 = ("I5:L5").split(":");
+            CellReference start3 = new CellReference(cellStrings3[0]);
+            CellReference end3 = new CellReference(cellStrings3[1]);
+            CellRangeAddress address3 = new CellRangeAddress(start3.getRow(),
+            end3.getRow(), start3.getCol(), end3.getCol());
+            sheet.addMergedRegion(address3);
+        
+       
+            Row headerRow5 = sheet.createRow(5);
+
+            Cell headerCell5 = headerRow5.createCell(0);
+            headerCell5.setCellValue("Lot");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(1);
+            headerCell5.setCellValue("N° Demande");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(2);
+            headerCell5.setCellValue("Description anomalie(s) - Bloquante");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(3);
+            headerCell5.setCellValue("Corrigé");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+ 
+            headerCell5 = headerRow5.createCell(4);
+            headerCell5.setCellValue("Non corrigé");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(5);
+            headerCell5.setCellValue("Date correction");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(6);
+            headerCell5.setCellValue("Observation sur la correction");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(7);
+            headerCell5.setCellValue("Signature ADA");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(8);
+            headerCell5.setCellValue("Date");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+            
+
+            headerCell5 = headerRow5.createCell(9);
+            headerCell5.setCellValue("Signature AGF");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(10);
+            headerCell5.setCellValue("Date");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(11);
+            headerCell5.setCellValue("Signature AFO");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+        int n = 6;
+        
+            while (rs.next()) {
+                
+                RowResultSet++;
+                    
+                    Row headerRow7 = sheet.createRow(n);
+
+                    Cell headerCell7 = headerRow7.createCell(0);
+                    headerCell7.setCellValue(rs.getString("lot"));
+                    headerCell7.setCellStyle(cadre);
+
+
+                    Cell headerCell8 = headerRow7.createCell(1);
+                    headerCell8.setCellValue(rs.getString("numero_demande"));
+                    headerCell8.setCellStyle(cadre);
+
+                    Cell headerCell9 = headerRow7.createCell(2);
+                    headerCell9.setCellValue(rs.getString("anomalie_description"));
+                    headerCell9.setCellStyle(cadre);
+                    
+                    
+                    n++;
+            }
+            
+            
+                String[] CelluleAMettreDeBordure = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+
+
+                for(int i = 0; i < CelluleAMettreDeBordure.length; i++){
+
+                    for(int a = 5; a<n+1; a++){
+
+                        String rangCellule = CelluleAMettreDeBordure[i]+a;
+
+                        RegionUtil.setBorderBottom(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderTop(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderRight(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderLeft(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet); 
+                    }
+
+                }
+
+  
+                    FileOutputStream fout = new FileOutputStream(src);
+                    
+                    wb.write(fout);
+                    wb.close();
+                    out.close();
+                    fout.close();
+
+
+                }catch(Exception createFileErreur){
+
+                    //System.out.println("ERREUR DANS  get registre anomalie = " +createFileErreur.getMessage());
+                    
+                    JOptionPane.showMessageDialog(null, "Classes export registre anomalies erreur",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                }
+                     
+            rs.close();
+            st.close();
+            
+            if(RowResultSet == 0){
+                //System.out.println("val fiale de RowResultSet = " + RowResultSet);
+                retour.add("error-empty-anomalie-bloquante");
+                retour.add(realPath);
+                //Files.deleteIfExists(Paths.get(realPath));
+                
+                //JOptionPane.showMessageDialog(null, "Aucune anomalie bloquante a été trouvé sur la : \n\ncommune: "+com+"\n"+"Fokontany : "+fkt+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.op, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+            }else{
+                retour.add("success-anomalie-bloquante");
+                retour.add(realPath);
+                //JOptionPane.showMessageDialog(null, "Export registre d'anomalie effectué avec succès !", "Export registre d'anomalie effectué avec succès", JOptionPane.INFORMATION_MESSAGE);
+                // ouverture de l'emplacement selectionner par l'utiisateur
+                //Desktop.getDesktop().open(new File(path));
+            }
+  
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+            //throw new RuntimeException();
+            retour.add("error-anomalie-non-bloquante");
+            retour.add("Error executing query: " +ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Impossible de lancer la requette de récupération des anomalies\n\nRetour : "+ex.getMessage(), "Erreur SQL trouvé", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        //System.out.println(demandes);
+        return retour;
+        
+    }
+
+
+
+public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String path){
+
+List retour = new ArrayList();
+        
+        if(this.TYPE_OPERATION.equals("OCM")){
+            this.op = "OCFM";
+        }else{
+            this.op = "OGCF";
+        }
+        
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
+        Date date = new Date(System.currentTimeMillis());
+        
+        
+        //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
+        String dateAujourdhui = dateFormat.format(new Date());
+    
+    
+        String realPath = path;
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAntenne = "";
+        
+        switch (nomAtelier){
+            case "ATS":
+                nomAntenne= "ANTENNE : ATSINANANA";
+                break;
+            case "VAK":
+                nomAntenne= "ANTENNE : VAKINANKARATRA";
+                break;
+            default:
+                if (reg.toUpperCase().equals("ANALAMANGA")) {
+                    nomAntenne= "ANTENNE : ANALAMANGA";
+                }else{
+                    nomAntenne= "ANTENNE : ITASY";
+                }
+                
+                break;
+        }
+        
+        int RowResultSet = 0;
+        
+        try {
+            
+            String sql = " SELECT region.nom AS region,\n" +
+"             commune.code_commune,\n" +
+"             commune.nom AS commune,\n" +
+"             fokontany.code_fokontany,\n" +
+"             fokontany.nom AS fokontany,\n" +
+"             hameau.code_hameau,\n" +
+"             hameau.nom AS hameau,\n" +
+"             demande.code_equipe,\n" +
+"             demande.num_registre ,\n" +
+"             demande.id_registre as numero_demande,\n" +
+"             demande.id_parcelle,\n" +
+"             persphys.nom AS nom_demandeur,\n" +
+"             persphys.prenom AS prenom_demandeur,\n" +
+"             anomalie.description AS anomalie_description,\n" +
+"             utilisateur.login,\n" +
+"             demande.lot,\n" +
+"             demande.planche_plof\n" +
+"            FROM hameau,\n" +
+"             anomalie,\n" +
+"             demande,\n" +
+"             utilisateur,\n" +
+"             lst_type_anomalie,\n" +
+"             fokontany,\n" +
+"             commune,\n" +
+"             district,\n" +
+"             region,\n" +
+"             proprietaire_pp,\n" +
+"             persphys\n" +
+"           WHERE hameau.id_hameau::text = demande.id_hameau::text \n" +
+"           AND demande.id_demande::text = anomalie.id_demande::text \n" +
+"           AND demande.demande_user::text = utilisateur.id_utilisateur::text \n" +
+"           AND fokontany.id_fokontany::text = hameau.id_fokontany::text \n" +
+"           AND commune.id_commune::text = fokontany.id_commune::text \n" +
+"           AND district.id_district::text = commune.id_district::text \n" +
+"           AND region.id_region::text = district.id_region::text \n" +
+"           AND lst_type_anomalie.id_lst_type_anomalie::text = anomalie.id_lst_type_anomalie::text \n" +
+"           AND proprietaire_pp.id_demande::text = demande.id_demande::text \n" +
+"           AND proprietaire_pp.id_persphys::text = persphys.id_persphys::text \n" +
+"           AND proprietaire_pp.type_demandeur::text = 'DM'::text \n" +
+"		   AND anomalie.id_lst_type_anomalie = lst_type_anomalie.id_lst_type_anomalie\n" +
+"           AND demande.val_anomalie IS FALSE \n" +
+"           AND anomalie.resolu IS TRUE \n" +
+"           AND demande.cf_annule IS NOT TRUE\n" +
+"		   AND lst_type_anomalie.valeur NOT LIKE '%ormulaire corrig%'\n" +
+"           AND region.nom = ? \n" +
+"           AND district.nom = ? \n" +
+"           AND commune.nom = ? \n" +
+"           AND fokontany.nom = ? \n" +
+"           AND hameau.nom = ? \n" +
+"           AND demande.type_op = ? \n" +
+"           ORDER BY demande.num_registre";
+            
+            st = connectDatabase.prepareStatement(sql);    
+            st.setString(1, reg);
+            st.setString(2, dist);
+            st.setString(3, com);
+            st.setString(4, fkt);
+            st.setString(5, hameau);
+            st.setString(6, this.TYPE_OPERATION.toLowerCase());
+            rs = st.executeQuery();
+
+                try{
+                    
+                    // CREATION DU FICHIER
+                    String nameOfSheet = "anomalies_non_bloquantes";
+                    
+
+                    
+                    // REMPLISSAGE DANS LE FICHIER
+                    File src = new File(realPath);
+                    FileInputStream fis = new FileInputStream(src);
+                    XSSFWorkbook  wb = new XSSFWorkbook(fis);
+                    
+                    wb.createSheet(nameOfSheet);
+                    XSSFSheet sheet = wb.getSheet(nameOfSheet);
+                    
+
+                // MISE EN PAGE ET MISE EN FORME DU FICHIER
+                sheet.getHeader().setRight("Fiche 9 – LISTE DES ANOMALIES SUR LES FORMULAIRES");
+                sheet.getHeader().setLeft("CASEF / GEOX2");
+                sheet.getFooter().setLeft(nomAntenne);
+                sheet.getFooter().setCenter("LISTES DES ANOMALIES NON BLOQUANTE");
+                sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
+                
+                sheet.getPrintSetup().setLandscape(true);
+                PrintSetup printsetup = sheet.getPrintSetup();
+                sheet.getPrintSetup().setPaperSize(printsetup.A3_PAPERSIZE);
+
+                String[] cellAFixer = ("$1:$6").split(":");
+                CellReference startCellFixed = new CellReference(cellAFixer[0]);
+                CellReference endCellFixed = new CellReference(cellAFixer[1]);
+                CellRangeAddress addressCellAFixer = new CellRangeAddress(startCellFixed.getRow(),
+                endCellFixed.getRow(), startCellFixed.getCol(), endCellFixed.getCol());
+
+                sheet.setRepeatingRows(addressCellAFixer);
+                
+                
+                
+                // FIN MISE EN PAGE ET MISE EN FORME DU FICHIER
+                
+                // create table with data
+                XSSFCellStyle cadre = wb.createCellStyle();
+                cadre.setBorderBottom(BorderStyle.THIN);
+                cadre.setBorderTop(BorderStyle.THIN);
+                cadre.setBorderLeft(BorderStyle.THIN);
+                cadre.setBorderRight(BorderStyle.THIN);
+                
+            //RegionUtil.setBorderBottom(BorderStyle.DOUBLE,
+            //CellRangeAddress.valueOf("A1:B7"), sheet);
+
+            Row headerRow0 = sheet.createRow(0);
+
+
+            XSSFCellStyle cellStyleBold = wb.createCellStyle();
+            Font headerFont = wb.createFont();
+            headerFont.setBold(true);
+            cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
+            cellStyleBold.setFont(headerFont);
+
+        
+            cellStyleBold.setBorderBottom(BorderStyle.THIN);  
+            cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setBorderRight(BorderStyle.THIN);  
+            cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
+            
+            cellStyleBold.setBorderTop(BorderStyle.THIN);  
+            cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
+
+        
+            cellStyleBold.setBorderLeft(BorderStyle.THIN);  
+            cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            cellStyleBold.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
+            
+            Cell headerCell0 = headerRow0.createCell(0);
+            headerCell0.setCellValue("Commune :");
+            headerCell0.setCellStyle(cadre);
+            headerCell0.setCellStyle(cellStyleBold);
+
+            
+            headerCell0 = headerRow0.createCell(1);
+            headerCell0.setCellValue(com);
+            headerCell0.setCellStyle(cadre);
+
+ 
+            headerCell0 = headerRow0.createCell(2);
+            headerCell0.setCellValue("Code Com : " + c_com);
+            headerCell0.setCellStyle(cadre);
+
+            //headerCell0 = headerRow0.createCell(3);
+            //headerCell0.setCellValue(c_com);
+
+            headerCell0 = headerRow0.createCell(4);
+            headerCell0.setCellValue("Fokontany :");
+            headerCell0.setCellStyle(cadre);
+            headerCell0.setCellStyle(cellStyleBold);
+            
+        
+            headerCell0 = headerRow0.createCell(5);
+            headerCell0.setCellValue(fkt);
+            headerCell0.setCellStyle(cadre);
+
+            headerCell0 = headerRow0.createCell(6);
+            headerCell0.setCellValue("Code FKT :");
+            headerCell0.setCellStyle(cadre);
+            headerCell0.setCellStyle(cellStyleBold);
+            
+
+            headerCell0 = headerRow0.createCell(7);
+            headerCell0.setCellValue(c_fkt);
+            headerCell0.setCellStyle(cadre);
+            
+            
+
+            headerCell0 = headerRow0.createCell(8);
+            headerCell0.setCellValue("N° Equipe :");
+            headerCell0.setCellStyle(cadre);
+            headerCell0.setCellStyle(cellStyleBold);
+            
+
+            //headerCell0 = headerRow0.createCell(9);
+            //headerCell0.setCellValue("xxxxx n° equipe");
+
+
+            Row headerRow1 = sheet.createRow(1);
+
+            Cell headerCell1 = headerRow1.createCell(0);
+            headerCell1.setCellValue("Hameau :");
+            headerCell1.setCellStyle(cadre);
+            headerCell1.setCellStyle(cellStyleBold);
+            
+
+
+            headerCell1 = headerRow1.createCell(1);
+            headerCell1.setCellValue(hameau);
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(2);
+            headerCell1.setCellValue("Code Ham : " + (String) c_hameau);
+            headerCell1.setCellStyle(cadre);
+
+            //headerCell1 = headerRow1.createCell(3);
+            //headerCell1.setCellValue(c_hameau);
+
+            headerCell1 = headerRow1.createCell(4);
+            headerCell1.setCellValue("Atelier :");
+            headerCell1.setCellStyle(cadre);
+            headerCell1.setCellStyle(cellStyleBold);
+            
+
+            
+            headerCell1 = headerRow1.createCell(5);
+            headerCell1.setCellValue(nomAtelier);
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(6);
+            headerCell1.setCellValue("Date d’envoi :");
+            headerCell1.setCellStyle(cadre);
+            headerCell1.setCellStyle(cellStyleBold);
+            
+
+        
+        
+            headerCell1 = headerRow1.createCell(7);
+            headerCell1.setCellValue(dateAujourdhui);
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(8);
+            headerCell1.setCellValue("Date de retour :");
+            headerCell1.setCellStyle(cadre);
+            headerCell1.setCellStyle(cellStyleBold);
+            
+
+
+            Row headerRow4 = sheet.createRow(4);
+
+            Cell headerCell4 = headerRow4.createCell(0);
+            headerCell4.setCellValue("Atelier");
+            headerCell4.setCellStyle(cadre);
+            headerCell4.setCellStyle(cellStyleBold);
+            
+
+            // fusionnage des cellules pour atelier
+            String[] cellStrings = ("A5:C5").split(":");
+            CellReference start = new CellReference(cellStrings[0]);
+            CellReference end = new CellReference(cellStrings[1]);
+            CellRangeAddress address = new CellRangeAddress(start.getRow(),
+            end.getRow(), start.getCol(), end.getCol());
+            sheet.addMergedRegion(address);
+
+            headerCell4 = headerRow4.createCell(3);
+            headerCell4.setCellValue("Correction (Antenne / Terrain)");
+            headerCell4.setCellStyle(cadre);
+            headerCell4.setCellStyle(cellStyleBold);
+            
+
+            // fusionnage des cellules pour antenne / terrain
+            String[] cellStrings2 = ("D5:H5").split(":");
+            CellReference start2 = new CellReference(cellStrings2[0]);
+            CellReference end2 = new CellReference(cellStrings2[1]);
+            CellRangeAddress address2 = new CellRangeAddress(start2.getRow(),
+            end2.getRow(), start2.getCol(), end2.getCol());
+            sheet.addMergedRegion(address2);
+
+            headerCell4 = headerRow4.createCell(8);
+            headerCell4.setCellValue("Contrôles");
+            headerCell4.setCellStyle(cadre);
+            headerCell4.setCellStyle(cellStyleBold);
+            
+            //headerCell4.setCellStyle(cellStyleCenter);
+
+            // fusionnage des cellules pour contrôle ( signature AGF, AFO, ect.
+            String[] cellStrings3 = ("I5:L5").split(":");
+            CellReference start3 = new CellReference(cellStrings3[0]);
+            CellReference end3 = new CellReference(cellStrings3[1]);
+            CellRangeAddress address3 = new CellRangeAddress(start3.getRow(),
+            end3.getRow(), start3.getCol(), end3.getCol());
+            sheet.addMergedRegion(address3);
+        
+       
+            Row headerRow5 = sheet.createRow(5);
+
+            Cell headerCell5 = headerRow5.createCell(0);
+            headerCell5.setCellValue("Lot");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(1);
+            headerCell5.setCellValue("N° Demande");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(2);
+            headerCell5.setCellValue("Description anomalie(s) - Non Bloquante");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(3);
+            headerCell5.setCellValue("Corrigé");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+ 
+            headerCell5 = headerRow5.createCell(4);
+            headerCell5.setCellValue("Non corrigé");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(5);
+            headerCell5.setCellValue("Date correction");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(6);
+            headerCell5.setCellValue("Observation sur la correction");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(7);
+            headerCell5.setCellValue("Signature ADA");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(8);
+            headerCell5.setCellValue("Date");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+            
+
+            headerCell5 = headerRow5.createCell(9);
+            headerCell5.setCellValue("Signature AGF");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(10);
+            headerCell5.setCellValue("Date");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+            headerCell5 = headerRow5.createCell(11);
+            headerCell5.setCellValue("Signature AFO");
+            headerCell5.setCellStyle(cadre);
+            headerCell5.setCellStyle(cellStyleBold);
+            
+
+        int n = 6;
+        
+            while (rs.next()) {
+                
+                RowResultSet++;
+                    
+                    Row headerRow7 = sheet.createRow(n);
+
+                    Cell headerCell7 = headerRow7.createCell(0);
+                    headerCell7.setCellValue(rs.getString("lot"));
+                    headerCell7.setCellStyle(cadre);
+
+
+                    Cell headerCell8 = headerRow7.createCell(1);
+                    headerCell8.setCellValue(rs.getString("numero_demande"));
+                    headerCell8.setCellStyle(cadre);
+
+                    Cell headerCell9 = headerRow7.createCell(2);
+                    headerCell9.setCellValue(rs.getString("anomalie_description"));
+                    headerCell9.setCellStyle(cadre);
+                    
+                    
+                    n++;
+            }
+            
+            
+                String[] CelluleAMettreDeBordure = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+
+
+                for(int i = 0; i < CelluleAMettreDeBordure.length; i++){
+
+                    for(int a = 5; a<n+1; a++){
+
+                        String rangCellule = CelluleAMettreDeBordure[i]+a;
+
+                        RegionUtil.setBorderBottom(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderTop(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderRight(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderLeft(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet); 
+                    }
+
+                }
+
+  
+                    FileOutputStream fout = new FileOutputStream(src);
+                    
+                    wb.write(fout);
+                    wb.close();
+                    //out.close();
+                    fout.close();
+
+
+                }catch(Exception createFileErreur){
+
+                    //System.out.println("ERREUR DANS  get registre anomalie = " +createFileErreur.getMessage());
+                    
+                    JOptionPane.showMessageDialog(null, "Classes export registre anomalies erreur",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                }
+                     
+            rs.close();
+            st.close();
+            
+            if(RowResultSet == 0){
+                //System.out.println("val fiale de RowResultSet = " + RowResultSet);
+                retour.add("error-empty-anomalie-non-bloquante");
+                retour.add(realPath);
+                //Files.deleteIfExists(Paths.get(realPath));
+                
+                //JOptionPane.showMessageDialog(null, "Aucune anomalie bloquante a été trouvé sur la : \n\ncommune: "+com+"\n"+"Fokontany : "+fkt+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.op, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+            }else{
+                retour.add("success-anomalie-non-bloquante");
+                retour.add(realPath);
+                //JOptionPane.showMessageDialog(null, "Export registre d'anomalie effectué avec succès !", "Export registre d'anomalie effectué avec succès", JOptionPane.INFORMATION_MESSAGE);
+                // ouverture de l'emplacement selectionner par l'utiisateur
+                //Desktop.getDesktop().open(new File(path));
+            }
+  
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+            //throw new RuntimeException();
+            retour.add("error-anomalie-non-bloquante");
+            retour.add("Error executing query: " +ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Impossible de lancer la requette de récupération des anomalies\n\nRetour : "+ex.getMessage(), "Erreur SQL trouvé", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        //System.out.println(demandes);
+        return retour;
+        
+    }
+
+  
+    
+public List<String> getRegistreAnomalieBloquanteSeulement(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String path){
 
         
         List retour = new ArrayList();
