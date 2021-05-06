@@ -251,7 +251,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         List <String[]> saisieDesOperateurs;
         Object rowData[] = new Object[3];
         
-        String demarche = (String)this.j_comb_demarche.getSelectedItem();
+        String demarcheFormater = Formats.ConvertOcfmToOcm((String)this.j_comb_demarche.getSelectedItem());
         DateFormat df = new SimpleDateFormat("dd/MM/YYYY");
         String val_critere = this.j_comb_select_critere_date.getSelectedItem().toString();
         
@@ -275,7 +275,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     }else{
                         
 
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSimpleSaisieParOperateur( this.j_date_debut, this.demarche);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSimpleSaisieParOperateur( this.j_date_debut, demarcheFormater);
 
                         DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
 
@@ -316,7 +316,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(null, "Date fin de saisie vide ou incorrect !","SErreur lors remplissage date Fin de saisie", JOptionPane.INFORMATION_MESSAGE); 
                     }else{
                         
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieParOperateurBetweenTwoDate(this.j_date_debut, this.j_date_fin, this.demarche);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieParOperateurBetweenTwoDate(this.j_date_debut, this.j_date_fin, demarcheFormater);
                         
                         DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
                         
@@ -354,7 +354,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     }else{
                         
                         username = selected.split("  _  ")[1];
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieWithLogin(this.demarche, username);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieWithLogin(demarcheFormater, username);
                         
                         if(saisieDesOperateurs.size() <1){
                         

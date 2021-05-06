@@ -5,6 +5,7 @@
  */
 package com.allInterfaces.action3saisies;
 
+import com.classes.action3saisie.Formats;
 import com.connectDb.ConnectDb;
 import java.awt.event.ItemEvent;
 import java.sql.Connection;
@@ -346,7 +347,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                 //System.out.println("j_combo_communeItemStateChanged commune vaut  = " + commune);
                 //System.out.println("j_combo_communeItemStateChanged this.type_operation vaut  = " +  this.type_operation.toLowerCase());
         
-                dateEditionCF  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getDistinctDateEditionCF(selected_region, district,commune , this.type_operation.toLowerCase());
+                dateEditionCF  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getDistinctDateEditionCF(selected_region, district,commune , Formats.ConvertOcfmToOcm(this.type_operation).toLowerCase());
                 
                 if(dateEditionCF.size() < 1){
                     this.j_combo_date_edition.setEnabled(false);
@@ -434,7 +435,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                 
                 System.out.println("sans date edition appelé");
 
-                List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getListesCfEditerWithoutFilterDate(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+                List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, Formats.ConvertOcfmToOcm(this.type_operation)).getListesCfEditerWithoutFilterDate(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
 
                 if(reponse.get(0).equals("success")){
 
@@ -457,7 +458,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                 
                 System.out.println("avec date edition CF appelé");
                 String dateEdition = (String)this.j_combo_date_edition.getSelectedItem();
-                List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getListesCfEditerWithFilterDate(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText(), dateEdition.replace(" ", "")));
+                List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, Formats.ConvertOcfmToOcm(this.type_operation)).getListesCfEditerWithFilterDate(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText(), dateEdition.replace(" ", "")));
 
                 if(reponse.get(0).equals("success")){
 

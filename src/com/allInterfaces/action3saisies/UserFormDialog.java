@@ -5,6 +5,7 @@
  */
 package com.allInterfaces.action3saisies;
 
+import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Hash;
 import com.classes.action3saisie.Utilisateurs;
 import java.util.List;
@@ -45,9 +46,9 @@ public class UserFormDialog extends javax.swing.JFrame {
         }else{
             this.j_combo_demarche.removeAllItems();
             this.j_combo_demarche.addItem("Séléctionner une démarche");
-            for(String demarch : demarches) {
+            for(String dem : demarches) {
                 //System.out.println("Pouf valeur de demande : " + dmd.toUpperCase());
-                this.j_combo_demarche.addItem(demarch.toUpperCase());
+                this.j_combo_demarche.addItem(Formats.ConvertOcmToOcfm(dem));
             }
         } 
         
@@ -190,7 +191,11 @@ public class UserFormDialog extends javax.swing.JFrame {
     private void ChargeLogin(){
         String txt_username = this.txt_username.getText();
         String txt_password = String.valueOf(this.txt_password.getPassword());
-        String demarche = this.j_combo_demarche.getSelectedItem().toString();
+        //String demarche = this.j_combo_demarche.getSelectedItem().toString();
+        String demarche = Formats.ConvertOcmToOcfm(this.j_combo_demarche.getSelectedItem().toString());
+        
+        
+        
         
         String txt_demarche = "Séléctionner une démarche";
         

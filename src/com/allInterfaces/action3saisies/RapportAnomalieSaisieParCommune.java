@@ -231,12 +231,9 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
 
     private void j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
         
-      
-        
     }//GEN-LAST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
 
     private void j_combo_regionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_regionItemStateChanged
-
 
     }//GEN-LAST:event_j_combo_regionItemStateChanged
 
@@ -256,7 +253,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
             //this.setAlwaysOnTop(true);
         }else{
             
-                        traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).AnomaliesSaisieParCommune(selected_region, this.demarche);
+                        traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).AnomaliesSaisieParCommune(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
                         
                         DefaultTableModel tableau = (DefaultTableModel) j_table_rapport_sig.getModel();
                         

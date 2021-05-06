@@ -171,4 +171,39 @@ public class Formats {
     }
     
     
+    
+    public static String ConvertOcmToOcfm(String operation){
+        
+        String newOperation = operation;
+        
+        //System.out.println("simple opération vaut = "+ operation);
+        
+        //System.out.println("opération dans formats = "+ operation);
+        
+        if(operation.toLowerCase().equals("ocm")){
+            newOperation = "OCFM";
+        }else if(operation.toLowerCase().equals("ogcf")){
+            newOperation = "OGCF";
+        }
+        
+        //System.out.println("opération dans formats retour vaut = "+ newOperation);
+        
+        return newOperation.toUpperCase();
+    }
+    
+    
+    
+    public static String ConvertOcfmToOcm(String operation){
+        
+        String newOperation = operation;
+
+        if(operation.toLowerCase().equals("ocfm")){
+            newOperation = "ocm";
+        }else if(operation.toLowerCase().equals("ogcf")){
+            newOperation = "ogcf";
+        }
+        
+        return newOperation.toLowerCase();
+    }
+    
 }

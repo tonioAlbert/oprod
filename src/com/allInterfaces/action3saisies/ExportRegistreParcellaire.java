@@ -5,6 +5,7 @@
  */
 package com.allInterfaces.action3saisies;
 
+import com.classes.action3saisie.Formats;
 import com.connectDb.ConnectDb;
 import java.awt.event.ItemEvent;
 import java.sql.Connection;
@@ -349,7 +350,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             String commune = selected_commune.split("  _  ")[1];
             
             
-            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.type_operation.toLowerCase()).getRegistreParcellaireProvisoire(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+            List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation).toLowerCase()).getRegistreParcellaireProvisoire(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
 
             if(reponse.get(0).equals("success")){
                 
