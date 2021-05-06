@@ -1124,9 +1124,15 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_formKeyPressed
 
     private void j_menu_config_bddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_config_bddActionPerformed
-        ModificationConfigurationBaseDeDonnees v_rapport_anomalies_saisie_par_commune = new ModificationConfigurationBaseDeDonnees(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER);
+        ModificationConfigurationBaseDeDonnees v_rapport_anomalies_saisie_par_commune = new ModificationConfigurationBaseDeDonnees(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
         this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+        //System.out.println("AVANT v_rapport_anomalies_saisie_par_commune.getLocation() = "+  v_rapport_anomalies_saisie_par_commune);
+        
         v_rapport_anomalies_saisie_par_commune.show();
+        
+        //System.out.println("APRES v_rapport_anomalies_saisie_par_commune.getLocation() = "+  v_rapport_anomalies_saisie_par_commune.getComponents());
+        
+        //this.j_menu_parametres.setEnabled(false);
         
     }//GEN-LAST:event_j_menu_config_bddActionPerformed
 

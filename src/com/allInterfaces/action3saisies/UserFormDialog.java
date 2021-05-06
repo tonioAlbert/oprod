@@ -216,25 +216,25 @@ public class UserFormDialog extends javax.swing.JFrame {
         }else{
         
 
-        Utilisateurs user = new Utilisateurs(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD);
-        String user_login_bdd = user.getLogin(txt_username);
-        String user_mot_de_passe_bdd = user.getPassword();
-        String user_id_profil_bdd = user.getProfil();
-        
+            Utilisateurs user = new Utilisateurs(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD);
+            String user_login_bdd = user.getLogin(txt_username);
+            String user_mot_de_passe_bdd = user.getPassword();
+            String user_id_profil_bdd = user.getProfil();
 
-        hash_txt_password = Hash.getHash(txt_password.getBytes(), "MD5");
+
+            hash_txt_password = Hash.getHash(txt_password.getBytes(), "MD5");
         
-        if(user_login_bdd == null){
-            System.out.println("Nom d'utilisateur n'existe pas dans la base de données !");
-            JOptionPane.showMessageDialog(null, "Nom d'utilisateur n'existe pas dans la base de données !","Nom d'utilisateur incorrect et/ou introuvable", JOptionPane.INFORMATION_MESSAGE); 
-        }else{
+            if(user_login_bdd == null){
+                System.out.println("Nom d'utilisateur n'existe pas dans la base de données !");
+                JOptionPane.showMessageDialog(null, "Nom d'utilisateur n'existe pas dans la base de données !","Nom d'utilisateur incorrect et/ou introuvable", JOptionPane.INFORMATION_MESSAGE); 
+            }else{
             
                 if (hash_txt_password.equals(user_mot_de_passe_bdd)){
                     
                     
-        System.out.println("mon profil est : "+ user_id_profil_bdd);
-                System.out.println("user_login_bdd est : "+ user_login_bdd);
-                        System.out.println("user_mot_de_passe_bdd est : "+ user_mot_de_passe_bdd);
+                //System.out.println("mon profil est : "+ user_id_profil_bdd);
+                //System.out.println("user_login_bdd est : "+ user_login_bdd);
+                //System.out.println("user_mot_de_passe_bdd est : "+ user_mot_de_passe_bdd);
                    
                     Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, demarche, user_id_profil_bdd);
                     home.setVisible(true);

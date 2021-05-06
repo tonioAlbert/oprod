@@ -5,11 +5,6 @@
  */
 package com.allInterfaces.action3saisies;
 
-import com.classes.action3saisie.Hash;
-import com.classes.action3saisie.Utilisateurs;
-import java.awt.Color;
-import javax.swing.JOptionPane;
-
 
 /**
  *
@@ -29,14 +24,31 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
      * Creates new form UserFormDialog
      */
     public ModificationConfigurationBaseDeDonnees(String host, Integer port, String dbname, String user, String password) {
-        
+            
         this.BDD_HOST = host;
         this.BDD_PORT = port;
         this.BDD_DBNAME = dbname;
         this.BDD_USER = user;
         this.BDD_PWD = password;
-
+        
+        System.out.println("host  = " + host);
+        System.out.println("port  = " + port);
+        System.out.println("dbname  = " + dbname);
+        System.out.println("user  = " + user);
+        System.out.println("password  = " + password);
+        
+        
+    
         initComponents();
+        
+        
+                
+        this.txt_username.setText(user);
+        this.txt_nom_bdd.setText(dbname);
+        this.txt_nom_hote.setText(host);
+        this.txt_port.setText(port.toString());
+        this.txt_password.setText(password);
+            
 
     }
 
@@ -55,13 +67,13 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         btn_valider = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txt_password = new javax.swing.JPasswordField();
-        txt_nom_hote = new javax.swing.JPasswordField();
         j_label_nom_hote = new javax.swing.JLabel();
         j_label_port = new javax.swing.JLabel();
-        txt_port = new javax.swing.JPasswordField();
         j_label_nom_bdd = new javax.swing.JLabel();
-        txt_nom_bdd = new javax.swing.JPasswordField();
+        txt_port = new javax.swing.JTextField();
+        txt_password = new javax.swing.JTextField();
+        txt_nom_hote = new javax.swing.JTextField();
+        txt_nom_bdd = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Modification configuration Base de données");
@@ -97,26 +109,26 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
 
         jLabel2.setText("Mot de passe");
 
-        txt_password.setToolTipText("Mot de passe");
-
-        txt_nom_hote.setToolTipText("Mot de passe");
-
         j_label_nom_hote.setText("Nom d'hôte");
 
         j_label_port.setText("Port");
 
-        txt_port.setToolTipText("Mot de passe");
-
         j_label_nom_bdd.setText("Nom Base de données");
 
-        txt_nom_bdd.setToolTipText("Mot de passe");
+        txt_port.setToolTipText("Nom d'utilisateur");
+
+        txt_password.setToolTipText("Nom d'utilisateur");
+
+        txt_nom_hote.setToolTipText("Nom d'utilisateur");
+
+        txt_nom_bdd.setToolTipText("Nom d'utilisateur");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(302, Short.MAX_VALUE)
                 .addComponent(btn_valider)
                 .addGap(62, 62, 62)
                 .addComponent(btn_annuler)
@@ -126,24 +138,22 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(j_label_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                        .addComponent(txt_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addComponent(txt_nom_bdd))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(j_label_port, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(j_label_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txt_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(60, 60, 60)
+                        .addComponent(txt_port))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_username)
                             .addComponent(txt_password)
-                            .addComponent(txt_username))))
+                            .addComponent(txt_nom_hote))))
                 .addGap(19, 19, 19))
         );
         jPanel1Layout.setVerticalGroup(
@@ -154,22 +164,22 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                     .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(txt_password, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(j_label_nom_hote)
+                    .addComponent(txt_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_nom_hote))
+                    .addComponent(j_label_port)
+                    .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_port))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_nom_bdd))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                    .addComponent(j_label_nom_bdd)
+                    .addComponent(txt_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_annuler)
                     .addComponent(btn_valider))
@@ -183,7 +193,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
 
     private void btn_annulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_annulerActionPerformed
         // TODO add your handling code here:
-        //this.setVisible(false);
+        this.setVisible(false);
         //this.j_menu_parametres.
 
         //this.getParent().getParent().getParent().getParent().getParent().setBackground(Color.red);
@@ -260,10 +270,10 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
     private javax.swing.JLabel j_label_nom_bdd;
     private javax.swing.JLabel j_label_nom_hote;
     private javax.swing.JLabel j_label_port;
-    private javax.swing.JPasswordField txt_nom_bdd;
-    private javax.swing.JPasswordField txt_nom_hote;
-    private javax.swing.JPasswordField txt_password;
-    private javax.swing.JPasswordField txt_port;
+    private javax.swing.JTextField txt_nom_bdd;
+    private javax.swing.JTextField txt_nom_hote;
+    private javax.swing.JTextField txt_password;
+    private javax.swing.JTextField txt_port;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
