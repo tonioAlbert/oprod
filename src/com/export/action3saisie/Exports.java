@@ -81,14 +81,7 @@ public class Exports {
 
 public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String path){
 
-List retour = new ArrayList();
-        
-        if(this.TYPE_OPERATION.equals("OCM")){
-            this.op = "OCFM";
-        }else{
-            this.op = "OGCF";
-        }
-        
+        List retour = new ArrayList();
         
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
         Date date = new Date(System.currentTimeMillis());
@@ -99,7 +92,7 @@ List retour = new ArrayList();
         String dateAujourdhui = dateFormat.format(new Date());
     
     
-        String realPath = path+"\\"+this.op+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
+        String realPath = path+"\\"+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase()+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
         String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
         String nomAntenne = "";
         
@@ -180,7 +173,7 @@ List retour = new ArrayList();
             st.setString(3, com);
             st.setString(4, fkt);
             st.setString(5, hameau);
-            st.setString(6, this.TYPE_OPERATION.toLowerCase());
+            st.setString(6, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
             rs = st.executeQuery();
 
                 try{
@@ -207,7 +200,7 @@ List retour = new ArrayList();
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
                 sheet.getFooter().setCenter("LISTES DES ANOMALIES BLOQUANTE");
-                sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
+                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -586,12 +579,6 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
 
 List retour = new ArrayList();
         
-        if(this.TYPE_OPERATION.equals("OCM")){
-            this.op = "OCFM";
-        }else{
-            this.op = "OGCF";
-        }
-        
         
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
         Date date = new Date(System.currentTimeMillis());
@@ -685,7 +672,7 @@ List retour = new ArrayList();
             st.setString(3, com);
             st.setString(4, fkt);
             st.setString(5, hameau);
-            st.setString(6, this.TYPE_OPERATION.toLowerCase());
+            st.setString(6, Formats.ConvertOcfmToOcm(TYPE_OPERATION).toLowerCase());
             rs = st.executeQuery();
 
                 try{
@@ -709,7 +696,7 @@ List retour = new ArrayList();
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
                 sheet.getFooter().setCenter("LISTES DES ANOMALIES NON BLOQUANTE");
-                sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
+                sheet.getFooter().setRight("Opération "+ Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
