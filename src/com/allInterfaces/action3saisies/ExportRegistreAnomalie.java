@@ -17,10 +17,15 @@ import com.classes.action3saisie.Region;
 import com.export.action3saisie.Exports;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -478,12 +483,14 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             
             String responseBloquante = (String)reponseAnomaliesBloquantes.get(0);
             String EmplacementFichierExcelExporterAnomalieBloquante = (String)reponseAnomaliesBloquantes.get(1);
+            String ReresponseNonBloquante = "";
+            
             
             if(responseBloquante.equals("success-anomalie-bloquante")){
                 
                 // ON ESSEAI DE RECUPERER LES ANOMALIES NON BLOQUANTES S'IL EXISTE
                 List reponseAnomaliesNonBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
-            System.out.println("suze anomalie nom bloquante vaut = "+ reponseAnomaliesNonBloquantes.size());
+            //System.out.println("suze anomalie nom bloquante vaut = "+ reponseAnomaliesNonBloquantes.size());
                 //String responseNonBloquante = (String)reponseAnomaliesBloquantes.get(0);
                 
                 int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Registre anomalie(s) exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -497,9 +504,11 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                         }
                     }
 
-            }else if(responseBloquante.equals("error-empty-anomalie-bloquante")){
+            }else if(responseBloquante.equals("empty-anomalie-bloquante")){
+                
                 List ReRecuperationDesAnomaliesNonBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
-                String ReresponseNonBloquante = (String)reponseAnomaliesBloquantes.get(0);
+                
+                ReresponseNonBloquante = (String)ReRecuperationDesAnomaliesNonBloquantes.get(0);
                 
                 if(ReresponseNonBloquante.equals("success-anomalie-non-bloquante")){
                     
@@ -511,8 +520,32 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                             Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
                         }catch(Exception ee){
                             JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        
                         }
                     }  
+                }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReresponseNonBloquante.equals("empty-anomalie-non-bloquante")){
+                try {
+                    
+                    Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterAnomalieBloquante));
+                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+                } catch (IOException ex) {
+                    //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
+                    
+                            JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ex.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        
+                }
+            }
+            }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReresponseNonBloquante.equals("empty-anomalie-non-bloquante")){
+                try {
+                    Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterAnomalieBloquante));
+                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+                } catch (IOException ex) {
+                    //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
+                    
+                            JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ex.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        
                 }
             }
             //if(reponse.get(0).equals("error-empty")){

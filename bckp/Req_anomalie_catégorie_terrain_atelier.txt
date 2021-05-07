@@ -1,0 +1,10 @@
+
+select * from demande where type_op = 'ocm'
+AND demande.cat_autre is false 
+AND demande.cat_bois is false 
+AND demande.cat_champ is false 
+AND demande.cat_cour is false 
+AND demande.cat_etable is false 
+AND demande.cat_etang is false
+AND demande.cat_riz is false
+AND val_anomalie is false

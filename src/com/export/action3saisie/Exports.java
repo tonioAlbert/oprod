@@ -70,7 +70,9 @@ public class Exports {
         this.BDD_PWD = PWD;
         
 
-        this.TYPE_OPERATION = operation;
+        this.TYPE_OPERATION = Formats.ConvertOcmToOcfm(operation);
+        
+        System.out.println("operation vaut = " + this.TYPE_OPERATION);
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
     }
@@ -92,7 +94,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
         String dateAujourdhui = dateFormat.format(new Date());
     
     
-        String realPath = path+"\\"+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase()+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
+        String realPath = path+"\\"+this.TYPE_OPERATION.toUpperCase()+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
         String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
         String nomAntenne = "";
         
@@ -199,7 +201,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
                 sheet.getHeader().setRight("Fiche 9 – LISTE DES ANOMALIES SUR LES FORMULAIRES");
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
-                sheet.getFooter().setCenter("LISTES DES ANOMALIES BLOQUANTE");
+                sheet.getFooter().setCenter("LISTE(S) DE(S) ANOMALIE(S) BLOQUANTE(S)");
                 sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
@@ -546,7 +548,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
             
             if(RowResultSet == 0){
                 //System.out.println("val fiale de RowResultSet = " + RowResultSet);
-                retour.add("error-empty-anomalie-bloquante");
+                retour.add("empty-anomalie-bloquante");
                 retour.add(realPath);
                 //Files.deleteIfExists(Paths.get(realPath));
                 
@@ -563,7 +565,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
         } catch (Exception ex) {
             //ex.printStackTrace();
             //throw new RuntimeException();
-            retour.add("error-anomalie-non-bloquante");
+            retour.add("error-anomalie-bloquante");
             retour.add("Error executing query: " +ex.getMessage());
             JOptionPane.showMessageDialog(null, "Impossible de lancer la requette de récupération des anomalies\n\nRetour : "+ex.getMessage(), "Erreur SQL trouvé", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -577,13 +579,8 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
 
 public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String path){
 
-List retour = new ArrayList();
-        
-        
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
-        Date date = new Date(System.currentTimeMillis());
-        
-        
+        List retour = new ArrayList();
+
         //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
         String dateAujourdhui = dateFormat.format(new Date());
@@ -695,8 +692,8 @@ List retour = new ArrayList();
                 sheet.getHeader().setRight("Fiche 9 – LISTE DES ANOMALIES SUR LES FORMULAIRES");
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
-                sheet.getFooter().setCenter("LISTES DES ANOMALIES NON BLOQUANTE");
-                sheet.getFooter().setRight("Opération "+ Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                sheet.getFooter().setCenter("LISTE(S) DE(S) ANOMALIE(S) NON BLOQUANTE(S)");
+                sheet.getFooter().setRight("Opération "+ this.TYPE_OPERATION.toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -1042,7 +1039,7 @@ List retour = new ArrayList();
             
             if(RowResultSet == 0){
                 //System.out.println("val fiale de RowResultSet = " + RowResultSet);
-                retour.add("error-empty-anomalie-non-bloquante");
+                retour.add("empty-anomalie-non-bloquante");
                 retour.add(realPath);
                 //Files.deleteIfExists(Paths.get(realPath));
                 
