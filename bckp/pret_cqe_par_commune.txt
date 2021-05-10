@@ -1,0 +1,23 @@
+ SELECT district.nom AS district,
+    commune.nom AS commune,
+    count(*) AS nombre_de_dossier_pret_cqe
+   FROM demande,
+    hameau,
+    fokontany,
+    commune, district, region,
+    parcelle_cf
+  WHERE demande.id_hameau::text = hameau.id_hameau::text 
+  AND fokontany.id_fokontany::text = hameau.id_fokontany::text
+  AND commune.id_commune::text = fokontany.id_commune::text 
+  AND district.id_district::text = commune.id_district::text 
+  AND region.id_region::text = district.id_region::text 
+  AND demande.id_parcelle::text = parcelle_cf.c_parcelle::text 
+  AND demande.val_anomalie IS FALSE 
+  AND demande.cqi_complet IS TRUE
+  AND demande.date_soumission_cqe IS NULL 
+  AND demande.val_cqe IS NULL 
+  AND parcelle_cf.anomalie IS FALSE 
+  AND parcelle_cf.limitrophe IS FALSE
+  AND demande.avis_crl IS TRUE
+  AND (demande.date_crl - demande.date_affichage) >= 15
+  GROUP BY district.nom , commune.nom
