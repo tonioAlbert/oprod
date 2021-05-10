@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author RAP
  */
-public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame {
+public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame {
     
     private final String selectRegion = "Séléctionner un région";
     
@@ -37,7 +37,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
     /**
      * Creates new form SaisieParOperateur
      */
-    public RapportAnomalieSaisieParCommune(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String dem) {
+    public NombreDossiersPretCQEParCommune(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String dem) {
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
@@ -48,7 +48,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
         
         initComponents();
         
-        this.j_bouton_exporter_rapport_anomalies_saisie_par_commune.setEnabled(false);
+        this.j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setEnabled(false);
         
         this.j_comb_demarche.removeAllItems();
         this.j_comb_demarche.addItem(dem);
@@ -96,12 +96,12 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
         j_comb_demarche = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         j_combo_region = new javax.swing.JComboBox<>();
-        j_bouton_valider_rapport_anomalies_saisie_par_commune = new javax.swing.JButton();
-        j_bouton_exporter_rapport_anomalies_saisie_par_commune = new javax.swing.JButton();
+        j_bouton_valider_pret_CQE_par_commune = new javax.swing.JButton();
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Rapport Anomalies Saisies Par Commune");
+        setTitle("Nombre(s) Dossier(s) Pret CQE Par Commune");
 
         j_table_rapport_sig.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         j_table_rapport_sig.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
@@ -110,7 +110,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
 
             },
             new String [] {
-                "Région", "District", "Commune", "Nombre d'anomalie"
+                "Région", "District", "Commune", "Nombres dossiers"
             }
         ) {
             Class[] types = new Class [] {
@@ -146,10 +146,10 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
             }
         });
 
-        j_bouton_valider_rapport_anomalies_saisie_par_commune.setText("Valider");
-        j_bouton_valider_rapport_anomalies_saisie_par_commune.addActionListener(new java.awt.event.ActionListener() {
+        j_bouton_valider_pret_CQE_par_commune.setText("Valider");
+        j_bouton_valider_pret_CQE_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed(evt);
+                j_bouton_valider_pret_CQE_par_communeActionPerformed(evt);
             }
         });
 
@@ -172,7 +172,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
             .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
                     .addGap(124, 124, 124)
-                    .addComponent(j_bouton_valider_rapport_anomalies_saisie_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_bouton_valider_pret_CQE_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(935, Short.MAX_VALUE)))
         );
         j_panel_saisie_par_opLayout.setVerticalGroup(
@@ -193,14 +193,14 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
             .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
                     .addContainerGap(176, Short.MAX_VALUE)
-                    .addComponent(j_bouton_valider_rapport_anomalies_saisie_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_bouton_valider_pret_CQE_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(83, 83, 83)))
         );
 
-        j_bouton_exporter_rapport_anomalies_saisie_par_commune.setText("Exporter");
-        j_bouton_exporter_rapport_anomalies_saisie_par_commune.addActionListener(new java.awt.event.ActionListener() {
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setText("Exporter");
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed(evt);
+                j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed(evt);
             }
         });
 
@@ -213,7 +213,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(j_bouton_exporter_rapport_anomalies_saisie_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(182, 182, 182))
         );
         layout.setVerticalGroup(
@@ -222,22 +222,22 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                 .addContainerGap()
                 .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(j_bouton_exporter_rapport_anomalies_saisie_par_commune)
+                .addComponent(j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune)
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
+    private void j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed
         
-    }//GEN-LAST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
+    }//GEN-LAST:event_j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed
 
     private void j_combo_regionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_regionItemStateChanged
 
     }//GEN-LAST:event_j_combo_regionItemStateChanged
 
-    private void j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed
+    private void j_bouton_valider_pret_CQE_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_valider_pret_CQE_par_communeActionPerformed
 
         
         List <String[]> traitements;
@@ -249,11 +249,11 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
         if(selected_region.equals(selectRegion)){
             //this.setAlwaysOnTop(false);
             JOptionPane.showMessageDialog(null, "Veuillez selectionner une région","Séléction Région", JOptionPane.INFORMATION_MESSAGE);
-            this.j_bouton_exporter_rapport_anomalies_saisie_par_commune.setEnabled(false);
+            this.j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setEnabled(false);
             //this.setAlwaysOnTop(true);
         }else{
             
-                        traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).AnomaliesSaisieParCommune(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
+                        traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getNombresDossiersPretCQE(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
                         
                         DefaultTableModel tableau = (DefaultTableModel) j_table_rapport_sig.getModel();
                         
@@ -278,12 +278,12 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                                 tableau.addRow(rowData);
                             }
                             
-                            this.j_bouton_exporter_rapport_anomalies_saisie_par_commune.setEnabled(true);
+                            this.j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setEnabled(true);
                         }
             
         }
         
-    }//GEN-LAST:event_j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed
+    }//GEN-LAST:event_j_bouton_valider_pret_CQE_par_communeActionPerformed
 
  
     
@@ -293,8 +293,8 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton j_bouton_exporter_rapport_anomalies_saisie_par_commune;
-    private javax.swing.JButton j_bouton_valider_rapport_anomalies_saisie_par_commune;
+    private javax.swing.JButton j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune;
+    private javax.swing.JButton j_bouton_valider_pret_CQE_par_commune;
     private javax.swing.JComboBox<String> j_comb_demarche;
     private javax.swing.JComboBox<String> j_combo_region;
     private javax.swing.JLabel j_label_annee_saisie1;

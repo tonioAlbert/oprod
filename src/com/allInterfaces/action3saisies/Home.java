@@ -162,9 +162,11 @@ public class Home extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_anomalies = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        j_menu_export_rp_provisoire = new javax.swing.JMenuItem();
+        j_menu_export_listes_cf_editable = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_cf_editer_par_commune = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+        j_menu_export_rp_provisoire = new javax.swing.JMenuItem();
         j_menu_stats = new javax.swing.JMenu();
         j_menu_stat_saisie_par_operateur = new javax.swing.JMenuItem();
         j_menu_stat_anomalies_par_commune = new javax.swing.JMenuItem();
@@ -173,6 +175,7 @@ public class Home extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         j_menu_item_rapport_saisie = new javax.swing.JMenuItem();
         j_menu_item_rapports_sig = new javax.swing.JMenuItem();
+        j_menu_itemStat_Nbre_pret_CQE = new javax.swing.JMenuItem();
         j_menu_controllesSaisies = new javax.swing.JMenu();
         j_menu_controles_saisie = new javax.swing.JMenuItem();
         j_menu_parametres = new javax.swing.JMenu();
@@ -485,14 +488,14 @@ public class Home extends javax.swing.JFrame {
         j_menu_exports.add(j_menu_export_listes_anomalies);
         j_menu_exports.add(jSeparator5);
 
-        j_menu_export_rp_provisoire.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_export_rp_provisoire.setText("Registre Parcellaire Provisoire");
-        j_menu_export_rp_provisoire.addActionListener(new java.awt.event.ActionListener() {
+        j_menu_export_listes_cf_editable.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_export_listes_cf_editable.setText("Registre Parcellaire Provisoire");
+        j_menu_export_listes_cf_editable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_menu_export_rp_provisoireActionPerformed(evt);
+                j_menu_export_listes_cf_editableActionPerformed(evt);
             }
         });
-        j_menu_exports.add(j_menu_export_rp_provisoire);
+        j_menu_exports.add(j_menu_export_listes_cf_editable);
         j_menu_exports.add(jSeparator6);
 
         j_menu_export_listes_cf_editer_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
@@ -503,6 +506,15 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_exports.add(j_menu_export_listes_cf_editer_par_commune);
+        j_menu_exports.add(jSeparator7);
+
+        j_menu_export_rp_provisoire.setText("Listes Prêt CQE");
+        j_menu_export_rp_provisoire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_export_rp_provisoireActionPerformed(evt);
+            }
+        });
+        j_menu_exports.add(j_menu_export_rp_provisoire);
 
         jMenuBar1.add(j_menu_exports);
 
@@ -558,6 +570,14 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_stats.add(j_menu_item_rapports_sig);
+
+        j_menu_itemStat_Nbre_pret_CQE.setText("Dossier(s) prtêt CQE");
+        j_menu_itemStat_Nbre_pret_CQE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_itemStat_Nbre_pret_CQEActionPerformed(evt);
+            }
+        });
+        j_menu_stats.add(j_menu_itemStat_Nbre_pret_CQE);
 
         jMenuBar1.add(j_menu_stats);
 
@@ -952,14 +972,13 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         }
     }//GEN-LAST:event_j_menu_item_formte_leiu_acte_naissanceActionPerformed
 
-    private void j_menu_export_rp_provisoireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_rp_provisoireActionPerformed
+    private void j_menu_export_listes_cf_editableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_cf_editableActionPerformed
         
         ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER,this.type_operation);
-        
         this.dpContent.add(rp_prov);
         rp_prov.show();
                
-    }//GEN-LAST:event_j_menu_export_rp_provisoireActionPerformed
+    }//GEN-LAST:event_j_menu_export_listes_cf_editableActionPerformed
 
     private void j_menu_export_listes_anomaliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_anomaliesActionPerformed
 
@@ -1136,6 +1155,18 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         
     }//GEN-LAST:event_j_menu_config_bddActionPerformed
 
+    private void j_menu_export_rp_provisoireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_rp_provisoireActionPerformed
+
+    }//GEN-LAST:event_j_menu_export_rp_provisoireActionPerformed
+
+    private void j_menu_itemStat_Nbre_pret_CQEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_itemStat_Nbre_pret_CQEActionPerformed
+        // NombreDossiersPretCQEParCommune
+        
+        NombreDossiersPretCQEParCommune stats_pret_cqe_par_commune = new NombreDossiersPretCQEParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(stats_pret_cqe_par_commune);
+        stats_pret_cqe_par_commune.show();
+    }//GEN-LAST:event_j_menu_itemStat_Nbre_pret_CQEActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1188,6 +1219,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel j_label_loading;
     private javax.swing.JLabel j_label_texte_loading;
@@ -1196,12 +1228,14 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_controles_saisie;
     private javax.swing.JMenu j_menu_controllesSaisies;
     private javax.swing.JMenuItem j_menu_export_listes_anomalies;
+    private javax.swing.JMenuItem j_menu_export_listes_cf_editable;
     private javax.swing.JMenuItem j_menu_export_listes_cf_editer_par_commune;
     private javax.swing.JMenuItem j_menu_export_listes_demandeurs;
     private javax.swing.JMenuItem j_menu_export_rp_provisoire;
     private javax.swing.JMenu j_menu_exports;
     private javax.swing.JMenu j_menu_fichier;
     private javax.swing.JMenu j_menu_formatages;
+    private javax.swing.JMenuItem j_menu_itemStat_Nbre_pret_CQE;
     private javax.swing.JMenuItem j_menu_item_adresse_demandeur;
     private javax.swing.JMenuItem j_menu_item_deconnexion;
     private javax.swing.JMenuItem j_menu_item_formate_lieu_naissance_;

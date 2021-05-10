@@ -1,0 +1,1 @@
+Connection to 192.168.88.10:5432 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.

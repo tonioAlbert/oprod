@@ -39,6 +39,9 @@ public class Querry {
     
     HashMap <String, String> m = new HashMap <> () ;
     
+    List <String[]> valeurDeRetour = new ArrayList<String[]>() ;
+    
+    
     public Querry(String HOST, Integer PORT, String DBNAME, String USER, String PWD){
         
         this.BDD_HOST = HOST;
@@ -50,7 +53,79 @@ public class Querry {
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
     }
     
+    
+    
+    
+public List <String []> getNombresDossiersPretCQE(String reg, String operation){
+ 
+try {
 
+                String sql = " SELECT region.nom AS region, district.nom as district,\n" +
+                "    commune.nom AS commune,\n" +
+                "    count(*) AS nombre_de_dossier_pret_cqe\n" +
+                "   FROM demande,\n" +
+                "    hameau,\n" +
+                "    fokontany,\n" +
+                "    commune, district, region,\n" +
+                "    parcelle_cf\n" +
+                "  WHERE demande.id_hameau::text = hameau.id_hameau::text \n" +
+                "  AND fokontany.id_fokontany::text = hameau.id_fokontany::text \n" +
+                "  AND commune.id_commune::text = fokontany.id_commune::text \n" +
+                " AND region.id_region::text = district.id_region::text\n" +
+                " AND district.id_district = commune.id_district\n" +
+                "  AND demande.id_parcelle::text = parcelle_cf.c_parcelle::text \n" +
+                "  AND demande.val_anomalie IS FALSE \n" +
+                "  AND demande.cqi_complet IS TRUE\n" +
+                "  AND demande.date_soumission_cqe IS NULL \n" +
+                "  AND demande.val_cqe IS NULL \n" +
+                "  AND parcelle_cf.anomalie IS FALSE \n" +
+                "    AND region.nom = ? \n" +
+                "  AND demande.type_op = ? \n" +     
+                "  AND parcelle_cf.limitrophe IS FALSE \n" +
+                "  and demande.avis_crl is TRUE\n" +
+                "  AND (demande.date_crl - demande.date_affichage) >= 15\n" +
+                "  GROUP BY district.nom , commune.nom";
+                
+                
+
+            
+
+                st = connectDatabase.prepareStatement(sql);    
+                st.setString(1, reg);
+                st.setString(2, operation.toLowerCase());
+                rs = st.executeQuery();
+                
+                
+                System.out.println("SQL pret CQE = " + rs );
+            
+                int n = 0;
+                
+                // remise à vide des valeurs de retours valeurDeRetour.clear();
+                valeurDeRetour.clear();
+
+                while(rs.next()){
+                    
+                    String[] traitements_saisies = { rs.getString("region"), rs.getString("district"), rs.getString("commune") , rs.getString("nombre_de_dossier_pret_cqe")};          
+                    
+                    valeurDeRetour.add(traitements_saisies);
+                    
+                    n++;
+                    
+                }
+                
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+    
+
+    return valeurDeRetour;
+    
+
+}
     
 public List <String[] > AnomaliesSaisieParCommune(String reg, String operation){
                    
@@ -178,7 +253,7 @@ public List <String[] > RapportCfEditableParCommune(String reg, String operation
     }
     
     
-    public List <String[] > getRapportSAISIE(String reg, String operation){
+public List <String[] > getRapportSAISIE(String reg, String operation){
                    
         List <String[]> saisies = new ArrayList<String[]>() ;
 

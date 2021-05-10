@@ -327,7 +327,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator5">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="j_menu_export_rp_provisoire">
+            <MenuItem class="javax.swing.JMenuItem" name="j_menu_export_listes_cf_editable">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial Narrow" size="14" style="1"/>
@@ -335,7 +335,7 @@
                 <Property name="text" type="java.lang.String" value="Registre Parcellaire Provisoire"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_export_rp_provisoireActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_export_listes_cf_editableActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator6">
@@ -349,6 +349,16 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_export_listes_cf_editer_par_communeActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator7">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="j_menu_export_rp_provisoire">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Listes Pr&#xea;t CQE"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_export_rp_provisoireActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -413,6 +423,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_item_rapports_sigActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="j_menu_itemStat_Nbre_pret_CQE">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Dossier(s) prt&#xea;t CQE"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_itemStat_Nbre_pret_CQEActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

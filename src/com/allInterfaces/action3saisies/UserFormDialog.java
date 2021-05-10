@@ -189,14 +189,11 @@ public class UserFormDialog extends javax.swing.JFrame {
 
     
     private void ChargeLogin(){
+        
         String txt_username = this.txt_username.getText();
         String txt_password = String.valueOf(this.txt_password.getPassword());
         //String demarche = this.j_combo_demarche.getSelectedItem().toString();
         String demarche = Formats.ConvertOcmToOcfm(this.j_combo_demarche.getSelectedItem().toString());
-        
-        
-        
-        
         String txt_demarche = "Séléctionner une démarche";
         
         String hash_txt_password = "";
@@ -219,8 +216,10 @@ public class UserFormDialog extends javax.swing.JFrame {
             System.out.println("Veuillez sélectionner une démarche");
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner une démarche","Aucune selectione du champ démarche", JOptionPane.INFORMATION_MESSAGE);
         }else{
+            
+            
+            System.out.println("démarche selectionné = " + txt_demarche);
         
-
             Utilisateurs user = new Utilisateurs(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD);
             String user_login_bdd = user.getLogin(txt_username);
             String user_mot_de_passe_bdd = user.getPassword();
