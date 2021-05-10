@@ -84,7 +84,7 @@ try {
                 "  AND parcelle_cf.limitrophe IS FALSE \n" +
                 "  and demande.avis_crl is TRUE\n" +
                 "  AND (demande.date_crl - demande.date_affichage) >= 15\n" +
-                "  GROUP BY district.nom , commune.nom";
+                "  GROUP BY region.nom ,district.nom , commune.nom";
                 
                 
 
