@@ -193,7 +193,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         String txt_username = this.txt_username.getText();
         String txt_password = String.valueOf(this.txt_password.getPassword());
         //String demarche = this.j_combo_demarche.getSelectedItem().toString();
-        String demarche = Formats.ConvertOcmToOcfm(this.j_combo_demarche.getSelectedItem().toString());
+        String demarche = this.j_combo_demarche.getSelectedItem().toString();
         String txt_demarche = "Séléctionner une démarche";
         
         String hash_txt_password = "";
@@ -238,9 +238,9 @@ public class UserFormDialog extends javax.swing.JFrame {
                     
                 //System.out.println("mon profil est : "+ user_id_profil_bdd);
                 //System.out.println("user_login_bdd est : "+ user_login_bdd);
-                //System.out.println("user_mot_de_passe_bdd est : "+ user_mot_de_passe_bdd);
+                //System.out.println("user_mot_de_passe_bdd est : "+ Formats.ConvertOcmToOcfm(demarche));
                    
-                    Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, demarche, user_id_profil_bdd);
+                    Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, Formats.ConvertOcmToOcfm(demarche), user_id_profil_bdd);
                     home.setVisible(true);
                     this.setVisible(false);
 
