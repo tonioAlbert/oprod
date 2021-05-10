@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -309,9 +310,13 @@ public class A3_suivi_saisie {
             
        
             System.out.println("\nTout est Ok!\nLancement de l'application...  : ");
-            UserFormDialog home = new UserFormDialog(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password, demarches);
-            home.setVisible(true);
-            home.setLocationRelativeTo(null);
+            
+            
+            SwingUtilities.invokeLater(() -> {
+                UserFormDialog home = new UserFormDialog(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password, demarches);
+                home.setVisible(true);
+                home.setLocationRelativeTo(null);
+            });
             
             connexion.close();
             

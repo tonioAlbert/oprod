@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -807,12 +808,22 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             this.j_label_texte_loading.setVisible(true);
             this.j_label_loading.setVisible(true);
         
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
-            this.formats("id_persphys", "persphys", "prenom");
+            
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                    formats("id_persphys", "persphys", "prenom");
+                    return null;
+                }
+            }.execute();
+            
+            
         }
         
         this.j_label_texte_loading.setVisible(false);
@@ -825,14 +836,21 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieu dit dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
-            this.formats("id_demande", "demande", "lieu_dit");
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                    formats("id_demande", "demande", "lieu_dit");
             
-            //System.exit(0);
+                    return null;
+                }
+            }.execute();
+
         }
     }//GEN-LAST:event_j_menu_item_lieu_ditActionPerformed
 
@@ -865,25 +883,35 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des voisin(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
             
-            System.out.println("Début formatages des voisins...");
             
-            System.out.println("Formatage voisin Nord");
-            this.formats("id_demande", "demande", "v_nord");
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                    System.out.println("Début formatages des voisins...");
+
+                    System.out.println("Formatage voisin Nord");
+                    formats("id_demande", "demande", "v_nord");
+
+                    System.out.println("Formatage Voisin Sud");
+                    formats("id_demande", "demande", "v_sud");
+
+                    System.out.println("Formatage Voisin Est");
+                    formats("id_demande", "demande", "v_est");
+
+                    System.out.println("Formatage Voisin Ouest");
+                    formats("id_demande", "demande", "v_ouest");
             
-            System.out.println("Formatage Voisin Sud");
-            this.formats("id_demande", "demande", "v_sud");
+                    return null;
+                }
+            }.execute();
             
-            System.out.println("Formatage Voisin Est");
-            this.formats("id_demande", "demande", "v_est");
-            
-            System.out.println("Formatage Voisin Ouest");
-            this.formats("id_demande", "demande", "v_ouest");
         }
     }//GEN-LAST:event_j_menu_item_formte_voisinsActionPerformed
 
@@ -892,21 +920,34 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des voisin(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
+            
             this.j_label_texte_loading.setVisible(true);
             this.j_label_loading.setVisible(true);
         
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
             
-            System.out.println("Début formatage...");
-            System.out.println("Formatage Nom Père");
-            this.formats("id_persphys", "persphys", "nom_pere");
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                System.out.println("Début formatage...");
+                System.out.println("Formatage Nom Père");
+
+                formats("id_persphys", "persphys", "nom_pere");
+
+                System.out.println("Formatage Nom Mère");
+                formats("id_persphys", "persphys", "nom_mere");
             
-            System.out.println("Formatage Nom Mère");
-            this.formats("id_persphys", "persphys", "nom_mere");
+            
+                    return null;
+                }
+            }.execute();
+            
+
         }
         this.j_label_texte_loading.setVisible(false);
         this.j_label_loading.setVisible(false);
@@ -918,12 +959,22 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des charges sur les demandes des demandeurs ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
-            this.formats("id_demande", "demande", "charges");
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                    formats("id_demande", "demande", "charges");
+            
+                    return null;
+                }
+            }.execute();
+            
+            
         }
         
     }//GEN-LAST:event_j_menu_item_formte_chargesActionPerformed
@@ -934,15 +985,24 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieux de délivrance du CIN des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
             
-            System.out.println("Début formatage...");
-            System.out.println("Formatage Lieu CIN");
-            this.formats("id_persphys", "persphys", "cni_lieu");
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+                    
+                    System.out.println("Début formatage...");
+                    System.out.println("Formatage Lieu CIN");
+                    formats("id_persphys", "persphys", "cni_lieu");
+
+                    return null;
+                }
+            }.execute();
+
         }
     }//GEN-LAST:event_j_menu_item_formte_lieu_cinActionPerformed
 
@@ -951,15 +1011,26 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieux de délivrance de l'acte de naisance des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
             
-            System.out.println("Début formatage...");
-            System.out.println("Formatage Lieu Acte de Naissance");
-            this.formats("id_persphys", "persphys", "acn_lieu");
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+                    
+            
+                    System.out.println("Début formatage...");
+                    System.out.println("Formatage Lieu Acte de Naissance");
+                    formats("id_persphys", "persphys", "acn_lieu");
+
+                    return null;
+                }
+            }.execute();
+            
+
         }
     }//GEN-LAST:event_j_menu_item_formte_leiu_acte_naissanceActionPerformed
 
@@ -989,15 +1060,26 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage l'adresse des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
+            
             this.j_label_texte_loading.setVisible(true);
             this.j_label_loading.setVisible(true);
         
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
-            this.formats("id_persphys", "persphys", "adresse");
+            
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                    formats("id_persphys", "persphys", "adresse");
+                    return null;
+                }
+            }.execute();
+            
+            
         }
         
             this.j_label_texte_loading.setVisible(false);
@@ -1013,15 +1095,15 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         if(option == JOptionPane.OK_OPTION){
             
 
-        this.j_label_texte_loading.setVisible(true);
-        this.j_label_loading.setVisible(true);
+            this.j_label_texte_loading.setVisible(true);
+            this.j_label_loading.setVisible(true);
 
             
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
-            this.j_menu_controllesSaisies.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
+            //this.j_menu_controllesSaisies.setEnabled(false);
             
             
             //this.jProgressBar_home.setVisible(true);
@@ -1029,8 +1111,15 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             
             //BarreDeProgression pBar = new BarreDeProgression(this.jProgressBar_home, this.j_labal_perc);
             //pBar.run();
-     
-            this.formatsToUpper("id_persphys", "persphys", "nom");
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                    formatsToUpper("id_persphys", "persphys", "nom");
+                    return null;
+                }
+            }.execute();
+            
         }
         
         
@@ -1043,15 +1132,27 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage du lieu de naissance des demandeurs ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
+            
+            
             this.j_label_texte_loading.setVisible(true);
             this.j_label_loading.setVisible(true);
         
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
-            this.formats("id_persphys", "persphys", "naissance_lieu");
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                    formats("id_persphys", "persphys", "naissance_lieu");
+                    return null;
+                }
+            }.execute();
+            
+            
+            
         }
         
         this.j_label_texte_loading.setVisible(false);
@@ -1063,12 +1164,23 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des consistance(s) des demandes ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            this.j_menu_item_formate_prenom.setEnabled(false);
-            this.j_menu_exports.setEnabled(false);
-            this.j_menu_formatages.setEnabled(false);
-            this.j_menu_stats.setEnabled(false);
+            //this.j_menu_item_formate_prenom.setEnabled(false);
+            //this.j_menu_exports.setEnabled(false);
+            //this.j_menu_formatages.setEnabled(false);
+            //this.j_menu_stats.setEnabled(false);
             
-            this.formats("id_demande", "demande", "consistance");
+            
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+
+                    formats("id_demande", "demande", "consistance");
+            
+                    return null;
+                }
+            }.execute();
+            
+            
         }
     }//GEN-LAST:event_j_menu_item_formte_consistance_ActionPerformed
 

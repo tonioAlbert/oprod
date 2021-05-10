@@ -10,6 +10,7 @@ import com.classes.action3saisie.Hash;
 import com.classes.action3saisie.Utilisateurs;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 
 /**
@@ -235,14 +236,12 @@ public class UserFormDialog extends javax.swing.JFrame {
             
                 if (hash_txt_password.equals(user_mot_de_passe_bdd)){
                     
-                    
-                //System.out.println("mon profil est : "+ user_id_profil_bdd);
-                //System.out.println("user_login_bdd est : "+ user_login_bdd);
-                //System.out.println("user_mot_de_passe_bdd est : "+ Formats.ConvertOcmToOcfm(demarche));
-                   
-                    Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, Formats.ConvertOcmToOcfm(demarche), user_id_profil_bdd);
-                    home.setVisible(true);
-                    this.setVisible(false);
+                SwingUtilities.invokeLater(() -> {
+                        Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, Formats.ConvertOcmToOcfm(demarche), user_id_profil_bdd);
+                        home.setVisible(true);
+                        this.setVisible(false);
+                });
+
 
                 }else{
                     System.out.print("Mot de passe saisie incorrect !");

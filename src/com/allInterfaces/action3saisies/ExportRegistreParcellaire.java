@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 
 
@@ -345,6 +347,16 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Veuillez selectionner le dossier de destination de l'export","Séléction Emplacement", JOptionPane.INFORMATION_MESSAGE);
             //this.setAlwaysOnTop(true);
         }else{
+            
+
+        new SwingWorker(){
+            @Override
+            protected Object doInBackground() throws Exception{
+
+            System.out.println("Thread en cours dans export RP = " + Thread.currentThread().getName());
+
+            
+            //Thread.sleep(5000);
 
             String code_district = selected_district.split("  _  ")[0];
             String code_commune = selected_commune.split("  _  ")[0];
@@ -352,7 +364,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             String commune = selected_commune.split("  _  ")[1];
             
 
-            List reponsePersPhysique = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonnePhysique(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
+            List reponsePersPhysique = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonnePhysique(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
 
             
 
@@ -365,22 +377,14 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                         
             if(responsePersonnePhysique.equals("success-personne-physique")){
                 
-            List reponsePersMorale = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
+            List reponsePersMorale = new ArrayList(new Exports(BDD_HOST, BDD_PORT,BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
 
-            
-            //System.out.println("SIZE PERSONNE MORALE VAUT = "+ reponsePersMorale.size());
-            
-            
-            
-            System.out.println("SIZE PERSONNE MORALE VAUT = "+ responsePersonneMorale);
-            
-                
                 int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "RP provisoire exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 
                     if(export == JOptionPane.YES_OPTION){
                         // ouverture de l'emplacement selectionner par l'utiisateur
                         try {
-                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                            Desktop.getDesktop().open(new File(j_label_folder_export.getText()));
                         }catch(Exception ee){
                             JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\n"+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -388,7 +392,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
 
             }else if(responsePersonnePhysique.equals("empty-personne-physique")){
                 
-                List ReRecuperationRpPersonneMorale = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
+                List ReRecuperationRpPersonneMorale = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
 
                 responsePersonneMorale = (String)ReRecuperationRpPersonneMorale.get(0);
                 
@@ -399,7 +403,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                     if(export == JOptionPane.YES_OPTION){
                         // ouverture de l'emplacement selectionner par l'utiisateur
                         try {
-                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                            Desktop.getDesktop().open(new File(j_label_folder_export.getText()));
                         }catch(Exception ee){
                             JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
                         
@@ -410,7 +414,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                 try {
                     
                     Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterRP));
-                    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
                 
                 } catch (IOException ex) {
                     //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
@@ -424,7 +428,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                 
                 try {
                     Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterRP));
-                    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
                 
                 } catch (IOException ex) {
                     //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
@@ -434,16 +438,14 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                 }
             }
             
-            
-            
-            
             //else{
             //    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
             //}
+                return null;
+            }
+        }.execute();
             
-            
-        
-        
+
         }
 
     }//GEN-LAST:event_j_button_exporter_rp_provisoireActionPerformed
