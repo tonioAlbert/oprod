@@ -2396,7 +2396,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
                 try{
                     
                     // CREATION DU FICHIER
-                    String nameOfSheet = "LISTING";
+                    String nameOfSheet = "RP_prov_pers_physique";
                     
                     
                     // REMPLISSAGE DANS LE FICHIER
@@ -2406,10 +2406,10 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
             
 
                 // MISE EN PAGE ET MISE EN FORME DU FICHIER
-                sheet.getHeader().setRight("Du: &[ Date ] à &[ Heure ]");
+                //sheet.getHeader().setRight("Du: &[ Date ] à &[ Heure ]");
                 sheet.getHeader().setCenter("LISTING DES DOSSERS A CONTROLER");
                 sheet.getHeader().setLeft("CASEF / GEOX2");
-                sheet.getFooter().setCenter("Page : &[ Page ] à &[ Pages ]");
+                //sheet.getFooter().setCenter("Page : &[ Page ] à &[ Pages ]");
                 sheet.getFooter().setLeft(nomAntenne);
                 sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
                 
