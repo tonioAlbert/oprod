@@ -53,7 +53,192 @@ public class Querry {
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
     }
     
+
     
+public List <String []> getRpProvisoire(String reg, String c_dist, String dist, String c_com,String com, String path, String operation, String typePersonne){
+    
+String sql = "SELECT demande.id_registre, TO_CHAR(demande.date_demande, 'DD/MM/YYYY') AS date_demande ,\n" +
+"              	CONCAT(persphys.nom,' ',persphys.prenom) AS nom_et_prenom,\n" +
+"                 \n" +
+"              CASE \n" +
+"              	WHEN persphys.d_naiss_approx IS TRUE THEN CONCAT('Vers ', EXTRACT(YEAR FROM persphys.naissance_date))\n" +
+"              	ELSE TO_CHAR(persphys.naissance_date, 'DD/MM/YYYY')\n" +
+"              END AS naissance_date,\n" +
+"              \n" +
+"                 persphys.naissance_lieu,persphys.adresse,\n" +
+"                 \n" +
+"              CASE\n" +
+"              	WHEN     persphys.cni_num IS NULL THEN ''\n" +
+"              	ELSE     persphys.cni_num\n" +
+"              END, \n" +
+"                  TO_CHAR(persphys.cni_date, 'DD/MM/YYYY') AS cni_date , \n" +
+"                  \n" +
+"              CASE\n" +
+"              	WHEN     persphys.cni_lieu IS NULL THEN ''\n" +
+"              	ELSE     persphys.cni_lieu\n" +
+"              END\n" +
+"              ,\n" +
+"              CASE\n" +
+"              	WHEN     persphys.acn_num IS NULL THEN ''\n" +
+"              	ELSE     persphys.acn_num\n" +
+"              END\n" +
+"              , \n" +
+"              TO_CHAR(persphys.acn_date, 'DD/MM/YYYY') AS acn_date \n" +
+"              ,  \n" +
+"              CASE\n" +
+"              	WHEN     persphys.acn_lieu IS NULL THEN ''\n" +
+"              	ELSE     persphys.acn_lieu\n" +
+"              END\n" +
+"              ,\n" +
+"                   region.nom AS region,\n" +
+"                   district.nom AS district,\n" +
+"                   commune.nom AS commune,\n" +
+"                 fokontany.nom AS fokontany,\n" +
+"                 hameau.nom AS hameau,\n" +
+"              	parcelle_cf.superficie,	\n" +
+"                 parcelle_cf.coord_x, \n" +
+"                 parcelle_cf.coord_y,\n" +
+"                 demande.v_nord, \n" +
+"              	demande.v_sud, \n" +
+"                 demande.v_ouest, \n" +
+"                 demande.v_est,\n" +
+"                 TO_CHAR(demande.date_crl, 'DD/MM/YYYY') AS date_crl ,\n" +
+"              CASE\n" +
+"              	WHEN     demande.charges IS NULL THEN ''\n" +
+"              	ELSE     demande.charges\n" +
+"              END\n" +
+"              \n" +
+"              	\n" +
+"                 FROM  public.proprietaire_pp, public.persphys,public.district,\n" +
+"                  public.region,public.commune,public.fokontany,\n" +
+"                   public.hameau,public.demande  \n" +
+"                   INNER JOIN public.parcelle_cf ON public.demande.id_parcelle=public.parcelle_cf.c_parcelle \n" +
+"              	WHERE \n" +
+"                 region.id_region = district.id_region\n" +
+"                 AND district.id_district= commune.id_district \n" +
+"                 AND commune.id_commune=fokontany.id_commune \n" +
+"                 AND fokontany.id_fokontany=hameau.id_fokontany \n" +
+"                 AND demande.id_hameau=hameau.id_hameau \n" +
+"				AND demande.id_parcelle=parcelle_cf.c_parcelle \n" +
+"                 AND demande.id_demande=proprietaire_pp.id_demande \n" +
+"                 AND proprietaire_pp.id_persphys=persphys.id_persphys\n" +
+"              	AND demande.val_anomalie IS FALSE\n" +
+"                 AND parcelle_cf.limitrophe IS FALSE\n" +
+"                 AND parcelle_cf.anomalie IS FALSE\n" +
+"                 AND demande.opposition IS FALSE\n" +
+"                 AND demande.val_chef_equipe IS TRUE\n" +
+"                 AND avis_crl IS TRUE \n" +
+"                 AND demande.cqi_complet IS TRUE \n" +
+"                 AND val_cqe IS NULL \n" +
+"                 AND region.nom = ? \n" +
+"                 AND district.nom = ? \n" +
+"                 AND commune.nom = ? \n" +
+"                 AND demande.type_op = ? \n" +
+"              	AND demande.date_crl-demande.date_demande >= 15  \n" +
+"                 ORDER BY demande.num_registre  ASC";
+    
+    if(typePersonne.toLowerCase().equals("morale")){
+        
+        sql = "SELECT demande.id_registre, TO_CHAR(demande.date_demande, 'DD/MM/YYYY') AS date_demande , \n" +
+        "public.lst_type_pm.valeur AS type_personne_morale, \n" +
+        "public.persmor.denomination, \n" +
+        "public.persmor.numero_pm AS numero, \n" +
+        "TO_CHAR(public.persmor.date_acte, 'DD/MM/YYYY') AS date_creation, \n" +
+        "\n" +
+        "public.persmor.adresse\n" +
+        "           	\n" +
+        "              FROM  public.proprietaire_pm, public.persmor,public.district,\n" +
+        "               public.region,public.commune,public.fokontany, public.lst_type_pm, \n" +
+        "                public.hameau,public.demande  \n" +
+        "                INNER JOIN public.parcelle_cf ON public.demande.id_parcelle = public.parcelle_cf.c_parcelle \n" +
+        "           	WHERE \n" +
+        "              region.id_region = district.id_region\n" +
+        "              AND district.id_district= commune.id_district \n" +
+        "              AND commune.id_commune=fokontany.id_commune \n" +
+        "              AND fokontany.id_fokontany=hameau.id_fokontany \n" +
+        "              AND demande.id_hameau=hameau.id_hameau \n" +
+        "				AND demande.id_parcelle = parcelle_cf.c_parcelle \n" +
+        "              AND demande.id_demande = proprietaire_pm.id_demande \n" +
+        "              AND proprietaire_pm.id_persmor = persmor.id_persmor\n" +
+        "			  AND persmor.id_type_persmor = lst_type_pm.id_lst_type_pm\n" +
+        "           	AND demande.val_anomalie IS FALSE\n" +
+        "              AND parcelle_cf.limitrophe IS FALSE\n" +
+        "              AND parcelle_cf.anomalie IS FALSE\n" +
+        "              AND demande.opposition IS FALSE\n" +
+        "              AND demande.val_chef_equipe IS TRUE\n" +
+        "              AND avis_crl IS TRUE \n" +
+        "              AND demande.cqi_complet IS TRUE \n" +
+        "              AND val_cqe IS NULL \n" +
+        "              AND region.nom = ? \n" +
+        "              AND district.nom = ? \n" +
+        "              AND commune.nom = ? \n" +
+        "              AND demande.type_op = 'ogcf'\n" +
+        "           	AND demande.date_crl-demande.date_demande >= 15  \n" +
+        "              ORDER BY demande.num_registre  ASC";
+    }
+    
+    
+    
+    
+    
+try {
+
+               
+            st = connectDatabase.prepareStatement(sql);    
+            st.setString(1, reg);
+            st.setString(2, dist);
+            st.setString(3, com);
+            st.setString(4, Formats.ConvertOcfmToOcm(operation).toLowerCase());
+            rs = st.executeQuery();
+                
+                
+                System.out.println("SQL pret CQE = " + rs );
+            
+                int n = 0;
+                
+                // remise à vide des valeurs de retours valeurDeRetour.clear();
+                valeurDeRetour.clear();
+                
+                
+                if(typePersonne.toLowerCase().equals("morale")){
+                    
+                    while(rs.next()){
+
+                        String[] traitements_saisies = { rs.getString("id_registre"), rs.getString("date_demande")
+                                , rs.getString("type_personne_morale") , rs.getString("denomination"), rs.getString("numero"), rs.getString("date_creation"), rs.getString("adresse")};          
+
+                        valeurDeRetour.add(traitements_saisies);
+
+                        n++;
+
+                    }
+                    
+                }else{
+                    while(rs.next()){
+
+                        String[] traitements_saisies = { rs.getString("id_registre"), rs.getString("date_demande")
+                                , rs.getString("type_personne_morale") , rs.getString("denomination"), rs.getString("numero"), rs.getString("date_creation"), rs.getString("adresse")};          
+
+                        valeurDeRetour.add(traitements_saisies);
+
+                        n++;
+
+                    }
+                }
+
+
+                
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+    
+    
+    return valeurDeRetour;
+}
     
     
 public List <String []> getNombresDossiersPretCQE(String reg, String operation){
@@ -123,7 +308,6 @@ try {
     
 
     return valeurDeRetour;
-    
 
 }
     

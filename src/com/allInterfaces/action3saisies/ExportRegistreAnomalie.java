@@ -490,9 +490,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                 
                 // ON ESSEAI DE RECUPERER LES ANOMALIES NON BLOQUANTES S'IL EXISTE
                 List reponseAnomaliesNonBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
-            //System.out.println("suze anomalie nom bloquante vaut = "+ reponseAnomaliesNonBloquantes.size());
-                //String responseNonBloquante = (String)reponseAnomaliesBloquantes.get(0);
-                
+
                 int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Registre anomalie(s) exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 
                     if(export == JOptionPane.YES_OPTION){

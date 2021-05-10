@@ -35,9 +35,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.TreeMap;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import com.classes.action3saisie.Querry;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.PrintSetup;
@@ -693,7 +690,7 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
                 sheet.getFooter().setCenter("LISTE(S) DE(S) ANOMALIE(S) NON BLOQUANTE(S)");
-                sheet.getFooter().setRight("Opération "+ this.TYPE_OPERATION.toUpperCase());
+                sheet.getFooter().setRight("Opération "+ Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -1669,8 +1666,8 @@ public List<String> getListesCfEditerWithoutFilterDate(String reg, String c_dist
                     
                 // REMPLISSAGE DANS LE FICHIER
 
-                HSSFWorkbook   wb = new HSSFWorkbook ();
-                HSSFSheet  sheet = wb.createSheet(nameOfSheet);
+                XSSFWorkbook   wb = new XSSFWorkbook ();
+                XSSFSheet  sheet = wb.createSheet(nameOfSheet);
 
                 // MISE EN PAGE DU FICHIER
                 sheet.getHeader().setCenter("Listes des CF éditer");
@@ -1692,14 +1689,14 @@ public List<String> getListesCfEditerWithoutFilterDate(String reg, String c_dist
                 
                 Row headerRow0 = sheet.createRow(0);
 
-                HSSFCellStyle cellStyleBold = wb.createCellStyle();
+                XSSFCellStyle cellStyleBold = wb.createCellStyle();
                 Font headerFont = wb.createFont();
                 headerFont.setBold(true);
                 cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
                 cellStyleBold.setFont(headerFont);
             
                 // create table with data
-                HSSFCellStyle cadre = wb.createCellStyle();
+                XSSFCellStyle cadre = wb.createCellStyle();
                 cadre.setBorderBottom(BorderStyle.THIN);  
 
                 cellStyleBold.setBorderBottom(BorderStyle.THIN);  
@@ -2015,8 +2012,8 @@ public List<String> getListesCfEditerWithFilterDate(String reg, String c_dist, S
                     
                     // REMPLISSAGE DANS LE FICHIER
 
-            HSSFWorkbook   wb = new HSSFWorkbook ();
-            HSSFSheet  sheet = wb.createSheet(nameOfSheet);
+            XSSFWorkbook   wb = new XSSFWorkbook ();
+            XSSFSheet  sheet = wb.createSheet(nameOfSheet);
             
             sheet.getHeader().setCenter("Listes CF éditer du "+dateEdition+"\nRégion : "+reg+", Commune: "+com);
             sheet.getFooter().setCenter("CASEF / GEOX2");
@@ -2038,14 +2035,14 @@ public List<String> getListesCfEditerWithFilterDate(String reg, String c_dist, S
             Row headerRow0 = sheet.createRow(0);
             //sheet.autoSizeColumn(0);
  
-            HSSFCellStyle cellStyleBold = wb.createCellStyle();
+            XSSFCellStyle cellStyleBold = wb.createCellStyle();
             Font headerFont = wb.createFont();
             headerFont.setBold(true);
             cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
             cellStyleBold.setFont(headerFont);
             
             // create table with data
-            HSSFCellStyle cadre = wb.createCellStyle();
+            XSSFCellStyle cadre = wb.createCellStyle();
             cadre.setBorderBottom(BorderStyle.THIN);  
         
             cellStyleBold.setBorderBottom(BorderStyle.THIN);  
@@ -2261,9 +2258,8 @@ public List<String> getListesCfEditerWithFilterDate(String reg, String c_dist, S
     }
 
 
-
     
-public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, String dist, String c_com,String com, String path){
+public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg, String c_dist, String dist, String c_com,String com, String path){
 
         List retour = new ArrayList();
         
@@ -2277,7 +2273,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
         Date date = new Date(System.currentTimeMillis());
     
     
-        String realPath = path+"\\"+"RP_prov ( LISTING )_"+formatter.format(date)+"_"+this.op+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+".xls";
+        String realPath = path+"\\"+"RP_prov ( LISTING )_"+formatter.format(date)+"_"+this.op+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+".xlsx";
         
         String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
         String nomAntenne = "";
@@ -2390,7 +2386,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
             st.setString(1, reg);
             st.setString(2, dist);
             st.setString(3, com);
-            st.setString(4, this.TYPE_OPERATION.toLowerCase());
+            st.setString(4, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
             rs = st.executeQuery();
             
                 try{
@@ -2401,8 +2397,8 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
                     
                     // REMPLISSAGE DANS LE FICHIER
 
-                HSSFWorkbook   wb = new HSSFWorkbook ();
-                HSSFSheet  sheet = wb.createSheet(nameOfSheet);
+                XSSFWorkbook   wb = new XSSFWorkbook ();
+                XSSFSheet  sheet = wb.createSheet(nameOfSheet);
             
 
                 // MISE EN PAGE ET MISE EN FORME DU FICHIER
@@ -2411,7 +2407,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 //sheet.getFooter().setCenter("Page : &[ Page ] à &[ Pages ]");
                 sheet.getFooter().setLeft(nomAntenne);
-                sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
+                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -2432,7 +2428,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
             Row headerRow0 = sheet.createRow(0);
  
         
-            HSSFCellStyle cellStyleBold = wb.createCellStyle();
+            XSSFCellStyle cellStyleBold = wb.createCellStyle();
             Font headerFont = wb.createFont();
             headerFont.setBold(true);
             cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
@@ -2440,7 +2436,9 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
             //cellStyleBold.setWrapText(true);
             
             // create table with data
-            HSSFCellStyle cadre = wb.createCellStyle();
+            XSSFCellStyle cadre = wb.createCellStyle();
+            
+            
             cadre.setBorderBottom(BorderStyle.THIN);  
         
             cellStyleBold.setBorderBottom(BorderStyle.THIN);  
@@ -2657,12 +2655,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
                             headerCell_29.setCellValue(rs.getString("charges"));
                             headerCell_29.setCellStyle(cadre);
 
-
-                            //System.out.println("Get commune : " + rs.getString("commune") + " ::  " + rs.getString("numero_demande") 
-                             //                      + " Login = " +rs.getString("login") + " lot : " + rs.getString("lot")+ " anomalie_description = " + rs.getString("anomalie_description"));
-
-                             
-                             
+                            
                         n++;
                     }
   
@@ -2685,14 +2678,15 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
             
             if(RowResultSet == 0){
                 //System.out.println("val fiale de RowResultSet = " + RowResultSet);
-                retour.add("error");
+                retour.add("empty-personne-physique");
                 retour.add(realPath);
                 // SUPPRESSION DU FICHIER EXPORTE CAR IL Y AVAIT UNE ERREUR LORS DE L'EXPORT
                 Files.deleteIfExists(Paths.get(realPath));
                 //System.out.println("votre commune : "+ com);
 
             }else{
-                retour.add("success");
+                retour.add("success-personne-physique");
+                retour.add(realPath);
                 //JOptionPane.showMessageDialog(null, "Listes CF éditer exporté avec succès !", "Listes CF éditer exporté avec succès ", JOptionPane.INFORMATION_MESSAGE);
                 // ouverture de l'emplacement selectionner par l'utiisateur
                 //Desktop.getDesktop().open(new File(path));
@@ -2701,14 +2695,401 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
         } catch (Exception ex) {
             //ex.printStackTrace();
             //throw new RuntimeException();
-            retour.add("error");
+            retour.add("error-personne-physique");
+            retour.add(realPath);
             retour.add("Error executing query: " +ex.getMessage());
         }
         
         //System.out.println(demandes);
         return retour;
     }
-    
 
+
+
+public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, String c_dist, String dist, String c_com,String com, String path){
+
+        List retour = new ArrayList();
+        
+        String realPath = path;
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAntenne = "";
+        
+        switch (nomAtelier){
+            case "ATS":
+                nomAntenne= "ANTENNE : ATSINANANA";
+                break;
+            case "VAK":
+                nomAntenne= "ANTENNE : VAKINANKARATRA";
+                break;
+            default:
+                if (reg.equals("ANALAMANGA")) {
+                    nomAntenne= "ANTENNE : ANALAMANGA";
+                }else{
+                    nomAntenne= "ANTENNE : ITASY";
+                }
+                
+                break;
+        }
+        
+        
+        int RowResultSet = 0;
+        
+        try {
+            
+            String sql = "SELECT demande.id_registre, TO_CHAR(demande.date_demande, 'DD/MM/YYYY') AS date_demande , \n" +
+        "public.lst_type_pm.valeur AS type_personne_morale, \n" +
+        "public.persmor.denomination, \n" +
+        "public.persmor.numero_pm AS numero, \n" +
+        "TO_CHAR(public.persmor.date_acte, 'DD/MM/YYYY') AS date_creation, \n" +
+"                   region.nom AS region,\n" +
+"                   district.nom AS district,\n" +
+"                   commune.nom AS commune,\n" +
+"                 fokontany.nom AS fokontany,\n" +
+"                 hameau.nom AS hameau,\n" +
+"              	parcelle_cf.superficie,	\n" +
+"                 parcelle_cf.coord_x, \n" +
+"                 parcelle_cf.coord_y,\n" +
+"                 demande.v_nord, \n" +
+"              	demande.v_sud, \n" +
+"                 demande.v_ouest, \n" +
+"                 demande.v_est,\n" +
+"                 TO_CHAR(demande.date_crl, 'DD/MM/YYYY') AS date_crl ,\n" +
+"              CASE\n" +
+"              	WHEN     demande.charges IS NULL THEN ''\n" +
+"              	ELSE     demande.charges\n" +
+"              END     ,    \n" +
+        "public.persmor.adresse\n" +
+        "           	\n" +
+        "              FROM  public.proprietaire_pm, public.persmor,public.district,\n" +
+        "               public.region,public.commune,public.fokontany, public.lst_type_pm, \n" +
+        "                public.hameau,public.demande  \n" +
+        "                INNER JOIN public.parcelle_cf ON public.demande.id_parcelle = public.parcelle_cf.c_parcelle \n" +
+        "           	WHERE \n" +
+        "              region.id_region = district.id_region\n" +
+        "              AND district.id_district= commune.id_district \n" +
+        "              AND commune.id_commune=fokontany.id_commune \n" +
+        "              AND fokontany.id_fokontany=hameau.id_fokontany \n" +
+        "              AND demande.id_hameau=hameau.id_hameau \n" +
+        "				AND demande.id_parcelle = parcelle_cf.c_parcelle \n" +
+        "              AND demande.id_demande = proprietaire_pm.id_demande \n" +
+        "              AND proprietaire_pm.id_persmor = persmor.id_persmor\n" +
+        "			  AND persmor.id_type_persmor = lst_type_pm.id_lst_type_pm\n" +
+        "           	AND demande.val_anomalie IS FALSE\n" +
+        "              AND parcelle_cf.limitrophe IS FALSE\n" +
+        "              AND parcelle_cf.anomalie IS FALSE\n" +
+        "              AND demande.opposition IS FALSE\n" +
+        "              AND demande.val_chef_equipe IS TRUE\n" +
+        "              AND avis_crl IS TRUE \n" +
+        "              AND demande.cqi_complet IS TRUE \n" +
+        "              AND val_cqe IS NULL \n" +
+        "              AND region.nom = ? \n" +
+        "              AND district.nom = ? \n" +
+        "              AND commune.nom = ? \n" +
+        "              AND demande.type_op = ? \n" +
+        "           	AND demande.date_crl-demande.date_demande >= 15  \n" +
+        "              ORDER BY demande.num_registre  ASC";
+            
+            
+            
+            st = connectDatabase.prepareStatement(sql);    
+            st.setString(1, reg);
+            st.setString(2, dist);
+            st.setString(3, com);
+            st.setString(4, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
+            rs = st.executeQuery();
+            
+                try{
+
+                   // CREATION DU FICHIER
+                    String nameOfSheet = "RP_prov_pers_morale";
+                    
+                    // REMPLISSAGE DANS LE FICHIER
+                    File src = new File(realPath);
+                    FileInputStream fis = new FileInputStream(src);
+                    XSSFWorkbook  wb = new XSSFWorkbook(fis);
+                    
+                    wb.createSheet(nameOfSheet);
+                    XSSFSheet sheet = wb.getSheet(nameOfSheet);
+            
+
+                // MISE EN PAGE ET MISE EN FORME DU FICHIER
+                //sheet.getHeader().setRight("Du: &[ Date ] à &[ Heure ]");
+                sheet.getHeader().setCenter("LISTING DES DOSSERS A CONTROLER");
+                sheet.getHeader().setLeft("CASEF / GEOX2");
+                //sheet.getFooter().setCenter("Page : &[ Page ] à &[ Pages ]");
+                sheet.getFooter().setLeft(nomAntenne);
+                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                
+                sheet.getPrintSetup().setLandscape(true);
+                PrintSetup printsetup = sheet.getPrintSetup();
+                sheet.getPrintSetup().setPaperSize(printsetup.A3_PAPERSIZE);
+
+                String[] cellAFixer = ("$1:$5").split(":");
+                CellReference startCellFixed = new CellReference(cellAFixer[0]);
+                CellReference endCellFixed = new CellReference(cellAFixer[1]);
+                CellRangeAddress addressCellAFixer = new CellRangeAddress(startCellFixed.getRow(),
+                endCellFixed.getRow(), startCellFixed.getCol(), endCellFixed.getCol());
+
+                sheet.setRepeatingRows(addressCellAFixer);
+                
+                
+                
+                // FIN MISE EN PAGE ET MISE EN FORME DU FICHIER      
+            
+            Row headerRow0 = sheet.createRow(0);
+ 
+        
+            XSSFCellStyle cellStyleBold = wb.createCellStyle();
+            Font headerFont = wb.createFont();
+            headerFont.setBold(true);
+            cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
+            cellStyleBold.setFont(headerFont);
+            //cellStyleBold.setWrapText(true);
+            
+            // create table with data
+            XSSFCellStyle cadre = wb.createCellStyle();
+            cadre.setBorderBottom(BorderStyle.THIN);  
+        
+            cellStyleBold.setBorderBottom(BorderStyle.THIN);  
+            cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setBorderRight(BorderStyle.THIN);  
+            cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
+            
+            cellStyleBold.setBorderTop(BorderStyle.THIN);  
+            cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
+
+        
+            cellStyleBold.setBorderLeft(BorderStyle.THIN);  
+            cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            Cell headerCell0 = headerRow0.createCell(0);
+            headerCell0.setCellValue("Région :");
+            headerCell0.setCellStyle(cellStyleBold);
+            headerCell0.setCellStyle(cadre);
+            
+            //new MiseEnFormes().MiseEnGras(wb);
+
+
+            headerCell0 = headerRow0.createCell(1);
+            headerCell0.setCellValue(reg);
+            headerCell0.setCellStyle(cadre);
+
+
+            headerCell0 = headerRow0.createCell(2);
+            headerCell0.setCellValue("Type Opération : ");
+            headerCell0.setCellStyle(cadre);
+
+            headerCell0 = headerRow0.createCell(3);
+            headerCell0.setCellValue(Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+            headerCell0.setCellStyle(cadre);
+
+//==============================================================================
+            Row headerRow1 = sheet.createRow(1);
+
+            Cell headerCell1 = headerRow1.createCell(0);
+            headerCell1.setCellValue("District :");
+            headerCell1.setCellStyle(cellStyleBold);
+            headerCell1.setCellStyle(cadre);
+
+
+            headerCell1 = headerRow1.createCell(1);
+            headerCell1.setCellValue(dist);
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(2);
+            headerCell1.setCellValue("Commune : ");
+            headerCell1.setCellStyle(cadre);
+
+            headerCell1 = headerRow1.createCell(3);
+            headerCell1.setCellValue(com);
+            headerCell1.setCellStyle(cadre);
+// ============================================================================
+            Row headerRow2 = sheet.createRow(2);
+
+            Cell headerCell2 = headerRow2.createCell(0);
+            headerCell2.setCellValue("Code Dist :");
+            headerCell2.setCellStyle(cellStyleBold);
+            headerCell2.setCellStyle(cadre);
+
+
+            headerCell2 = headerRow2.createCell(1);
+            headerCell2.setCellValue(c_dist);
+            headerCell2.setCellStyle(cadre);
+
+            headerCell2 = headerRow2.createCell(2);
+            headerCell2.setCellValue("Code Com :");
+            headerCell2.setCellStyle(cadre);
+
+            headerCell2 = headerRow2.createCell(3);
+            headerCell2.setCellValue(c_com);
+            headerCell2.setCellStyle(cadre);
+// ============================================================================ 
+
+            String[] TextEnTeteTableau = {"id_registre", "date_demande"
+                    , "type_personne_morale","denomination", "numero", "date_creation"
+                    , "adresse", "fokontany"
+                    , "hameau", "superficie (m2)", "coord_x", "coord_y", "v_nord"
+                    , "v_sud", "v_ouest", "v_est", "date_crl", "charges"};
+
+            TreeMap<Integer, String> EnTeteTableauAExporter = new TreeMap<Integer, String>();
+
+            for (int i = 0; i < TextEnTeteTableau.length; i++) {
+              EnTeteTableauAExporter.put(i, TextEnTeteTableau[i]);
+            }
+
+            //System.out.println("EnTeteTableauAExporter vaut : " + EnTeteTableauAExporter);
+
+            Row headerRow3 = sheet.createRow(4);
+
+            for (Map.Entry<Integer, String> textTab : EnTeteTableauAExporter.entrySet()) {
+                Cell headerCell0Ligne3 = headerRow3.createCell(textTab.getKey());
+                headerCell0Ligne3.setCellValue(textTab.getValue());
+                headerCell0Ligne3.setCellStyle(cellStyleBold);
+            }
+
+
+            
+                    int n = 5;
+                    
+                    
+                    
+                    while (rs.next()) {
+
+                        RowResultSet++;
+                        
+                        Row headerRow4 = sheet.createRow(n);
+                        
+                            Cell headerCell7 = headerRow4.createCell(0);
+                            headerCell7.setCellValue(rs.getString("id_registre"));
+                            headerCell7.setCellStyle(cadre);
+
+                            
+                            Cell headerCell8 = headerRow4.createCell(1);
+                            headerCell8.setCellValue(rs.getString("date_demande"));
+                            headerCell8.setCellStyle(cadre);
+
+                            
+                            Cell headerCell9 = headerRow4.createCell(2);
+                            headerCell9.setCellValue(rs.getString("type_personne_morale"));
+                            headerCell9.setCellStyle(cadre);
+                            
+                            Cell headerCell10 = headerRow4.createCell(3);
+                            headerCell10.setCellValue(rs.getString("denomination"));
+                            headerCell10.setCellStyle(cadre);
+                            
+
+                            
+                            Cell headerCell_11 = headerRow4.createCell(4);
+                            headerCell_11.setCellValue(rs.getString("numero"));
+                            headerCell_11.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_12 = headerRow4.createCell(5);
+                            headerCell_12.setCellValue(rs.getString("date_creation"));
+                            headerCell_12.setCellStyle(cadre);
+                            
+                            Cell headerCell_13 = headerRow4.createCell(6);
+                            headerCell_13.setCellValue(rs.getString("adresse"));
+                            headerCell_13.setCellStyle(cadre);
+
+                            
+
+                            Cell headerCell_14 = headerRow4.createCell(7);
+                            headerCell_14.setCellValue(rs.getString("fokontany"));
+                            headerCell_14.setCellStyle(cadre);
+                            
+                            Cell headerCell_15 = headerRow4.createCell(8);
+                            headerCell_15.setCellValue(rs.getString("hameau"));
+                            headerCell_15.setCellStyle(cadre);
+                            
+                            Cell headerCell_16 = headerRow4.createCell(9);
+                            headerCell_16.setCellValue(rs.getString("superficie"));
+                            headerCell_16.setCellStyle(cadre);
+                            
+                            Cell headerCell_17 = headerRow4.createCell(10);
+                            headerCell_17.setCellValue(rs.getString("coord_x"));
+                            headerCell_17.setCellStyle(cadre);
+                            
+                            Cell headerCell_18 = headerRow4.createCell(11);
+                            headerCell_18.setCellValue(rs.getString("coord_y"));
+                            headerCell_18.setCellStyle(cadre);
+
+                            Cell headerCell_19 = headerRow4.createCell(12);
+                            headerCell_19.setCellValue(rs.getString("v_nord"));
+                            headerCell_19.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_20 = headerRow4.createCell(13);
+                            headerCell_20.setCellValue(rs.getString("v_sud"));
+                            headerCell_20.setCellStyle(cadre);
+
+                            
+                            Cell headerCell_21 = headerRow4.createCell(14);
+                            headerCell_21.setCellValue(rs.getString("v_ouest"));
+                            headerCell_21.setCellStyle(cadre);
+
+                            Cell headerCell_22 = headerRow4.createCell(15);
+                            headerCell_22.setCellValue(rs.getString("v_ouest"));
+                            headerCell_22.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_23 = headerRow4.createCell(16);
+                            headerCell_23.setCellValue(rs.getString("date_crl"));
+                            headerCell_23.setCellStyle(cadre);
+
+                            
+                            Cell headerCell_24 = headerRow4.createCell(17);
+                            headerCell_24.setCellValue(rs.getString("charges"));
+                            headerCell_24.setCellStyle(cadre);
+
+                            
+                            
+                        n++;
+                    }
+  
+                    FileOutputStream fout = new FileOutputStream(realPath);
+
+                    wb.write(fout);
+                    wb.close();
+                    fout.close();
+
+
+                }catch(Exception createFileErreur){
+                    
+                    //JOptionPane.showMessageDialog(null, createFileErreur.getMessage(), "Erreur SQL trouvé !", JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("ERREUR DANS  get registre parcellaire personne morale" +createFileErreur.getMessage());
+                }
+                     
+            rs.close();
+            st.close();
+            
+            if(RowResultSet == 0){
+                //System.out.println("val fiale de RowResultSet = " + RowResultSet);
+                retour.add("empty-personne-morale");
+                retour.add(realPath);
+                // SUPPRESSION DU FICHIER EXPORTE CAR IL Y AVAIT UNE ERREUR LORS DE L'EXPORT
+                //Files.deleteIfExists(Paths.get(realPath));
+                //System.out.println("votre commune : "+ com);
+
+            }else{
+                retour.add("success-personne-morale");
+                retour.add(realPath);
+                //JOptionPane.showMessageDialog(null, "Listes CF éditer exporté avec succès !", "Listes CF éditer exporté avec succès ", JOptionPane.INFORMATION_MESSAGE);
+                // ouverture de l'emplacement selectionner par l'utiisateur
+                //Desktop.getDesktop().open(new File(path));
+            }
+  
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+            //throw new RuntimeException();
+            retour.add("error-personne-morale");
+            retour.add("Error executing query: " +ex.getMessage());
+        }
+        
+        //System.out.println(demandes);
+        return retour;
+    }
+ 
     
 }
