@@ -166,7 +166,6 @@ public class Home extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_cf_editer_par_commune = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
-        j_menu_export_rp_provisoire = new javax.swing.JMenuItem();
         j_menu_stats = new javax.swing.JMenu();
         j_menu_stat_saisie_par_operateur = new javax.swing.JMenuItem();
         j_menu_stat_anomalies_par_commune = new javax.swing.JMenuItem();
@@ -489,7 +488,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_exports.add(jSeparator5);
 
         j_menu_export_listes_cf_editable.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_export_listes_cf_editable.setText("Registre Parcellaire Provisoire");
+        j_menu_export_listes_cf_editable.setText("Registre Parcellaire Provisoire (Prêt CQE)");
         j_menu_export_listes_cf_editable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_export_listes_cf_editableActionPerformed(evt);
@@ -507,14 +506,6 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_exports.add(j_menu_export_listes_cf_editer_par_commune);
         j_menu_exports.add(jSeparator7);
-
-        j_menu_export_rp_provisoire.setText("Listes Prêt CQE");
-        j_menu_export_rp_provisoire.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_menu_export_rp_provisoireActionPerformed(evt);
-            }
-        });
-        j_menu_exports.add(j_menu_export_rp_provisoire);
 
         jMenuBar1.add(j_menu_exports);
 
@@ -1155,10 +1146,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         
     }//GEN-LAST:event_j_menu_config_bddActionPerformed
 
-    private void j_menu_export_rp_provisoireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_rp_provisoireActionPerformed
-
-    }//GEN-LAST:event_j_menu_export_rp_provisoireActionPerformed
-
     private void j_menu_itemStat_Nbre_pret_CQEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_itemStat_Nbre_pret_CQEActionPerformed
         // NombreDossiersPretCQEParCommune
         
@@ -1231,7 +1218,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_export_listes_cf_editable;
     private javax.swing.JMenuItem j_menu_export_listes_cf_editer_par_commune;
     private javax.swing.JMenuItem j_menu_export_listes_demandeurs;
-    private javax.swing.JMenuItem j_menu_export_rp_provisoire;
     private javax.swing.JMenu j_menu_exports;
     private javax.swing.JMenu j_menu_fichier;
     private javax.swing.JMenu j_menu_formatages;
