@@ -2375,6 +2375,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
 "                 AND demande.opposition IS FALSE\n" +
 "                 AND demande.val_chef_equipe IS TRUE\n" +
 "                 AND avis_crl IS TRUE \n" +
+"                 AND demande.cqi_complet IS TRUE \n" +
 "                 AND val_cqe IS NULL \n" +
 "                 AND region.nom = ? \n" +
 "                 AND district.nom = ? \n" +
@@ -2400,14 +2401,15 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
                     
                     // REMPLISSAGE DANS LE FICHIER
 
-            HSSFWorkbook   wb = new HSSFWorkbook ();
-            HSSFSheet  sheet = wb.createSheet(nameOfSheet);
+                HSSFWorkbook   wb = new HSSFWorkbook ();
+                HSSFSheet  sheet = wb.createSheet(nameOfSheet);
             
-            
-            
+
                 // MISE EN PAGE ET MISE EN FORME DU FICHIER
-                sheet.getHeader().setRight("LISTING DES DOSSERS A CONTROLER");
+                sheet.getHeader().setRight("Du: &[ Date ] à &[ Heure ]");
+                sheet.getHeader().setCenter("LISTING DES DOSSERS A CONTROLER");
                 sheet.getHeader().setLeft("CASEF / GEOX2");
+                sheet.getFooter().setCenter("Page : &[ Page ] à &[ Pages ]");
                 sheet.getFooter().setLeft(nomAntenne);
                 sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
                 
@@ -2472,7 +2474,7 @@ public List<Querry> getRegistreParcellaireProvisoire(String reg, String c_dist, 
             headerCell0.setCellStyle(cadre);
 
             headerCell0 = headerRow0.createCell(3);
-            headerCell0.setCellValue(this.op);
+            headerCell0.setCellValue(Formats.ConvertOcmToOcfm(this.op));
             headerCell0.setCellStyle(cadre);
 
 //==============================================================================

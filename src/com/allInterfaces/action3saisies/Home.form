@@ -289,7 +289,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="j_menu_exports">
           <Properties>
-            <Property name="text" type="java.lang.String" value=" Listes"/>
+            <Property name="text" type="java.lang.String" value="Exports"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial Narrow" size="14" style="1"/>
             </Property>

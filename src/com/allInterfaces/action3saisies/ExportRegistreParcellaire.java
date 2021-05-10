@@ -114,7 +114,6 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        setResizable(true);
         setTitle("Exportation Registre Parcellaire Provisoire");
 
         jLabel2.setText("Région");

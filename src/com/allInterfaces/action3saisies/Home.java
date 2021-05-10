@@ -463,7 +463,7 @@ public class Home extends javax.swing.JFrame {
 
         jMenuBar1.add(j_menu_formatages);
 
-        j_menu_exports.setText(" Listes");
+        j_menu_exports.setText("Exports");
         j_menu_exports.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
         j_menu_export_listes_demandeurs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));

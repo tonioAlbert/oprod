@@ -144,16 +144,7 @@ public class Formats {
         Calendar c = null;
         
         c.set(2020, 11, 24);
-        
-        //c.get
-        
-//System.out.println("daty = "+ daty);
 
-
-        //daty.setDate(Integer.parseInt(StringDate.replace("/", "")));
-        
-        //System.out.println("daty = "+ StringDate.replace("/", ""));
-        
         java.util.Date d;
         d = new java.util.Date(df.format(daty));
         
