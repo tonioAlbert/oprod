@@ -865,6 +865,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         JOptionPane jop = new JOptionPane();
         
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des voisin(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+       
         if(option == JOptionPane.OK_OPTION){
             
             new SwingWorker(){
