@@ -82,6 +82,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         setName("jf_login"); // NOI18N
         setResizable(false);
 
+        txt_username.setText("gaetan");
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -117,6 +118,7 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         jLabel2.setText("Mot de passe");
 
+        txt_password.setText("2021.");
         txt_password.setToolTipText("Mot de passe");
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {

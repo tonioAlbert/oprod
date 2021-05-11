@@ -353,10 +353,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             @Override
             protected Object doInBackground() throws Exception{
 
-            System.out.println("Thread en cours dans export RP = " + Thread.currentThread().getName());
-
-            
-            //Thread.sleep(5000);
+            //System.out.println("Thread en cours dans export RP = " + Thread.currentThread().getName());
 
             String code_district = selected_district.split("  _  ")[0];
             String code_commune = selected_commune.split("  _  ")[0];
