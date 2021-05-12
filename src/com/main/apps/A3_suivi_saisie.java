@@ -278,12 +278,12 @@ public class A3_suivi_saisie {
             String json_password = new String(decodPassword, "UTF-8");
             
             
-            //System.out.println("Les valeur dans le fichier de conf sont : ");
-            //System.out.println("json_host " + json_host);
-            //System.out.println("json_port " + json_port);
-            //System.out.println("json_dbname " + json_dbname);
-            //System.out.println("json_user " + json_user);
-            //System.out.println("json_password " + json_password);
+            System.out.println("Les valeur dans le fichier de conf sont : ");
+            System.out.println("json_host " + json_host);
+            System.out.println("json_port " + json_port);
+            System.out.println("json_dbname " + json_dbname);
+            System.out.println("json_user " + json_user);
+            System.out.println("json_password " + json_password);
             
             f_read.close();
             

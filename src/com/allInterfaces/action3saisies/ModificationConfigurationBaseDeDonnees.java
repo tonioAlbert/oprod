@@ -9,6 +9,8 @@ import com.connectDb.ConnectDb;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -271,8 +273,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                         j.put("dbname", hashDbname);
                         j.put("user", hashUser);
                         j.put("password", hashPassword);
-                        
-                        
+
                     // VERIFIER SI FICHIER DE CONF EXISTE
                     //String racine = new File("").getAbsolutePath();
                     String path = new File("").getAbsolutePath()+"\\conf";
@@ -280,27 +281,61 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
 
                     File folder = new File(path);
                     File file = new File(filePathAndName);
-                        
-                        
-                        try(FileWriter fileJson = new FileWriter(filePathAndName)){
-                            
-                            System.out.println("Remplissage du fichier de conf ...");
-                            
-                            fileJson.write(j.toString());
-                            fileJson.close();
-                            
-                            System.out.println("Modification ficihier de configuration effectuée avec succès !");
-                            JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
-                        
-                            System.out.println("dossier et fichier conf trouvé ! .......");
 
-                        }catch(IOException e){
+                        
+                        if (file.exists()) {
+                    
+                            System.out.println("fichier de conf existe déjà...");
                             
-                            e.printStackTrace(); 
-                            
-                            System.out.println("Erreur remplissage fichier de configuration");
-                            JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+                            // suppression du fichier de configuration
+                            if(Files.deleteIfExists(Paths.get(filePathAndName))){
+                        
+                                try(FileWriter fileJson = new FileWriter(filePathAndName)){
+
+                                    System.out.println("Remplissage du fichier de conf ...");
+
+                                    fileJson.write(j.toString());
+                                    fileJson.close();
+
+                                    System.out.println("Modification ficihier de configuration effectuée avec succès !");
+                                    JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
+
+                                    System.out.println("dossier et fichier conf trouvé ! .......");
+
+                                }catch(IOException e){
+
+                                    e.printStackTrace(); 
+
+                                    System.out.println("Erreur remplissage fichier de configuration");
+                                    JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                    }else{
+                        
+                            try(FileWriter fileJson = new FileWriter(filePathAndName)){
+
+                                System.out.println("Remplissage du fichier de conf ...");
+
+                                fileJson.write(j.toString());
+                                fileJson.close();
+
+                                System.out.println("Modification ficihier de configuration effectuée avec succès !");
+                                JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
+
+                                System.out.println("dossier et fichier conf trouvé ! .......");
+
+                            }catch(IOException e){
+
+                                e.printStackTrace(); 
+
+                                System.out.println("Erreur remplissage fichier de configuration");
+                                JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+                            }
                         }
+                        
+                        
+                        
+
                     
                     
                 }
