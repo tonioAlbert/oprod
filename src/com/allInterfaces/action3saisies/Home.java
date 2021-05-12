@@ -291,7 +291,7 @@ public class Home extends javax.swing.JFrame {
         j_label_texte_loading.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_texte_loading.setText("Veuillez Patientez ....");
 
-        j_label_loading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/Eclipse-0.4s-200px (1).gif"))); // NOI18N
+        j_label_loading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/Eclipse-0.3s-197px.gif"))); // NOI18N
         j_label_loading.setText(" ");
 
         dpContent.setLayer(lbl_test, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -307,7 +307,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(dpContentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
+                    .addGroup(dpContentLayout.createSequentialGroup()
                         .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 749, Short.MAX_VALUE)
                         .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,18 +316,18 @@ public class Home extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(j_label_loading)
-                        .addGap(64, 64, 64))))
+                        .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(j_label_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60))
         );
         dpContentLayout.setVerticalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
-                .addContainerGap(237, Short.MAX_VALUE)
-                .addComponent(j_label_loading)
+                .addContainerGap(344, Short.MAX_VALUE)
+                .addComponent(j_label_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57)
