@@ -150,7 +150,7 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
             }
         });
 
-        j_bouton_valider_rapport_saisies.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        j_bouton_valider_rapport_saisies.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_valider_rapport_saisies.setText("Valider");
         j_bouton_valider_rapport_saisies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,7 +202,7 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
                     .addGap(83, 83, 83)))
         );
 
-        j_bouton_exporter_rapport_saisies.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        j_bouton_exporter_rapport_saisies.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_exporter_rapport_saisies.setText("Exporter");
         j_bouton_exporter_rapport_saisies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
