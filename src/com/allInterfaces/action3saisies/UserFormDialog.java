@@ -8,6 +8,7 @@ package com.allInterfaces.action3saisies;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Hash;
 import com.classes.action3saisie.Utilisateurs;
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -25,6 +26,8 @@ public class UserFormDialog extends javax.swing.JFrame {
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
+    
+    private String placheHolder = "Tapez ici votre nom d'utilisateur";
     
     
     /**
@@ -101,6 +104,14 @@ public class UserFormDialog extends javax.swing.JFrame {
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txt_username.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_usernameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_usernameFocusLost(evt);
+            }
+        });
         txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_usernameKeyPressed(evt);
@@ -109,6 +120,9 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jButton1.setText("Quitter");
+        jButton1.setMaximumSize(new java.awt.Dimension(89, 33));
+        jButton1.setMinimumSize(new java.awt.Dimension(89, 33));
+        jButton1.setPreferredSize(new java.awt.Dimension(89, 33));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -142,6 +156,14 @@ public class UserFormDialog extends javax.swing.JFrame {
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_password.setToolTipText("Mot de passe");
         txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txt_password.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_passwordFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_passwordFocusLost(evt);
+            }
+        });
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_passwordKeyPressed(evt);
@@ -179,7 +201,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 .addGap(91, 91, 91)
                 .addComponent(btn_connexion)
                 .addGap(79, 79, 79)
-                .addComponent(jButton1)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -200,7 +222,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_connexion)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32))
         );
 
@@ -230,7 +252,7 @@ public class UserFormDialog extends javax.swing.JFrame {
             System.out.println("Le champ Nom d'utilisateur et mot de passe sont tous requises !");
             JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur et mot de passe sont tous requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
             
-        }else if(txt_username.equals("")){
+        }else if(txt_username.equals("") || txt_username.equals(placheHolder)){
             
             System.out.println("Champ nom d'utilisateur requise !");
             JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur est requise !","Champ nom d'utilisateur requise", JOptionPane.INFORMATION_MESSAGE);
@@ -355,6 +377,30 @@ public class UserFormDialog extends javax.swing.JFrame {
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
         }
     }//GEN-LAST:event_j_combo_demarcheKeyPressed
+
+    private void txt_usernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusGained
+
+        if(this.txt_username.getText().equals(placheHolder)){
+            this.txt_username.setText("");
+            //this.txt_username.setForeground(new Color(153,153,153));
+        }
+    }//GEN-LAST:event_txt_usernameFocusGained
+
+    private void txt_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusLost
+        if(this.txt_username.getText().equals("")){
+            this.txt_username.setText(placheHolder);
+            //this.txt_username.setForeground(new Color(153,153,153));
+        }
+    }//GEN-LAST:event_txt_usernameFocusLost
+
+    private void txt_passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_passwordFocusGained
+
+
+    }//GEN-LAST:event_txt_passwordFocusGained
+
+    private void txt_passwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_passwordFocusLost
+
+    }//GEN-LAST:event_txt_passwordFocusLost
 
     /**
      * @param args the command line arguments

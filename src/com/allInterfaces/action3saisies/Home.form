@@ -397,12 +397,20 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_statsActionPerformed"/>
           </Events>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="j_menu_stat_vectorisation_par_communes">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Arial Narrow" size="14" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Vectorisation par commune(s)"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="j_menu_stat_saisie_par_operateur">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial Narrow" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Saisies"/>
+                <Property name="text" type="java.lang.String" value="Saisies par commune(s)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_stat_saisie_par_operateurActionPerformed"/>
@@ -421,25 +429,23 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="j_menu_cf_editable">
+            <MenuItem class="javax.swing.JMenuItem" name="j_menu_rapport_cf_editable">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial Narrow" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value=" CF &#xe9;ditable"/>
+                <Property name="text" type="java.lang.String" value="Rapport CF &#xe9;ditable"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_cf_editableActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_rapport_cf_editableActionPerformed"/>
               </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="j_menu_item_rapport_saisie">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial Narrow" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Saisie par commune(s)"/>
+                <Property name="text" type="java.lang.String" value="Rapport Saisie par commune(s)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_item_rapport_saisieActionPerformed"/>
@@ -450,7 +456,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial Narrow" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Vectorisation par commune(s)"/>
+                <Property name="text" type="java.lang.String" value="Rapport vectorisation par commune(s)"/>
                 <Property name="name" type="java.lang.String" value="setEnabled" noResource="true"/>
               </Properties>
               <Events>
@@ -581,14 +587,13 @@
                               <Component id="lbl_test" alignment="1" min="-2" pref="237" max="-2" attributes="0"/>
                               <Component id="jProgressBar_home" alignment="1" min="-2" pref="183" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="j_label_texte_loading" min="-2" pref="383" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
@@ -620,14 +625,20 @@
         <Component class="javax.swing.JLabel" name="lbl_test">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial Narrow" size="14" style="1"/>
+              <Font name="Arial Narrow" size="18" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_type_operation">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial Narrow" size="14" style="1"/>
+              <Font name="Arial Narrow" size="18" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
             </Property>
           </Properties>
         </Component>
@@ -636,7 +647,10 @@
         <Component class="javax.swing.JLabel" name="j_label_texte_loading">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial Narrow" size="14" style="1"/>
+              <Font name="Arial Narrow" size="18" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Veuillez Patientez ...."/>
           </Properties>

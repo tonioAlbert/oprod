@@ -86,7 +86,7 @@ public class Home extends javax.swing.JFrame {
             
             this.j_menu_formatages.setEnabled(false);
             this.j_menu_exports.setEnabled(false);
-            this.j_menu_cf_editable.setEnabled(false);
+            this.j_menu_rapport_cf_editable.setEnabled(false);
             this.j_menu_item_rapport_saisie.setEnabled(false);
             this.j_menu_item_rapports_sig.setEnabled(false);
             
@@ -171,11 +171,11 @@ public class Home extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_cf_editer_par_commune = new javax.swing.JMenuItem();
         j_menu_stats = new javax.swing.JMenu();
+        j_menu_stat_vectorisation_par_communes = new javax.swing.JMenuItem();
         j_menu_stat_saisie_par_operateur = new javax.swing.JMenuItem();
         j_menu_stat_anomalies_par_commune = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        j_menu_cf_editable = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        j_menu_rapport_cf_editable = new javax.swing.JMenuItem();
         j_menu_item_rapport_saisie = new javax.swing.JMenuItem();
         j_menu_item_rapports_sig = new javax.swing.JMenuItem();
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
@@ -284,11 +284,14 @@ public class Home extends javax.swing.JFrame {
 
         dpContent.setBackground(new java.awt.Color(204, 204, 204));
 
-        lbl_test.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        lbl_test.setFont(new java.awt.Font("Arial Narrow", 1, 18)); // NOI18N
+        lbl_test.setForeground(java.awt.Color.white);
 
-        lbl_type_operation.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        lbl_type_operation.setFont(new java.awt.Font("Arial Narrow", 1, 18)); // NOI18N
+        lbl_type_operation.setForeground(java.awt.Color.white);
 
-        j_label_texte_loading.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_label_texte_loading.setFont(new java.awt.Font("Arial Narrow", 1, 18)); // NOI18N
+        j_label_texte_loading.setForeground(java.awt.Color.white);
         j_label_texte_loading.setText("Veuillez Patientez ....");
 
         j_label_loading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/Eclipse-0.3s-197px.gif"))); // NOI18N
@@ -312,12 +315,11 @@ public class Home extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 749, Short.MAX_VALUE)
                         .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_test, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jProgressBar_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
+                            .addComponent(jProgressBar_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(j_label_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -533,8 +535,12 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        j_menu_stat_vectorisation_par_communes.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_stat_vectorisation_par_communes.setText("Vectorisation par commune(s)");
+        j_menu_stats.add(j_menu_stat_vectorisation_par_communes);
+
         j_menu_stat_saisie_par_operateur.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_stat_saisie_par_operateur.setText("Saisies");
+        j_menu_stat_saisie_par_operateur.setText("Saisies par commune(s)");
         j_menu_stat_saisie_par_operateur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_stat_saisie_par_operateurActionPerformed(evt);
@@ -552,18 +558,17 @@ public class Home extends javax.swing.JFrame {
         j_menu_stats.add(j_menu_stat_anomalies_par_commune);
         j_menu_stats.add(jSeparator1);
 
-        j_menu_cf_editable.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_cf_editable.setText(" CF éditable");
-        j_menu_cf_editable.addActionListener(new java.awt.event.ActionListener() {
+        j_menu_rapport_cf_editable.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_rapport_cf_editable.setText("Rapport CF éditable");
+        j_menu_rapport_cf_editable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_menu_cf_editableActionPerformed(evt);
+                j_menu_rapport_cf_editableActionPerformed(evt);
             }
         });
-        j_menu_stats.add(j_menu_cf_editable);
-        j_menu_stats.add(jSeparator2);
+        j_menu_stats.add(j_menu_rapport_cf_editable);
 
         j_menu_item_rapport_saisie.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_item_rapport_saisie.setText("Saisie par commune(s)");
+        j_menu_item_rapport_saisie.setText("Rapport Saisie par commune(s)");
         j_menu_item_rapport_saisie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_item_rapport_saisieActionPerformed(evt);
@@ -572,7 +577,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_stats.add(j_menu_item_rapport_saisie);
 
         j_menu_item_rapports_sig.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_item_rapports_sig.setText("Vectorisation par commune(s)");
+        j_menu_item_rapports_sig.setText("Rapport vectorisation par commune(s)");
         j_menu_item_rapports_sig.setName("setEnabled"); // NOI18N
         j_menu_item_rapports_sig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -802,7 +807,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private void j_menu_item_formate_prenomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formate_prenomActionPerformed
 
         JOptionPane jop = new JOptionPane();
-        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des prenom(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des prenom(s) des demandeurs  ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
             
@@ -860,7 +865,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private void j_menu_item_lieu_ditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_lieu_ditActionPerformed
         
         JOptionPane jop = new JOptionPane();
-        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieu dit dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieu dit ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
            
@@ -939,7 +944,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private void j_menu_item_formte_voisinsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formte_voisinsActionPerformed
         JOptionPane jop = new JOptionPane();
         
-        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des voisin(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des voisin(s) des demandeurs ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
        
         if(option == JOptionPane.OK_OPTION){
             
@@ -993,7 +998,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private void j_menu_item_nom_parentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_nom_parentsActionPerformed
 
         JOptionPane jop = new JOptionPane();
-        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des voisin(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage du nom des parents ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
             
@@ -1103,7 +1108,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private void j_menu_item_formte_lieu_cinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formte_lieu_cinActionPerformed
         
         JOptionPane jop = new JOptionPane();
-        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieux de délivrance du CIN des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieux de délivrance du CIN des demandeurs  ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
             new SwingWorker(){
@@ -1155,7 +1160,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_item_formte_leiu_acte_naissanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_formte_leiu_acte_naissanceActionPerformed
         JOptionPane jop = new JOptionPane();
-        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieux de délivrance de l'acte de naisance des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieux de délivrance de l'acte de naisance des demandeurs  ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
 
             
@@ -1225,7 +1230,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private void j_menu_item_adresse_demandeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_adresse_demandeurActionPerformed
         
         JOptionPane jop = new JOptionPane();
-        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage l'adresse des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage l'adresse des demandeurs  ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
             this.j_label_texte_loading.setVisible(true);
@@ -1287,7 +1292,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
         
         JOptionPane jop = new JOptionPane();
-        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage de nom(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage de nom(s) des demandeurs  ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
 
@@ -1484,11 +1489,11 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         v_rapport_saisie.show();
     }//GEN-LAST:event_j_menu_item_rapport_saisieActionPerformed
 
-    private void j_menu_cf_editableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_cf_editableActionPerformed
+    private void j_menu_rapport_cf_editableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_rapport_cf_editableActionPerformed
         RapportCfEditableParCommune v_rapport_saisie_par_commune = new RapportCfEditableParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
         this.dpContent.add(v_rapport_saisie_par_commune);
         v_rapport_saisie_par_commune.show();
-    }//GEN-LAST:event_j_menu_cf_editableActionPerformed
+    }//GEN-LAST:event_j_menu_rapport_cf_editableActionPerformed
 
     private void j_menu_stat_anomalies_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_stat_anomalies_par_communeActionPerformed
         RapportAnomalieSaisieParCommune v_rapport_anomalies_saisie_par_commune = new RapportAnomalieSaisieParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
@@ -1580,7 +1585,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar_home;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
@@ -1589,7 +1593,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel j_label_loading;
     private javax.swing.JLabel j_label_texte_loading;
-    private javax.swing.JMenuItem j_menu_cf_editable;
     private javax.swing.JMenuItem j_menu_config_bdd;
     private javax.swing.JMenuItem j_menu_controles_saisie;
     private javax.swing.JMenu j_menu_controllesSaisies;
@@ -1617,8 +1620,10 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_item_rapport_saisie;
     private javax.swing.JMenuItem j_menu_item_rapports_sig;
     private javax.swing.JMenu j_menu_parametres;
+    private javax.swing.JMenuItem j_menu_rapport_cf_editable;
     private javax.swing.JMenuItem j_menu_stat_anomalies_par_commune;
     private javax.swing.JMenuItem j_menu_stat_saisie_par_operateur;
+    private javax.swing.JMenuItem j_menu_stat_vectorisation_par_communes;
     private javax.swing.JMenu j_menu_stats;
     private javax.swing.JLabel lbl_test;
     private javax.swing.JLabel lbl_type_operation;
