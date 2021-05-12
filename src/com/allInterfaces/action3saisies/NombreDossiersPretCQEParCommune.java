@@ -101,6 +101,7 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
 
         setClosable(true);
         setIconifiable(true);
+        setResizable(true);
         setTitle("Nombre(s) Dossier(s) Pret CQE Par Commune");
 
         j_table_rapport_sig.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -158,6 +159,16 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
             }
         });
 
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setText("Exporter");
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setMaximumSize(new java.awt.Dimension(67, 33));
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setMinimumSize(new java.awt.Dimension(67, 33));
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout j_panel_saisie_par_opLayout = new javax.swing.GroupLayout(j_panel_saisie_par_op);
         j_panel_saisie_par_op.setLayout(j_panel_saisie_par_opLayout);
         j_panel_saisie_par_opLayout.setHorizontalGroup(
@@ -174,6 +185,10 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 817, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(281, 281, 281))
             .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
                     .addGap(124, 124, 124)
@@ -183,54 +198,28 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
         j_panel_saisie_par_opLayout.setVerticalGroup(
             j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_comb_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_annee_saisie1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(j_comb_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_annee_saisie1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7))
             .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
-                    .addContainerGap(176, Short.MAX_VALUE)
+                    .addContainerGap(238, Short.MAX_VALUE)
                     .addComponent(j_bouton_valider_pret_CQE_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(83, 83, 83)))
         );
 
-        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setText("Exporter");
-        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(379, 379, 379))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune)
-                .addContainerGap())
-        );
+        getContentPane().add(j_panel_saisie_par_op, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

@@ -99,9 +99,9 @@ public class UserFormDialog extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Se Connecter");
         setName("jf_login"); // NOI18N
-        setResizable(false);
 
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_username.setText("gaetan");
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_username.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -154,6 +154,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         jLabel2.setText("Mot de passe");
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_password.setText("2021+");
         txt_password.setToolTipText("Mot de passe");
         txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_password.addFocusListener(new java.awt.event.FocusAdapter() {

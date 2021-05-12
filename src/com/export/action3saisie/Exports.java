@@ -2260,7 +2260,9 @@ public List<String> getListesCfEditerWithFilterDate(String reg, String c_dist, S
 
     
 public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg, String c_dist, String dist, String c_com,String com, String path){
-
+            
+        int n = 5;
+                    
         List retour = new ArrayList();
         
         if(this.TYPE_OPERATION.equals("OCM")){
@@ -2273,7 +2275,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
         Date date = new Date(System.currentTimeMillis());
     
     
-        String realPath = path+"\\"+"RP_prov ( LISTING )_"+formatter.format(date)+"_"+this.op+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+".xlsx";
+        String realPath = path+"\\"+this.op+"_RP_prov ( LISTING )_"+formatter.format(date)+"_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+".xlsx";
         
         String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
         String nomAntenne = "";
@@ -2539,12 +2541,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
                 headerCell0Ligne3.setCellStyle(cellStyleBold);
             }
 
-
             
-                    int n = 5;
-                    
-                    
-                    
                     while (rs.next()) {
 
                         RowResultSet++;
@@ -2668,9 +2665,9 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
 
                 }catch(Exception createFileErreur){
                     
-                    //JOptionPane.showMessageDialog(null, createFileErreur.getMessage(), "Erreur SQL trouvé !", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, createFileErreur.getMessage(), "Erreur SQL trouvé !", JOptionPane.INFORMATION_MESSAGE);
 
-                    System.out.println("ERREUR DANS  get registre parcellaire" +createFileErreur.getMessage());
+                    //System.out.println("ERREUR DANS  get registre parcellaire" +createFileErreur.getMessage());
                 }
                      
             rs.close();
@@ -2680,6 +2677,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
                 //System.out.println("val fiale de RowResultSet = " + RowResultSet);
                 retour.add("empty-personne-physique");
                 retour.add(realPath);
+                retour.add(0);
                 // SUPPRESSION DU FICHIER EXPORTE CAR IL Y AVAIT UNE ERREUR LORS DE L'EXPORT
                 Files.deleteIfExists(Paths.get(realPath));
                 //System.out.println("votre commune : "+ com);
@@ -2687,6 +2685,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
             }else{
                 retour.add("success-personne-physique");
                 retour.add(realPath);
+                retour.add(n);
                 //JOptionPane.showMessageDialog(null, "Listes CF éditer exporté avec succès !", "Listes CF éditer exporté avec succès ", JOptionPane.INFORMATION_MESSAGE);
                 // ouverture de l'emplacement selectionner par l'utiisateur
                 //Desktop.getDesktop().open(new File(path));
@@ -2697,7 +2696,8 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
             //throw new RuntimeException();
             retour.add("error-personne-physique");
             retour.add(realPath);
-            retour.add("Error executing query: " +ex.getMessage());
+            retour.add(0);
+            //retour.add("Error executing query: " +ex.getMessage());
         }
         
         //System.out.println(demandes);
@@ -2707,7 +2707,9 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
 
 
 public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, String c_dist, String dist, String c_com,String com, String path){
-
+            
+        int n = 5;
+                    
         List retour = new ArrayList();
         
         String realPath = path;
@@ -2949,9 +2951,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
             }
 
 
-            
-                    int n = 5;
-                    
+
                     
                     
                     while (rs.next()) {
@@ -3068,6 +3068,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
                 //System.out.println("val fiale de RowResultSet = " + RowResultSet);
                 retour.add("empty-personne-morale");
                 retour.add(realPath);
+                retour.add(0);
                 // SUPPRESSION DU FICHIER EXPORTE CAR IL Y AVAIT UNE ERREUR LORS DE L'EXPORT
                 //Files.deleteIfExists(Paths.get(realPath));
                 //System.out.println("votre commune : "+ com);
@@ -3075,6 +3076,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
             }else{
                 retour.add("success-personne-morale");
                 retour.add(realPath);
+                retour.add(n);
                 //JOptionPane.showMessageDialog(null, "Listes CF éditer exporté avec succès !", "Listes CF éditer exporté avec succès ", JOptionPane.INFORMATION_MESSAGE);
                 // ouverture de l'emplacement selectionner par l'utiisateur
                 //Desktop.getDesktop().open(new File(path));
@@ -3085,6 +3087,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
             //throw new RuntimeException();
             retour.add("error-personne-morale");
             retour.add("Error executing query: " +ex.getMessage());
+            retour.add(0);
         }
         
         //System.out.println(demandes);
