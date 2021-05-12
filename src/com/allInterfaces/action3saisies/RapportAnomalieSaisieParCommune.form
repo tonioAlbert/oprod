@@ -42,7 +42,7 @@
               <Component id="j_panel_saisie_par_op" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="j_bouton_exporter_rapport_anomalies_saisie_par_commune" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="7" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -165,11 +165,17 @@
         </Container>
         <Component class="javax.swing.JLabel" name="j_label_annee_saisie1">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="D&#xe9;marche"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="j_comb_demarche">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="3">
                 <StringItem index="0" value="S&#xe9;l&#xe9;ctionner une d&#xe9;marche"/>
@@ -184,11 +190,17 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="R&#xe9;gion"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="j_combo_region">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="1">
                 <StringItem index="0" value="S&#xe9;l&#xe9;ctionner un r&#xe9;gion"/>
@@ -204,6 +216,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="j_bouton_valider_rapport_anomalies_saisie_par_commune">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Valider"/>
           </Properties>
           <Events>
@@ -214,6 +229,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="j_bouton_exporter_rapport_anomalies_saisie_par_commune">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Narrow" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Exporter"/>
       </Properties>
       <Events>

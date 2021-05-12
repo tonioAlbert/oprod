@@ -121,14 +121,19 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
             j_table_saisie_par_operateur.getColumnModel().getColumn(2).setResizable(false);
         }
 
+        j_label_date_saisie.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_date_saisie.setText("Date de début");
 
         j_date_debut.setDateFormatString("dd/MM/yyyy");
+        j_date_debut.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
+        j_label_annee_saisie1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_annee_saisie1.setText("Démarche");
 
+        j_comb_demarche.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_comb_demarche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une démarche", "OGCF", "OCFM" }));
 
+        j_bouton_search.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_search.setText("Rechercher");
         j_bouton_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,6 +141,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
             }
         });
 
+        j_button_reset.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_button_reset.setText("Réinitialiser");
         j_button_reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,11 +149,14 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
             }
         });
 
+        j_label_date_saisie1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_date_saisie1.setText("Date de fin");
 
         j_date_fin.setDateFormatString("dd/MM/yyyy");
         j_date_fin.setEnabled(false);
+        j_date_fin.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
+        j_comb_select_critere_date.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_comb_select_critere_date.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère", "Par Date", "Intervale de date", "Par Utilisateurs" }));
         j_comb_select_critere_date.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,10 +164,13 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
             }
         });
 
+        j_label_annee_saisie2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_annee_saisie2.setText("Critères");
 
+        j_comb_login.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_comb_login.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un nom d'utilisateur" }));
 
+        j_label_login.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_login.setText("Sélectionner un Login");
 
         javax.swing.GroupLayout j_panel_saisie_par_opLayout = new javax.swing.GroupLayout(j_panel_saisie_par_op);
