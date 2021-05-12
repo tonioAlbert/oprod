@@ -8,6 +8,7 @@ package com.allInterfaces.action3saisies;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Hash;
 import com.classes.action3saisie.Utilisateurs;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -36,10 +37,25 @@ public class UserFormDialog extends javax.swing.JFrame {
         this.BDD_DBNAME = dbname;
         this.BDD_USER = user;
         this.BDD_PWD = password;
-
+        
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
         initComponents();
-        
-        
         
         if(demarches.isEmpty() || demarches == null){
             System.out.println("Impossible de lancer le programme car la table type_op est vide");
@@ -84,6 +100,7 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_username.setToolTipText("Nom d'utilisateur");
+        txt_username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_usernameKeyPressed(evt);
@@ -124,6 +141,7 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_password.setToolTipText("Mot de passe");
+        txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_passwordKeyPressed(evt);

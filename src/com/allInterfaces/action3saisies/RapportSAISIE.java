@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RapportSAISIE extends javax.swing.JInternalFrame {
     
-    private final String selectRegion = "Séléctionner un région";
+    private final String selectRegion = "Séléctionner une région";
     
     String dateDebut = "";
     String dateFin = "";
@@ -103,6 +103,7 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Rapport Traitements SAISIE");
 
+        j_table_rapport_sig.setBackground(java.awt.Color.white);
         j_table_rapport_sig.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         j_table_rapport_sig.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
         j_table_rapport_sig.setModel(new javax.swing.table.DefaultTableModel(
@@ -143,7 +144,7 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
         jLabel2.setText("Région");
 
         j_combo_region.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un région" }));
+        j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une région" }));
         j_combo_region.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 j_combo_regionItemStateChanged(evt);

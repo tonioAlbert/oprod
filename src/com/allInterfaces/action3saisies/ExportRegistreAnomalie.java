@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -46,7 +44,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     private static PreparedStatement st;
     private static ResultSet rs;
     
-    private final String selectRegion = "Séléctionner un région";
+    private final String selectRegion = "Séléctionner une région";
     private final String selectDistrict = "Séléctionner un district";
     private final String selectCommune = "Séléctionner une commune";
     private final String selectFokontany = "Séléctionner une fokontany";
@@ -129,7 +127,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Région");
 
-        j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un région" }));
+        j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une région" }));
         j_combo_region.setMinimumSize(new java.awt.Dimension(151, 27));
         j_combo_region.setPreferredSize(new java.awt.Dimension(151, 27));
         j_combo_region.addItemListener(new java.awt.event.ItemListener() {
@@ -229,9 +227,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                         .addContainerGap(116, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(j_label_folder_export))
                         .addGap(18, 18, 18)
                         .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)

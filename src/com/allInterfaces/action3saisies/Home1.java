@@ -6,14 +6,10 @@
 package com.allInterfaces.action3saisies;
 
 
-
-import com.classes.action3saisie.BarreDeProgression;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
