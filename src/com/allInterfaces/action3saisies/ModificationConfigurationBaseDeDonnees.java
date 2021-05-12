@@ -55,7 +55,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
 
         initComponents();
         
-     
+           
         this.txt_username.setText(user);
         this.txt_nom_bdd.setText(dbname);
         this.txt_nom_hote.setText(host);
@@ -93,6 +93,11 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         setName("jf_login"); // NOI18N
 
         txt_username.setToolTipText("Nom d'utilisateur");
+        txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_usernameKeyPressed(evt);
+            }
+        });
 
         btn_annuler.setText("Annuler");
         btn_annuler.addActionListener(new java.awt.event.ActionListener() {
@@ -129,12 +134,32 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         j_label_nom_bdd.setText("Nom Base de données");
 
         txt_port.setToolTipText("Nom d'utilisateur");
+        txt_port.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_portKeyPressed(evt);
+            }
+        });
 
         txt_password.setToolTipText("Nom d'utilisateur");
+        txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_passwordKeyPressed(evt);
+            }
+        });
 
         txt_nom_hote.setToolTipText("Nom d'utilisateur");
+        txt_nom_hote.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_nom_hoteKeyPressed(evt);
+            }
+        });
 
         txt_nom_bdd.setToolTipText("Nom d'utilisateur");
+        txt_nom_bdd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_nom_bddKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -215,35 +240,8 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
 
 
     
-    
-    private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
-
-        if(this.txt_username.getText().equals("") && this.txt_nom_bdd.getText().equals("") && this.txt_nom_hote.getText().equals("") && this.txt_port.getText().equals("")&& this.txt_password.getText().equals("")){
-            System.out.println("Tous les champs sont requises !");
-            JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
-            
-        }else if(this.txt_username.getText().equals("")){
-            System.out.println("Le champ Nom d'utilisateur est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE); 
-            
-        }else if(this.txt_nom_bdd.getText().equals("")){
-            System.out.println("Le champ Nom base de données est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE); 
-            
-        }else if(this.txt_nom_hote.getText().equals("")){
-           System.out.println("Le champ Nom d'hôte est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE); 
-             
-        }else if(this.txt_port.getText().equals("")){
-           System.out.println("Le champ Port est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE); 
-             
-        }else if(this.txt_password.getText().equals("")){
-            System.out.println("Le champ Mot de passe est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE); 
-              
-        }else{
-            
+    private void modificationFichierConf(){
+           
             try{
                 
                 connectDatabase = new ConnectDb(this.txt_nom_hote.getText(),Integer.parseInt(this.txt_port.getText()), this.txt_nom_bdd.getText(), this.txt_username.getText(), this.txt_password.getText()).getConnection();
@@ -333,10 +331,6 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                             }
                         }
                         
-                        
-                        
-
-                    
                     
                 }
             }catch(Exception e){
@@ -348,20 +342,137 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
 
             
 
+    }
+    
+    
+    private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
+
+        if(this.txt_username.getText().equals("") && this.txt_nom_bdd.getText().equals("") && this.txt_nom_hote.getText().equals("") && this.txt_port.getText().equals("")&& this.txt_password.getText().equals("")){
+            System.out.println("Tous les champs sont requises !");
+            JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
             
+        }else if(this.txt_username.getText().equals("")){
+            System.out.println("Le champ Nom d'utilisateur est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE); 
+            
+        }else if(this.txt_nom_bdd.getText().equals("")){
+            System.out.println("Le champ Nom base de données est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE); 
+            
+        }else if(this.txt_nom_hote.getText().equals("")){
+           System.out.println("Le champ Nom d'hôte est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE); 
+             
+        }else if(this.txt_port.getText().equals("")){
+           System.out.println("Le champ Port est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE); 
+             
+        }else if(this.txt_password.getText().equals("")){
+            System.out.println("Le champ Mot de passe est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE); 
+              
+        }else{
+ 
+            this.modificationFichierConf();
         }
 
 
     }//GEN-LAST:event_btn_validerActionPerformed
 
     private void btn_validerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_validerKeyPressed
+        if(evt.getKeyCode() == 10){
+        
+            this.modificationFichierConf();
 
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
 
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
     }//GEN-LAST:event_btn_validerKeyPressed
 
     private void btn_annulerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_annulerKeyPressed
         
     }//GEN-LAST:event_btn_annulerKeyPressed
+
+    private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
+        
+        if(evt.getKeyCode() == 10){
+        
+            this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_usernameKeyPressed
+
+    private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
+        if(evt.getKeyCode() == 10){
+        
+            this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_passwordKeyPressed
+
+    private void txt_nom_hoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_hoteKeyPressed
+        if(evt.getKeyCode() == 10){
+        
+            this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_nom_hoteKeyPressed
+
+    private void txt_portKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_portKeyPressed
+        if(evt.getKeyCode() == 10){
+        
+            this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_portKeyPressed
+
+    private void txt_nom_bddKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_bddKeyPressed
+        if(evt.getKeyCode() == 10){
+        
+            this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
+
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_nom_bddKeyPressed
 
     /**
      * @param args the command line arguments

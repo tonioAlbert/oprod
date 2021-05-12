@@ -115,6 +115,9 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_usernameKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_annuler">
           <Properties>
@@ -163,21 +166,33 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_portKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_password">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_passwordKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_nom_hote">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_nom_hoteKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_nom_bdd">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_nom_bddKeyPressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

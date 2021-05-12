@@ -170,7 +170,6 @@ public class Home extends javax.swing.JFrame {
         j_menu_export_listes_dossiers_pret_cqe = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_cf_editer_par_commune = new javax.swing.JMenuItem();
-        jSeparator7 = new javax.swing.JPopupMenu.Separator();
         j_menu_stats = new javax.swing.JMenu();
         j_menu_stat_saisie_par_operateur = new javax.swing.JMenuItem();
         j_menu_stat_anomalies_par_commune = new javax.swing.JMenuItem();
@@ -512,7 +511,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_exports.add(j_menu_export_listes_cf_editer_par_commune);
-        j_menu_exports.add(jSeparator7);
 
         jMenuBar1.add(j_menu_exports);
 
@@ -1485,6 +1483,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         if (evt.isControlDown() && evt.isShiftDown() && evt.getKeyChar() != 'p'&& evt.getKeyChar() != 'P' && evt.getKeyCode() == 80) {
                 System.out.println("CTRL + SHIFT + p"); 
+                
                 this.j_menu_parametres.setEnabled(true);
                 
                 ///this.j_menu_parametres.set
@@ -1503,6 +1502,10 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                 });
         
+                
+                this.j_menu_parametres.setEnabled(false);
+                
+                //formKeyPressed();
 
     }//GEN-LAST:event_j_menu_config_bddActionPerformed
 
@@ -1566,7 +1569,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
-    private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel j_label_loading;
