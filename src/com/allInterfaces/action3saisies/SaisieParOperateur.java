@@ -133,7 +133,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         j_comb_demarche.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_comb_demarche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une démarche", "OGCF", "OCFM" }));
 
-        j_bouton_search.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_bouton_search.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
         j_bouton_search.setText("Rechercher");
         j_bouton_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,7 +141,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
             }
         });
 
-        j_button_reset.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_button_reset.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
         j_button_reset.setText("Réinitialiser");
         j_button_reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

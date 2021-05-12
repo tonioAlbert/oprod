@@ -90,7 +90,7 @@ public class UserFormDialog extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
         jButton1.setText("Quitter");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,7 +103,7 @@ public class UserFormDialog extends javax.swing.JFrame {
             }
         });
 
-        btn_connexion.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        btn_connexion.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
         btn_connexion.setText("Connexion");
         btn_connexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -150,7 +150,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
             }
         });
 
-        j_bouton_valider_rapport_anomalies_saisie_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_bouton_valider_rapport_anomalies_saisie_par_commune.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
         j_bouton_valider_rapport_anomalies_saisie_par_commune.setText("Valider");
         j_bouton_valider_rapport_anomalies_saisie_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,7 +202,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                     .addGap(83, 83, 83)))
         );
 
-        j_bouton_exporter_rapport_anomalies_saisie_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_bouton_exporter_rapport_anomalies_saisie_par_commune.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
         j_bouton_exporter_rapport_anomalies_saisie_par_commune.setText("Exporter");
         j_bouton_exporter_rapport_anomalies_saisie_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
