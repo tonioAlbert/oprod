@@ -118,6 +118,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Exportation CF éditer par commune");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(543, 380));
 
         jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N

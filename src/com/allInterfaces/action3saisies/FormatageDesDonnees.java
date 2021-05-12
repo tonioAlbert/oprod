@@ -117,6 +117,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Formatage de données");
         setFont(new java.awt.Font("Arial Narrow", 0, 12)); // NOI18N
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setMinimumSize(new java.awt.Dimension(543, 380));
         setPreferredSize(new java.awt.Dimension(543, 380));
 

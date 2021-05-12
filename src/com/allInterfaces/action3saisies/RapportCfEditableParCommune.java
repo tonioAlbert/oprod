@@ -101,7 +101,11 @@ public class RapportCfEditableParCommune extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Rapport CF editable par Commune");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1224, 396));
 
         j_table_rapport_cf_editable_par_commune.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         j_table_rapport_cf_editable_par_commune.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
@@ -158,6 +162,16 @@ public class RapportCfEditableParCommune extends javax.swing.JInternalFrame {
             }
         });
 
+        j_bouton_exporter_rapport_cf_editable_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_bouton_exporter_rapport_cf_editable_par_commune.setText("Exporter");
+        j_bouton_exporter_rapport_cf_editable_par_commune.setMaximumSize(new java.awt.Dimension(67, 33));
+        j_bouton_exporter_rapport_cf_editable_par_commune.setMinimumSize(new java.awt.Dimension(67, 33));
+        j_bouton_exporter_rapport_cf_editable_par_commune.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_bouton_exporter_rapport_cf_editable_par_communeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout j_panel_saisie_par_opLayout = new javax.swing.GroupLayout(j_panel_saisie_par_op);
         j_panel_saisie_par_op.setLayout(j_panel_saisie_par_opLayout);
         j_panel_saisie_par_opLayout.setHorizontalGroup(
@@ -168,69 +182,41 @@ public class RapportCfEditableParCommune extends javax.swing.JInternalFrame {
                     .addComponent(j_label_annee_saisie1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(j_comb_demarche, 0, 222, Short.MAX_VALUE)
-                    .addComponent(j_combo_region, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(j_comb_demarche, 0, 222, Short.MAX_VALUE)
+                        .addComponent(j_combo_region, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(j_bouton_valider_rapport_cf_editable_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 817, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
-            .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                    .addGap(124, 124, 124)
-                    .addComponent(j_bouton_valider_rapport_cf_editable_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(935, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_bouton_exporter_rapport_cf_editable_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(348, 348, 348))
         );
         j_panel_saisie_par_opLayout.setVerticalGroup(
             j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_comb_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_annee_saisie1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
-                    .addContainerGap(176, Short.MAX_VALUE)
-                    .addComponent(j_bouton_valider_rapport_cf_editable_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(83, 83, 83)))
-        );
-
-        j_bouton_exporter_rapport_cf_editable_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_bouton_exporter_rapport_cf_editable_par_commune.setText("Exporter");
-        j_bouton_exporter_rapport_cf_editable_par_commune.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_bouton_exporter_rapport_cf_editable_par_communeActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(j_bouton_exporter_rapport_cf_editable_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(391, 391, 391))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
+                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(j_comb_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_annee_saisie1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addComponent(j_bouton_valider_rapport_cf_editable_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(j_bouton_exporter_rapport_cf_editable_par_commune)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(j_bouton_exporter_rapport_cf_editable_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
+
+        getContentPane().add(j_panel_saisie_par_op, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

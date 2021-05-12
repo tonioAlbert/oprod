@@ -89,7 +89,11 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         txt_nom_bdd = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Modification configuration Base de données");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setName("jf_login"); // NOI18N
 
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N

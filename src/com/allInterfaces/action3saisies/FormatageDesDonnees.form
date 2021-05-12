@@ -8,6 +8,10 @@
     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
       <Font name="Arial Narrow" size="12" style="0"/>
     </Property>
+    <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+      <Image iconType="3" name="/ressources/logo geox2~2.png"/>
+    </Property>
+    <Property name="icon" type="boolean" value="true"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[543, 380]"/>
     </Property>

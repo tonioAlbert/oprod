@@ -123,6 +123,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Exportation Registre Anomalie Saisie");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(543, 380));
 
         jLabel2.setText("Région");
