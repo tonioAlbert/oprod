@@ -29,6 +29,8 @@ public class Formats {
       
         String chaine1 = v;
         String chaine2 = "";
+        
+        String c3 = "";
 
          // compilation de la regex
          Pattern patern = Pattern.compile(" ");    //(" "); // le séparateur est un espace

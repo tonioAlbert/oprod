@@ -587,18 +587,19 @@
                               <Component id="lbl_test" alignment="1" min="-2" pref="237" max="-2" attributes="0"/>
                               <Component id="jProgressBar_home" alignment="1" min="-2" pref="183" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="j_label_texte_loading" min="-2" pref="383" max="-2" attributes="0"/>
+                          <Component id="j_label_loading" min="-2" pref="155" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="j_label_loading" min="-2" pref="155" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                  <Component id="j_label_texte_loading" min="-2" pref="421" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
