@@ -307,9 +307,9 @@ public class Home extends javax.swing.JFrame {
             .addGroup(dpContentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(dpContentLayout.createSequentialGroup()
-                        .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 790, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
+                        .addComponent(lbl_type_operation, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 749, Short.MAX_VALUE)
                         .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_test, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jProgressBar_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -374,6 +374,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_formatages.setText(" Formatage des données");
         j_menu_formatages.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
+        j_menu_item_formate_nom.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_formate_nom.setText("Nom des demandeurs");
         j_menu_item_formate_nom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -383,6 +384,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_formatages.add(j_menu_item_formate_nom);
 
         j_menu_item_formate_prenom.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK));
+        j_menu_item_formate_prenom.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_formate_prenom.setText("Prénom(s) des demandeurss");
         j_menu_item_formate_prenom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -391,6 +393,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_formatages.add(j_menu_item_formate_prenom);
 
+        j_menu_item_formate_lieu_naissance_.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_formate_lieu_naissance_.setText("Lieu Niassance");
         j_menu_item_formate_lieu_naissance_.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -399,6 +402,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_formatages.add(j_menu_item_formate_lieu_naissance_);
 
+        j_menu_item_nom_parents.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_nom_parents.setText("Nom des Parents");
         j_menu_item_nom_parents.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -408,6 +412,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_formatages.add(j_menu_item_nom_parents);
 
         j_menu_item_adresse_demandeur.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        j_menu_item_adresse_demandeur.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_adresse_demandeur.setText("Adresse(s) demandeurs");
         j_menu_item_adresse_demandeur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -417,6 +422,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_formatages.add(j_menu_item_adresse_demandeur);
 
         j_menu_item_lieu_dit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
+        j_menu_item_lieu_dit.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_lieu_dit.setText("Lieu Dit");
         j_menu_item_lieu_dit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -426,6 +432,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_formatages.add(j_menu_item_lieu_dit);
 
         j_menu_item_formte_voisins.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_MASK));
+        j_menu_item_formte_voisins.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_formte_voisins.setText("Voisinnages");
         j_menu_item_formte_voisins.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -434,6 +441,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_formatages.add(j_menu_item_formte_voisins);
 
+        j_menu_item_formte_charges.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_formte_charges.setText("Charges");
         j_menu_item_formte_charges.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -442,6 +450,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_formatages.add(j_menu_item_formte_charges);
 
+        j_menu_item_formte_consistance_.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_formte_consistance_.setText("Consistance");
         j_menu_item_formte_consistance_.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -450,6 +459,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_formatages.add(j_menu_item_formte_consistance_);
 
+        j_menu_item_formte_lieu_cin.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_formte_lieu_cin.setText("Lieu CIN");
         j_menu_item_formte_lieu_cin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -458,6 +468,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_formatages.add(j_menu_item_formte_lieu_cin);
 
+        j_menu_item_formte_leiu_acte_naissance.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_formte_leiu_acte_naissance.setText("Lieu Acte De Naissance");
         j_menu_item_formte_leiu_acte_naissance.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -523,7 +534,7 @@ public class Home extends javax.swing.JFrame {
         });
 
         j_menu_stat_saisie_par_operateur.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_stat_saisie_par_operateur.setText(" Saisies");
+        j_menu_stat_saisie_par_operateur.setText("Saisies");
         j_menu_stat_saisie_par_operateur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_stat_saisie_par_operateurActionPerformed(evt);
@@ -541,6 +552,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_stats.add(j_menu_stat_anomalies_par_commune);
         j_menu_stats.add(jSeparator1);
 
+        j_menu_cf_editable.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_cf_editable.setText(" CF éditable");
         j_menu_cf_editable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -550,6 +562,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_stats.add(j_menu_cf_editable);
         j_menu_stats.add(jSeparator2);
 
+        j_menu_item_rapport_saisie.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_rapport_saisie.setText("Saisie par commune(s)");
         j_menu_item_rapport_saisie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -558,6 +571,7 @@ public class Home extends javax.swing.JFrame {
         });
         j_menu_stats.add(j_menu_item_rapport_saisie);
 
+        j_menu_item_rapports_sig.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_item_rapports_sig.setText("Vectorisation par commune(s)");
         j_menu_item_rapports_sig.setName("setEnabled"); // NOI18N
         j_menu_item_rapports_sig.addActionListener(new java.awt.event.ActionListener() {
@@ -568,6 +582,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_stats.add(j_menu_item_rapports_sig);
         j_menu_stats.add(jSeparator8);
 
+        j_menu_itemStat_Nbre_pret_CQE.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_itemStat_Nbre_pret_CQE.setText("Dossier(s) prtêt CQE");
         j_menu_itemStat_Nbre_pret_CQE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -599,6 +614,7 @@ public class Home extends javax.swing.JFrame {
 
         j_menu_parametres.setText("Paramètres");
 
+        j_menu_config_bdd.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_config_bdd.setText("Configuration base de données");
         j_menu_config_bdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

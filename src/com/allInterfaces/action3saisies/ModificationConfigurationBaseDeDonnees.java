@@ -46,11 +46,11 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         this.BDD_USER = user;
         this.BDD_PWD = password;
         
-        System.out.println("host  = " + host);
-        System.out.println("port  = " + port);
-        System.out.println("dbname  = " + dbname);
-        System.out.println("user  = " + user);
-        System.out.println("password  = " + password);
+        //System.out.println("host  = " + host);
+        //System.out.println("port  = " + port);
+        //System.out.println("dbname  = " + dbname);
+        //System.out.println("user  = " + user);
+        //System.out.println("password  = " + password);
         
 
         initComponents();
@@ -92,6 +92,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         setTitle("Modification configuration Base de données");
         setName("jf_login"); // NOI18N
 
+        txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -99,6 +100,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
             }
         });
 
+        btn_annuler.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         btn_annuler.setText("Annuler");
         btn_annuler.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,6 +113,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
             }
         });
 
+        btn_valider.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         btn_valider.setText("Valider");
         btn_valider.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,16 +126,22 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel1.setText("Nom d'utilisateur");
 
+        jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Mot de passe");
 
+        j_label_nom_hote.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_nom_hote.setText("Nom d'hôte");
 
+        j_label_port.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_port.setText("Port");
 
+        j_label_nom_bdd.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_nom_bdd.setText("Nom Base de données");
 
+        txt_port.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_port.setToolTipText("Nom d'utilisateur");
         txt_port.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -140,6 +149,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
             }
         });
 
+        txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_password.setToolTipText("Nom d'utilisateur");
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -147,6 +157,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
             }
         });
 
+        txt_nom_hote.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_nom_hote.setToolTipText("Nom d'utilisateur");
         txt_nom_hote.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -154,6 +165,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
             }
         });
 
+        txt_nom_bdd.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_nom_bdd.setToolTipText("Nom d'utilisateur");
         txt_nom_bdd.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -165,19 +177,13 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(302, Short.MAX_VALUE)
-                .addComponent(btn_valider)
-                .addGap(62, 62, 62)
-                .addComponent(btn_annuler)
-                .addGap(28, 28, 28))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(j_label_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(37, 37, 37)
-                        .addComponent(txt_nom_bdd))
+                        .addComponent(txt_nom_bdd, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(j_label_port, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(60, 60, 60)
@@ -193,6 +199,12 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                             .addComponent(txt_password)
                             .addComponent(txt_nom_hote))))
                 .addGap(19, 19, 19))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_valider)
+                .addGap(62, 62, 62)
+                .addComponent(btn_annuler)
+                .addGap(30, 30, 30))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,11 +229,11 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_label_nom_bdd)
                     .addComponent(txt_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_annuler)
                     .addComponent(btn_valider))
-                .addGap(43, 43, 43))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);

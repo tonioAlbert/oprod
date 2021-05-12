@@ -186,21 +186,34 @@
         </Container>
         <Component class="javax.swing.JLabel" name="j_label_date_saisie">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Date de d&#xe9;but"/>
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="j_date_debut">
           <Properties>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="j_label_annee_saisie1">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="D&#xe9;marche"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="j_comb_demarche">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="3">
                 <StringItem index="0" value="S&#xe9;l&#xe9;ctionner une d&#xe9;marche"/>
@@ -215,6 +228,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="j_bouton_search">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Rechercher"/>
           </Properties>
           <Events>
@@ -223,11 +239,17 @@
         </Component>
         <Component class="javax.swing.JButton" name="j_button_reset">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="R&#xe9;initialiser"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="j_label_date_saisie1">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Date de fin"/>
           </Properties>
         </Component>
@@ -235,10 +257,16 @@
           <Properties>
             <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="j_comb_select_critere_date">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="3">
                 <StringItem index="0" value="S&#xe9;l&#xe9;ctionner une crit&#xe8;re de date"/>
@@ -256,6 +284,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="j_label_annee_saisie2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial Narrow" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Crit&#xe8;re Date"/>
           </Properties>
         </Component>

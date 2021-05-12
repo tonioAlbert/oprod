@@ -133,12 +133,16 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
             j_table_rapport_sig.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        j_label_annee_saisie1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_annee_saisie1.setText("Démarche");
 
+        j_comb_demarche.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_comb_demarche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une démarche", "OGCF", "OCFM" }));
 
+        jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Région");
 
+        j_combo_region.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un région" }));
         j_combo_region.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -146,6 +150,7 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
             }
         });
 
+        j_bouton_valider_pret_CQE_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_valider_pret_CQE_par_commune.setText("Valider");
         j_bouton_valider_pret_CQE_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,6 +202,7 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
                     .addGap(83, 83, 83)))
         );
 
+        j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.setText("Exporter");
         j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -223,7 +229,7 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
                 .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

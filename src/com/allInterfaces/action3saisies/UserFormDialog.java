@@ -82,7 +82,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         setName("jf_login"); // NOI18N
         setResizable(false);
 
-        txt_username.setText("gaetan");
+        txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -90,6 +90,7 @@ public class UserFormDialog extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jButton1.setText("Quitter");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,6 +103,7 @@ public class UserFormDialog extends javax.swing.JFrame {
             }
         });
 
+        btn_connexion.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         btn_connexion.setText("Connexion");
         btn_connexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,11 +116,13 @@ public class UserFormDialog extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel1.setText("Nom d'utilisateur");
 
+        jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Mot de passe");
 
-        txt_password.setText("2021.");
+        txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_password.setToolTipText("Mot de passe");
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -126,6 +130,7 @@ public class UserFormDialog extends javax.swing.JFrame {
             }
         });
 
+        j_combo_demarche.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_demarche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une démarche" }));
         j_combo_demarche.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -133,6 +138,7 @@ public class UserFormDialog extends javax.swing.JFrame {
             }
         });
 
+        j_label_demarche.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_demarche.setText("Démarche");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -173,7 +179,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_combo_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(j_label_demarche))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_connexion)
                     .addComponent(jButton1))
