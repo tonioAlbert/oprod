@@ -5,13 +5,26 @@
  */
 package com.allInterfaces.action3saisies;
 
+import com.connectDb.ConnectDb;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Base64;
+import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
+
 
 /**
  *
  * @author RAP
  */
 public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInternalFrame {
-
+    private static Connection connectDatabase;
+    private static PreparedStatement st;
+    private static ResultSet rs;
     
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -37,12 +50,10 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         System.out.println("user  = " + user);
         System.out.println("password  = " + password);
         
-        
-    
+
         initComponents();
         
-        
-                
+     
         this.txt_username.setText(user);
         this.txt_nom_bdd.setText(dbname);
         this.txt_nom_hote.setText(host);
@@ -195,8 +206,8 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         // TODO add your handling code here:
         this.setVisible(false);
         //this.j_menu_parametres.
-
-        //this.getParent().getParent().getParent().getParent().getParent().setBackground(Color.red);
+        // hime eto this.getParent().getParent().getParent().getParent().getParent()
+        System.out.println("this.getParent().getParent().getParent() vaut = "+this.getParent().getParent().getParent().getParent().getParent());
         
     }//GEN-LAST:event_btn_annulerActionPerformed
 
@@ -204,7 +215,106 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
     
     
     private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
-        
+
+        if(this.txt_username.getText().equals("") && this.txt_nom_bdd.getText().equals("") && this.txt_nom_hote.getText().equals("") && this.txt_port.getText().equals("")&& this.txt_password.getText().equals("")){
+            System.out.println("Tous les champs sont requises !");
+            JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
+            
+        }else if(this.txt_username.getText().equals("")){
+            System.out.println("Le champ Nom d'utilisateur est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE); 
+            
+        }else if(this.txt_nom_bdd.getText().equals("")){
+            System.out.println("Le champ Nom base de données est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE); 
+            
+        }else if(this.txt_nom_hote.getText().equals("")){
+           System.out.println("Le champ Nom d'hôte est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE); 
+             
+        }else if(this.txt_port.getText().equals("")){
+           System.out.println("Le champ Port est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE); 
+             
+        }else if(this.txt_password.getText().equals("")){
+            System.out.println("Le champ Mot de passe est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE); 
+              
+        }else{
+            
+            try{
+                
+                connectDatabase = new ConnectDb(this.txt_nom_hote.getText(),Integer.parseInt(this.txt_port.getText()), this.txt_nom_bdd.getText(), this.txt_username.getText(), this.txt_password.getText()).getConnection();
+            
+                if(connectDatabase == null){
+                    System.out.println("Impossible de se connecter à la base de données !");
+                    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifierv les champs","Connexion dans la base impossible !", JOptionPane.INFORMATION_MESSAGE); 
+
+                }else{
+                    
+                    System.out.println("Tous ok\nonnection dans la base de données OK.");
+                    
+                    
+                    // Modification du ficiher de configuration
+                    // ENCODAGE DES DONNEES
+                    String hashHost = Base64.getEncoder().encodeToString(this.txt_nom_hote.getText().getBytes("UTF-8"));
+                    String hashPort = Base64.getEncoder().encodeToString(this.txt_port.getText().getBytes("UTF-8"));
+                    String hashDbname = Base64.getEncoder().encodeToString(this.txt_nom_bdd.getText().getBytes("UTF-8"));
+                    String hashUser = Base64.getEncoder().encodeToString(this.txt_username.getText().getBytes("UTF-8"));
+                    String hashPassword = Base64.getEncoder().encodeToString(this.txt_password.getText().getBytes("UTF-8"));
+                    
+                    
+                        // remplissage de l'objet JSON
+                        JSONObject j = new JSONObject();
+                        j.put("host",  hashHost);
+                        j.put("port", hashPort);
+                        j.put("dbname", hashDbname);
+                        j.put("user", hashUser);
+                        j.put("password", hashPassword);
+                        
+                        
+                    // VERIFIER SI FICHIER DE CONF EXISTE
+                    //String racine = new File("").getAbsolutePath();
+                    String path = new File("").getAbsolutePath()+"\\conf";
+                    String filePathAndName = path + "\\config.json";
+
+                    File folder = new File(path);
+                    File file = new File(filePathAndName);
+                        
+                        
+                        try(FileWriter fileJson = new FileWriter(filePathAndName)){
+                            
+                            System.out.println("Remplissage du fichier de conf ...");
+                            
+                            fileJson.write(j.toString());
+                            fileJson.close();
+                            
+                            System.out.println("Modification ficihier de configuration effectuée avec succès !");
+                            JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
+                        
+                            System.out.println("dossier et fichier conf trouvé ! .......");
+
+                        }catch(IOException e){
+                            
+                            e.printStackTrace(); 
+                            
+                            System.out.println("Erreur remplissage fichier de configuration");
+                            JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    
+                    
+                }
+            }catch(Exception e){
+                    System.out.println("Impossible de se connecter à la base de données !");
+                    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifierv les champs","Connexion dans la base impossible !", JOptionPane.INFORMATION_MESSAGE); 
+ 
+            }
+            
+
+            
+
+            
+        }
 
 
     }//GEN-LAST:event_btn_validerActionPerformed

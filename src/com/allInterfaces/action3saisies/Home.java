@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 /**
@@ -166,7 +167,7 @@ public class Home extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_anomalies = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        j_menu_export_listes_cf_editable = new javax.swing.JMenuItem();
+        j_menu_export_listes_dossiers_pret_cqe = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_cf_editer_par_commune = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
@@ -178,6 +179,7 @@ public class Home extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         j_menu_item_rapport_saisie = new javax.swing.JMenuItem();
         j_menu_item_rapports_sig = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
         j_menu_itemStat_Nbre_pret_CQE = new javax.swing.JMenuItem();
         j_menu_controllesSaisies = new javax.swing.JMenu();
         j_menu_controles_saisie = new javax.swing.JMenuItem();
@@ -319,8 +321,8 @@ public class Home extends javax.swing.JFrame {
                         .addGap(64, 64, 64))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         dpContentLayout.setVerticalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -492,14 +494,14 @@ public class Home extends javax.swing.JFrame {
         j_menu_exports.add(j_menu_export_listes_anomalies);
         j_menu_exports.add(jSeparator5);
 
-        j_menu_export_listes_cf_editable.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_export_listes_cf_editable.setText("Registre Parcellaire Provisoire (Prêt CQE)");
-        j_menu_export_listes_cf_editable.addActionListener(new java.awt.event.ActionListener() {
+        j_menu_export_listes_dossiers_pret_cqe.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_export_listes_dossiers_pret_cqe.setText("Registre Parcellaire Provisoire (Prêt CQE)");
+        j_menu_export_listes_dossiers_pret_cqe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_menu_export_listes_cf_editableActionPerformed(evt);
+                j_menu_export_listes_dossiers_pret_cqeActionPerformed(evt);
             }
         });
-        j_menu_exports.add(j_menu_export_listes_cf_editable);
+        j_menu_exports.add(j_menu_export_listes_dossiers_pret_cqe);
         j_menu_exports.add(jSeparator6);
 
         j_menu_export_listes_cf_editer_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
@@ -566,6 +568,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_stats.add(j_menu_item_rapports_sig);
+        j_menu_stats.add(jSeparator8);
 
         j_menu_itemStat_Nbre_pret_CQE.setText("Dossier(s) prtêt CQE");
         j_menu_itemStat_Nbre_pret_CQE.addActionListener(new java.awt.event.ActionListener() {
@@ -788,23 +791,50 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des prenom(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            this.j_label_texte_loading.setVisible(true);
-            this.j_label_loading.setVisible(true);
-        
-            //this.j_menu_item_formate_prenom.setEnabled(false);
-            //this.j_menu_exports.setEnabled(false);
-            //this.j_menu_formatages.setEnabled(false);
-            //this.j_menu_stats.setEnabled(false);
             
-            
-            new SwingWorker(){
+                new SwingWorker(){
                 @Override
-                protected Object doInBackground() throws Exception{
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
+                    
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatages prénom(s) des demandeurs en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
 
-                    formats("id_persphys", "persphys", "prenom");
+                    System.out.println("Début formatages nom prenoms ...");
+                    
+                    if(formats("id_persphys", "persphys", "prenom").equals("ok")) return "ok-formatages";
+                    
                     return null;
                 }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatages prénom(s) des demandeurs Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }.execute();
+            
             
             
         }
@@ -819,20 +849,51 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieu dit dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            //this.j_menu_item_formate_prenom.setEnabled(false);
-            //this.j_menu_exports.setEnabled(false);
-            //this.j_menu_formatages.setEnabled(false);
-            //this.j_menu_stats.setEnabled(false);
-            
-            new SwingWorker(){
+           
+                new SwingWorker(){
                 @Override
-                protected Object doInBackground() throws Exception{
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
+                    
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatage lieu dit en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
 
-                    formats("id_demande", "demande", "lieu_dit");
-            
+                    System.out.println("Début formatage lieu dit ...");
+                    
+                    if(formats("id_demande", "demande", "lieu_dit").equals("ok")) return "ok-formatages";
+                    
                     return null;
                 }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatage lieu dit Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }.execute();
+            
+            
 
         }
     }//GEN-LAST:event_j_menu_item_lieu_ditActionPerformed
@@ -921,26 +982,50 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des voisin(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            this.j_label_texte_loading.setVisible(true);
-            this.j_label_loading.setVisible(true);
-        
-
-            new SwingWorker(){
+            
+                new SwingWorker(){
                 @Override
-                protected Object doInBackground() throws Exception{
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
+                    
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatage nom des parent(s) (père et mère) en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
 
-                System.out.println("Début formatage...");
-                System.out.println("Formatage Nom Père");
-
-                formats("id_persphys", "persphys", "nom_pere");
-
-                System.out.println("Formatage Nom Mère");
-                formats("id_persphys", "persphys", "nom_mere");
-            
-            
+                    System.out.println("Début formatage nom des parent(s) (père et mère) ...");
+                    
+                    if(formats("id_persphys", "persphys", "nom_pere").equals("ok") && formats("id_persphys", "persphys", "nom_mere").equals("ok")) return "ok-formatages";
+                    
                     return null;
                 }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatage nom des parent(s) (père et mère) Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }.execute();
+            
             
 
         }
@@ -953,22 +1038,49 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des charges sur les demandes des demandeurs ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
-            
-            //this.j_menu_item_formate_prenom.setEnabled(false);
-            //this.j_menu_exports.setEnabled(false);
-            //this.j_menu_formatages.setEnabled(false);
-            //this.j_menu_stats.setEnabled(false);
-            
+
             new SwingWorker(){
                 @Override
-                protected Object doInBackground() throws Exception{
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
+                    
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatage charge(s) en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
 
-                    formats("id_demande", "demande", "charges");
-            
+                    System.out.println("Début formatage charge(s) ...");
+                    
+                    if(formats("id_demande", "demande", "charges").equals("ok")) return "ok-formatages";
+                    
                     return null;
                 }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatage charge(s) Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }.execute();
-            
             
         }
         
@@ -980,23 +1092,49 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieux de délivrance du CIN des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            //this.j_menu_item_formate_prenom.setEnabled(false);
-            //this.j_menu_exports.setEnabled(false);
-            //this.j_menu_formatages.setEnabled(false);
-            //this.j_menu_stats.setEnabled(false);
-            
-            
             new SwingWorker(){
                 @Override
-                protected Object doInBackground() throws Exception{
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
                     
-                    System.out.println("Début formatage...");
-                    System.out.println("Formatage Lieu CIN");
-                    formats("id_persphys", "persphys", "cni_lieu");
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatage Lieu CIN en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
 
+                    System.out.println("Début formatage Lieu CIN ...");
+                    
+                    if(formats("id_persphys", "persphys", "cni_lieu").equals("ok")) return "ok-formatages";
+                    
                     return null;
                 }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatage Lieu CIN Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }.execute();
+            
 
         }
     }//GEN-LAST:event_j_menu_item_formte_lieu_cinActionPerformed
@@ -1005,23 +1143,48 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des lieux de délivrance de l'acte de naisance des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
-            
-            //this.j_menu_item_formate_prenom.setEnabled(false);
-            //this.j_menu_exports.setEnabled(false);
-            //this.j_menu_formatages.setEnabled(false);
-            //this.j_menu_stats.setEnabled(false);
-            
+
             
             new SwingWorker(){
                 @Override
-                protected Object doInBackground() throws Exception{
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
                     
-            
-                    System.out.println("Début formatage...");
-                    System.out.println("Formatage Lieu Acte de Naissance");
-                    formats("id_persphys", "persphys", "acn_lieu");
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatage Lieu Acte de Naissance en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
 
+                    System.out.println("Début formatage Lieu Acte de Naissance ...");
+                    
+                    if(formats("id_persphys", "persphys", "acn_lieu").equals("ok")) return "ok-formatages";
+                    
                     return null;
+                }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatage Lieu Acte de Naissance Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }.execute();
             
@@ -1029,24 +1192,19 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         }
     }//GEN-LAST:event_j_menu_item_formte_leiu_acte_naissanceActionPerformed
 
-    private void j_menu_export_listes_cf_editableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_cf_editableActionPerformed
+    private void j_menu_export_listes_dossiers_pret_cqeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_dossiers_pret_cqeActionPerformed
         
         ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER,this.type_operation);
         this.dpContent.add(rp_prov);
         rp_prov.show();
                
-    }//GEN-LAST:event_j_menu_export_listes_cf_editableActionPerformed
+    }//GEN-LAST:event_j_menu_export_listes_dossiers_pret_cqeActionPerformed
 
     private void j_menu_export_listes_anomaliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_anomaliesActionPerformed
 
         ExportRegistreAnomalie reg_anomaie = new ExportRegistreAnomalie(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
         this.dpContent.add(reg_anomaie);
         reg_anomaie.show();
-        
-        
-        //SaisieParOperateur s_par_op = new SaisieParOperateur();
-        //this.dpContent.add(s_par_op);
-        //s_par_op.show();
         
     }//GEN-LAST:event_j_menu_export_listes_anomaliesActionPerformed
 
@@ -1059,18 +1217,47 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
             this.j_label_texte_loading.setVisible(true);
             this.j_label_loading.setVisible(true);
         
-            //this.j_menu_item_formate_prenom.setEnabled(false);
-            //this.j_menu_exports.setEnabled(false);
-            //this.j_menu_formatages.setEnabled(false);
-            //this.j_menu_stats.setEnabled(false);
-            
-            
-            new SwingWorker(){
-                @Override
-                protected Object doInBackground() throws Exception{
 
-                    formats("id_persphys", "persphys", "adresse");
+                new SwingWorker(){
+                @Override
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
+                    
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatage adresse des demandeurs en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
+
+                    System.out.println("Début formatage adresse des demandeurs ...");
+                    
+                    if(formats("id_persphys", "persphys", "adresse").equals("ok")) return "ok-formatages";
+                    
                     return null;
+                }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatage adresse des demandeurs Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }.execute();
             
@@ -1089,11 +1276,19 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage de nom(s) des demandeurs dans la base de données ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-        new SwingWorker(){
+
+                new SwingWorker(){
                 @Override
                 protected String doInBackground() throws Exception{
                     j_menu_formatages.setEnabled(false);
                     j_menu_fichier.setEnabled(false);
+                    
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatages nom des demandeurs en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
+
                     System.out.println("Début formatages nom demandeurs ...");
                     
                     if(formatsToUpper("id_persphys", "persphys", "nom").equals("ok")) return "ok-formatages";
@@ -1103,11 +1298,18 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
                 
                 @Override
                 protected void done(){
+                    
                     try {
+                        
 
                         if (get().toString().equals("ok-formatages")) {
                             j_menu_formatages.setEnabled(true);
                             j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatages nom des demandeurs Terminé !");
+
                         }
                         //System.out.println(get());
                     } catch (InterruptedException ex) {
@@ -1117,6 +1319,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
                     }
                 }
             }.execute();
+        
             
         }
         
@@ -1127,22 +1330,48 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         JOptionPane jop = new JOptionPane();
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage du lieu de naissance des demandeurs ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
-            
-            
-            this.j_label_texte_loading.setVisible(true);
-            this.j_label_loading.setVisible(true);
-        
-            //this.j_menu_item_formate_prenom.setEnabled(false);
-            //this.j_menu_exports.setEnabled(false);
-            //this.j_menu_formatages.setEnabled(false);
-            //this.j_menu_stats.setEnabled(false);
-            
-            new SwingWorker(){
-                @Override
-                protected Object doInBackground() throws Exception{
 
-                    formats("id_persphys", "persphys", "naissance_lieu");
+            
+                new SwingWorker(){
+                @Override
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
+                    
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatage lieu de naissance des demandeurs en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
+
+                    System.out.println("Début formatage lieu de naissance ...");
+                    
+                    if(formats("id_persphys", "persphys", "naissance_lieu").equals("ok")) return "ok-formatages";
+                    
                     return null;
+                }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatage lieu de naissance des demandeurs Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }.execute();
             
@@ -1159,19 +1388,46 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment lancer le formatage des consistance(s) des demandes ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(option == JOptionPane.OK_OPTION){
             
-            //this.j_menu_item_formate_prenom.setEnabled(false);
-            //this.j_menu_exports.setEnabled(false);
-            //this.j_menu_formatages.setEnabled(false);
-            //this.j_menu_stats.setEnabled(false);
-            
-            
             new SwingWorker(){
                 @Override
-                protected Object doInBackground() throws Exception{
+                protected String doInBackground() throws Exception{
+                    j_menu_formatages.setEnabled(false);
+                    j_menu_fichier.setEnabled(false);
+                    
+                    // rendre visible le boutton et texte chargement formatages des donnnées
+                    j_label_loading.setVisible(true);
+                    j_label_texte_loading.setText("Formatage consistance(s) en cours ...");
+                    j_label_texte_loading.setVisible(true);
+                    
 
-                    formats("id_demande", "demande", "consistance");
-            
+                    System.out.println("Début formatage consistance ...");
+                    
+                    if(formats("id_demande", "demande", "consistance").equals("ok")) return "ok-formatages";
+                    
                     return null;
+                }
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+
+                        if (get().toString().equals("ok-formatages")) {
+                            j_menu_formatages.setEnabled(true);
+                            j_menu_fichier.setEnabled(true);
+                            
+                            // rendre visible le boutton et texte chargement formatages des donnnées
+                            j_label_loading.setVisible(false);
+                            j_label_texte_loading.setText("Formatage consistance(s) Terminé !");
+
+                        }
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }.execute();
             
@@ -1199,12 +1455,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         ExportCFEditerParCommunes cf_editer = new ExportCFEditerParCommunes(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, type_operation);
         this.dpContent.add(cf_editer);
         cf_editer.show();
-        
-        //System.out.println("BDD_HOST : " + BDD_HOST);
-        //System.out.println("BDD_PORT : " + BDD_PORT);
-        //System.out.println("BDD_DBNAME : " + BDD_DBNAME);
-        //System.out.println("BDD_USER : " + BDD_USER);
-        //System.out.println("BDD_PWD : " + BDD_PWD);
+
     }//GEN-LAST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
 
     private void j_menu_item_rapports_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_rapports_sigActionPerformed
@@ -1241,16 +1492,18 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_formKeyPressed
 
     private void j_menu_config_bddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_config_bddActionPerformed
-        ModificationConfigurationBaseDeDonnees v_rapport_anomalies_saisie_par_commune = new ModificationConfigurationBaseDeDonnees(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
-        this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
-        //System.out.println("AVANT v_rapport_anomalies_saisie_par_commune.getLocation() = "+  v_rapport_anomalies_saisie_par_commune);
+
+        System.out.println("THREAD HORS invokeLater menu conf = " + Thread.currentThread().getName());
+                SwingUtilities.invokeLater(() -> {
+                    
+                    System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
+                    ModificationConfigurationBaseDeDonnees v_rapport_anomalies_saisie_par_commune = new ModificationConfigurationBaseDeDonnees(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+                    v_rapport_anomalies_saisie_par_commune.show();
+
+                });
         
-        v_rapport_anomalies_saisie_par_commune.show();
-        
-        //System.out.println("APRES v_rapport_anomalies_saisie_par_commune.getLocation() = "+  v_rapport_anomalies_saisie_par_commune.getComponents());
-        
-        //this.j_menu_parametres.setEnabled(false);
-        
+
     }//GEN-LAST:event_j_menu_config_bddActionPerformed
 
     private void j_menu_itemStat_Nbre_pret_CQEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_itemStat_Nbre_pret_CQEActionPerformed
@@ -1314,6 +1567,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel j_label_loading;
     private javax.swing.JLabel j_label_texte_loading;
@@ -1322,9 +1576,9 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_controles_saisie;
     private javax.swing.JMenu j_menu_controllesSaisies;
     private javax.swing.JMenuItem j_menu_export_listes_anomalies;
-    private javax.swing.JMenuItem j_menu_export_listes_cf_editable;
     private javax.swing.JMenuItem j_menu_export_listes_cf_editer_par_commune;
     private javax.swing.JMenuItem j_menu_export_listes_demandeurs;
+    private javax.swing.JMenuItem j_menu_export_listes_dossiers_pret_cqe;
     private javax.swing.JMenu j_menu_exports;
     private javax.swing.JMenu j_menu_fichier;
     private javax.swing.JMenu j_menu_formatages;
