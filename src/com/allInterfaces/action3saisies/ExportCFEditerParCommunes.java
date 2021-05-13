@@ -22,7 +22,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 
 
@@ -63,6 +67,8 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         this.type_operation = TYPE_OPERATION;
         
         initComponents();
+        
+        this.j_panel_loading_export.setVisible(false);
 
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
@@ -114,12 +120,16 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         j_label_folder_export = new javax.swing.JTextField();
         j_button_folder_export = new javax.swing.JButton();
         j_button_exporter_cf_editer = new javax.swing.JButton();
+        j_panel_loading_export = new javax.swing.JPanel();
+        j_label_loading_export = new javax.swing.JLabel();
+        j_label_texte_loading_export = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
+        setResizable(true);
         setTitle("Exportation CF éditer par commune");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
-        setPreferredSize(new java.awt.Dimension(543, 380));
+        setPreferredSize(new java.awt.Dimension(550, 450));
 
         jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Région");
@@ -202,6 +212,34 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
             }
         });
 
+        j_label_loading_export.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/loading_export.gif"))); // NOI18N
+
+        j_label_texte_loading_export.setText("Export en cours, Patientez SVP!");
+        j_label_texte_loading_export.setFocusable(false);
+
+        javax.swing.GroupLayout j_panel_loading_exportLayout = new javax.swing.GroupLayout(j_panel_loading_export);
+        j_panel_loading_export.setLayout(j_panel_loading_exportLayout);
+        j_panel_loading_exportLayout.setHorizontalGroup(
+            j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(j_label_texte_loading_export, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_label_loading_export)
+                .addGap(58, 58, 58))
+        );
+        j_panel_loading_exportLayout.setVerticalGroup(
+            j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(j_label_loading_export)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(j_label_texte_loading_export)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -210,10 +248,13 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(180, 180, 180)
-                                .addComponent(j_button_exporter_cf_editer, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(j_button_exporter_cf_editer, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(j_panel_loading_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -227,16 +268,16 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                                         .addComponent(j_combo_region, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(j_combo_district, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(j_combo_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap(107, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(j_label_folder_export))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(27, 27, 27)
                         .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47))))
+                        .addGap(20, 20, 20))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,16 +298,19 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_combo_date_edition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(j_panel_loading_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(j_label_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(23, 23, 23)
-                .addComponent(j_button_exporter_cf_editer, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                        .addComponent(j_label_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(j_button_exporter_cf_editer, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6))
         );
 
         pack();
@@ -442,59 +486,100 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
             //this.setAlwaysOnTop(true);
         }else{
             
-            String code_district = selected_district.split("  _  ")[0];
-            String code_commune = selected_commune.split("  _  ")[0];
-            String district = selected_district.split("  _  ")[1];
-            String commune = selected_commune.split("  _  ")[1];
-                       
-            if(this.j_combo_date_edition.getSelectedItem().equals(selectDateEdition)){
-                
-                System.out.println("sans date edition appelé");
-
-                List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, Formats.ConvertOcfmToOcm(this.type_operation)).getListesCfEditerWithoutFilterDate(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText()));
-
-                if(reponse.get(0).equals("success")){
-
-                    int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-                        if(export == JOptionPane.YES_OPTION){
-                            // ouverture de l'emplacement selectionner par l'utiisateur
-                            try {
-                                Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
-                            }catch(Exception ee){
-                                JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
-                            }
-                        }
-
-                }else{
-                    JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }else{
-                
-                
-                System.out.println("avec date edition CF appelé");
-                String dateEdition = (String)this.j_combo_date_edition.getSelectedItem();
-                List reponse = new ArrayList(new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, Formats.ConvertOcfmToOcm(this.type_operation)).getListesCfEditerWithFilterDate(selected_region, code_district , district , code_commune , commune , this.j_label_folder_export.getText(), dateEdition.replace(" ", "")));
-
-                if(reponse.get(0).equals("success")){
-
-                    int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-                        if(export == JOptionPane.YES_OPTION){
-                            // ouverture de l'emplacement selectionner par l'utiisateur
-                            try {
-                                Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
-                            }catch(Exception ee){
-                                JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
-                            }
-                        }
-
-                }else{
-                    JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
             
-        }
+            new SwingWorker(){
+                @Override
+                protected Object doInBackground() throws Exception{
+                
+                j_panel_loading_export.setVisible(true);
+                 
+                Thread.sleep(2000);
+
+                String code_district = selected_district.split("  _  ")[0];
+                String code_commune = selected_commune.split("  _  ")[0];
+                String district = selected_district.split("  _  ")[1];
+                String commune = selected_commune.split("  _  ")[1];
+
+                if(j_combo_date_edition.getSelectedItem().equals(selectDateEdition)){
+
+                    //System.out.println("sans date edition appelé");
+
+                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(type_operation)).getListesCfEditerWithoutFilterDate(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
+
+                    if(reponse.get(0).equals("success")){
+
+                        int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                            if(export == JOptionPane.YES_OPTION){
+                                // ouverture de l'emplacement selectionner par l'utiisateur
+                                try {
+                                    Desktop.getDesktop().open(new File(j_label_folder_export.getText()));
+                                }catch(Exception ee){
+                                    JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                    return "ok-exports";
+                    
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }else{
+
+
+                    //System.out.println("avec date edition CF appelé");
+                    String dateEdition = (String)j_combo_date_edition.getSelectedItem();
+                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(type_operation)).getListesCfEditerWithFilterDate(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText(), dateEdition.replace(" ", "")));
+
+                    if(reponse.get(0).equals("success")){
+
+                        int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                            if(export == JOptionPane.YES_OPTION){
+                                // ouverture de l'emplacement selectionner par l'utiisateur
+                                try {
+                                    Desktop.getDesktop().open(new File(j_label_folder_export.getText()));
+                                }catch(Exception ee){
+                                    JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            
+                            
+                            return "ok-exports";
+
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+
+                    return null;
+                }
+                
+                
+                
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+                        if (get().toString().equals("ok-exports")) {
+                            j_panel_loading_export.setVisible(false);
+                        }
+                        
+ 
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+                
+                
+        }.execute();
+            
+            
+        }  // FIN ELSE
 
     }//GEN-LAST:event_j_button_exporter_cf_editerActionPerformed
 
@@ -531,5 +616,8 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> j_combo_district;
     private javax.swing.JComboBox<String> j_combo_region;
     private javax.swing.JTextField j_label_folder_export;
+    private javax.swing.JLabel j_label_loading_export;
+    private javax.swing.JLabel j_label_texte_loading_export;
+    private javax.swing.JPanel j_panel_loading_export;
     // End of variables declaration//GEN-END:variables
 }

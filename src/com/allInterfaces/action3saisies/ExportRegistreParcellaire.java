@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
@@ -66,6 +69,8 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
         this.type_operation = TYPE_OPERATION;
         
         initComponents();
+        
+        this.j_panel_loading_export.setVisible(false);
 
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
@@ -114,6 +119,9 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
         j_label_folder_export = new javax.swing.JTextField();
         j_button_folder_export = new javax.swing.JButton();
         j_button_exporter_rp_provisoire = new javax.swing.JButton();
+        j_panel_loading_export = new javax.swing.JPanel();
+        j_label_loading_export = new javax.swing.JLabel();
+        j_label_texte_loading_export = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -121,7 +129,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
         setTitle("Exportation Registre Parcellaire Provisoire");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setMinimumSize(new java.awt.Dimension(543, 380));
-        setPreferredSize(new java.awt.Dimension(543, 380));
+        setPreferredSize(new java.awt.Dimension(550, 450));
 
         jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Région");
@@ -192,14 +200,44 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             }
         });
 
+        j_label_loading_export.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/loading_export.gif"))); // NOI18N
+
+        j_label_texte_loading_export.setText("Export en cours, Patientez SVP!");
+        j_label_texte_loading_export.setFocusable(false);
+
+        javax.swing.GroupLayout j_panel_loading_exportLayout = new javax.swing.GroupLayout(j_panel_loading_export);
+        j_panel_loading_export.setLayout(j_panel_loading_exportLayout);
+        j_panel_loading_exportLayout.setHorizontalGroup(
+            j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(j_label_texte_loading_export, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_label_loading_export)
+                .addGap(58, 58, 58))
+        );
+        j_panel_loading_exportLayout.setVerticalGroup(
+            j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(j_label_loading_export)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(j_label_texte_loading_export)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(181, 181, 181)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(180, 180, 180)
                 .addComponent(j_button_exporter_rp_provisoire, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(182, 182, 182))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_panel_loading_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,11 +285,13 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(j_label_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(171, 171, 171)
                         .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27)
-                .addComponent(j_button_exporter_rp_provisoire, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(j_panel_loading_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_button_exporter_rp_provisoire, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -372,10 +412,13 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             
 
         new SwingWorker(){
+            
             @Override
             protected Object doInBackground() throws Exception{
-
-            //System.out.println("Thread en cours dans export RP = " + Thread.currentThread().getName());
+                
+            j_panel_loading_export.setVisible(true);
+                 
+            Thread.sleep(2000);
 
             String code_district = selected_district.split("  _  ")[0];
             String code_commune = selected_commune.split("  _  ")[0];
@@ -408,6 +451,9 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                             JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\n"+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
+                    
+                    
+                    return "ok-exports";
 
             }else if(responsePersonnePhysique.equals("empty-personne-physique")){
                 
@@ -427,7 +473,10 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                             JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
                         
                         }
-                    }  
+                    } 
+                    
+                    return "ok-exports";
+                    
                 }else if(responsePersonnePhysique.equals("empty-personne-physique") && responsePersonneMorale.equals("empty-personne-morale")){
                     
                 try {
@@ -462,6 +511,29 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             //}
                 return null;
             }
+            
+            
+            
+            
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+                        if (get().toString().equals("ok-exports")) {
+                            j_panel_loading_export.setVisible(false);
+                        }
+                        
+ 
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            
+            
         }.execute();
             
 
@@ -494,5 +566,8 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> j_combo_district;
     private javax.swing.JComboBox<String> j_combo_region;
     private javax.swing.JTextField j_label_folder_export;
+    private javax.swing.JLabel j_label_loading_export;
+    private javax.swing.JLabel j_label_texte_loading_export;
+    private javax.swing.JPanel j_panel_loading_export;
     // End of variables declaration//GEN-END:variables
 }

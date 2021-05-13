@@ -24,7 +24,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 
 
@@ -66,6 +70,8 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         this.type_operation = TYPE_OPERATION;
         
         initComponents();
+        
+        this.j_panel_loading_export.setVisible(false);
 
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
@@ -119,12 +125,16 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         j_label_folder_export = new javax.swing.JTextField();
         j_button_folder_export = new javax.swing.JButton();
         j_button_exporter = new javax.swing.JButton();
+        j_panel_loading_export = new javax.swing.JPanel();
+        j_label_loading_export = new javax.swing.JLabel();
+        j_label_texte_loading_export = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
+        setResizable(true);
         setTitle("Exportation Registre Anomalie Saisie");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
-        setPreferredSize(new java.awt.Dimension(543, 380));
+        setPreferredSize(new java.awt.Dimension(550, 450));
 
         jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Région");
@@ -215,6 +225,34 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }
         });
 
+        j_label_loading_export.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/loading_export.gif"))); // NOI18N
+
+        j_label_texte_loading_export.setText("Export en cours, Patientez SVP!");
+        j_label_texte_loading_export.setFocusable(false);
+
+        javax.swing.GroupLayout j_panel_loading_exportLayout = new javax.swing.GroupLayout(j_panel_loading_export);
+        j_panel_loading_export.setLayout(j_panel_loading_exportLayout);
+        j_panel_loading_exportLayout.setHorizontalGroup(
+            j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(j_label_texte_loading_export, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_label_loading_export)
+                .addGap(58, 58, 58))
+        );
+        j_panel_loading_exportLayout.setVerticalGroup(
+            j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(j_panel_loading_exportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(j_label_loading_export)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(j_label_texte_loading_export)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -222,14 +260,14 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(j_combo_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -237,7 +275,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                                 .addComponent(j_combo_district, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(j_combo_hameau, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(j_combo_region, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(116, Short.MAX_VALUE))
+                        .addGap(63, 63, 63))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -245,10 +283,11 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(181, 181, 181)
                 .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(191, 191, 191))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(j_panel_loading_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {j_combo_fokontany, j_combo_hameau});
@@ -277,15 +316,17 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                     .addComponent(j_combo_hameau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(j_label_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(26, 26, 26)
-                .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                    .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(j_panel_loading_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -481,6 +522,18 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Veuillez selectionner le dossier de destination de l'export","Séléction Emplacement", JOptionPane.INFORMATION_MESSAGE);
             //this.setAlwaysOnTop(true);
         }else{
+            
+            
+        new SwingWorker(){
+            
+            @Override
+            protected Object doInBackground() throws Exception{
+                            
+                
+            j_panel_loading_export.setVisible(true);
+                 
+            Thread.sleep(2000);
+                
             String code_district = selected_district.split("  _  ")[0].trim();
             String code_commune = selected_commune.split("  _  ")[0].trim();
             String code_fokontany = selected_fokontany.split("  _  ")[0].trim();
@@ -494,7 +547,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             
             
             
-            List reponseAnomaliesBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText());
+            List reponseAnomaliesBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , j_label_folder_export.getText());
             
             String responseBloquante = (String)reponseAnomaliesBloquantes.get(0);
             String EmplacementFichierExcelExporterAnomalieBloquante = (String)reponseAnomaliesBloquantes.get(1);
@@ -504,22 +557,31 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             if(responseBloquante.equals("success-anomalie-bloquante")){
                 
                 // ON ESSEAI DE RECUPERER LES ANOMALIES NON BLOQUANTES S'IL EXISTE
-                List reponseAnomaliesNonBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
+                List reponseAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
 
                 int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Registre anomalie(s) exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 
                     if(export == JOptionPane.YES_OPTION){
                         // ouverture de l'emplacement selectionner par l'utiisateur
                         try {
-                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                            Desktop.getDesktop().open(new File(j_label_folder_export.getText()));
+                            
+                            
+                            return "ok-exports";
+                            
                         }catch(Exception ee){
                             JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        
+                            return null;
                         }
                     }
+                    
+                    
+                    
 
             }else if(responseBloquante.equals("empty-anomalie-bloquante")){
                 
-                List ReRecuperationDesAnomaliesNonBloquantes = new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, Formats.ConvertOcfmToOcm(this.type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
+                List ReRecuperationDesAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
                 
                 ReresponseNonBloquante = (String)ReRecuperationDesAnomaliesNonBloquantes.get(0);
                 
@@ -530,18 +592,27 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                     if(export == JOptionPane.YES_OPTION){
                         // ouverture de l'emplacement selectionner par l'utiisateur
                         try {
-                            Desktop.getDesktop().open(new File(this.j_label_folder_export.getText()));
+                            Desktop.getDesktop().open(new File(j_label_folder_export.getText()));
+                            
+                            
+                            return "ok-exports";
+                            
                         }catch(Exception ee){
                             JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ee.getMessage(), JOptionPane.INFORMATION_MESSAGE);
-                        
+                            
+                            return null;
                         }
                     }  
                 }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReresponseNonBloquante.equals("empty-anomalie-non-bloquante")){
+                    
+                    
                 try {
                     
                     Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterAnomalieBloquante));
-                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
- 
+                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    return null;
+                    
                 } catch (IOException ex) {
                     //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
                     
@@ -552,7 +623,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReresponseNonBloquante.equals("empty-anomalie-non-bloquante")){
                 try {
                     Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterAnomalieBloquante));
-                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
  
                 } catch (IOException ex) {
                     //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
@@ -560,12 +631,40 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                             JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ex.getMessage(), JOptionPane.INFORMATION_MESSAGE);
                         
                 }
+                
+                return null;
             }
             //if(reponse.get(0).equals("error-empty")){
                 
-                //JOptionPane.showMessageDialog(null, "Aucune anomalie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export registre anomalie impossible", JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "Aucune anomalie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export registre anomalie impossible", JOptionPane.INFORMATION_MESSAGE);
  
             //}
+                
+                return null;
+            }
+            
+            
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+                        if (get().toString().equals("ok-exports")) {
+                            j_panel_loading_export.setVisible(false);
+                        }
+                        
+ 
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            
+        }.execute();
+            
+            
         
         }
 
@@ -600,5 +699,8 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> j_combo_hameau;
     private javax.swing.JComboBox<String> j_combo_region;
     private javax.swing.JTextField j_label_folder_export;
+    private javax.swing.JLabel j_label_loading_export;
+    private javax.swing.JLabel j_label_texte_loading_export;
+    private javax.swing.JPanel j_panel_loading_export;
     // End of variables declaration//GEN-END:variables
 }

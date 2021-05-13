@@ -58,9 +58,7 @@ public class Querry {
         
         String filtreOperation ="";
         
-        
-        System.out.println("demarche dans getVectorisationParCommune === " + demarche);
-        
+                
         if (demarche.equals("ocm")) {
             filtreOperation = " NOT FALSE";
         }else{
@@ -91,27 +89,17 @@ public class Querry {
                 "  GROUP BY region.nom, district.nom, commune.nom\n" +
                 "  ORDER BY region.nom, district.nom, commune.nom";
             
-            
-            //System.out.println("date_sql: " +dateDebut.getDate());
-            
                 st = connectDatabase.prepareStatement(sql);
                 st.setString(1, reg);
                 rs = st.executeQuery();
-                
-                System.out.println("SQL DANS VECTO PAR COMMUNE: " +st);
-                
+                                
                 int n = 1;
 
                 while(rs.next()){
-                    
                     String[] vectos = { rs.getString("region"), rs.getString("district"), rs.getString("commune"), rs.getString("vecto") };          
-                    
                     saisies.add(vectos);
-                    
-                    n++;
-                    
+                    n++; 
                 }
-                
 
                 st.close();
                 rs.close();
@@ -123,8 +111,7 @@ public class Querry {
         return saisies;
     }
     
-    
-    
+
     public List <String []> getRpProvisoire(String reg, String c_dist, String dist, String c_com,String com, String path, String operation, String typePersonne){
 
     String sql = "SELECT demande.id_registre, TO_CHAR(demande.date_demande, 'DD/MM/YYYY') AS date_demande ,\n" +
