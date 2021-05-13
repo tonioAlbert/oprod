@@ -16,25 +16,22 @@ import java.util.Base64;
 import javax.swing.JOptionPane;
 import org.json.simple.JSONObject;
 
-
 /**
  *
  * @author RAP
  */
-public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInternalFrame {
+public class ModificationFichierConf extends javax.swing.JFrame {
     private static Connection connectDatabase;
     private String BDD_HOST = "";
     private Integer BDD_PORT;
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
-    
-    
     /**
-     * Creates new form UserFormDialog
+     * Creates new form ModificationFichierConf
      */
-    public ModificationConfigurationBaseDeDonnees(String host, Integer port, String dbname, String user, String password) {
-            
+    public ModificationFichierConf(String host, Integer port, String dbname, String user, String password) {
+        
         this.BDD_HOST = host;
         this.BDD_PORT = port;
         this.BDD_DBNAME = dbname;
@@ -43,14 +40,11 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         
         initComponents();
         
-           
         this.txt_username.setText(user);
         this.txt_nom_bdd.setText(dbname);
         this.txt_nom_hote.setText(host);
         this.txt_port.setText(port.toString());
         this.txt_password.setText(password);
-            
-
     }
 
     /**
@@ -76,12 +70,11 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         txt_nom_hote = new javax.swing.JTextField();
         txt_nom_bdd = new javax.swing.JTextField();
 
-        setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
-        setTitle("Modification configuration Base de données");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
-        setName("jf_login"); // NOI18N
+        setTitle("Modification fichier de cofiguration");
+        setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        setMinimumSize(new java.awt.Dimension(760, 356));
+        setName("modifFichConf"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(760, 356));
 
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_username.setToolTipText("Nom d'utilisateur");
@@ -176,7 +169,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(j_label_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_nom_bdd, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
+                        .addComponent(txt_nom_bdd, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(j_label_port, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(60, 60, 60)
@@ -222,11 +215,11 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_label_nom_bdd)
                     .addComponent(txt_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_annuler)
                     .addComponent(btn_valider))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -234,18 +227,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_annulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_annulerActionPerformed
-        // TODO add your handling code here:
-        this.setVisible(false);
-        //this.j_menu_parametres.
-        // hime eto this.getParent().getParent().getParent().getParent().getParent()
-        System.out.println("this.getParent().getParent().getParent() vaut = "+this.getParent().getParent().getParent().getParent().getParent());
-        
-    }//GEN-LAST:event_btn_annulerActionPerformed
-
-
-    
-    private void modificationFichierConf(){
+private void modificationFichierConf(){
            
             try{
                 
@@ -347,135 +329,143 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
     }
     
     
+    private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
+
+        if(evt.getKeyCode() == 10){
+
+            this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+
+            this.setVisible(false);
+
+        }else{
+
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_usernameKeyPressed
+
+    private void btn_annulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_annulerActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        //this.j_menu_parametres.
+        // hime eto this.getParent().getParent().getParent().getParent().getParent()
+        //System.out.println("this.getParent().getParent().getParent() vaut = "+this.getParent().getParent().getParent().getParent().getParent());
+
+    }//GEN-LAST:event_btn_annulerActionPerformed
+
+    private void btn_annulerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_annulerKeyPressed
+        if(evt.getKeyCode() == 27){
+
+            this.setVisible(false);
+
+        }
+    }//GEN-LAST:event_btn_annulerKeyPressed
+
     private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
 
         if(this.txt_username.getText().equals("") && this.txt_nom_bdd.getText().equals("") && this.txt_nom_hote.getText().equals("") && this.txt_port.getText().equals("")&& this.txt_password.getText().equals("")){
             System.out.println("Tous les champs sont requises !");
-            JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
-            
+            JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE);
+
         }else if(this.txt_username.getText().equals("")){
             System.out.println("Le champ Nom d'utilisateur est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE); 
-            
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE);
+
         }else if(this.txt_nom_bdd.getText().equals("")){
             System.out.println("Le champ Nom base de données est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE); 
-            
+            JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE);
+
         }else if(this.txt_nom_hote.getText().equals("")){
-           System.out.println("Le champ Nom d'hôte est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE); 
-             
+            System.out.println("Le champ Nom d'hôte est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE);
+
         }else if(this.txt_port.getText().equals("")){
-           System.out.println("Le champ Port est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE); 
-             
+            System.out.println("Le champ Port est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE);
+
         }else if(this.txt_password.getText().equals("")){
             System.out.println("Le champ Mot de passe est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE); 
-              
+            JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE);
+
         }else{
- 
+
             this.modificationFichierConf();
         }
-
 
     }//GEN-LAST:event_btn_validerActionPerformed
 
     private void btn_validerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_validerKeyPressed
         if(evt.getKeyCode() == 10){
-        
+
             this.modificationFichierConf();
 
         }else if(evt.getKeyCode() == 27){
-        
+
             this.setVisible(false);
 
         }else{
-            
+
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
         }
     }//GEN-LAST:event_btn_validerKeyPressed
 
-    private void btn_annulerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_annulerKeyPressed
-        if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        } 
-    }//GEN-LAST:event_btn_annulerKeyPressed
-
-    private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
-        
+    private void txt_portKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_portKeyPressed
         if(evt.getKeyCode() == 10){
-        
+
             this.modificationFichierConf();
 
         }else if(evt.getKeyCode() == 27){
-        
+
             this.setVisible(false);
 
         }else{
-            
+
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
         }
-    }//GEN-LAST:event_txt_usernameKeyPressed
+    }//GEN-LAST:event_txt_portKeyPressed
 
     private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
         if(evt.getKeyCode() == 10){
-        
+
             this.modificationFichierConf();
 
         }else if(evt.getKeyCode() == 27){
-        
+
             this.setVisible(false);
 
         }else{
-            
+
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
         }
     }//GEN-LAST:event_txt_passwordKeyPressed
 
     private void txt_nom_hoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_hoteKeyPressed
         if(evt.getKeyCode() == 10){
-        
+
             this.modificationFichierConf();
 
         }else if(evt.getKeyCode() == 27){
-        
+
             this.setVisible(false);
 
         }else{
-            
+
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
         }
     }//GEN-LAST:event_txt_nom_hoteKeyPressed
 
-    private void txt_portKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_portKeyPressed
-        if(evt.getKeyCode() == 10){
-        
-            this.modificationFichierConf();
-
-        }else if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        }else{
-            
-            System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
-    }//GEN-LAST:event_txt_portKeyPressed
-
     private void txt_nom_bddKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_bddKeyPressed
         if(evt.getKeyCode() == 10){
-        
+
             this.modificationFichierConf();
 
         }else if(evt.getKeyCode() == 27){
-        
+
             this.setVisible(false);
 
         }else{
-            
+
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
         }
     }//GEN-LAST:event_txt_nom_bddKeyPressed
@@ -491,34 +481,26 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificationConfigurationBaseDeDonnees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificationFichierConf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificationConfigurationBaseDeDonnees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificationFichierConf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificationConfigurationBaseDeDonnees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificationFichierConf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificationConfigurationBaseDeDonnees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificationFichierConf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
-
-                
-                System.out.println("Tonga ato ny lozakaaaa");
-                
-                //new UserFormDialog(HOST, PORT, DBNAME, USER, PWD).setVisible(true);
+                //new ModificationFichierConf().setVisible(true);
             }
         });
     }

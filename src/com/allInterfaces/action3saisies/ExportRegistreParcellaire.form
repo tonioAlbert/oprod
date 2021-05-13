@@ -113,11 +113,17 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Narrow" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="R&#xe9;gion"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="j_combo_region">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Narrow" size="14" style="1"/>
+        </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
             <StringItem index="0" value="S&#xe9;l&#xe9;ctionner une r&#xe9;gion"/>
@@ -139,11 +145,17 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Narrow" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="District"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="j_combo_district">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Narrow" size="14" style="1"/>
+        </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
             <StringItem index="0" value="S&#xe9;l&#xe9;ctionner un district"/>
@@ -166,11 +178,17 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Narrow" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Commune"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="j_combo_commune">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Narrow" size="14" style="1"/>
+        </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
             <StringItem index="0" value="S&#xe9;l&#xe9;ctionner une commune"/>
@@ -190,6 +208,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Narrow" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Emplacement de l&apos;export"/>
       </Properties>
     </Component>

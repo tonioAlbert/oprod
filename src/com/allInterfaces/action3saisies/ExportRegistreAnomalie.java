@@ -126,8 +126,10 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(543, 380));
 
+        jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Région");
 
+        j_combo_region.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une région" }));
         j_combo_region.setMinimumSize(new java.awt.Dimension(151, 27));
         j_combo_region.setPreferredSize(new java.awt.Dimension(151, 27));
@@ -137,8 +139,10 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel3.setText("District");
 
+        j_combo_district.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_district.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un district" }));
         j_combo_district.setEnabled(false);
         j_combo_district.addItemListener(new java.awt.event.ItemListener() {
@@ -147,8 +151,10 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel4.setText("Commune");
 
+        j_combo_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_commune.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une commune" }));
         j_combo_commune.setEnabled(false);
         j_combo_commune.addItemListener(new java.awt.event.ItemListener() {
@@ -157,8 +163,10 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel5.setText("Fokontany");
 
+        j_combo_fokontany.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_fokontany.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une fokontany" }));
         j_combo_fokontany.setEnabled(false);
         j_combo_fokontany.addItemListener(new java.awt.event.ItemListener() {
@@ -167,11 +175,14 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel6.setText("Hameau");
 
+        j_combo_hameau.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_hameau.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un hameau" }));
         j_combo_hameau.setEnabled(false);
 
+        jLabel7.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel7.setText("Emplacement de l'export");
 
         j_label_folder_export.setEditable(false);
@@ -274,7 +285,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                     .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(26, 26, 26)
                 .addComponent(j_button_exporter, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();

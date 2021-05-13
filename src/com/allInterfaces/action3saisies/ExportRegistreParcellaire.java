@@ -123,8 +123,10 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
         setMinimumSize(new java.awt.Dimension(543, 380));
         setPreferredSize(new java.awt.Dimension(543, 380));
 
+        jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Région");
 
+        j_combo_region.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une région" }));
         j_combo_region.setMinimumSize(new java.awt.Dimension(151, 27));
         j_combo_region.setPreferredSize(new java.awt.Dimension(151, 27));
@@ -134,8 +136,10 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel3.setText("District");
 
+        j_combo_district.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_district.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner un district" }));
         j_combo_district.setEnabled(false);
         j_combo_district.setMinimumSize(new java.awt.Dimension(151, 27));
@@ -146,13 +150,16 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel4.setText("Commune");
 
+        j_combo_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_commune.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une commune" }));
         j_combo_commune.setEnabled(false);
         j_combo_commune.setMinimumSize(new java.awt.Dimension(151, 27));
         j_combo_commune.setPreferredSize(new java.awt.Dimension(151, 27));
 
+        jLabel7.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel7.setText("Emplacement de l'export");
 
         j_label_folder_export.setEditable(false);

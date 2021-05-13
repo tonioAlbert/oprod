@@ -112,6 +112,11 @@ public class UserFormDialog extends javax.swing.JFrame {
                 txt_usernameFocusLost(evt);
             }
         });
+        txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_usernameKeyPressed(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jButton1.setText("Quitter");
@@ -154,14 +159,6 @@ public class UserFormDialog extends javax.swing.JFrame {
         txt_password.setText("2021+");
         txt_password.setToolTipText("Mot de passe");
         txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        txt_password.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txt_passwordFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_passwordFocusLost(evt);
-            }
-        });
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_passwordKeyPressed(evt);
@@ -192,15 +189,15 @@ public class UserFormDialog extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txt_username)
-                    .addComponent(j_combo_demarche, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE)
+                    .addComponent(j_combo_demarche, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txt_password))
                 .addGap(19, 19, 19))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(91, 91, 91)
                 .addComponent(btn_connexion)
                 .addGap(79, 79, 79)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(78, 78, 78))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +214,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_combo_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(j_label_demarche))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_connexion)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -272,11 +269,11 @@ public class UserFormDialog extends javax.swing.JFrame {
             String user_mot_de_passe_bdd = user.getPassword();
             String[] user_id_profilDroits = user.getProfilDroits();
 
-            System.out.println("user_id_profilDroits = " + user_id_profilDroits[4]);
+            //System.out.println("user_id_profilDroits = " + user_id_profilDroits[4]);
         
             hash_txt_password = Hash.getHash(txt_password.getBytes(), "MD5");
         
-            if(user_login_bdd == null){
+            if(user_login_bdd == null || user_id_profilDroits == null){
                 System.out.println("Nom d'utilisateur n'existe pas dans la base de données !");
                 JOptionPane.showMessageDialog(null, "Nom d'utilisateur n'existe pas dans la base de données !","Nom d'utilisateur incorrect et/ou introuvable", JOptionPane.INFORMATION_MESSAGE); 
             }else{
@@ -305,7 +302,7 @@ public class UserFormDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_connexionActionPerformed
 
     private void btn_connexionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_connexionKeyPressed
-
+        
         if(evt.getKeyCode() == 10){
         
             this.ChargeLogin();
@@ -314,17 +311,40 @@ public class UserFormDialog extends javax.swing.JFrame {
         
             System.exit(0);
 
+        }else if (evt.isControlDown() && evt.isShiftDown() && evt.getKeyCode() == 80) {
+                System.out.println("CTRL + SHIFT + p"); 
+                SwingUtilities.invokeLater(() -> {
+                    
+                    System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
+                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+                    v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
+                    v_rapport_anomalies_saisie_par_commune.setVisible(true);
+
+                });
         }else{
             
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
+        } 
     }//GEN-LAST:event_btn_connexionKeyPressed
 
     private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed
+        
         if(evt.getKeyCode() == 10 || evt.getKeyCode() == 27){
         
             System.exit(0);
 
+        }else if (evt.isControlDown() && evt.isShiftDown() && evt.getKeyCode() == 80) {
+                System.out.println("CTRL + SHIFT + p"); 
+                SwingUtilities.invokeLater(() -> {
+                    
+                    System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
+                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+                    v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
+                    v_rapport_anomalies_saisie_par_commune.setVisible(true);
+
+                });
         }else{
             
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
@@ -332,6 +352,7 @@ public class UserFormDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1KeyPressed
 
     private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
+        
         if(evt.getKeyCode() == 10){
         
             this.ChargeLogin();
@@ -340,13 +361,25 @@ public class UserFormDialog extends javax.swing.JFrame {
         
             System.exit(0);
 
+        }else if (evt.isControlDown() && evt.isShiftDown() && evt.getKeyCode() == 80) {
+                System.out.println("CTRL + SHIFT + p"); 
+                SwingUtilities.invokeLater(() -> {
+                    
+                    System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
+                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+                    v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
+                    v_rapport_anomalies_saisie_par_commune.setVisible(true);
+
+                });
         }else{
             
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }    
+        }   
     }//GEN-LAST:event_txt_passwordKeyPressed
 
     private void j_combo_demarcheKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_j_combo_demarcheKeyPressed
+        
         if(evt.getKeyCode() == 10){
         
             this.ChargeLogin();
@@ -355,10 +388,21 @@ public class UserFormDialog extends javax.swing.JFrame {
         
             System.exit(0);
 
+        }else if (evt.isControlDown() && evt.isShiftDown() && evt.getKeyCode() == 80) {
+                System.out.println("CTRL + SHIFT + p"); 
+                SwingUtilities.invokeLater(() -> {
+                    
+                    System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
+                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+                    v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
+                    v_rapport_anomalies_saisie_par_commune.setVisible(true);
+
+                });
         }else{
             
             System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
+        } 
     }//GEN-LAST:event_j_combo_demarcheKeyPressed
 
     private void txt_usernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusGained
@@ -376,14 +420,35 @@ public class UserFormDialog extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txt_usernameFocusLost
 
-    private void txt_passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_passwordFocusGained
+    private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
 
+        if(evt.getKeyCode() == 10){
+        
+            this.ChargeLogin();
 
-    }//GEN-LAST:event_txt_passwordFocusGained
+        }else if(evt.getKeyCode() == 27){
+        
+            System.exit(0);
 
-    private void txt_passwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_passwordFocusLost
+        }else if (evt.isControlDown() && evt.isShiftDown() && evt.getKeyCode() == 80) {
+                System.out.println("CTRL + SHIFT + p"); 
+                SwingUtilities.invokeLater(() -> {
+                    
+                    System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
+                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
+                    v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
+                    v_rapport_anomalies_saisie_par_commune.setVisible(true);
 
-    }//GEN-LAST:event_txt_passwordFocusLost
+                });
+        }else{
+            
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+        
+        
+
+    }//GEN-LAST:event_txt_usernameKeyPressed
 
     /**
      * @param args the command line arguments

@@ -732,7 +732,7 @@ public class Home extends javax.swing.JFrame {
                     st.setString(1, newFirstName);
                     st.setString(2, idPersphys);
                     st.executeUpdate();
-                    System.out.println("MISE A JOUR : "+st);
+                    //System.out.println("MISE A JOUR : "+st);
                     //Persphys.setPrenom(idPersphys, newFirstName);
                     retour = "ok";
                     newFirstName = "";
