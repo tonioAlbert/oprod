@@ -404,6 +404,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Vectorisation par commune(s)"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_stat_vectorisation_par_communesActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="j_menu_stat_saisie_par_operateur">
               <Properties>

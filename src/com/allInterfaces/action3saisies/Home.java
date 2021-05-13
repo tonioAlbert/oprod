@@ -547,6 +547,11 @@ public class Home extends javax.swing.JFrame {
 
         j_menu_stat_vectorisation_par_communes.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_stat_vectorisation_par_communes.setText("Vectorisation par commune(s)");
+        j_menu_stat_vectorisation_par_communes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_stat_vectorisation_par_communesActionPerformed(evt);
+            }
+        });
         j_menu_stats.add(j_menu_stat_vectorisation_par_communes);
 
         j_menu_stat_saisie_par_operateur.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
@@ -709,7 +714,7 @@ public class Home extends javax.swing.JFrame {
             while(rs.next()){
                 tabPrenoms.put(rs.getString(id_table), rs.getString(col_updated));
             }
-            
+              
             st.close();
             rs.close();
             
@@ -1549,6 +1554,13 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         this.dpContent.add(stats_pret_cqe_par_commune);
         stats_pret_cqe_par_commune.show();
     }//GEN-LAST:event_j_menu_itemStat_Nbre_pret_CQEActionPerformed
+
+    private void j_menu_stat_vectorisation_par_communesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_stat_vectorisation_par_communesActionPerformed
+        // VectorisationParCommune
+        VectorisationParCommune vecto_par_commune = new VectorisationParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation);
+        this.dpContent.add(vecto_par_commune);
+        vecto_par_commune.show();
+    }//GEN-LAST:event_j_menu_stat_vectorisation_par_communesActionPerformed
 
     /**
      * @param args the command line arguments
