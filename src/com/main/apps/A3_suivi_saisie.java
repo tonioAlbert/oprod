@@ -105,9 +105,9 @@ public class A3_suivi_saisie {
 
                         }else{
                             
-                            System.out.println("Vous les vous vraimenet quitter le processus de création du dossier et fichier de configuration ?");
+                            System.out.println("Voulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?");
                             JOptionPane jopCreateFolderAndFile = new JOptionPane();
-                            int option2 = jopCreateFolderAndFile.showConfirmDialog(null, "Annulation processus de création (dossier et fichier de conf) !\nVous les vous vraimenet quitter le processus de création du dossier et fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            int option2 = jopCreateFolderAndFile.showConfirmDialog(null, "Annulation processus de création (dossier et fichier de conf) !\nVoulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                             
                             if(option2 == JOptionPane.OK_OPTION){
                                 System.exit(0);
@@ -196,9 +196,9 @@ public class A3_suivi_saisie {
 
                         }else{
                             
-                            System.out.println("Vous les vous vraimenet quitter le processus de création du dossier et fichier de configuration ?");
+                            System.out.println("Voulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?");
                             JOptionPane jopCreateFolderAndFile = new JOptionPane();
-                            int optionFileCreate = jopCreateFolderAndFile.showConfirmDialog(null, "Annulation processus de création (dossier et fichier de conf) !\nVous les vous vraimenet quitter le processus de création du dossier et fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            int optionFileCreate = jopCreateFolderAndFile.showConfirmDialog(null, "Annulation processus de création (dossier et fichier de conf) !\nVoulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                             
                             if(optionFileCreate == JOptionPane.OK_OPTION){
                                 System.exit(0);
@@ -355,7 +355,7 @@ public class A3_suivi_saisie {
             //JOptionPane.showMessageDialog(null, "Impossible de se connecter à la basez de données !\n\nVérifier votre fichier de configuration", "Connexion dans la base de données impossible", JOptionPane.INFORMATION_MESSAGE);
 
             JOptionPane jop_echec_connexion_bdd = new JOptionPane();
-            int option_bdd = jop_echec_connexion_bdd.showConfirmDialog(null, "Une erreur s'est produise lors de la connexion dans la base de données !\n\nConnexion dans la base de données impossible !\n\nVouslez-vous lancer le processus de création du fichier de conf ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int option_bdd = jop_echec_connexion_bdd.showConfirmDialog(null, "Une erreur s'est produise lors de la connexion dans la base de données !\n\nConnexion dans la base de données impossible !\n\nVoulez-vous lancer le processus de création du fichier de conf ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             
             if(option_bdd == JOptionPane.OK_OPTION){
                 

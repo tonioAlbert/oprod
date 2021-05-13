@@ -248,10 +248,10 @@ public class UserFormDialog extends javax.swing.JFrame {
         
         String hash_txt_password = "";
         
-        if(txt_username.equals("") && txt_password.equals("")){
+        if((txt_username.equals("") || txt_username.equals(placheHolder)) && txt_password.equals("") && demarche.equals(txt_demarche)){
             
-            System.out.println("Le champ Nom d'utilisateur et mot de passe sont tous requises !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur et mot de passe sont tous requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
+            System.out.println("Le champ Nom d'utilisateur, mot de passe et démarche sont tous requises !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur, mot de passe et démarche sont tous requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
             
         }else if(txt_username.equals("") || txt_username.equals(placheHolder)){
             
