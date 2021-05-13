@@ -46,9 +46,12 @@
                       <Component id="jLabel2" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="j_comb_demarche" pref="222" max="32767" attributes="0"/>
-                      <Component id="j_combo_region" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="j_comb_demarche" pref="222" max="32767" attributes="0"/>
+                          <Component id="j_combo_region" max="32767" attributes="0"/>
+                      </Group>
+                      <Component id="j_bouton_valider_pret_CQE_par_commune" min="-2" pref="151" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" pref="817" max="32767" attributes="0"/>
@@ -58,13 +61,6 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune" min="-2" pref="151" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="339" max="-2" attributes="0"/>
-              </Group>
-              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
-                      <Component id="j_bouton_valider_pret_CQE_par_commune" min="-2" pref="151" max="-2" attributes="0"/>
-                      <EmptySpace pref="935" max="32767" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -83,19 +79,14 @@
                               <Component id="j_combo_region" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="j_bouton_valider_pret_CQE_par_commune" min="-2" pref="43" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane1" alignment="0" min="-2" pref="302" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                   <Component id="j_bouton_exporter__nombre_dossiers_pret_cqe_par_commune" min="-2" pref="43" max="-2" attributes="0"/>
                   <EmptySpace pref="7" max="32767" attributes="0"/>
-              </Group>
-              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="238" max="-2" attributes="0"/>
-                      <Component id="j_bouton_valider_pret_CQE_par_commune" min="-2" pref="43" max="-2" attributes="0"/>
-                      <EmptySpace pref="83" max="32767" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -214,6 +205,9 @@
               <Font name="Arial Narrow" size="14" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Valider"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Curseur en forme de main"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_bouton_valider_pret_CQE_par_communeActionPerformed"/>
@@ -225,6 +219,9 @@
               <Font name="Arial Narrow" size="14" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Exporter"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Curseur en forme de main"/>
+            </Property>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[67, 33]"/>
             </Property>

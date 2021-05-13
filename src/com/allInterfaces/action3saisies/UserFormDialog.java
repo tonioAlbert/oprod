@@ -27,7 +27,7 @@ public class UserFormDialog extends javax.swing.JFrame {
     private String BDD_USER = "";
     private String BDD_PWD = "";
     
-    private String placheHolder = "Tapez ici votre nom d'utilisateur";
+    private String placheHolder = "Entrez ici votre nom d'utilisateur";
     
     
     /**
@@ -101,7 +101,6 @@ public class UserFormDialog extends javax.swing.JFrame {
         setName("jf_login"); // NOI18N
 
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_username.setText("gaetan");
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_username.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -120,6 +119,7 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jButton1.setText("Quitter");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setMaximumSize(new java.awt.Dimension(89, 33));
         jButton1.setMinimumSize(new java.awt.Dimension(89, 33));
         jButton1.setPreferredSize(new java.awt.Dimension(89, 33));
@@ -136,6 +136,7 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         btn_connexion.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         btn_connexion.setText("Connexion");
+        btn_connexion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_connexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_connexionActionPerformed(evt);
@@ -154,7 +155,6 @@ public class UserFormDialog extends javax.swing.JFrame {
         jLabel2.setText("Mot de passe");
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_password.setText("2021+");
         txt_password.setToolTipText("Mot de passe");
         txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_password.addFocusListener(new java.awt.event.FocusAdapter() {

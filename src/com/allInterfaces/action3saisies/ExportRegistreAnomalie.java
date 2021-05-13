@@ -197,6 +197,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
         j_button_exporter.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_button_exporter.setText("Exporter");
+        j_button_exporter.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_button_exporter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_button_exporterActionPerformed(evt);

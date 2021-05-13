@@ -158,6 +158,7 @@ public class RapportSIG extends javax.swing.JInternalFrame {
 
         j_bouton_valider_rapport_sig.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_valider_rapport_sig.setText("Valider");
+        j_bouton_valider_rapport_sig.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_bouton_valider_rapport_sig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_bouton_valider_rapport_sigActionPerformed(evt);
@@ -166,6 +167,7 @@ public class RapportSIG extends javax.swing.JInternalFrame {
 
         j_bouton_exporter_rapport_sig.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_exporter_rapport_sig.setText("Exporter");
+        j_bouton_exporter_rapport_sig.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_bouton_exporter_rapport_sig.setMaximumSize(new java.awt.Dimension(67, 33));
         j_bouton_exporter_rapport_sig.setMinimumSize(new java.awt.Dimension(67, 33));
         j_bouton_exporter_rapport_sig.addActionListener(new java.awt.event.ActionListener() {

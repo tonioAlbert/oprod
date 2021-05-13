@@ -195,6 +195,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
         j_button_exporter_cf_editer.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_button_exporter_cf_editer.setText("Exporter");
+        j_button_exporter_cf_editer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_button_exporter_cf_editer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_button_exporter_cf_editerActionPerformed(evt);

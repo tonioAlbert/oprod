@@ -55,18 +55,11 @@ public class Formats {
                   if (comp_ch2.equals("I") || comp_ch2.equals("II") || comp_ch2.equals("III") || comp_ch2.equals("IV") 
                           || comp_ch2.equals("V") || comp_ch2.equals("VI") || comp_ch2.equals("VII") || comp_ch2.equals("VIII") || comp_ch2.equals("IX")
                           || comp_ch2.equals("X") || comp_ch2.equals("XI") || comp_ch2.equals("XII") || comp_ch2.equals("XIII") || comp_ch2.equals("XIV") || comp_ch2.equals("XV")
-                          || comp_ch2.equals("XVI") || comp_ch2.equals("XVII") || comp_ch2.equals("XVIII") || comp_ch2.equals("XIX") || comp_ch2.equals("XX") || comp_ch2.equals("XXI") 
-                          || comp_ch2.equals("XXII") || comp_ch2.equals("XXIII") || comp_ch2.equals("XXIV") || comp_ch2.equals("XXV") || comp_ch2.equals("XXVI") 
-                          || comp_ch2.equals("XXVII") || comp_ch2.equals("XXVIII") || comp_ch2.equals("XXIX") || comp_ch2.equals("XXX") || comp_ch2.equals("XXXI") 
-                          || comp_ch2.equals("XXXII") || comp_ch2.equals("XXXIII") || comp_ch2.equals("XXXIV") || comp_ch2.equals("XXXV") || comp_ch2.equals("XXXVI") 
-                          || comp_ch2.equals("XXXVII") || comp_ch2.equals("XXXVIII") || 	comp_ch2.equals("XXXIX") || comp_ch2.equals("XL") || comp_ch2.equals("XLI") 
-                          || comp_ch2.equals("XLII") || comp_ch2.equals("XLIII") || comp_ch2.equals("XLIV") || comp_ch2.equals("XLV") || comp_ch2.equals("XLVI") || comp_ch2.equals("XLVII")
-                          || comp_ch2.equals("XLVIII") || 	comp_ch2.equals("XLIX") || comp_ch2.equals("L") || comp_ch2.equals("LI") || comp_ch2.equals("LII") 
-                          || comp_ch2.equals("LIII") || comp_ch2.equals("LIV") || comp_ch2.equals("LV") || comp_ch2.equals("LVI") || comp_ch2.equals("LVII") 
-                          || comp_ch2.equals("LVIII") || comp_ch2.equals("LIX") || comp_ch2.equals("LX") || comp_ch2.equals("LXI") || comp_ch2.equals("LXII") 
-                          || comp_ch2.equals("LXIII") || comp_ch2.equals("LXIV") || comp_ch2.equals("LXV") || comp_ch2.equals("LXVI") || comp_ch2.equals("LXVII") 
-                          || comp_ch2.equals("LXVIII") || comp_ch2.equals("LXIX") || comp_ch2.equals("LXX") || comp_ch2.equals("LXXI") || comp_ch2.equals("LXXII") 
-                          || comp_ch2.equals("LXXIII")|| comp_ch2.equals("RN.")|| comp_ch2.equals("RN. ")|| comp_ch2.equals(" RN.")|| comp_ch2.equals("Rn.")|| comp_ch2.equals("R.N")
+                          || comp_ch2.equals("XVI") || comp_ch2.equals("XVII")  || comp_ch2.equals("XIX") || comp_ch2.equals("XX") || comp_ch2.equals("XXI") 
+                          || comp_ch2.equals("XXV") || comp_ch2.equals("XXX") || comp_ch2.equals("XL") || comp_ch2.equals("XLI") 
+                          || comp_ch2.equals("XLV") || comp_ch2.equals("XLVI") || comp_ch2.equals("XLIX") || comp_ch2.equals("L") || comp_ch2.equals("LI") || comp_ch2.equals("LII") 
+                          || comp_ch2.equals("LIV") || comp_ch2.equals("LV") || comp_ch2.equals("LVI") || comp_ch2.equals("LXIV") || comp_ch2.equals("LXV") 
+                          || comp_ch2.equals("LXX") || comp_ch2.equals("RN.")|| comp_ch2.equals("RN. ")|| comp_ch2.equals(" RN.")|| comp_ch2.equals("Rn.")|| comp_ch2.equals("R.N")
                           || comp_ch2.equals("RN")|| comp_ch2.equals("RN1") || comp_ch2.equals("RN2") || comp_ch2.equals("RN3") || comp_ch2.equals("RN4") || comp_ch2.equals("RN5") 
                           || comp_ch2.equals("R.N.5")|| comp_ch2.equals("R/N/5")|| comp_ch2.equals("CR")|| comp_ch2.equals("C.R")|| comp_ch2.equals("PI")|| comp_ch2.equals("P.I")
                           || comp_ch2.equals("P.N.D")|| comp_ch2.equals("(F)")|| comp_ch2.equals("( F )")|| comp_ch2.equals("( F)")|| comp_ch2.equals("(F )")|| comp_ch2.equals("ET")
@@ -75,10 +68,16 @@ public class Formats {
                           || comp_ch2.equals("BIS")|| comp_ch2.equals("B.I.S")|| comp_ch2.equals("FLM")|| comp_ch2.equals("(FLM)")|| comp_ch2.equals("F.L.M")|| comp_ch2.equals("FJKM")|| comp_ch2.equals("F.J.K.M")){
                       
                       
-                      // Mise en majuscule des chaines trouvé
+                      // Mise en majuscule des chaines trouvé  Fenerive-est
                       chaine2 += ch2.toUpperCase();
                       
                       //System.out.println("oui identique : "+ ch2.toUpperCase()+"\n");
+                  }else if (comp_ch2.equals("DE")){
+                      chaine2 += "De ";
+                  }else if (comp_ch2.equals("DIT")){
+                      chaine2 += "dit ";
+                  }else if (comp_ch2.equals("FENERIVE-EST")){
+                      chaine2 += "Fenerive-Est";
                   }else{
                       chaine2+= ch2;
                   }

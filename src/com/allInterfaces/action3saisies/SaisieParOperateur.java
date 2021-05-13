@@ -138,6 +138,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
 
         j_bouton_search.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_search.setText("Rechercher");
+        j_bouton_search.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_bouton_search.setMaximumSize(new java.awt.Dimension(67, 33));
         j_bouton_search.setMinimumSize(new java.awt.Dimension(67, 33));
         j_bouton_search.addActionListener(new java.awt.event.ActionListener() {
@@ -148,6 +149,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
 
         j_button_reset.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_button_reset.setText("Réinitialiser");
+        j_button_reset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_button_reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_button_resetActionPerformed(evt);

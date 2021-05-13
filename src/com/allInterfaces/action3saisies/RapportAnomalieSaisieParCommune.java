@@ -157,6 +157,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
 
         j_bouton_valider_rapport_anomalies_saisie_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_valider_rapport_anomalies_saisie_par_commune.setText("Valider");
+        j_bouton_valider_rapport_anomalies_saisie_par_commune.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_bouton_valider_rapport_anomalies_saisie_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed(evt);
@@ -165,6 +166,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
 
         j_bouton_exporter_rapport_anomalies_saisie_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_exporter_rapport_anomalies_saisie_par_commune.setText("Exporter");
+        j_bouton_exporter_rapport_anomalies_saisie_par_commune.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_bouton_exporter_rapport_anomalies_saisie_par_commune.setMaximumSize(new java.awt.Dimension(67, 33));
         j_bouton_exporter_rapport_anomalies_saisie_par_commune.setMinimumSize(new java.awt.Dimension(67, 33));
         j_bouton_exporter_rapport_anomalies_saisie_par_commune.addActionListener(new java.awt.event.ActionListener() {

@@ -106,6 +106,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
 
         btn_annuler.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         btn_annuler.setText("Annuler");
+        btn_annuler.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_annuler.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_annulerActionPerformed(evt);
@@ -119,6 +120,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
 
         btn_valider.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         btn_valider.setText("Valider");
+        btn_valider.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_valider.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_validerActionPerformed(evt);

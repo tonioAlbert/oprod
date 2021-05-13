@@ -178,6 +178,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
 
         j_button_exporter_rp_provisoire.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_button_exporter_rp_provisoire.setText("Exporter");
+        j_button_exporter_rp_provisoire.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         j_button_exporter_rp_provisoire.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_button_exporter_rp_provisoireActionPerformed(evt);
