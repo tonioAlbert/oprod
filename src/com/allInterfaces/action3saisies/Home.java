@@ -45,7 +45,7 @@ public class Home extends javax.swing.JFrame {
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
-    private String BDD_ID_PROFIL = "";
+    private String[] BDD_ID_PROFIL = {};
     
     String retour = "";
 
@@ -61,7 +61,7 @@ public class Home extends javax.swing.JFrame {
      * @param TYPE_OPERATION
      * @param ID_PROFIL
      */
-    public Home(String HOST, String DBNAME, Integer PORT, String USER, String PWD , String username, String password, String TYPE_OPERATION, String ID_PROFIL) {
+    public Home(String HOST, String DBNAME, Integer PORT, String USER, String PWD , String username, String password, String TYPE_OPERATION, String[] ID_PROFIL) {
 
         
         this.userName = username;
@@ -80,17 +80,25 @@ public class Home extends javax.swing.JFrame {
         
         this.j_menu_controllesSaisies.setEnabled(false);
         this.j_menu_export_listes_demandeurs.setEnabled(false);
-        this.j_menu_parametres.setEnabled(false);
+        //this.j_menu_parametres.setEnabled(false);
         
-        if(this.BDD_ID_PROFIL != null && this.BDD_ID_PROFIL.equals("2")){
+        if(this.BDD_ID_PROFIL[2] != null && this.BDD_ID_PROFIL[2].equals("2")){
             
             this.j_menu_formatages.setEnabled(false);
             this.j_menu_exports.setEnabled(false);
             this.j_menu_rapport_cf_editable.setEnabled(false);
             this.j_menu_item_rapport_saisie.setEnabled(false);
             this.j_menu_item_rapports_sig.setEnabled(false);
+            this.j_menu_itemStat_Nbre_pret_CQE.setEnabled(false);
+            j_menu_item_rapports_sig.setVisible(false);
             
             //this.j_menu_controllesSaisies.setEnabled(false);
+        }
+        
+        
+        if(this.BDD_ID_PROFIL[4].toLowerCase().equals("f")){
+            
+            this.j_menu_parametres.setEnabled(false);
         }
 
         this.jProgressBar_home.setVisible(false);
@@ -108,7 +116,7 @@ public class Home extends javax.swing.JFrame {
         
         
         String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
-        System.out.println("Nom de latelier sur home : " + nomAtelier);
+        //System.out.println("Nom de latelier sur home : " + nomAtelier);
         if(nomAtelier.equals("ATS")){
             this.j_menu_item_rapports_sig.setEnabled(true);
         }else{
@@ -319,12 +327,13 @@ public class Home extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(j_label_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addGroup(dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
+                                .addComponent(j_label_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(60, 60, 60))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dpContentLayout.createSequentialGroup()
+                                .addComponent(j_label_texte_loading, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
         dpContentLayout.setVerticalGroup(
             dpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -590,6 +599,7 @@ public class Home extends javax.swing.JFrame {
 
         j_menu_itemStat_Nbre_pret_CQE.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_itemStat_Nbre_pret_CQE.setText("Dossier(s) prtêt CQE");
+        j_menu_itemStat_Nbre_pret_CQE.setName("test"); // NOI18N
         j_menu_itemStat_Nbre_pret_CQE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_itemStat_Nbre_pret_CQEActionPerformed(evt);
@@ -619,6 +629,7 @@ public class Home extends javax.swing.JFrame {
         jMenuBar1.add(j_menu_controllesSaisies);
 
         j_menu_parametres.setText("Paramètres");
+        j_menu_parametres.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
         j_menu_config_bdd.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_config_bdd.setText("Configuration base de données");
@@ -1514,10 +1525,10 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_config_bddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_config_bddActionPerformed
 
-        System.out.println("THREAD HORS invokeLater menu conf = " + Thread.currentThread().getName());
+        //System.out.println("THREAD HORS invokeLater menu conf = " + Thread.currentThread().getName());
                 SwingUtilities.invokeLater(() -> {
                     
-                    System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
+                    //System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
                     ModificationConfigurationBaseDeDonnees v_rapport_anomalies_saisie_par_commune = new ModificationConfigurationBaseDeDonnees(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
                     this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
                     v_rapport_anomalies_saisie_par_commune.show();
@@ -1525,7 +1536,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
                 });
         
                 
-                this.j_menu_parametres.setEnabled(false);
+                //this.j_menu_parametres.setEnabled(false);
                 
                 //formKeyPressed();
 

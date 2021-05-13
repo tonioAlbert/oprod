@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -120,11 +121,12 @@ public class Utilisateurs {
     
     
 
-    public String getProfil() {
-
+    public String[] getProfilDroits() {
         
         try {
-            String q = "SELECT id_profil FROM utilisateur WHERE login = ?";
+            String q = "SELECT utilisateur.login, utilisateur.nom, utilisateur.prenom, utilisateur.pwd, utilisateur.id_profil, droits.id_droits, droits.param_data_base FROM utilisateur,\n" +
+            "public.droits\n" +
+            "WHERE utilisateur.id_droits = droits.id_droits AND login = ?";
             st = connectDatabase.prepareStatement(q);    
             st.setString(1, this.login);
         
@@ -133,13 +135,16 @@ public class Utilisateurs {
             if (rs.next()){
                 
                     //System.out.println("OKKKK" );
-                    this.profil = rs.getString("id_profil");
+                    String[] userProfilAnDroits = {rs.getString("nom"), rs.getString("prenom"), 
+                        rs.getString("id_profil"), rs.getString("id_droits"), rs.getString("param_data_base")};
                     //p = "kkkk";
                     
-
+                return userProfilAnDroits;
+                
             }else{
                     System.out.println("Impossible de récupérer le profil de l'utilisateur");
                     this.profil = null;
+                    
             }
 
             st.close();
@@ -149,7 +154,7 @@ public class Utilisateurs {
             Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return this.profil;
+        return null;
 
     }
     

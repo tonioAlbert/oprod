@@ -101,6 +101,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         setName("jf_login"); // NOI18N
 
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_username.setText("gaetan");
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_username.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -109,11 +110,6 @@ public class UserFormDialog extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_usernameFocusLost(evt);
-            }
-        });
-        txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_usernameKeyPressed(evt);
             }
         });
 
@@ -155,6 +151,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         jLabel2.setText("Mot de passe");
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_password.setText("2021+");
         txt_password.setToolTipText("Mot de passe");
         txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_password.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -268,14 +265,15 @@ public class UserFormDialog extends javax.swing.JFrame {
         }else{
             
             
-            System.out.println("démarche selectionné = " + txt_demarche);
+            //System.out.println("démarche selectionné = " + txt_demarche);
         
             Utilisateurs user = new Utilisateurs(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD);
             String user_login_bdd = user.getLogin(txt_username);
             String user_mot_de_passe_bdd = user.getPassword();
-            String user_id_profil_bdd = user.getProfil();
+            String[] user_id_profilDroits = user.getProfilDroits();
 
-
+            System.out.println("user_id_profilDroits = " + user_id_profilDroits[4]);
+        
             hash_txt_password = Hash.getHash(txt_password.getBytes(), "MD5");
         
             if(user_login_bdd == null){
@@ -286,7 +284,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 if (hash_txt_password.equals(user_mot_de_passe_bdd)){
                     
                 SwingUtilities.invokeLater(() -> {
-                        Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, Formats.ConvertOcmToOcfm(demarche), user_id_profil_bdd);
+                        Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, Formats.ConvertOcmToOcfm(demarche), user_id_profilDroits);
                         home.setVisible(true);
                         this.setVisible(false);
                 });
@@ -305,22 +303,6 @@ public class UserFormDialog extends javax.swing.JFrame {
         this.ChargeLogin();
 
     }//GEN-LAST:event_btn_connexionActionPerformed
-
-    private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
-        
-        if(evt.getKeyCode() == 10){
-        
-            this.ChargeLogin();
-
-        }else if(evt.getKeyCode() == 27){
-        
-            System.exit(0);
-
-        }else{
-            
-            System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
-    }//GEN-LAST:event_txt_usernameKeyPressed
 
     private void btn_connexionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_connexionKeyPressed
 

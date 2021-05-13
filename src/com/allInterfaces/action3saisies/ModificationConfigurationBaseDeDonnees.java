@@ -336,7 +336,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                                 fileJson.close();
 
                                 System.out.println("Modification ficihier de configuration effectuée avec succès !");
-                                JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la modification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
 
                                 System.out.println("dossier et fichier conf trouvé ! .......");
 
