@@ -520,10 +520,13 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                     
                     try {
                         
-                        if (get().toString().equals("ok-exports")) {
+                        try{
+                            if (get().toString().equals("ok-exports")) {
+                                j_panel_loading_export.setVisible(false);
+                            } 
+                        }catch(NullPointerException exNull){
                             j_panel_loading_export.setVisible(false);
                         }
-                        
  
                         //System.out.println(get());
                     } catch (InterruptedException ex) {
