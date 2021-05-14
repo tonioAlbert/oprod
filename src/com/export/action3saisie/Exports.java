@@ -36,6 +36,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.TreeMap;
 import com.classes.action3saisie.Querry;
+import javax.swing.JFileChooser;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.util.RegionUtil;
@@ -76,6 +77,22 @@ public class Exports {
     
     
 
+    
+public List<String> getExportTbale(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String[] table, String nameOfSheet){
+
+    List retour = new ArrayList();
+    
+    JFileChooser ExcelFileChooser = new JFileChooser();
+    
+    ExcelFileChooser.setDialogTitle("Enregister sous ...");
+
+    XSSFWorkbook wb = new XSSFWorkbook ();
+    XSSFSheet  sheet = wb.createSheet(nameOfSheet);
+    
+    
+    return retour;
+}
+    
     
 
 public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String path){

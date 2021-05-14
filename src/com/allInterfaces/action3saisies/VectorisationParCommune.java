@@ -115,7 +115,7 @@ public class VectorisationParCommune extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Région", "District", "Commune", "Nombre d'anomalie"
+                "Région", "District", "Commune", "Nombre Vecto"
             }
         ) {
             Class[] types = new Class [] {

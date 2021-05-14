@@ -455,6 +455,7 @@ public class Querry {
                     "  AND demande.id_hameau::text = hameau.id_hameau::text \n" +
                     "  AND region.id_region::text = district.id_region::text\n" +
                     "  AND demande.num_certificat IS NULL \n" +
+                    "  AND demande.avis_crl IS TRUE \n" +
                     "  AND (demande.date_crl - demande.date_demande) >= 15\n" +
                     "  AND region.nom = ? \n" +
                     "  AND demande.type_op = ? \n" +

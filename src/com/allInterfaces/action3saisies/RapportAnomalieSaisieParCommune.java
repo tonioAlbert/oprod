@@ -9,12 +9,34 @@ package com.allInterfaces.action3saisies;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.classes.action3saisie.Region;
+import com.export.action3saisie.Exports;
+import java.awt.Desktop;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -149,11 +171,6 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
 
         j_combo_region.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_region.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une région" }));
-        j_combo_region.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                j_combo_regionItemStateChanged(evt);
-            }
-        });
 
         j_bouton_valider_rapport_anomalies_saisie_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_bouton_valider_rapport_anomalies_saisie_par_commune.setText("Valider");
@@ -225,12 +242,107 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
     }// </editor-fold>//GEN-END:initComponents
 
     private void j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
+        System.out.println("Click sur BTN export");
+        
+        
+    new SwingWorker(){
+            
+            @Override
+            protected Object doInBackground() throws Exception{
+                
+                JFileChooser fc = new JFileChooser();
+                fc.setDialogTitle("Enregistrer le fichier sous ...");
+                
+                FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Fichier( xls et xlsx ) Excel", "xls", "xlsx");
+                fc.setFileFilter(fileFilter);
+                int responseChooser = fc.showSaveDialog(null);
+
+                if (responseChooser == JFileChooser.APPROVE_OPTION) {
+                    
+                    System.out.println("Click sur okkk.");
+                    
+                    String nameOfSheet = "anomalieSaisie";
+                    
+                    XSSFWorkbook wb = new XSSFWorkbook ();
+                    XSSFSheet  sheet = wb.createSheet(nameOfSheet);
+                    
+                    DefaultTableModel tableau = (DefaultTableModel) j_table_rapport_sig.getModel();
+                    
+                    System.out.println("NOMBRE DE LIGNE : " +tableau.getRowCount());
+                    
+                    String[] TextEnTeteTableau = {"Région", "District", "Commune", "Nombre d'anomalie saisie"};
+
+                    TreeMap<Integer, String> EnTeteTableauAExporter = new TreeMap<Integer, String>();
+
+                    for (int i = 0; i < TextEnTeteTableau.length; i++) {
+                      EnTeteTableauAExporter.put(i, TextEnTeteTableau[i]);
+                    }
+
+                    Row headerRow0 = sheet.createRow(0);
+
+                    for (Map.Entry<Integer, String> textTab : EnTeteTableauAExporter.entrySet()) {
+                        Cell headerCell0Ligne3 = headerRow0.createCell(textTab.getKey());
+                        headerCell0Ligne3.setCellValue(textTab.getValue());
+                    }
+                    
+                    for (int i = 1; i < tableau.getRowCount() ; i++) {
+                        XSSFRow row = sheet.createRow(i);
+                        
+                        for (int j = 1; j < tableau.getColumnCount(); j++) {
+                            
+                            XSSFCell cell = row.createCell(j);
+                            
+                            cell.setCellValue(tableau.getValueAt(i, j).toString());
+                            
+                        }
+                    }
+                    
+                    try{
+                        FileOutputStream fileSortie = new FileOutputStream(fc.getSelectedFile()+".xlsx");
+                        //BufferedOutputStream excelBuffer = new BufferedOutputStream(fileSortie);
+                        wb.write(fileSortie);
+                        wb.close();
+                        fileSortie.close();
+                        
+                    }catch(Exception createFileErreur){
+                        JOptionPane.showMessageDialog(null, "Classe export anomalie saisie par commune",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    
+
+                    
+                }
+                
+                return null;
+            }
+            
+            
+            
+            
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+                        try{
+                            if (get().toString().equals("ok-exports")) {
+                                //j_panel_loading_export.setVisible(false);
+                            } 
+                        }catch(NullPointerException exNull){
+                            //j_panel_loading_export.setVisible(false);
+                        }
+ 
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            
+            
+        }.execute();
         
     }//GEN-LAST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
-
-    private void j_combo_regionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_regionItemStateChanged
-
-    }//GEN-LAST:event_j_combo_regionItemStateChanged
 
     private void j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed
 

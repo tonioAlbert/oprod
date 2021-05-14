@@ -214,7 +214,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
         j_label_loading_export.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/loading_export.gif"))); // NOI18N
 
-        j_label_texte_loading_export.setText("Export en cours ...");
+        j_label_texte_loading_export.setText("Traitement exportation ...");
         j_label_texte_loading_export.setFocusable(false);
 
         javax.swing.GroupLayout j_panel_loading_exportLayout = new javax.swing.GroupLayout(j_panel_loading_export);
@@ -222,14 +222,14 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         j_panel_loading_exportLayout.setHorizontalGroup(
             j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(j_panel_loading_exportLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
-                        .addComponent(j_label_loading_export)
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
                         .addComponent(j_label_texte_loading_export)
-                        .addGap(14, 14, 14))))
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_loading_exportLayout.createSequentialGroup()
+                        .addComponent(j_label_loading_export)
+                        .addGap(43, 43, 43))))
         );
         j_panel_loading_exportLayout.setVerticalGroup(
             j_panel_loading_exportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
