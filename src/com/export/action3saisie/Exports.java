@@ -87,6 +87,310 @@ public class Exports {
     
     
 
+public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, String dist, String c_com,String com, String path){
+        
+    System.out.println("OUF ATO ALONGANY");
+    
+    
+        List retour = new ArrayList();
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
+        Date date = new Date(System.currentTimeMillis());
+        String realPath = path+"\\"+this.TYPE_OPERATION+"_"+formatter.format(date)+"_SAISIE_SANS_VECTO"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
+
+        int RowResultSet = 0;
+        
+        try {
+            
+            String sql = " SELECT \n" +
+            "    region.nom AS region,\n" +
+            "    commune.code_commune AS c_commune,\n" +
+            "    commune.nom AS commune,\n" +
+            "    fokontany.code_fokontany AS c_fkt,\n" +
+            "    fokontany.nom AS fkt,\n" +
+            "    hameau.code_hameau AS c_hameau,\n" +
+            "    hameau.nom AS hameau,\n" +
+            "	CASE\n" +
+            "		WHEN persphys.prenom IS NULL THEN persphys.nom\n" +
+            "		ELSE CONCAT(persphys.nom, ' ',persphys.prenom)\n" +
+            "	END AS nom_et_prenom,\n" +
+            "    demande.id_registre,\n" +
+            "    demande.id_parcelle,\n" +
+            "	\n" +
+            "    CASE \n" +
+            "    	WHEN persphys.adresse IS NULL THEN ''\n" +
+            "        ELSE persphys.adresse\n" +
+            "    END\n" +
+            "   FROM demande,\n" +
+            "    persphys,\n" +
+            "    proprietaire_pp,\n" +
+            "    hameau,\n" +
+            "    fokontany,\n" +
+            "    commune,\n" +
+            "    district,\n" +
+            "    region\n" +
+            "  WHERE demande.cf_annule IS NOT TRUE \n" +
+            "  AND demande.id_hameau::text = hameau.id_hameau::text \n" +
+            "  AND hameau.id_fokontany::text = fokontany.id_fokontany::text \n" +
+            "  AND fokontany.id_commune::text = commune.id_commune::text \n" +
+            "  AND district.id_district::text = commune.id_district::text \n" +
+            "  AND region.id_region::text = district.id_region::text \n" +
+            "  AND demande.id_demande::text = proprietaire_pp.id_demande::text \n" +
+            "  AND proprietaire_pp.id_persphys::text = persphys.id_persphys::text \n" +
+            "  AND proprietaire_pp.type_demandeur::text = 'DM'::text\n" +
+            "           AND region.nom = ?  \n" +
+            "		  AND district.nom = ?        \n" +
+            "			  AND commune.nom = ? \n" +
+            "			AND demande.type_op = ?  \n" +
+            "   AND NOT (demande.id_parcelle::text IN ( SELECT parcelle_cf.c_parcelle\n" +
+            "           FROM parcelle_cf))\n" +
+            "  ORDER BY demande.num_registre ASC"; 
+            
+            st = connectDatabase.prepareStatement(sql);    
+            st.setString(1, reg);
+            st.setString(2, dist);
+            st.setString(3, com);;
+            st.setString(4, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION.toLowerCase()));
+            rs = st.executeQuery();
+            
+
+            
+            try{
+                    
+                // CREATION DU FICHIER
+                String nameOfSheet = "saisieSansVecto";
+                    
+                    
+                // REMPLISSAGE DANS LE FICHIER
+
+                XSSFWorkbook   wb = new XSSFWorkbook ();
+                XSSFSheet  sheet = wb.createSheet(nameOfSheet);
+
+                // MISE EN PAGE DU FICHIER
+                sheet.getHeader().setCenter("Listes des saisies sans véctorisation");
+                sheet.getFooter().setCenter("CASEF / GEOX2");
+                sheet.getPrintSetup().setLandscape(true);
+                PrintSetup printsetup = sheet.getPrintSetup();
+                sheet.getPrintSetup().setPaperSize(printsetup.A4_PAPERSIZE);
+
+                String[] cellAFixer = ("$1:$5").split(":");
+                CellReference startCellFixed = new CellReference(cellAFixer[0]);
+                CellReference endCellFixed = new CellReference(cellAFixer[1]);
+                CellRangeAddress addressCellAFixer = new CellRangeAddress(startCellFixed.getRow(),
+                endCellFixed.getRow(), startCellFixed.getCol(), endCellFixed.getCol());
+
+                sheet.setRepeatingRows(addressCellAFixer);
+                
+                // FIN MISE EN PAGE
+                
+                
+                Row headerRow0 = sheet.createRow(0);
+
+                XSSFCellStyle cellStyleBold = wb.createCellStyle();
+                Font headerFont = wb.createFont();
+                headerFont.setBold(true);
+                cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
+                cellStyleBold.setFont(headerFont);
+            
+                // create table with data
+                XSSFCellStyle cadre = wb.createCellStyle();
+                cadre.setBorderBottom(BorderStyle.THIN);  
+
+                cellStyleBold.setBorderBottom(BorderStyle.THIN);  
+                cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
+
+                cellStyleBold.setBorderRight(BorderStyle.THIN);  
+                cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
+
+                cellStyleBold.setBorderTop(BorderStyle.THIN);  
+                cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
+
+
+                cellStyleBold.setBorderLeft(BorderStyle.THIN);  
+                cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
+
+                Cell headerCell0 = headerRow0.createCell(0);
+                headerCell0.setCellValue("Région :");
+                headerCell0.setCellStyle(cellStyleBold);
+                headerCell0.setCellStyle(cadre);
+
+                headerCell0 = headerRow0.createCell(1);
+                headerCell0.setCellValue(reg);
+                headerCell0.setCellStyle(cadre);
+
+                headerCell0 = headerRow0.createCell(2);
+                headerCell0.setCellValue("Type Opération : ");
+                headerCell0.setCellStyle(cadre);
+
+                headerCell0 = headerRow0.createCell(3);
+                headerCell0.setCellValue(this.TYPE_OPERATION);
+                headerCell0.setCellStyle(cadre);
+            
+
+//==============================================================================
+                Row headerRow1 = sheet.createRow(1);
+
+                Cell headerCell1 = headerRow1.createCell(0);
+                headerCell1.setCellValue("District :");
+                headerCell1.setCellStyle(cellStyleBold);
+                headerCell1.setCellStyle(cadre);
+
+                headerCell1 = headerRow1.createCell(1);
+                headerCell1.setCellValue(dist);
+                headerCell1.setCellStyle(cadre);
+
+                headerCell1 = headerRow1.createCell(2);
+                headerCell1.setCellValue("Commune : ");
+                headerCell1.setCellStyle(cadre);
+                
+                headerCell1 = headerRow1.createCell(3);
+                headerCell1.setCellValue(com);
+                headerCell1.setCellStyle(cadre);
+// ============================================================================
+                Row headerRow2 = sheet.createRow(2);
+
+                Cell headerCell2 = headerRow2.createCell(0);
+                headerCell2.setCellValue("Code Dist :");
+                headerCell2.setCellStyle(cellStyleBold);
+                headerCell2.setCellStyle(cadre);
+
+                headerCell2 = headerRow2.createCell(1);
+                headerCell2.setCellValue(c_dist);
+                headerCell2.setCellStyle(cadre);
+
+                headerCell2 = headerRow2.createCell(2);
+                headerCell2.setCellValue("Code Com :");
+                headerCell2.setCellStyle(cadre);
+                
+                headerCell2 = headerRow2.createCell(3);
+                headerCell2.setCellValue(c_com);
+                headerCell2.setCellStyle(cadre);
+// ============================================================================ 
+
+                String[] TextEnTeteTableau = {};
+                
+                String Str1 = "id_registre, nom_et_prénom(s), adresse";
+                String Str2 = "id_registre , id_parcelle, nom_et_prénom(s), adresse";
+            
+            
+                if (this.TYPE_OPERATION.equals("OCFM")) {
+                    TextEnTeteTableau = Str1.split(",");
+                }else{
+                    TextEnTeteTableau = Str2.split(",");
+                }
+
+            TreeMap<Integer, String> EnTeteTableauAExporter = new TreeMap<Integer, String>();
+
+            for (int i = 0; i < TextEnTeteTableau.length; i++) {
+              EnTeteTableauAExporter.put(i, TextEnTeteTableau[i]);
+            }
+
+            //System.out.println("EnTeteTableauAExporter vaut : " + EnTeteTableauAExporter);
+
+            Row headerRow3 = sheet.createRow(4);
+
+            for (Map.Entry<Integer, String> textTab : EnTeteTableauAExporter.entrySet()) {
+                Cell headerCell0Ligne3 = headerRow3.createCell(textTab.getKey());
+                headerCell0Ligne3.setCellValue(textTab.getValue());
+                headerCell0Ligne3.setCellStyle(cellStyleBold);
+            }
+
+
+            
+                    int n = 5;
+                    
+                    
+                    
+                    while (rs.next()) {
+
+                        RowResultSet++;
+                        
+                        if (this.TYPE_OPERATION.equals("OCFM")) {
+                            
+                            Row headerRow4 = sheet.createRow(n);
+                        
+                            Cell headerCell8 = headerRow4.createCell(0);
+                            headerCell8.setCellValue(rs.getString("id_registre"));
+                            headerCell8.setCellStyle(cadre);
+                            
+                            Cell headerCell_10 = headerRow4.createCell(1);
+                            headerCell_10.setCellValue(rs.getString("nom_et_prenom"));
+                            headerCell_10.setCellStyle(cadre);
+                            
+                            Cell headerCell_11 = headerRow4.createCell(2);
+                            headerCell_11.setCellValue(rs.getString("adresse"));
+                            headerCell_11.setCellStyle(cadre);
+                            
+                        }else{
+                            
+                            Row headerRow4 = sheet.createRow(n);
+                        
+                            Cell headerCell8 = headerRow4.createCell(0);
+                            headerCell8.setCellValue(rs.getString("id_registre"));
+                            headerCell8.setCellStyle(cadre);
+
+                            Cell headerCell9 = headerRow4.createCell(1);
+                            headerCell9.setCellValue(rs.getString("id_parcelle"));
+                            headerCell9.setCellStyle(cadre);
+                            
+                            Cell headerCell_10 = headerRow4.createCell(2);
+                            headerCell_10.setCellValue(rs.getString("nom_et_prenom"));
+                            headerCell_10.setCellStyle(cadre);
+                            
+                            Cell headerCell_11 = headerRow4.createCell(3);
+                            headerCell_11.setCellValue(rs.getString("adresse"));
+                            headerCell_11.setCellStyle(cadre);
+                        }
+                        
+
+
+                        n++;
+                    }
+  
+                    FileOutputStream fout = new FileOutputStream(realPath);
+
+                    wb.write(fout);
+                    wb.close();
+                    fout.close();
+
+
+                }catch(Exception createFileErreur){
+
+                    //System.out.println(createFileErreur.getMessage());
+                    
+                    JOptionPane.showMessageDialog(null, "Classes export saisie sans vectorisaiton erreur",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                }
+                     
+            rs.close();
+            st.close();
+            
+            if(RowResultSet == 0){
+                //System.out.println("val fiale de RowResultSet = " + RowResultSet);
+                retour.add("error");
+                retour.add(realPath);
+                // SUPPRESSION DU FICHIER EXPORTE CAR IL Y AVAIT UNE ERREUR LORS DE L'EXPORT
+                Files.deleteIfExists(Paths.get(realPath));
+                //System.out.println("votre commune : "+ com);
+
+            }else{
+                retour.add("success");
+                //JOptionPane.showMessageDialog(null, "Listes CF éditer exporté avec succès !", "Listes CF éditer exporté avec succès ", JOptionPane.INFORMATION_MESSAGE);
+                // ouverture de l'emplacement selectionner par l'utiisateur
+                //Desktop.getDesktop().open(new File(path));
+            }
+  
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+            //throw new RuntimeException();
+            retour.add("error");
+            retour.add("Error executing query: " +ex.getMessage());
+        }
+        
+        //System.out.println(demandes);
+        return retour;
+    }
+  
+    
     
 public void ExportTableToExcel(JTable table, String nameOfSheet, String[] EnTeteTable, String messageSuccess){
     
@@ -98,7 +402,7 @@ public void ExportTableToExcel(JTable table, String nameOfSheet, String[] EnTete
                 JFileChooser fc = new JFileChooser();
                 fc.setDialogTitle("Enregistrer le fichier sous ...");
                 
-                FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Fichier( xls et xlsx ) Excel", "xls", "xlsx");
+                FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Fichier Excel ( xls ou xlsx Seulement )", "xls", "xlsx");
                 fc.setFileFilter(fileFilter);
                 int responseChooser = fc.showSaveDialog(null);
 

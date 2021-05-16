@@ -178,6 +178,9 @@ public class Home extends javax.swing.JFrame {
         j_menu_export_listes_dossiers_pret_cqe = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_cf_editer_par_commune = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        j_menu_export_listes_saisie_sans_vecto = new javax.swing.JMenuItem();
+        j_menu_export_listes_vecto_sans_saisie = new javax.swing.JMenuItem();
         j_menu_stats = new javax.swing.JMenu();
         j_menu_stat_vectorisation_par_communes = new javax.swing.JMenuItem();
         j_menu_stat_saisie_par_operateur = new javax.swing.JMenuItem();
@@ -534,6 +537,20 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_exports.add(j_menu_export_listes_cf_editer_par_commune);
+        j_menu_exports.add(jSeparator2);
+
+        j_menu_export_listes_saisie_sans_vecto.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_export_listes_saisie_sans_vecto.setText("Saisie Sans Vecto");
+        j_menu_export_listes_saisie_sans_vecto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_export_listes_saisie_sans_vectoActionPerformed(evt);
+            }
+        });
+        j_menu_exports.add(j_menu_export_listes_saisie_sans_vecto);
+
+        j_menu_export_listes_vecto_sans_saisie.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_export_listes_vecto_sans_saisie.setText("Vectorisation sans saisie");
+        j_menu_exports.add(j_menu_export_listes_vecto_sans_saisie);
 
         jMenuBar1.add(j_menu_exports);
 
@@ -1562,6 +1579,13 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         vecto_par_commune.show();
     }//GEN-LAST:event_j_menu_stat_vectorisation_par_communesActionPerformed
 
+    private void j_menu_export_listes_saisie_sans_vectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_saisie_sans_vectoActionPerformed
+        // ExportSaisieSansVectorisation
+        ExportSaisieSansVectorisation saisieSansVecto = new ExportSaisieSansVectorisation(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation);
+        this.dpContent.add(saisieSansVecto);
+        saisieSansVecto.show();
+    }//GEN-LAST:event_j_menu_export_listes_saisie_sans_vectoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1609,6 +1633,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar_home;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
@@ -1624,6 +1649,8 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_export_listes_cf_editer_par_commune;
     private javax.swing.JMenuItem j_menu_export_listes_demandeurs;
     private javax.swing.JMenuItem j_menu_export_listes_dossiers_pret_cqe;
+    private javax.swing.JMenuItem j_menu_export_listes_saisie_sans_vecto;
+    private javax.swing.JMenuItem j_menu_export_listes_vecto_sans_saisie;
     private javax.swing.JMenu j_menu_exports;
     private javax.swing.JMenu j_menu_fichier;
     private javax.swing.JMenu j_menu_formatages;

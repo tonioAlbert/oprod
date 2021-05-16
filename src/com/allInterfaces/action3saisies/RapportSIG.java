@@ -227,9 +227,9 @@ public class RapportSIG extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void j_bouton_exporter_rapport_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_sigActionPerformed
-        String[] TextEnTeteTableau = {"Région", "District", "Commune", "Nombre(s) de véctorisation : "+demarche};
+        String[] TextEnTeteTableau = {"Région", "District", "Commune", "Non_acheval", "RL_anomalie"};
 
-        new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).ExportTableToExcel(this.j_table_rapport_sig, "vectoParCommune",TextEnTeteTableau, "Export véctorisation par commune OK !");
+        new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).ExportTableToExcel(this.j_table_rapport_sig, "rapportVecto"+demarche,TextEnTeteTableau, "Export Rapport véctorisation par commune "+demarche+" OK !");
          
     }//GEN-LAST:event_j_bouton_exporter_rapport_sigActionPerformed
 
