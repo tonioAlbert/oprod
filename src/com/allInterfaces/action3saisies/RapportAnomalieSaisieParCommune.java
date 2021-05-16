@@ -242,8 +242,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
     }// </editor-fold>//GEN-END:initComponents
 
     private void j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
-        System.out.println("Click sur BTN export");
-        
+        //System.out.println("Click sur BTN export");
         
     new SwingWorker(){
             
@@ -259,7 +258,10 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
 
                 if (responseChooser == JFileChooser.APPROVE_OPTION) {
                     
-                    System.out.println("Click sur okkk.");
+                    //System.out.println("Click sur okkk.");
+                    
+                    
+                    //fc.g
                     
                     String nameOfSheet = "anomalieSaisie";
                     
@@ -285,10 +287,11 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                         headerCell0Ligne3.setCellValue(textTab.getValue());
                     }
                     
-                    for (int i = 1; i < tableau.getRowCount() ; i++) {
-                        XSSFRow row = sheet.createRow(i);
+                    for (int i = 0; i < tableau.getRowCount() ; i++) {
                         
-                        for (int j = 1; j < tableau.getColumnCount(); j++) {
+                        XSSFRow row = sheet.createRow(i+1);
+                        
+                        for (int j = 0; j < tableau.getColumnCount(); j++) {
                             
                             XSSFCell cell = row.createCell(j);
                             
