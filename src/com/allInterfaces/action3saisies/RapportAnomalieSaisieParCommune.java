@@ -258,11 +258,6 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
 
                 if (responseChooser == JFileChooser.APPROVE_OPTION) {
                     
-                    //System.out.println("Click sur okkk.");
-                    
-                    
-                    //fc.g
-                    
                     String nameOfSheet = "anomalieSaisie";
                     
                     XSSFWorkbook wb = new XSSFWorkbook ();
@@ -270,7 +265,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                     
                     DefaultTableModel tableau = (DefaultTableModel) j_table_rapport_sig.getModel();
                     
-                    System.out.println("NOMBRE DE LIGNE : " +tableau.getRowCount());
+                    //System.out.println("NOMBRE DE LIGNE : " +tableau.getRowCount());
                     
                     String[] TextEnTeteTableau = {"Région", "District", "Commune", "Nombre d'anomalie saisie"};
 
@@ -295,10 +290,15 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                             
                             XSSFCell cell = row.createCell(j);
                             
-                            cell.setCellValue(tableau.getValueAt(i, j).toString());
+                            if (j == 3) {
+                                cell.setCellValue(Integer.parseInt(tableau.getValueAt(i, j).toString()));
+                            }else{
+                                cell.setCellValue(tableau.getValueAt(i, j).toString());
+                            }
                             
                         }
                     }
+                    
                     
                     try{
                         FileOutputStream fileSortie = new FileOutputStream(fc.getSelectedFile()+".xlsx");
@@ -307,8 +307,14 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                         wb.close();
                         fileSortie.close();
                         
+                        
+                        return "export-ok";
+                        
                     }catch(Exception createFileErreur){
-                        JOptionPane.showMessageDialog(null, "Classe export anomalie saisie par commune",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        //System.out.println(createFileErreur.getMessage());
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, createFileErreur);
+                        JOptionPane.showMessageDialog(null, createFileErreur.getMessage(),"Erreur exportation", JOptionPane.INFORMATION_MESSAGE);
+                        return null;
                     }
                     
 
@@ -327,11 +333,11 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
                     try {
                         
                         try{
-                            if (get().toString().equals("ok-exports")) {
-                                //j_panel_loading_export.setVisible(false);
+                            if (get().toString().equals("export-ok")) {
+                                JOptionPane.showMessageDialog(null, "Export stat anomalie saisie OK!","Export Excel OK", JOptionPane.INFORMATION_MESSAGE);
                             } 
                         }catch(NullPointerException exNull){
-                            //j_panel_loading_export.setVisible(false);
+                            //JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de l'exportation\n\n"+exNull.getMessage(),"Erreur exportation Excel", JOptionPane.INFORMATION_MESSAGE);
                         }
  
                         //System.out.println(get());
