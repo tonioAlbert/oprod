@@ -117,7 +117,7 @@
                     <Column editable="false" title="R&#xe9;gion" type="java.lang.String"/>
                     <Column editable="false" title="District" type="java.lang.String"/>
                     <Column editable="false" title="Commune" type="java.lang.String"/>
-                    <Column editable="false" title="Nombdre de saisie" type="java.lang.Integer"/>
+                    <Column editable="false" title="CF &#xe9;ditable" type="java.lang.Integer"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

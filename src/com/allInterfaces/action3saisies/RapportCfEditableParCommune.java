@@ -9,6 +9,7 @@ package com.allInterfaces.action3saisies;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.classes.action3saisie.Region;
+import com.export.action3saisie.Exports;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -114,7 +115,7 @@ public class RapportCfEditableParCommune extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Région", "District", "Commune", "Nombdre de saisie"
+                "Région", "District", "Commune", "CF éditable"
             }
         ) {
             Class[] types = new Class [] {
@@ -225,8 +226,10 @@ public class RapportCfEditableParCommune extends javax.swing.JInternalFrame {
 
     private void j_bouton_exporter_rapport_cf_editable_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_cf_editable_par_communeActionPerformed
         
-      
-        
+        String[] TextEnTeteTableau = {"Région", "District", "Commune", "CF éditable : "+demarche};
+
+        new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).ExportTableToExcel(this.j_table_rapport_cf_editable_par_commune, "CF_editable",TextEnTeteTableau, "Export CF éditable par commune OK !");
+         
     }//GEN-LAST:event_j_bouton_exporter_rapport_cf_editable_par_communeActionPerformed
 
     private void j_combo_regionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_regionItemStateChanged

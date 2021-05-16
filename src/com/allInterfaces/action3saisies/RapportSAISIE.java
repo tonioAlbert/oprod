@@ -9,6 +9,7 @@ package com.allInterfaces.action3saisies;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.classes.action3saisie.Region;
+import com.export.action3saisie.Exports;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -91,7 +92,7 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
 
         j_panel_saisie_par_op = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        j_table_rapport_sig = new javax.swing.JTable();
+        j_table_rapport_saisie = new javax.swing.JTable();
         j_label_annee_saisie1 = new javax.swing.JLabel();
         j_comb_demarche = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
@@ -108,10 +109,10 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(1224, 396));
         setVisible(false);
 
-        j_table_rapport_sig.setBackground(java.awt.Color.white);
-        j_table_rapport_sig.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        j_table_rapport_sig.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
-        j_table_rapport_sig.setModel(new javax.swing.table.DefaultTableModel(
+        j_table_rapport_saisie.setBackground(java.awt.Color.white);
+        j_table_rapport_saisie.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        j_table_rapport_saisie.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
+        j_table_rapport_saisie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -134,9 +135,9 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(j_table_rapport_sig);
-        if (j_table_rapport_sig.getColumnModel().getColumnCount() > 0) {
-            j_table_rapport_sig.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane1.setViewportView(j_table_rapport_saisie);
+        if (j_table_rapport_saisie.getColumnModel().getColumnCount() > 0) {
+            j_table_rapport_saisie.getColumnModel().getColumn(3).setResizable(false);
         }
 
         j_label_annee_saisie1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
@@ -227,9 +228,10 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void j_bouton_exporter_rapport_saisiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_saisiesActionPerformed
-        
-      
-        
+        String[] TextEnTeteTableau = {"Région", "District", "Commune", "Nombre(s) de saisie : "+demarche};
+
+        new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).ExportTableToExcel(this.j_table_rapport_saisie, "saisieParCommune",TextEnTeteTableau, "Export saisie par commune OK !");
+           
     }//GEN-LAST:event_j_bouton_exporter_rapport_saisiesActionPerformed
 
     private void j_combo_regionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_regionItemStateChanged
@@ -255,7 +257,7 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
             
                         traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRapportSAISIE(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
                         
-                        DefaultTableModel tableau = (DefaultTableModel) j_table_rapport_sig.getModel();
+                        DefaultTableModel tableau = (DefaultTableModel) j_table_rapport_saisie.getModel();
                         
                         if(traitements.size() <1){
                         
@@ -299,6 +301,6 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> j_combo_region;
     private javax.swing.JLabel j_label_annee_saisie1;
     private javax.swing.JPanel j_panel_saisie_par_op;
-    private javax.swing.JTable j_table_rapport_sig;
+    private javax.swing.JTable j_table_rapport_saisie;
     // End of variables declaration//GEN-END:variables
 }

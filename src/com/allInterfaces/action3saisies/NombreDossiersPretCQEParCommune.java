@@ -9,6 +9,7 @@ package com.allInterfaces.action3saisies;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.classes.action3saisie.Region;
+import com.export.action3saisie.Exports;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -91,7 +92,7 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
 
         j_panel_saisie_par_op = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        j_table_rapport_sig = new javax.swing.JTable();
+        j_table_dossiers_pret_cqe_par_commune = new javax.swing.JTable();
         j_label_annee_saisie1 = new javax.swing.JLabel();
         j_comb_demarche = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
@@ -106,9 +107,9 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
         setTitle("Nombre(s) Dossier(s) Pret CQE Par Commune");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
 
-        j_table_rapport_sig.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        j_table_rapport_sig.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
-        j_table_rapport_sig.setModel(new javax.swing.table.DefaultTableModel(
+        j_table_dossiers_pret_cqe_par_commune.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        j_table_dossiers_pret_cqe_par_commune.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
+        j_table_dossiers_pret_cqe_par_commune.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -131,9 +132,9 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(j_table_rapport_sig);
-        if (j_table_rapport_sig.getColumnModel().getColumnCount() > 0) {
-            j_table_rapport_sig.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane1.setViewportView(j_table_dossiers_pret_cqe_par_commune);
+        if (j_table_dossiers_pret_cqe_par_commune.getColumnModel().getColumnCount() > 0) {
+            j_table_dossiers_pret_cqe_par_commune.getColumnModel().getColumn(3).setResizable(false);
         }
 
         j_label_annee_saisie1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
@@ -223,7 +224,10 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
     }// </editor-fold>//GEN-END:initComponents
 
     private void j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed
-        
+        String[] TextEnTeteTableau = {"Région", "District", "Commune", "Nombre(s) de dossier(s) : "+demarche};
+
+        new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).ExportTableToExcel(this.j_table_dossiers_pret_cqe_par_commune, "DossierPretCQE",TextEnTeteTableau, "Export nombre dossier prêt CQE par commune OK !");
+          
     }//GEN-LAST:event_j_bouton_exporter__nombre_dossiers_pret_cqe_par_communeActionPerformed
 
     private void j_combo_regionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_regionItemStateChanged
@@ -248,7 +252,7 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
             
                         traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getNombresDossiersPretCQE(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
                         
-                        DefaultTableModel tableau = (DefaultTableModel) j_table_rapport_sig.getModel();
+                        DefaultTableModel tableau = (DefaultTableModel) j_table_dossiers_pret_cqe_par_commune.getModel();
                         
                         if(traitements.size() <1){
                         
@@ -292,6 +296,6 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
     private javax.swing.JComboBox<String> j_combo_region;
     private javax.swing.JLabel j_label_annee_saisie1;
     private javax.swing.JPanel j_panel_saisie_par_op;
-    private javax.swing.JTable j_table_rapport_sig;
+    private javax.swing.JTable j_table_dossiers_pret_cqe_par_commune;
     // End of variables declaration//GEN-END:variables
 }

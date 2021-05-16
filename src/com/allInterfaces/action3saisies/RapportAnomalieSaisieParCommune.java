@@ -242,11 +242,10 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
     }// </editor-fold>//GEN-END:initComponents
 
     private void j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
-        
-        String selected_region = (String)this.j_combo_region.getSelectedItem();
+
         String[] TextEnTeteTableau = {"Région", "District", "Commune", "Nombre d'anomalie saisie"};
 
-        new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).ExportTableToExcel(selected_region, this.j_table_rapport_sig, "anomalieSaisie",TextEnTeteTableau, "Export stat anomalie saisie OK !");
+        new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).ExportTableToExcel(this.j_table_rapport_sig, "anomalieSaisie",TextEnTeteTableau, "Export stat anomalie saisie OK !");
     }//GEN-LAST:event_j_bouton_exporter_rapport_anomalies_saisie_par_communeActionPerformed
 
     private void j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_valider_rapport_anomalies_saisie_par_communeActionPerformed

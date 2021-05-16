@@ -88,7 +88,7 @@ public class Exports {
     
 
     
-public void ExportTableToExcel(String reg, JTable table, String nameOfSheet, String[] EnTeteTable, String messageSuccess){
+public void ExportTableToExcel(JTable table, String nameOfSheet, String[] EnTeteTable, String messageSuccess){
     
     new SwingWorker(){
             
@@ -132,10 +132,19 @@ public void ExportTableToExcel(String reg, JTable table, String nameOfSheet, Str
                             
                             XSSFCell cell = row.createCell(j);
                             
-                            if (j == 3) {
-                                cell.setCellValue(Integer.parseInt(tableau.getValueAt(i, j).toString()));
+
+                            if (tableau.getColumnCount() == 3) {
+                                if (j == 2) {
+                                    cell.setCellValue(Integer.parseInt(tableau.getValueAt(i, j).toString()));
+                                }else{
+                                    cell.setCellValue(tableau.getValueAt(i, j).toString());
+                                }
                             }else{
-                                cell.setCellValue(tableau.getValueAt(i, j).toString());
+                                if (j == 3) {
+                                    cell.setCellValue(Integer.parseInt(tableau.getValueAt(i, j).toString()));
+                                }else{
+                                    cell.setCellValue(tableau.getValueAt(i, j).toString());
+                                }
                             }
                             
                         }

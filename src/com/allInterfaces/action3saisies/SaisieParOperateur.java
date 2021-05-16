@@ -8,6 +8,7 @@ package com.allInterfaces.action3saisies;
 
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
+import com.export.action3saisie.Exports;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -86,6 +87,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         j_label_annee_saisie2 = new javax.swing.JLabel();
         j_comb_login = new javax.swing.JComboBox<>();
         j_label_login = new javax.swing.JLabel();
+        j_bouton_exporter_rapport_vectorisation_par_commune = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -180,6 +182,17 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         j_label_login.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_label_login.setText("Sélectionner un Login");
 
+        j_bouton_exporter_rapport_vectorisation_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_bouton_exporter_rapport_vectorisation_par_commune.setText("Exporter");
+        j_bouton_exporter_rapport_vectorisation_par_commune.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        j_bouton_exporter_rapport_vectorisation_par_commune.setMaximumSize(new java.awt.Dimension(67, 33));
+        j_bouton_exporter_rapport_vectorisation_par_commune.setMinimumSize(new java.awt.Dimension(67, 33));
+        j_bouton_exporter_rapport_vectorisation_par_commune.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_bouton_exporter_rapport_vectorisation_par_communeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout j_panel_saisie_par_opLayout = new javax.swing.GroupLayout(j_panel_saisie_par_op);
         j_panel_saisie_par_op.setLayout(j_panel_saisie_par_opLayout);
         j_panel_saisie_par_opLayout.setHorizontalGroup(
@@ -204,38 +217,47 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     .addComponent(j_comb_demarche, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(j_comb_select_critere_date, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(j_bouton_exporter_rapport_vectorisation_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(251, 251, 251))
         );
         j_panel_saisie_par_opLayout.setVerticalGroup(
             j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_comb_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_annee_saisie1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_comb_select_critere_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_annee_saisie2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(j_label_date_saisie)
-                    .addComponent(j_date_debut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(j_label_date_saisie1)
-                    .addComponent(j_date_fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_comb_login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_login))
-                .addGap(43, 43, 43)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_bouton_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_button_reset))
-                .addGap(46, 46, 46))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(j_comb_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_annee_saisie1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(j_comb_select_critere_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_annee_saisie2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(j_label_date_saisie)
+                            .addComponent(j_date_debut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(j_label_date_saisie1)
+                            .addComponent(j_date_fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(j_comb_login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_label_login))
+                        .addGap(43, 43, 43)
+                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(j_bouton_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j_button_reset))
+                        .addGap(52, 52, 52))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(j_bouton_exporter_rapport_vectorisation_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         getContentPane().add(j_panel_saisie_par_op, java.awt.BorderLayout.CENTER);
@@ -486,11 +508,20 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_j_button_resetActionPerformed
 
+    private void j_bouton_exporter_rapport_vectorisation_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_exporter_rapport_vectorisation_par_communeActionPerformed
+
+        String[] TextEnTeteTableau = {"Opérateur", "Commune", "Nombre de saisie: "+demarche};
+
+        new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).ExportTableToExcel(this.j_table_saisie_par_operateur, "StatSaisieOperateur",TextEnTeteTableau, "Export stats saisie opérateur par commune OK !");
+        
+    }//GEN-LAST:event_j_bouton_exporter_rapport_vectorisation_par_communeActionPerformed
+
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton j_bouton_exporter_rapport_vectorisation_par_commune;
     private javax.swing.JButton j_bouton_search;
     private javax.swing.JButton j_button_reset;
     private javax.swing.JComboBox<String> j_comb_demarche;
