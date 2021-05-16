@@ -6,6 +6,7 @@
 package com.export.action3saisie;
 
 
+import com.allInterfaces.action3saisies.Home;
 import com.connectDb.ConnectDb;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,10 +37,19 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.TreeMap;
 import com.classes.action3saisie.Querry;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
+import javax.swing.SwingWorker;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 
 /**
  *
@@ -78,19 +88,111 @@ public class Exports {
     
 
     
-public List<String> getExportTbale(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String[] table, String nameOfSheet){
+public void ExportTableToExcel(String reg, JTable table, String nameOfSheet, String[] EnTeteTable, String messageSuccess){
+    
+    new SwingWorker(){
+            
+            @Override
+            protected Object doInBackground() throws Exception{
+                
+                JFileChooser fc = new JFileChooser();
+                fc.setDialogTitle("Enregistrer le fichier sous ...");
+                
+                FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Fichier( xls et xlsx ) Excel", "xls", "xlsx");
+                fc.setFileFilter(fileFilter);
+                int responseChooser = fc.showSaveDialog(null);
 
-    List retour = new ArrayList();
-    
-    JFileChooser ExcelFileChooser = new JFileChooser();
-    
-    ExcelFileChooser.setDialogTitle("Enregister sous ...");
+                if (responseChooser == JFileChooser.APPROVE_OPTION) {
+                    
+                    XSSFWorkbook wb = new XSSFWorkbook ();
+                    XSSFSheet  sheet = wb.createSheet(nameOfSheet);
+                    
+                    DefaultTableModel tableau = (DefaultTableModel) table.getModel();
+                    
+                    //System.out.println("NOMBRE DE LIGNE : " +tableau.getRowCount());
 
-    XSSFWorkbook wb = new XSSFWorkbook ();
-    XSSFSheet  sheet = wb.createSheet(nameOfSheet);
-    
-    
-    return retour;
+                    TreeMap<Integer, String> EnTeteTableauAExporter = new TreeMap<Integer, String>();
+
+                    for (int i = 0; i < EnTeteTable.length; i++) {
+                      EnTeteTableauAExporter.put(i, EnTeteTable[i]);
+                    }
+
+                    Row headerRow0 = sheet.createRow(0);
+
+                    for (Map.Entry<Integer, String> textTab : EnTeteTableauAExporter.entrySet()) {
+                        Cell headerCell0Ligne3 = headerRow0.createCell(textTab.getKey());
+                        headerCell0Ligne3.setCellValue(textTab.getValue());
+                    }
+                    
+                    for (int i = 0; i < tableau.getRowCount() ; i++) {
+                        
+                        XSSFRow row = sheet.createRow(i+1);
+                        
+                        for (int j = 0; j < tableau.getColumnCount(); j++) {
+                            
+                            XSSFCell cell = row.createCell(j);
+                            
+                            if (j == 3) {
+                                cell.setCellValue(Integer.parseInt(tableau.getValueAt(i, j).toString()));
+                            }else{
+                                cell.setCellValue(tableau.getValueAt(i, j).toString());
+                            }
+                            
+                        }
+                    }
+                    
+                    
+                    try{
+                        FileOutputStream fileSortie = new FileOutputStream(fc.getSelectedFile()+".xlsx");
+                        //BufferedOutputStream excelBuffer = new BufferedOutputStream(fileSortie);
+                        wb.write(fileSortie);
+                        wb.close();
+                        fileSortie.close();
+                        
+                        
+                        return "export-ok";
+                        
+                    }catch(Exception createFileErreur){
+                        //System.out.println(createFileErreur.getMessage());
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, createFileErreur);
+                        JOptionPane.showMessageDialog(null, createFileErreur.getMessage(),"Erreur exportation", JOptionPane.INFORMATION_MESSAGE);
+                        return null;
+                    }
+                      
+                }
+                
+                return null;
+            }
+            
+            
+            
+            
+                @Override
+                protected void done(){
+                    
+                    try {
+                        
+                        try{
+                            if (get().toString().equals("export-ok")) {
+                                
+                                //JOptionPane.showMessageDialog(null, "Export stat anomalie saisie OK!","Export Excel OK", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null, messageSuccess,"Export Excel OK", JOptionPane.INFORMATION_MESSAGE);
+                            } 
+                        }catch(NullPointerException exNull){
+                            //JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de l'exportation\n\n"+exNull.getMessage(),"Erreur exportation Excel", JOptionPane.INFORMATION_MESSAGE);
+                        }
+ 
+                        //System.out.println(get());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            
+            
+        }.execute();
+       
 }
     
     
