@@ -34,7 +34,7 @@ import javax.swing.SwingWorker;
  *
  * @author RAP
  */
-public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
+public class ExportVectorisationSansSaisie extends javax.swing.JInternalFrame {
     
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -57,7 +57,7 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
     /**
      * Creates new form SaisieParOperateur
      */
-    public ExportSaisieSansVectorisation(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
+    public ExportVectorisationSansSaisie(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
@@ -125,7 +125,7 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        setTitle("Exportation Saisie Sans Véctorisation");
+        setTitle("Exportation Véctorisation Sans Saisie");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(550, 450));
 
@@ -434,11 +434,11 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
 
                     //System.out.println("sans date edition appelé");
 
-                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(type_operation)).getListesSaisieSansVectorisation(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
+                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(type_operation)).getListesVectorisationSansSaisie(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
 
                     if(reponse.get(0).equals("success")){
 
-                        int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "Listes saisie sans véctorisation exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "Listes véctorisation sans saisie exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                             if(export == JOptionPane.YES_OPTION){
                                 // ouverture de l'emplacement selectionner par l'utiisateur
@@ -451,7 +451,7 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
                     return "ok-exports";
                     
                     }else{
-                        JOptionPane.showMessageDialog(null, "Aucune saisie sans vecto a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export saisie sans véctorisation impossible", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Aucune véctorisation sans saisie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export véctorisation sans saisie impossible", JOptionPane.INFORMATION_MESSAGE);
                     }
 
                     return null;
@@ -470,7 +470,7 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
                             } 
                         }catch(NullPointerException exNull){
                             j_panel_loading_export.setVisible(false);
-                            System.out.println("VA RETOUR NULL aty @ thread saisie sans vecto");
+                            //System.out.println("VA RETOUR NULL aty @ thread saisie sans vecto");
                         }
                         
                         

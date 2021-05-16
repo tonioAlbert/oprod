@@ -75,7 +75,7 @@ public class Home extends javax.swing.JFrame {
         this.BDD_PWD = PWD;
         this.BDD_ID_PROFIL = ID_PROFIL;
         
-        
+
         initComponents();
         
         this.j_menu_controllesSaisies.setEnabled(false);
@@ -121,6 +121,11 @@ public class Home extends javax.swing.JFrame {
             this.j_menu_item_rapports_sig.setEnabled(true);
         }else{
             this.j_menu_item_rapports_sig.setEnabled(false);
+        }
+        
+        if (this.type_operation.equals("OCFM")) {
+            this.j_menu_item_rapports_sig.setEnabled(false);
+            this.j_menu_stat_vectorisation_par_communes.setText("Rapport vectorisation par commune(s)");
         }
         
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -550,6 +555,11 @@ public class Home extends javax.swing.JFrame {
 
         j_menu_export_listes_vecto_sans_saisie.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_listes_vecto_sans_saisie.setText("Vectorisation sans saisie");
+        j_menu_export_listes_vecto_sans_saisie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_export_listes_vecto_sans_saisieActionPerformed(evt);
+            }
+        });
         j_menu_exports.add(j_menu_export_listes_vecto_sans_saisie);
 
         jMenuBar1.add(j_menu_exports);
@@ -1585,6 +1595,13 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         this.dpContent.add(saisieSansVecto);
         saisieSansVecto.show();
     }//GEN-LAST:event_j_menu_export_listes_saisie_sans_vectoActionPerformed
+
+    private void j_menu_export_listes_vecto_sans_saisieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_vecto_sans_saisieActionPerformed
+        // TODO add your handling code here:
+        ExportVectorisationSansSaisie vectoSansSaisie = new ExportVectorisationSansSaisie(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation);
+        this.dpContent.add(vectoSansSaisie);
+        vectoSansSaisie.show();
+    }//GEN-LAST:event_j_menu_export_listes_vecto_sans_saisieActionPerformed
 
     /**
      * @param args the command line arguments

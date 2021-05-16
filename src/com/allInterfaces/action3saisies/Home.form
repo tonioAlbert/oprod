@@ -404,6 +404,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Vectorisation sans saisie"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="j_menu_export_listes_vecto_sans_saisieActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

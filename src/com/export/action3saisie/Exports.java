@@ -86,6 +86,322 @@ public class Exports {
     }
     
     
+    
+public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, String dist, String c_com,String com, String path){
+
+        List retour = new ArrayList();
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
+        Date date = new Date(System.currentTimeMillis());
+        String realPath = path+"\\"+this.TYPE_OPERATION+"_"+formatter.format(date)+"_VECTO_SANS_SAISIE_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
+        
+        String contrainte =" IS TRUE";
+        if (this.TYPE_OPERATION.equals("OGCF")) {
+            contrainte = " IS NOT TRUE ";
+        }
+
+        int RowResultSet = 0;
+        
+        try {
+            
+            String sql = " SELECT region.nom as region, district.nom AS district, commune.nom AS commune, c_parcelle, id_lot AS numero_planche_plof, limitrophe, superficie, coord_x, coord_y\n" +
+            "   FROM parcelle_cf, region,\n" +
+            "    district,\n" +
+            "    commune\n" +
+            "   WHERE parcelle_cf.type_op IS TRUE\n" +
+            "   AND NOT (parcelle_cf.c_parcelle::text IN ( SELECT demande.id_parcelle\n" +
+            "           FROM demande))\n" +
+            "AND region.id_region::text = district.id_region::text \n" +
+            "  AND district.id_district::text = commune.id_district::text \n" +
+            "  AND parcelle_cf.c_district::text = district.code_district::text \n" +
+            "  AND parcelle_cf.type_op " + contrainte +
+            "           AND region.nom = ?  \n" +
+            "		  AND district.nom = ?        \n" +
+            "			  AND commune.nom = ? \n" +
+            "  AND parcelle_cf.c_commune::text = commune.code_commune::text "; 
+            
+            
+            
+            
+            st = connectDatabase.prepareStatement(sql);    
+            st.setString(1, reg);
+            st.setString(2, dist);
+            st.setString(3, com);;
+            rs = st.executeQuery();
+            
+            System.out.println("RETOUR SQL = " + st);
+            
+
+            
+            try{
+                    
+                // CREATION DU FICHIER
+                String nameOfSheet = "VectoSansSaisie";
+                    
+                    
+                // REMPLISSAGE DANS LE FICHIER
+
+                XSSFWorkbook   wb = new XSSFWorkbook ();
+                XSSFSheet  sheet = wb.createSheet(nameOfSheet);
+
+                // MISE EN PAGE DU FICHIER
+                sheet.getHeader().setCenter("Listes des véctorisations sans saisie");
+                sheet.getFooter().setCenter("CASEF / GEOX2");
+                sheet.getPrintSetup().setLandscape(true);
+                PrintSetup printsetup = sheet.getPrintSetup();
+                sheet.getPrintSetup().setPaperSize(printsetup.A4_PAPERSIZE);
+
+                String[] cellAFixer = ("$1:$5").split(":");
+                CellReference startCellFixed = new CellReference(cellAFixer[0]);
+                CellReference endCellFixed = new CellReference(cellAFixer[1]);
+                CellRangeAddress addressCellAFixer = new CellRangeAddress(startCellFixed.getRow(),
+                endCellFixed.getRow(), startCellFixed.getCol(), endCellFixed.getCol());
+
+                sheet.setRepeatingRows(addressCellAFixer);
+                
+                // FIN MISE EN PAGE
+                
+                
+                Row headerRow0 = sheet.createRow(0);
+
+                XSSFCellStyle cellStyleBold = wb.createCellStyle();
+                Font headerFont = wb.createFont();
+                headerFont.setBold(true);
+                cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
+                cellStyleBold.setFont(headerFont);
+            
+                // create table with data
+                XSSFCellStyle cadre = wb.createCellStyle();
+                cadre.setBorderBottom(BorderStyle.THIN);  
+
+                cellStyleBold.setBorderBottom(BorderStyle.THIN);  
+                cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
+
+                cellStyleBold.setBorderRight(BorderStyle.THIN);  
+                cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
+
+                cellStyleBold.setBorderTop(BorderStyle.THIN);  
+                cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
+
+
+                cellStyleBold.setBorderLeft(BorderStyle.THIN);  
+                cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
+
+                Cell headerCell0 = headerRow0.createCell(0);
+                headerCell0.setCellValue("Région :");
+                headerCell0.setCellStyle(cellStyleBold);
+                headerCell0.setCellStyle(cadre);
+
+                headerCell0 = headerRow0.createCell(1);
+                headerCell0.setCellValue(reg);
+                headerCell0.setCellStyle(cadre);
+
+                headerCell0 = headerRow0.createCell(2);
+                headerCell0.setCellValue("Type Opération : ");
+                headerCell0.setCellStyle(cadre);
+
+                headerCell0 = headerRow0.createCell(3);
+                headerCell0.setCellValue(this.TYPE_OPERATION);
+                headerCell0.setCellStyle(cadre);
+            
+
+//==============================================================================
+                Row headerRow1 = sheet.createRow(1);
+
+                Cell headerCell1 = headerRow1.createCell(0);
+                headerCell1.setCellValue("District :");
+                headerCell1.setCellStyle(cellStyleBold);
+                headerCell1.setCellStyle(cadre);
+
+                headerCell1 = headerRow1.createCell(1);
+                headerCell1.setCellValue(dist);
+                headerCell1.setCellStyle(cadre);
+
+                headerCell1 = headerRow1.createCell(2);
+                headerCell1.setCellValue("Commune : ");
+                headerCell1.setCellStyle(cadre);
+                
+                headerCell1 = headerRow1.createCell(3);
+                headerCell1.setCellValue(com);
+                headerCell1.setCellStyle(cadre);
+// ============================================================================
+                Row headerRow2 = sheet.createRow(2);
+
+                Cell headerCell2 = headerRow2.createCell(0);
+                headerCell2.setCellValue("Code Dist :");
+                headerCell2.setCellStyle(cellStyleBold);
+                headerCell2.setCellStyle(cadre);
+
+                headerCell2 = headerRow2.createCell(1);
+                headerCell2.setCellValue(c_dist);
+                headerCell2.setCellStyle(cadre);
+
+                headerCell2 = headerRow2.createCell(2);
+                headerCell2.setCellValue("Code Com :");
+                headerCell2.setCellStyle(cadre);
+                
+                headerCell2 = headerRow2.createCell(3);
+                headerCell2.setCellValue(c_com);
+                headerCell2.setCellStyle(cadre);
+// ============================================================================ 
+
+                String[] TextEnTeteTableau = {};
+                
+                String Str1 = "id_parcelle, numéro_planche_plof, limitrophe, superficie, coord_x, coord_y";
+                String Str2 = "id_registre, numéro_planche_plof, limitrophe, superficie, coord_x, coord_y";
+            
+            
+                if (this.TYPE_OPERATION.equals("OGCF")) {
+                    TextEnTeteTableau = Str1.split(",");
+                }else{
+                    TextEnTeteTableau = Str2.split(",");
+                }
+
+            TreeMap<Integer, String> EnTeteTableauAExporter = new TreeMap<Integer, String>();
+
+            for (int i = 0; i < TextEnTeteTableau.length; i++) {
+              EnTeteTableauAExporter.put(i, TextEnTeteTableau[i]);
+            }
+
+            //System.out.println("EnTeteTableauAExporter vaut : " + EnTeteTableauAExporter);
+
+            Row headerRow3 = sheet.createRow(4);
+
+            for (Map.Entry<Integer, String> textTab : EnTeteTableauAExporter.entrySet()) {
+                Cell headerCell0Ligne3 = headerRow3.createCell(textTab.getKey());
+                headerCell0Ligne3.setCellValue(textTab.getValue());
+                headerCell0Ligne3.setCellStyle(cellStyleBold);
+            }
+
+
+            
+                    int n = 5;
+                    
+                    String newLimitrophe = "";
+                    
+                    while (rs.next()) {
+
+                        RowResultSet++;
+                        
+                        if (this.TYPE_OPERATION.equals("OCFM")) {
+                            
+                            Row headerRow4 = sheet.createRow(n);
+                        
+                            Cell headerCell8 = headerRow4.createCell(0);
+                            headerCell8.setCellValue("M-"+rs.getString("c_parcelle"));
+                            headerCell8.setCellStyle(cadre);
+                            
+                            Cell headerCell_10 = headerRow4.createCell(1);
+                            headerCell_10.setCellValue(rs.getString("numero_planche_plof"));
+                            headerCell_10.setCellStyle(cadre);
+                            
+                            
+                            if (rs.getString("limitrophe").equals("f")) {
+                                newLimitrophe = "NON";
+                            }else{
+                                newLimitrophe = "OUI";
+                            }
+                            
+                            Cell headerCell_11 = headerRow4.createCell(2);
+                            headerCell_11.setCellValue(newLimitrophe);
+                            headerCell_11.setCellStyle(cadre);
+                            
+                            Cell headerCell_12 = headerRow4.createCell(3);
+                            headerCell_12.setCellValue(rs.getString("superficie"));
+                            headerCell_12.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_13 = headerRow4.createCell(4);
+                            headerCell_13.setCellValue(rs.getString("coord_x"));
+                            headerCell_13.setCellStyle(cadre);
+                            
+                            Cell headerCell_14 = headerRow4.createCell(5);
+                            headerCell_14.setCellValue(rs.getString("coord_y"));
+                            headerCell_14.setCellStyle(cadre);
+                            
+                        }else{
+                            
+                            Row headerRow4 = sheet.createRow(n);
+                        
+                            Cell headerCell8 = headerRow4.createCell(0);
+                            headerCell8.setCellValue(rs.getString("c_parcelle"));
+                            headerCell8.setCellStyle(cadre);
+                            
+                            Cell headerCell_10 = headerRow4.createCell(1);
+                            headerCell_10.setCellValue(rs.getString("numero_planche_plof"));
+                            headerCell_10.setCellStyle(cadre);
+                            
+                            if (rs.getString("limitrophe").equals("f")) {
+                                newLimitrophe = "NON";
+                            }else{
+                                newLimitrophe = "OUI";
+                            }
+                            
+                            Cell headerCell_11 = headerRow4.createCell(2);
+                            headerCell_11.setCellValue(newLimitrophe);
+                            headerCell_11.setCellStyle(cadre);
+                            
+                            Cell headerCell_12 = headerRow4.createCell(3);
+                            headerCell_12.setCellValue(rs.getString("superficie"));
+                            headerCell_12.setCellStyle(cadre);
+                            
+                            
+                            Cell headerCell_13 = headerRow4.createCell(4);
+                            headerCell_13.setCellValue(rs.getString("coord_x"));
+                            headerCell_13.setCellStyle(cadre);
+                            
+                            Cell headerCell_14 = headerRow4.createCell(5);
+                            headerCell_14.setCellValue(rs.getString("coord_y"));
+                            headerCell_14.setCellStyle(cadre);
+                        }
+                        
+
+
+                        n++;
+                    }
+  
+                    FileOutputStream fout = new FileOutputStream(realPath);
+
+                    wb.write(fout);
+                    wb.close();
+                    fout.close();
+
+
+                }catch(Exception createFileErreur){
+
+                    //System.out.println(createFileErreur.getMessage());
+                    
+                    JOptionPane.showMessageDialog(null, "Classes export véctorisaiton sans saisie erreur",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                }
+                     
+            rs.close();
+            st.close();
+            
+            if(RowResultSet == 0){
+                //System.out.println("val fiale de RowResultSet = " + RowResultSet);
+                retour.add("error");
+                retour.add(realPath);
+                // SUPPRESSION DU FICHIER EXPORTE CAR IL Y AVAIT UNE ERREUR LORS DE L'EXPORT
+                Files.deleteIfExists(Paths.get(realPath));
+                //System.out.println("votre commune : "+ com);
+
+            }else{
+                retour.add("success");
+                //JOptionPane.showMessageDialog(null, "Listes CF éditer exporté avec succès !", "Listes CF éditer exporté avec succès ", JOptionPane.INFORMATION_MESSAGE);
+                // ouverture de l'emplacement selectionner par l'utiisateur
+                //Desktop.getDesktop().open(new File(path));
+            }
+  
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+            //throw new RuntimeException();
+            retour.add("error");
+            retour.add("Error executing query: " +ex.getMessage());
+        }
+        
+        //System.out.println(demandes);
+        return retour;
+    }
 
 public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, String dist, String c_com,String com, String path){
         
@@ -96,7 +412,7 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
         
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
         Date date = new Date(System.currentTimeMillis());
-        String realPath = path+"\\"+this.TYPE_OPERATION+"_"+formatter.format(date)+"_SAISIE_SANS_VECTO"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
+        String realPath = path+"\\"+this.TYPE_OPERATION+"_"+formatter.format(date)+"_SAISIE_SANS_VECTO_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
 
         int RowResultSet = 0;
         
