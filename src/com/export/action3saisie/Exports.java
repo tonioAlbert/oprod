@@ -308,7 +308,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
                             Row headerRow4 = sheet.createRow(n);
                         
                             Cell headerCell8 = headerRow4.createCell(0);
-                            headerCell8.setCellValue("M-"+rs.getString("c_parcelle"));
+                            headerCell8.setCellValue(rs.getString("c_parcelle"));
                             headerCell8.setCellStyle(cadre);
                             
                             Cell headerCell_10 = headerRow4.createCell(1);
