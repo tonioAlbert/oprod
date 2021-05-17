@@ -94,17 +94,16 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
         Date date = new Date(System.currentTimeMillis());
         String realPath = path+"\\"+this.TYPE_OPERATION+"_"+formatter.format(date)+"_VECTO_SANS_SAISIE_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
-        
+        String sql = "";
         String contrainte =" IS TRUE";
-        if (this.TYPE_OPERATION.equals("OGCF")) {
-            contrainte = " IS NOT TRUE ";
-        }
-
-        int RowResultSet = 0;
         
-        try {
+        System.out.println("TYPE OPERATION DANS vecto sans saisie = " + this.TYPE_OPERATION);
+        
+        if (this.TYPE_OPERATION.equals("OGCF")) {
+            //contrainte = " IS NOT TRUE ";
             
-            String sql = " SELECT region.nom as region, district.nom AS district, commune.nom AS commune, c_parcelle, id_lot AS numero_planche_plof, limitrophe, superficie, coord_x, coord_y\n" +
+            
+            sql = " SELECT region.nom as region, district.nom AS district, commune.nom AS commune, c_parcelle, id_lot AS numero_planche_plof, limitrophe, superficie, coord_x, coord_y\n" +
             "   FROM parcelle_cf, region,\n" +
             "    district,\n" +
             "    commune\n" +
@@ -114,12 +113,33 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
             "AND region.id_region::text = district.id_region::text \n" +
             "  AND district.id_district::text = commune.id_district::text \n" +
             "  AND parcelle_cf.c_district::text = district.code_district::text \n" +
-            "  AND parcelle_cf.type_op " + contrainte +
+            "  AND parcelle_cf.type_op IS NOT TRUE " +
             "           AND region.nom = ?  \n" +
             "		  AND district.nom = ?        \n" +
             "			  AND commune.nom = ? \n" +
             "  AND parcelle_cf.c_commune::text = commune.code_commune::text "; 
             
+        }else{
+            sql ="SELECT region.nom as region, district.nom AS district, commune.nom AS commune, CONCAT('M-', c_district, '-', c_commune, '-F-', c_fokontany, c_hameau, '-',num_parcelle ) AS c_parcelle, id_lot AS numero_planche_plof, limitrophe, superficie, coord_x, coord_y\n" +
+            "              FROM parcelle_cf, region,\n" +
+            "               district,\n" +
+            "               commune\n" +
+            "              WHERE parcelle_cf.type_op IS TRUE\n" +
+            "              AND NOT (parcelle_cf.c_parcelle::text IN ( SELECT demande.id_parcelle\n" +
+            "                      FROM demande))\n" +
+            "           AND region.id_region::text = district.id_region::text \n" +
+            "             AND district.id_district::text = commune.id_district::text \n" +
+            "             AND parcelle_cf.c_district::text = district.code_district::text \n" +
+            "             AND parcelle_cf.type_op IS TRUE \n" +
+            "           AND region.nom = ?  \n" +
+            "		  AND district.nom = ?        \n" +
+            "			  AND commune.nom = ? \n" +
+            "             AND parcelle_cf.c_commune::text = commune.code_commune::text";
+        }
+
+        int RowResultSet = 0;
+        
+        try {
             
             
             

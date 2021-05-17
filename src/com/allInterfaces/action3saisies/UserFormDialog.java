@@ -8,8 +8,6 @@ package com.allInterfaces.action3saisies;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Hash;
 import com.classes.action3saisie.Utilisateurs;
-import java.awt.Color;
-import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -27,7 +25,7 @@ public class UserFormDialog extends javax.swing.JFrame {
     private String BDD_USER = "";
     private String BDD_PWD = "";
     
-    private String placheHolder = "Entrez ici votre nom d'utilisateur";
+    private String placheHolder = "Votre nom d'utilisateur";
     
     
     /**
@@ -73,8 +71,6 @@ public class UserFormDialog extends javax.swing.JFrame {
         } 
         
         
-        
-        
     }
 
     /**
@@ -101,7 +97,6 @@ public class UserFormDialog extends javax.swing.JFrame {
         setName("jf_login"); // NOI18N
 
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_username.setText("gaetan");
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_username.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -156,7 +151,6 @@ public class UserFormDialog extends javax.swing.JFrame {
         jLabel2.setText("Mot de passe");
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_password.setText("2021+");
         txt_password.setToolTipText("Mot de passe");
         txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
