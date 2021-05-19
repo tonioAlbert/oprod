@@ -1251,7 +1251,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
                     Row headerRow7 = sheet.createRow(n);
 
                     Cell headerCell7 = headerRow7.createCell(0);
-                    headerCell7.setCellValue(rs.getString("lot"));
+                    headerCell7.setCellValue(rs.getString("lot") + " (Equipe : " +rs.getString("code_equipe") + ")");
                     headerCell7.setCellStyle(cadre);
 
 
@@ -1266,6 +1266,33 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
                     
                     n++;
             }
+            
+            
+                        RegionUtil.setBorderBottom(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J1:J1"), sheet);
+
+                        RegionUtil.setBorderTop(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J1:J1"), sheet);
+
+                        RegionUtil.setBorderRight(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J1:J1"), sheet);
+
+                        RegionUtil.setBorderLeft(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J1:J1"), sheet);
+                        
+                        
+            
+                        RegionUtil.setBorderBottom(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J2:J2"), sheet);
+
+                        RegionUtil.setBorderTop(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J2:J2"), sheet);
+
+                        RegionUtil.setBorderRight(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J2:J2"), sheet);
+
+                        RegionUtil.setBorderLeft(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J2:J2"), sheet);
             
             
                 String[] CelluleAMettreDeBordure = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
@@ -1559,7 +1586,7 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
             
 
             //headerCell0 = headerRow0.createCell(9);
-            //headerCell0.setCellValue("xxxxx n° equipe");
+            //headerCell0.setCellValue("");
 
 
             Row headerRow1 = sheet.createRow(1);
@@ -1742,7 +1769,7 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
                     Row headerRow7 = sheet.createRow(n);
 
                     Cell headerCell7 = headerRow7.createCell(0);
-                    headerCell7.setCellValue(rs.getString("lot"));
+                    headerCell7.setCellValue(rs.getString("lot") + " (Equipe : " +rs.getString("code_equipe") + ")");
                     headerCell7.setCellStyle(cadre);
 
 
@@ -1759,7 +1786,35 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
             }
             
             
-                String[] CelluleAMettreDeBordure = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+            
+                        RegionUtil.setBorderBottom(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J1:J1"), sheet);
+
+                        RegionUtil.setBorderTop(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J1:J1"), sheet);
+
+                        RegionUtil.setBorderRight(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J1:J1"), sheet);
+
+                        RegionUtil.setBorderLeft(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J1:J1"), sheet);
+                        
+                        
+            
+                        RegionUtil.setBorderBottom(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J2:J2"), sheet);
+
+                        RegionUtil.setBorderTop(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J2:J2"), sheet);
+
+                        RegionUtil.setBorderRight(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J2:J2"), sheet);
+
+                        RegionUtil.setBorderLeft(BorderStyle.THIN,
+                        CellRangeAddress.valueOf("J2:J2"), sheet);
+                        
+            
+                String[] CelluleAMettreDeBordure = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "J"};
 
 
                 for(int i = 0; i < CelluleAMettreDeBordure.length; i++){

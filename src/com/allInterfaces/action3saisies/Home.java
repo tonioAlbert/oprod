@@ -724,19 +724,28 @@ public class Home extends javax.swing.JFrame {
 
     }//GEN-LAST:event_j_menu_stat_saisie_par_operateurActionPerformed
     
-    private String formats(String id_table, String nameOfTable, String col_updated){
+    private String formats(String id_table, String nameOfTable, String col_updated, String operation){
         
         Map<String, String> tabPrenoms = new HashMap<>();
         String newFirstName = "";
         String idPersphys = "";
         Boolean etat = false;
+        String filtreOperation = " ";
         
-        
+        if (nameOfTable.toLowerCase().equals("demande")) {
+            if (operation.toLowerCase().equals("ogcf")) {
+                filtreOperation = " WHERE type_op = 'ogcf' AND "+col_updated + " IS NOT NULL ";
+            }else{
+                filtreOperation = " WHERE type_op = 'ocm' AND "+col_updated + " IS NOT NULL ";
+            }
+        }
+
         try {
-            String q = " SELECT "+id_table+" , "+col_updated+" FROM "+nameOfTable+" ";
+            String q = " SELECT "+id_table+" , "+col_updated+" FROM "+nameOfTable + filtreOperation+" ";
+
+            
             st = connectDatabase.prepareStatement(q);    
             rs = st.executeQuery();
-            
             
             while(rs.next()){
                 tabPrenoms.put(rs.getString(id_table), rs.getString(col_updated));
@@ -759,11 +768,12 @@ public class Home extends javax.swing.JFrame {
                     
                     String q2 = "UPDATE "+nameOfTable+" SET "+col_updated+" = ? WHERE "+id_table+" = ? ;";
                     
-                    
                     st = connectDatabase.prepareStatement(q2);
                     st.setString(1, newFirstName);
                     st.setString(2, idPersphys);
                     st.executeUpdate();
+                    
+                    //System.out.println("SQL = "+ st);
                     //System.out.println("MISE A JOUR : "+st);
                     //Persphys.setPrenom(idPersphys, newFirstName);
                     retour = "ok";
@@ -819,7 +829,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
                     
                     // IL FAUT METTRE A JOUR LA BASE DE DONNEES
                     
-                    String q_update = "UPDATE "+nameOfTable+" SET "+col_updated+" = ? WHERE "+id_table+" = ? ;";
+                    String q_update = "UPDATE "+nameOfTable+" SET "+col_updated+" = ? WHERE "+id_table+" = ? ";
                     st = connectDatabase.prepareStatement(q_update);
                     st.setString(1, newFirstName);
                     st.setString(2, idTable);
@@ -869,7 +879,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatages nom prenoms ...");
                     
-                    if(formats("id_persphys", "persphys", "prenom").equals("ok")) return "ok-formatages";
+                    if(formats("id_persphys", "persphys", "prenom", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -927,7 +937,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatage lieu dit ...");
                     
-                    if(formats("id_demande", "demande", "lieu_dit").equals("ok")) return "ok-formatages";
+                    if(formats("id_demande", "demande", "lieu_dit", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -1006,7 +1016,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatages des voisins...");
                     
-                    if(formats("id_demande", "demande", "v_nord").equals("ok") && formats("id_demande", "demande", "v_sud").equals("ok") && formats("id_demande", "demande", "v_est").equals("ok")&& formats("id_demande", "demande", "v_ouest").equals("ok")) return "ok-formatages";
+                    if(formats("id_demande", "demande", "v_nord", type_operation).equals("ok") && formats("id_demande", "demande", "v_sud", type_operation).equals("ok") && formats("id_demande", "demande", "v_est", type_operation).equals("ok")&& formats("id_demande", "demande", "v_ouest", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -1060,7 +1070,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatage nom des parent(s) (père et mère) ...");
                     
-                    if(formats("id_persphys", "persphys", "nom_pere").equals("ok") && formats("id_persphys", "persphys", "nom_mere").equals("ok")) return "ok-formatages";
+                    if(formats("id_persphys", "persphys", "nom_pere", type_operation).equals("ok") && formats("id_persphys", "persphys", "nom_mere", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -1116,7 +1126,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatage charge(s) ...");
                     
-                    if(formats("id_demande", "demande", "charges").equals("ok")) return "ok-formatages";
+                    if(formats("id_demande", "demande", "charges", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -1169,7 +1179,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatage Lieu CIN ...");
                     
-                    if(formats("id_persphys", "persphys", "cni_lieu").equals("ok")) return "ok-formatages";
+                    if(formats("id_persphys", "persphys", "cni_lieu", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -1222,7 +1232,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatage Lieu Acte de Naissance ...");
                     
-                    if(formats("id_persphys", "persphys", "acn_lieu").equals("ok")) return "ok-formatages";
+                    if(formats("id_persphys", "persphys", "acn_lieu", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -1295,7 +1305,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatage adresse des demandeurs ...");
                     
-                    if(formats("id_persphys", "persphys", "adresse").equals("ok")) return "ok-formatages";
+                    if(formats("id_persphys", "persphys", "adresse", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -1409,7 +1419,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatage lieu de naissance ...");
                     
-                    if(formats("id_persphys", "persphys", "naissance_lieu").equals("ok")) return "ok-formatages";
+                    if(formats("id_persphys", "persphys", "naissance_lieu", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
@@ -1465,7 +1475,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
                     System.out.println("Début formatage consistance ...");
                     
-                    if(formats("id_demande", "demande", "consistance").equals("ok")) return "ok-formatages";
+                    if(formats("id_demande", "demande", "consistance", type_operation).equals("ok")) return "ok-formatages";
                     
                     return null;
                 }
