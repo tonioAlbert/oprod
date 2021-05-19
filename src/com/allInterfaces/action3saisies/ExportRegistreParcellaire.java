@@ -442,7 +442,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                 
             List reponsePersMorale = new ArrayList(new Exports(BDD_HOST, BDD_PORT,BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
 
-                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "RP provisoire exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "RP provisoire exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 
                     if(export == JOptionPane.YES_OPTION){
                         // ouverture de l'emplacement selectionner par l'utiisateur
@@ -464,7 +464,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                 
                 if(responsePersonneMorale.equals("success-personne-morale")){
                     
-                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "RP provisoire exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "RP provisoire exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 
                     if(export == JOptionPane.YES_OPTION){
                         // ouverture de l'emplacement selectionner par l'utiisateur
