@@ -489,6 +489,8 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
             st.setString(4, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION.toLowerCase()));
             rs = st.executeQuery();
             
+            System.out.println("saisie sans vecto : "+ st);
+            
 
             
             try{

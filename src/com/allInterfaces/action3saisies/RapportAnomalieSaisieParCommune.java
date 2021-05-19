@@ -104,7 +104,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Rapport Anomalies Saisies Par Commune");
+        setTitle("Rapport Anomalies Bloquantes Saisies Par Commune");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setName("jframe_rapport_anomalie_saisie"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1224, 396));
