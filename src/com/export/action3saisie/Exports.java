@@ -146,7 +146,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
             st = connectDatabase.prepareStatement(sql);    
             st.setString(1, reg);
             st.setString(2, dist);
-            st.setString(3, com);;
+            st.setString(3, com);
             rs = st.executeQuery();
             
             System.out.println("RETOUR SQL = " + st);

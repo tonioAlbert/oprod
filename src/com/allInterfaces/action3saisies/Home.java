@@ -8,6 +8,7 @@ package com.allInterfaces.action3saisies;
 
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
+import com.classes.action3saisie.Region;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
 import java.sql.Connection;
@@ -1626,7 +1627,20 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_j_menu_export_listes_vecto_sans_saisieActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        //Long retourSequence = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getValSequenceTableDemande();
+        
+        // RECUPERATION DES DONNEES DANS LA TABLE REGION DANS OPROD
+        List <String[]> regions = new Region(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getAllRegionsForPLOF();
+        
+ System.out.println("regions SIZE VAUT  = " + regions.size());
+ 
+
+        for(int i = 0; i< regions.size(); i++){
+            System.out.println("regions id oprod  = " + regions.get(i)[0] + " code region = " +  regions.get(i)[1]);
+        }
+        
+        
+        //System.out.println("retourSequence vaut = "  + retourSequence);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**

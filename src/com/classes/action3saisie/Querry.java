@@ -36,6 +36,7 @@ public class Querry {
     PreparedStatement st;
     ResultSet rs;
     private final Connection connectDatabase;
+    private final Connection connectDatabasePLOF;
     
     HashMap <String, String> m = new HashMap <> () ;
     
@@ -51,7 +52,43 @@ public class Querry {
         this.BDD_PWD = PWD;
         
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
+        
+        
+        connectDatabasePLOF = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
     }
+    
+    
+    
+    
+    
+public Long getValSequenceTableDemande(){
+        
+        long lastValue = 0;
+
+            try {
+
+                String sql = "SELECT last_value, increment_by FROM seq_pk_demande_id_demande";
+            
+                st = connectDatabasePLOF.prepareStatement(sql);
+                rs = st.executeQuery();
+                                
+                int n = 1;
+
+                while(rs.next()){
+                    lastValue = rs.getLong("last_value");  
+                    n++; 
+                }
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+
+        return lastValue;
+    }
+    
     
 
     public List <String[] > getVectorisationParCommune(String reg, String demarche){
