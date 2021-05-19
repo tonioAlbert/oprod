@@ -524,6 +524,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_exports.add(j_menu_export_listes_anomalies);
         j_menu_exports.add(jSeparator5);
 
+        j_menu_export_listes_dossiers_pret_cqe.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         j_menu_export_listes_dossiers_pret_cqe.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_listes_dossiers_pret_cqe.setText("Registre Parcellaire Provisoire (Prêt CQE)");
         j_menu_export_listes_dossiers_pret_cqe.addActionListener(new java.awt.event.ActionListener() {
@@ -534,6 +535,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_exports.add(j_menu_export_listes_dossiers_pret_cqe);
         j_menu_exports.add(jSeparator6);
 
+        j_menu_export_listes_cf_editer_par_commune.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         j_menu_export_listes_cf_editer_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_export_listes_cf_editer_par_commune.setText("Listes CF éditer");
         j_menu_export_listes_cf_editer_par_commune.addActionListener(new java.awt.event.ActionListener() {
