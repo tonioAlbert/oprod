@@ -663,6 +663,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_parametres.setText("Paramètres");
         j_menu_parametres.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
+        j_menu_config_bdd.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         j_menu_config_bdd.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_menu_config_bdd.setText("Configuration base de données");
         j_menu_config_bdd.addActionListener(new java.awt.event.ActionListener() {

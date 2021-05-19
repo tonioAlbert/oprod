@@ -1,0 +1,63 @@
+[33m5c57f47[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m Modification requette formatage donnees dans la table demande , ajoute cadre de la colonne J dans l'export des registres anomalies
+[33ma1d0c0a[m Correction erreur de concatenation sur n° parcelle vecto sans saisie
+[33maa9547d[m Modification requette vecto sans saisie
+[33m8c801c9[m Ajout fonctinonnalité orphelin (saisie sans vecto et vecto sans saisie)
+[33m7bcc600[m Ajout fonctionnalité saisie sans vecto
+[33m26359b2[m Ajout fonctionnalité export vers Excel sur les tables
+[33med703ac[m Refactiring code export
+[33m6ef2d50[m Avant terminaison export excel - vérifier si nom fichier vide avant enregistrement
+[33mc4a4e6b[m Correction bouble export - invrementantion de la valeur de 'i' par 1
+[33m6fd2e19[m Première couche export des tables et correction requette saisie par commune >> ajout filtre avis_crl is true
+[33mf397cfc[m Fixed bug sur loading export qui s'affiche toujours même pour le retour de valuer NULL
+[33m5836532[m Correction texte patientez >> En cours...
+[33m40b1c6b[m Ajout information patientez lors export sur Excel
+[33mce2a85d[m Ajout stat vectorisation par commune
+[33m7303558[m Amélioration fonction modification fichier de configuration
+[33m5c5a7c3[m Ajout foction droits utilisateur
+[33m6014151[m Correction français voulez-vouz
+[33m3a546ae[m Changement curseur en main
+[33m265e4d1[m Première amélioration formatage
+[33m95a712a[m rezisable all fenêtres
+[33mf3bbe9d[m rezisable fenetre nombre dossiers pret cqe
+[33m9cc0111[m Ajout placeholder sur le champ username dans la fenetre de login
+[33m5e013aa[m Correction français : un région To une région
+[33m1594c4e[m Mofication alignement bouton exporter
+[33m3f8c393[m Revert "A annuler -- annulation gras sur les bouttons"
+[33m8674c51[m A annuler -- annulation gras sur les bouttons
+[33mac432ae[m Modification police et taille de composants - Nuémro_2
+[33mcf7bfd5[m Modification police et taille de composants
+[33maeaa7ea[m Ajout événement click sur boutton entré sur les champs et boutton
+[33mbe6ad38[m Deuxième modification menu modif fichier de conf
+[33m0853e8d[m Fix conflict merge
+[33me6588c3[m[33m ([m[1;32mthread[m[33m)[m Finition thread formatage des données et première rectification modification fichier de configuration
+[33m61bc696[m Modification mise en forme classe Home
+[33m6b6d297[m Première amélioration thread sur le boutton formatages des voisins
+[33m5ef4688[m Ajout fonctionnalité multi-tache ( Thread )  sur export RP et Formatage des données
+[33m3c8b4b6[m Modification label menu Registe parcellaire provisoire To Registre Parcellaire Provisoire (pret CQE)
+[33m1b2e16d[m[33m ([m[1;32mchangement-fonct[m[33m)[m Terminaison Fonctionnalité Export RP avec Personne Morale - OK
+[33m83a4134[m Correction nom feuille excel exporté sur RP provisoire - personne physique
+[33m28b78a4[m Fixed bug login et correction export RP Prov
+[33m04497f7[m Rectification modidification effectué sur le GUI se connecter - bugs sur opération
+[33m9dbd1e6[m Fonctionnalité stats Dossier pret CQE OK
+[33m843b78d[m Modification fichier git ignore - ignoré les dosseris (bckp, conf, ect)
+[33m67426d1[m Ajout fonctionnalité stats pret CQE
+[33m87023b9[m Ajout fonctionnalité stats pret CQE
+[33mb9d8925[m Correction fonctionnalité export registres anomqlies
+[33mde78f0c[m Correction absence type opération sur nom fichier exporté et aprerçu avant impression
+[33m3e13a7b[m Ajout finale fonctionnalité des anomalies Bloquantes et Non Bloquantes
+[33m572b383[m Ajout fonction conversion oération 'OCM' To 'OCFM'
+[33mf5965fe[m ajout autres fonctionnalités
+[33mff15fa6[m ajou menu modification config BDD
+[33m6357b18[m ajout evenement sur les champs, boutons interface login
+[33mb8b7cbd[m ajout autres fichiers ngambany
+[33m4007a56[m finition projet - tous fonctionnalités majeur marche :)
+[33m3cf0f0c[m Ajout des fonctionnalités (rapports, ect.) Mais avec erreur d'export anomalie et RP
+[33m9266f45[m Rename package all_interface with true name to all_interafce_a2_saisies
+[33m252da1c[m Ajout d'autres fonctionnalité
+[33m10658f5[m Add focntion export listes CF (premiere edition)
+[33mc5aae90[m Preemiere modification export listes CF editer. (Reste alignement et mise en page)
+[33mad3a891[m Premiere Refactoring du code
+[33m7095d8b[m Ajout type opérattion sur le menu d'authentification
+[33m3998366[m Finalisasion_1 de la cration du dossier et du fichier de configuration
+[33m331e20f[m Premire version de dossier et fichier de conf
+[33m55f6f35[m Mon premier commit
