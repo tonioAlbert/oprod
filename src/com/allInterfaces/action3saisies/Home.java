@@ -201,7 +201,6 @@ public class Home extends javax.swing.JFrame {
         j_menu_controles_saisie = new javax.swing.JMenuItem();
         j_menu_parametres = new javax.swing.JMenu();
         j_menu_config_bdd = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         JLogin.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         JLogin.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
@@ -676,14 +675,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_parametres.add(j_menu_config_bdd);
-
-        jMenuItem1.setText("jMenuItem1");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        j_menu_parametres.add(jMenuItem1);
 
         jMenuBar1.add(j_menu_parametres);
 
@@ -1626,23 +1617,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         vectoSansSaisie.show();
     }//GEN-LAST:event_j_menu_export_listes_vecto_sans_saisieActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        //Long retourSequence = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getValSequenceTableDemande();
-        
-        // RECUPERATION DES DONNEES DANS LA TABLE REGION DANS OPROD
-        List <String[]> regions = new Region(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getAllRegionsForPLOF();
-        
- System.out.println("regions SIZE VAUT  = " + regions.size());
- 
-
-        for(int i = 0; i< regions.size(); i++){
-            System.out.println("regions id oprod  = " + regions.get(i)[0] + " code region = " +  regions.get(i)[1]);
-        }
-        
-        
-        //System.out.println("retourSequence vaut = "  + retourSequence);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -1687,7 +1661,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar_home;
     private javax.swing.JPopupMenu.Separator jSeparator1;
