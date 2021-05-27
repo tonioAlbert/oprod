@@ -8,7 +8,6 @@ package com.allInterfaces.action3saisies;
 
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
-import com.classes.action3saisie.Region;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
 import java.sql.Connection;
@@ -37,12 +36,12 @@ public class Home extends javax.swing.JFrame {
     private static Connection connectDatabase;
     private static PreparedStatement st;
     private static ResultSet rs;
-    private String userName;
-    private String pswd;
-    private String type_operation;
+    private final String userName;
+    private final String pswd;
+    private final String type_operation;
 
     private String BDD_HOST = "";
-    private Integer BDD_PORT;
+    private final Integer BDD_PORT;
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
@@ -201,6 +200,12 @@ public class Home extends javax.swing.JFrame {
         j_menu_controles_saisie = new javax.swing.JMenuItem();
         j_menu_parametres = new javax.swing.JMenu();
         j_menu_config_bdd = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         JLogin.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         JLogin.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
@@ -675,6 +680,36 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_parametres.add(j_menu_config_bdd);
+
+        jMenu1.setText(" changer de thème");
+        jMenu1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+
+        jMenuItem1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        jMenuItem1.setText("Windows");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        jMenuItem2.setText("Windows Classique");
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        jMenuItem3.setText("Nimbus");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        jMenuItem4.setText("Dracula");
+        jMenu1.add(jMenuItem4);
+
+        jMenuItem5.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        jMenuItem5.setText("Métal");
+        jMenu1.add(jMenuItem5);
+
+        j_menu_parametres.add(jMenu1);
 
         jMenuBar1.add(j_menu_parametres);
 
@@ -1617,6 +1652,25 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         vectoSansSaisie.show();
     }//GEN-LAST:event_j_menu_export_listes_vecto_sans_saisieActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1660,7 +1714,13 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar_home;
     private javax.swing.JPopupMenu.Separator jSeparator1;

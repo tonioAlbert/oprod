@@ -10,6 +10,7 @@ import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.classes.action3saisie.Region;
 import com.export.action3saisie.Exports;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -104,7 +105,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Rapport Anomalies Bloquantes Saisies Par Commune");
+        setTitle("( Rapport ) Nombre de Formulaire présentant des Anomalies Bloquantes Par Commune");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setName("jframe_rapport_anomalie_saisie"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1224, 396));
@@ -256,7 +257,6 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
 
                             // réinisialisation des champs
                             Formats.resetTable(tableau);
-
 
                             // BOUCLE POUR INSERTION DES DONNEES DANS LE TABLEAU
                             for (int a = 0; a < traitements.size(); a++) {

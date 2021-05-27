@@ -94,9 +94,12 @@ public class UserFormDialog extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Se Connecter");
+        setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        setMaximumSize(new java.awt.Dimension(426, 242));
         setName("jf_login"); // NOI18N
 
         txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_username.setText("gaetan");
         txt_username.setToolTipText("Nom d'utilisateur");
         txt_username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_username.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -151,6 +154,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         jLabel2.setText("Mot de passe");
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_password.setText("2021+");
         txt_password.setToolTipText("Mot de passe");
         txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -282,8 +286,8 @@ public class UserFormDialog extends javax.swing.JFrame {
 
 
                 }else{
-                    System.out.print("Mot de passe saisie incorrect !");
-                    JOptionPane.showMessageDialog(null, "Mot de passe saisie incorrect !","Erreur Mot de passe", JOptionPane.INFORMATION_MESSAGE); 
+                    System.out.print("Mot de passe incorrect !");
+                    JOptionPane.showMessageDialog(null, "Mot de passe incorrect !","Erreur Mot de passe", JOptionPane.INFORMATION_MESSAGE); 
                 }
 
             }
