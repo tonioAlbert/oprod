@@ -1,4 +1,4 @@
 /dist/
-/build/
-/bckp/
-/conf/
+/build/*
+/bckp/*
+/conf/*

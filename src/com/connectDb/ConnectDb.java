@@ -38,31 +38,12 @@ public class ConnectDb {
         try{
             
             Class.forName("org.postgresql.Driver");
-            
-            //String typeBase = "jdbc:postgresql://";
-            
             String url = "jdbc:postgresql://"+this.host+":"+this.port+"/"+this.dbname;
-            //String user = this.user;
-            //String passwd = "2021.";
-            //System.out.println("URL vaut : " + url);
-            
             connexion = DriverManager.getConnection(url, this.user, this.password);
-            
-            //if(connexion != null){
-                //System.out.println("Connexion dans la BDD OK..|||");
-                
-            //    return  connexion;
-            //}else{
-                //System.out.println("Impossible de connecter à la base de données");
-            //    connexion.close();
-            //    return  null;
-            //}
-            
             return connexion;
 
         }catch(Exception e){
             //System.out.println(e.getMessage());
-            
             return null;
         }
         
