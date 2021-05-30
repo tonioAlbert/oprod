@@ -355,7 +355,7 @@ public class A3_suivi_saisie {
             //JOptionPane.showMessageDialog(null, "Impossible de se connecter à la basez de données !\n\nVérifier votre fichier de configuration", "Connexion dans la base de données impossible", JOptionPane.INFORMATION_MESSAGE);
 
             JOptionPane jop_echec_connexion_bdd = new JOptionPane();
-            int option_bdd = jop_echec_connexion_bdd.showConfirmDialog(null, "Une erreur s'est produise lors de la connexion dans la base de données !\n\nConnexion dans la base de données impossible !\n\nVoulez-vous lancer le processus de création du fichier de conf ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int option_bdd = jop_echec_connexion_bdd.showConfirmDialog(null, "Une erreur s'est produise lors de la connexion dans la base de données ! ( Connexion impossible ! )\n\n"+ex.getMessage()+"\n\nVoulez-vous lancer le processus de création du fichier de conf ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             
             if(option_bdd == JOptionPane.OK_OPTION){
                 

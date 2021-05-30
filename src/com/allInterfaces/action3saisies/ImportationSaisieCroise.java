@@ -6,7 +6,9 @@
 package com.allInterfaces.action3saisies;
 
 import com.classes.action3saisie.Formats;
+import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.Base64;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.json.simple.JSONObject;
 
 
@@ -30,7 +34,9 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
     private String BDD_USER = "";
     private String BDD_PWD = "";
     private static String type_operation;
+    private final String c = "Séléctionner une critère de recherche";
     
+    List <String[]> saisieDesOperateurs;
     
     /**
      * Creates new form UserFormDialog
@@ -52,7 +58,17 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
         this.txt_nom_hote.setText(host);
         this.txt_port.setText(port.toString());
         this.txt_password.setText(password);
-        this.jLabel3.setVisible(false);
+        this.j_label_info_base_source.setVisible(false);
+        
+        btn_launche_process.setEnabled(false);
+        this.jlabel_base_source.setText("Base de données source : ");
+        j_combo_select_critere.setEnabled(false);
+        
+        btn_valider.setVisible(false);
+        this.j_label_info_base_source.setText("");
+        this.jDate_debut.setEnabled(false);        
+        this.jDate_fin.setEnabled(false);
+        this.btn_rechercher.setEnabled(false); 
             
 
     }
@@ -67,21 +83,34 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        txt_username = new javax.swing.JTextField();
         btn_annuler = new javax.swing.JButton();
         btn_valider = new javax.swing.JButton();
+        j_label_info_base_source = new javax.swing.JLabel();
+        jpanel_en_tete = new javax.swing.JPanel();
+        j_combo_critere = new javax.swing.JComboBox<>();
+        j_combo_select_critere = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jDate_debut = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jDate_fin = new com.toedter.calendar.JDateChooser();
+        btn_rechercher = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        txt_username = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        j_label_nom_hote = new javax.swing.JLabel();
-        j_label_port = new javax.swing.JLabel();
-        j_label_nom_bdd = new javax.swing.JLabel();
-        txt_port = new javax.swing.JTextField();
         txt_password = new javax.swing.JTextField();
+        j_label_nom_hote = new javax.swing.JLabel();
         txt_nom_hote = new javax.swing.JTextField();
+        j_label_port = new javax.swing.JLabel();
+        txt_port = new javax.swing.JTextField();
+        j_label_nom_bdd = new javax.swing.JLabel();
         txt_nom_bdd = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
+        btn_verifier_connexion = new javax.swing.JButton();
+        btn_launche_process = new javax.swing.JButton();
+        jlabel_base_source = new javax.swing.JLabel();
+        jlabel_name_base_source = new javax.swing.JLabel();
+        j_label_info_critere_recherche = new javax.swing.JLabel();
 
         setIconifiable(true);
         setMaximizable(true);
@@ -89,14 +118,6 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
         setTitle("Import Saisie Croisé");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setName("jf_login"); // NOI18N
-
-        txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_username.setToolTipText("Nom d'utilisateur");
-        txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_usernameKeyPressed(evt);
-            }
-        });
 
         btn_annuler.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         btn_annuler.setText("Annuler");
@@ -126,60 +147,250 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
             }
         });
 
+        j_label_info_base_source.setFont(new java.awt.Font("Arial Narrow", 2, 14)); // NOI18N
+        j_label_info_base_source.setText(" ");
+        j_label_info_base_source.setFocusable(false);
+        j_label_info_base_source.setName("label_base_cible_ok"); // NOI18N
+
+        jpanel_en_tete.setBorder(javax.swing.BorderFactory.createTitledBorder("Critère de recherche"));
+        jpanel_en_tete.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+
+        j_combo_critere.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_combo_critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère de recherche", "Par Date", "Par Intervale de date", "Par Utilisateurs", "Par Lot" }));
+        j_combo_critere.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                j_combo_critereItemStateChanged(evt);
+            }
+        });
+
+        j_combo_select_critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner" }));
+
+        jLabel7.setText("Séléctionner votre choix");
+
+        jDate_debut.setDateFormatString("dd/MM/yyyy");
+
+        jLabel6.setText("Date et Heure début");
+
+        jLabel5.setText("Date et Heure fin");
+
+        jDate_fin.setDateFormatString("dd/MM/yyyy");
+
+        btn_rechercher.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        btn_rechercher.setText("Rechercher ...");
+        btn_rechercher.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_rechercher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_rechercherActionPerformed(evt);
+            }
+        });
+        btn_rechercher.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btn_rechercherKeyPressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpanel_en_teteLayout = new javax.swing.GroupLayout(jpanel_en_tete);
+        jpanel_en_tete.setLayout(jpanel_en_teteLayout);
+        jpanel_en_teteLayout.setHorizontalGroup(
+            jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(j_combo_select_critere, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(j_combo_critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jDate_fin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jDate_debut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                        .addGap(189, 189, 189)
+                        .addComponent(btn_rechercher, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jpanel_en_teteLayout.setVerticalGroup(
+            jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(j_combo_critere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(j_combo_select_critere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jDate_debut, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jDate_fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel5)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_rechercher)
+                .addContainerGap())
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Base de données source", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial Narrow", 1, 14))); // NOI18N
+
         jLabel1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel1.setText("Nom d'utilisateur");
+
+        txt_username.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_username.setToolTipText("Nom d'utilisateur");
+        txt_username.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_usernameKeyPressed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         jLabel2.setText("Mot de passe");
 
-        j_label_nom_hote.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_label_nom_hote.setText("Nom d'hôte");
-
-        j_label_port.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_label_port.setText("Port");
-
-        j_label_nom_bdd.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_label_nom_bdd.setText("Nom Base de données");
-
-        txt_port.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_port.setToolTipText("Nom d'utilisateur");
-        txt_port.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_portKeyPressed(evt);
-            }
-        });
-
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_password.setToolTipText("Nom d'utilisateur");
+        txt_password.setToolTipText("Mot de passe");
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_passwordKeyPressed(evt);
             }
         });
 
+        j_label_nom_hote.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_label_nom_hote.setText("Nom d'hôte");
+
         txt_nom_hote.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_nom_hote.setToolTipText("Nom d'utilisateur");
+        txt_nom_hote.setToolTipText("Nom hôte ou adresse IP");
         txt_nom_hote.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_nom_hoteKeyPressed(evt);
             }
         });
 
-        txt_nom_bdd.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_nom_bdd.setToolTipText("Nom d'utilisateur");
-        txt_nom_bdd.addKeyListener(new java.awt.event.KeyAdapter() {
+        j_label_port.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_label_port.setText("Port");
+
+        txt_port.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_port.setToolTipText("Numéro Port");
+        txt_port.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_nom_bddKeyPressed(evt);
+                txt_portKeyPressed(evt);
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Arial Narrow", 2, 18)); // NOI18N
-        jLabel3.setText("Connexion vers la base source ok !. Les configuration de la base source à été enregistré temporairement !");
-        jLabel3.setFocusable(false);
-        jLabel3.setName("label_base_cible_ok"); // NOI18N
+        j_label_nom_bdd.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_label_nom_bdd.setText("Nom Base de données");
 
-        jLabel4.setFont(new java.awt.Font("Arial Narrow", 1, 18)); // NOI18N
-        jLabel4.setText("Base de données source");
+        txt_nom_bdd.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        txt_nom_bdd.setToolTipText("Nom de la base de données");
+        txt_nom_bdd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_nom_bddKeyReleased(evt);
+            }
+        });
+
+        btn_verifier_connexion.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        btn_verifier_connexion.setText("Vérifier Connexion");
+        btn_verifier_connexion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_verifier_connexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_verifier_connexionActionPerformed(evt);
+            }
+        });
+        btn_verifier_connexion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btn_verifier_connexionKeyPressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(j_label_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(j_label_port, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(40, 40, 40)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(j_label_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(192, 192, 192)
+                        .addComponent(txt_username))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(btn_verifier_connexion)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txt_username)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_password)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_label_nom_hote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_label_port, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(j_label_nom_bdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addComponent(btn_verifier_connexion))
+        );
+
+        btn_launche_process.setBackground(new java.awt.Color(204, 255, 255));
+        btn_launche_process.setText("Lancer le processus d'importation");
+        btn_launche_process.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_launche_processActionPerformed(evt);
+            }
+        });
+
+        jlabel_base_source.setFont(new java.awt.Font("Dialog", 2, 14)); // NOI18N
+        jlabel_base_source.setText("jLabel1");
+        jlabel_base_source.setFocusable(false);
+
+        jlabel_name_base_source.setFont(new java.awt.Font("Dialog", 2, 14)); // NOI18N
+
+        j_label_info_critere_recherche.setFont(new java.awt.Font("Arial Narrow", 2, 14)); // NOI18N
+        j_label_info_critere_recherche.setFocusable(false);
+        j_label_info_critere_recherche.setName("label_base_cible_ok"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -189,75 +400,58 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btn_valider)
-                        .addGap(62, 62, 62)
-                        .addComponent(btn_annuler)
-                        .addGap(29, 29, 29))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(j_label_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txt_nom_bdd))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(j_label_port, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(60, 60, 60)
-                                .addComponent(txt_port))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(j_label_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(39, 39, 39)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_username)
-                                    .addComponent(txt_password)
-                                    .addComponent(txt_nom_hote))))
-                        .addContainerGap())))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(407, 407, 407)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                .addGap(477, 477, 477))
-            .addComponent(jSeparator1)
+                                .addComponent(j_label_info_base_source, javax.swing.GroupLayout.PREFERRED_SIZE, 748, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(j_label_info_critere_recherche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jpanel_en_tete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(6, 6, 6))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_launche_process, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(361, 361, 361))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlabel_base_source, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlabel_name_base_source, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(353, 353, 353)
+                        .addComponent(btn_valider)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                        .addComponent(btn_annuler)
+                        .addGap(99, 99, 99))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpanel_en_tete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(j_label_info_base_source)
+                    .addComponent(j_label_info_critere_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(168, 168, 168)
+                .addComponent(btn_launche_process, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(txt_password, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_label_nom_hote)
-                    .addComponent(txt_nom_hote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_label_port)
-                    .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_label_nom_bdd)
-                    .addComponent(txt_nom_bdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(240, 240, 240)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_annuler)
-                    .addComponent(btn_valider))
-                .addGap(11, 11, 11)
-                .addComponent(jLabel3)
-                .addGap(19, 19, 19))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_annuler)
+                            .addComponent(btn_valider))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlabel_base_source)
+                            .addComponent(jlabel_name_base_source, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38))))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -265,177 +459,322 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_launche_processActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_launche_processActionPerformed
+        // RECUPERATIONO SEQUENCE DE LA TABLE demande
+        sec  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getValSequenceTable("seq_pk_demande_id_demande");
+        long s = Long.parseLong(sec.toString());
+
+        //System.out.print("SEQ VAUT = " + s);
+    }//GEN-LAST:event_btn_launche_processActionPerformed
+
+    private void btn_verifier_connexionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_verifier_connexionKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_verifier_connexionKeyPressed
+
+    private void btn_verifier_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_verifier_connexionActionPerformed
+        this.j_label_info_base_source.setText("");
+        try{
+
+            connectDatabase = new ConnectDb(this.txt_nom_hote.getText(),Integer.parseInt(this.txt_port.getText()), this.txt_nom_bdd.getText(), this.txt_username.getText(), this.txt_password.getText()).getConnection();
+
+            if(connectDatabase == null){
+                this.j_label_info_base_source.setText("");
+                this.j_label_info_base_source.setVisible(false);
+                System.out.println("Impossible de se connecter vers la base de données source!");
+                JOptionPane.showMessageDialog(null, "Impossible de se connecter vers la base source !\n\nVérifier les champs","Connexion vers la base source impossible !", JOptionPane.INFORMATION_MESSAGE);
+
+            }else{
+
+                this.j_label_info_base_source.setVisible(true);
+                this.btn_valider.setEnabled(true);
+                btn_launche_process.setVisible(true);
+                this.j_label_info_base_source.setText("Connexion vers la base source ok !. Les configuration de la base source à été enregistré temporairement !");
+            }
+        }catch(Exception e){
+            this.j_label_info_base_source.setText("");
+            this.j_label_info_base_source.setVisible(false);
+            System.out.println("Impossible de se connecter vers la base de données source!");
+            JOptionPane.showMessageDialog(null, "Impossible de se connecter vers la base source !\n\nVérifier les champs","Connexion vers la base source impossible !", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_verifier_connexionActionPerformed
+
+    private void txt_portKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_portKeyPressed
+        if(evt.getKeyCode() == 10){
+
+            //this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+
+            this.setVisible(false);
+
+        }else{
+
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_portKeyPressed
+
+    private void txt_nom_hoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_hoteKeyPressed
+        if(evt.getKeyCode() == 10){
+
+            //this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+
+            this.setVisible(false);
+
+        }else{
+
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_nom_hoteKeyPressed
+
+    private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
+        if(evt.getKeyCode() == 10){
+
+            //this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+
+            this.setVisible(false);
+
+        }else{
+
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_passwordKeyPressed
+
+    private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
+
+        if(evt.getKeyCode() == 10){
+
+            //this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+
+            this.setVisible(false);
+
+        }else{
+
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_txt_usernameKeyPressed
+
+    private void j_combo_critereItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_critereItemStateChanged
+        String selected = "";
+        
+            this.jDate_debut.setEnabled(false);        
+            this.jDate_fin.setEnabled(false);
+            this.j_combo_select_critere.setEnabled(false);
+            this.btn_rechercher.setEnabled(false); 
+
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+
+            selected += evt.getItem();
+
+            if (selected.equals(c)) {
+                //JOptionPane.showMessageDialog(null, "Veuillez selectionner une critère de recherche","Séléction critère", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            //Séléctionner une critère de recherche, Par Date, Intervale de date, Par Utilisateurs, Par Lot
+            else if (selected.equals("Par Date")) {
+                this.jDate_fin.setEnabled(false);
+                this.j_combo_select_critere.setEnabled(false);
+                this.jDate_debut.setEnabled(true);
+                this.btn_rechercher.setEnabled(true); 
+            }
+            else if (selected.equals("Par Intervale de date")) {
+                this.j_combo_select_critere.setEnabled(false);
+
+                this.jDate_fin.setEnabled(true);
+                this.jDate_debut.setEnabled(true);
+                this.btn_rechercher.setEnabled(true); 
+            }
+            else if (selected.equals("Par Utilisateurs")) {
+                this.jDate_fin.setEnabled(false);
+                this.jDate_debut.setEnabled(false);
+
+                this.j_combo_select_critere.setEnabled(true);
+                this.j_combo_select_critere.removeAllItems();
+                this.j_combo_select_critere.addItem("Séléctionner Utilisateur");
+                
+                
+                this.btn_rechercher.setEnabled(true); 
+            }
+            else {
+                this.jDate_fin.setEnabled(false);
+                this.jDate_debut.setEnabled(false);
+
+                this.j_combo_select_critere.setEnabled(true);
+                this.j_combo_select_critere.removeAllItems();
+                this.j_combo_select_critere.addItem("Séléctionner Lot");
+                
+                
+                this.btn_rechercher.setEnabled(true); 
+            }
+        }
+    }//GEN-LAST:event_j_combo_critereItemStateChanged
+
+    private void btn_validerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_validerKeyPressed
+        if(evt.getKeyCode() == 10){
+
+            //this.modificationFichierConf();
+
+        }else if(evt.getKeyCode() == 27){
+
+            this.setVisible(false);
+
+        }else{
+
+            System.out.println("Autres touche touché ..." + evt.getKeyCode());
+        }
+    }//GEN-LAST:event_btn_validerKeyPressed
+
+    private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
+
+        if(this.txt_username.getText().equals("") && this.txt_nom_bdd.getText().equals("") && this.txt_nom_hote.getText().equals("") && this.txt_port.getText().equals("")&& this.txt_password.getText().equals("")){
+            System.out.println("Tous les champs sont requises !");
+            JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE);
+
+        }else if(this.txt_username.getText().equals("")){
+            System.out.println("Le champ Nom d'utilisateur est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE);
+
+        }else if(this.txt_nom_bdd.getText().equals("")){
+            System.out.println("Le champ Nom base de données est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE);
+
+        }else if(this.txt_nom_hote.getText().equals("")){
+            System.out.println("Le champ Nom d'hôte est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE);
+
+        }else if(this.txt_port.getText().equals("")){
+            System.out.println("Le champ Port est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE);
+
+        }else if(this.txt_password.getText().equals("")){
+            System.out.println("Le champ Mot de passe est requis !");
+            JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE);
+
+        }else{
+
+            System.out.println("Tous est ok sur les paramètres de la base de données. Il est possible de se connecter vers la base de données source.");
+            String critere = (String)this.j_combo_critere.getSelectedItem();
+            System.out.println("Le critère sélectionner est : " + critere);
+
+            if (critere.equals("Séléctionner une critère de recherche")) {
+                JOptionPane.showMessageDialog(null, "Veuillez selectionner une critère de recherche","Séléction critère", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+        }
+    }//GEN-LAST:event_btn_validerActionPerformed
+
+    private void btn_annulerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_annulerKeyPressed
+        if(evt.getKeyCode() == 27){
+
+            this.setVisible(false);
+
+        }
+    }//GEN-LAST:event_btn_annulerKeyPressed
+
     private void btn_annulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_annulerActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
         //this.j_menu_parametres.
         // hime eto this.getParent().getParent().getParent().getParent().getParent()
-        System.out.println("this.getParent().getParent().getParent() vaut = "+this.getParent().getParent().getParent().getParent().getParent());
-        
+        //System.out.println("this.getParent().getParent().getParent() vaut = "+this.getParent().getParent().getParent().getParent().getParent());
     }//GEN-LAST:event_btn_annulerActionPerformed
 
-    
-    private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
+    private void txt_nom_bddKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_bddKeyReleased
+        
+        jlabel_name_base_source.setText(txt_nom_bdd.getText());
+    }//GEN-LAST:event_txt_nom_bddKeyReleased
 
-        if(this.txt_username.getText().equals("") && this.txt_nom_bdd.getText().equals("") && this.txt_nom_hote.getText().equals("") && this.txt_port.getText().equals("")&& this.txt_password.getText().equals("")){
-            System.out.println("Tous les champs sont requises !");
-            JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
-            
-        }else if(this.txt_username.getText().equals("")){
-            System.out.println("Le champ Nom d'utilisateur est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE); 
-            
-        }else if(this.txt_nom_bdd.getText().equals("")){
-            System.out.println("Le champ Nom base de données est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE); 
-            
-        }else if(this.txt_nom_hote.getText().equals("")){
-           System.out.println("Le champ Nom d'hôte est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE); 
-             
-        }else if(this.txt_port.getText().equals("")){
-           System.out.println("Le champ Port est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE); 
-             
-        }else if(this.txt_password.getText().equals("")){
-            System.out.println("Le champ Mot de passe est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE); 
-              
-        }else{
-           
-
-        try{
-                
-                connectDatabase = new ConnectDb(this.txt_nom_hote.getText(),Integer.parseInt(this.txt_port.getText()), this.txt_nom_bdd.getText(), this.txt_username.getText(), this.txt_password.getText()).getConnection();
-            
-                if(connectDatabase == null){
-                    this.jLabel3.setVisible(false);
-                    System.out.println("Impossible de se connecter vers la base de données source!");
-                    JOptionPane.showMessageDialog(null, "Impossible de se connecter vers la base source !\n\nVérifier les champs","Connexion vers la base source impossible !", JOptionPane.INFORMATION_MESSAGE); 
-
-                }else{
-                    System.out.println("Tous est ok. Il est possible de se connecter vers la base de données source.");
-                    //JOptionPane.showMessageDialog(null, "Tous est ok. Il est possible de se connecter vers la base de données source.","Tous ok", JOptionPane.INFORMATION_MESSAGE);
-                    this.jLabel3.setVisible(true);
-                    this.btn_valider.setEnabled(false);
-                    this.setVisible(false);
-                    
-                    
-                    TraitementImportSaisieCroise t = new TraitementImportSaisieCroise(this.txt_nom_hote.getText(),Integer.parseInt(this.txt_port.getText()), this.txt_nom_bdd.getText(), this.txt_username.getText(), this.txt_password.getText(), Formats.ConvertOcfmToOcm(type_operation));
-                    t.setVisible(true);
-                    t.setLocationRelativeTo(null);
-                    
-                }
-            }catch(Exception e){
-                this.jLabel3.setVisible(false);
-                System.out.println("Impossible de se connecter vers la base de données source!");
-                JOptionPane.showMessageDialog(null, "Impossible de se connecter vers la base source !\n\nVérifier les champs","Connexion vers la base source impossible !", JOptionPane.INFORMATION_MESSAGE); 
+    private void btn_rechercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_rechercherActionPerformed
+        String choix = this.j_combo_critere.getSelectedItem().toString();
+  
+        if (choix.equals("Séléctionner une critère de recherche")) {
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner une critère de recherche","Séléction critère", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        
+        if (choix.equals("Par Intervale de date")) {
+            if(this.jDate_debut.getDate() == null && this.jDate_fin.getDate() == null){
+                        System.out.println("Veuillez remplir les dates (début et fin) de saisie");
+                        JOptionPane.showMessageDialog(null, "Dates (début et/ou fin) de saisie vide ou incorrect !","Séléctionner les dates de saisie", JOptionPane.INFORMATION_MESSAGE); 
+            }else if(this.jDate_debut.getDate() == null){
+                        System.out.println("Veuillez remplir le date début");
+                        JOptionPane.showMessageDialog(null, "Date début de saisie vide ou incorrect !","Erreur lors remplissage date début de saisie", JOptionPane.INFORMATION_MESSAGE); 
+                    }else if(this.jDate_fin.getDate() == null){
+                        System.out.println("Veuillez remplir le date fin");
+                        JOptionPane.showMessageDialog(null, "Date fin de saisie vide ou incorrect !","SErreur lors remplissage date Fin de saisie", JOptionPane.INFORMATION_MESSAGE); 
+                    }else{
+                        String[] colonneTableDemande = {"id_demande","id_fiplof",
+                            "id_hameau","num_parcelle","id_parcelle","num_registre",
+                            "id_registre","date_demande","lieu_dit","code_equipe",
+                            "planche_plof","type_demandeur","v_nord","v_sud","v_ouest","v_est",
+                            "cat_riz","cat_champ","cat_cour","cat_etang","cat_bois","cat_etable","cat_autre",
+                            "date_crl","avis_crl","opposition","charges","demande_user","demande_date",
+                            "val_anomalie","val_autocontrole","val_chef_equipe","val_chef_equipe_user",
+                            "val_chef_equipe_date","val_cf_edit","val_cf_edit_user","val_cf_edit_date",
+                            "num_certificat","id_certificat","cf_reedit","cf_reedit_user","cf_reedit_date",
+                            "cf_annule","cf_annule_user","cf_annule_date","lot","val_cqe","date_soumission_cqe",
+                            "date_affichage","cqi_complet","type_op","consistance"};
+                        
+                        
+                       String[] data = {" id de la date"," ",
+                            " 51 ","51","id_parcelle","num_registre",
+                            "id_registre","date_demande","lieu_dit","code_equipe",
+                            "planche_plof","type_demandeur","v_nord","v_sud","v_ouest","v_est",
+                            "cat_riz","cat_champ","cat_cour","cat_etang","cat_bois","cat_etable","cat_autre",
+                            "date_crl","avis_crl","opposition","charges","demande_user","demande_date",
+                            "val_anomalie","val_autocontrole","val_chef_equipe","val_chef_equipe_user",
+                            "val_chef_equipe_date","val_cf_edit","val_cf_edit_user","val_cf_edit_date",
+                            "num_certificat","id_certificat","cf_reedit","cf_reedit_user","cf_reedit_date",
+                            "cf_annule","cf_annule_user","cf_annule_date","lot","val_cqe","date_soumission_cqe",
+                            "date_affichage","cqi_complet","type_op","consistance"};
+                        
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieCroise("region_vide", Formats.ConvertOcfmToOcm(type_operation), "Par intervale de date", this.jDate_debut, this.jDate_fin, "" );
+                        
+                        //DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
+                        
+                        if(saisieDesOperateurs.size() <1){
+                        
+                            System.out.println("Aucun résultat trouvé !");
+                            JOptionPane.showMessageDialog(null, "Aucun résultat trouvé !","Aucun résultat trouvé", JOptionPane.INFORMATION_MESSAGE);
+                      
+                        }else{
+                            saisieDesOperateurs.clear();
+                            // réinisialisation des cjhamps
+                            //Formats.resetTable(tableau);
+                            
+                            // récupération des valeurs dans la table param ( chamo valeur )
+                            String idParamAtelier  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getInfoParam();
+                            
+                            // RECUPERATION SEQUENCE DE LA TABLE DEMANDE
+                            Long seqTableDemande = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getValSequenceTable("seq_pk_demande_id_demande");
+                            
+                            //saisieDesOperateurs.get(0)[0].toString());
+                            System.out.println("seqTableDemande = " + seqTableDemande);
+                            String insertTbale = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).Insert("demande", colonneTableDemande, data);
+                            
+                            //JOptionPane.showMessageDialog(null, idParamAtelier,"VALUER DANS TABLE PARAMETRE", JOptionPane.INFORMATION_MESSAGE);
+                        
+                        }
+                        
             }
-
         }
+    }//GEN-LAST:event_btn_rechercherActionPerformed
 
+    private void btn_rechercherKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_rechercherKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_rechercherKeyPressed
 
-    }//GEN-LAST:event_btn_validerActionPerformed
+    
+    private Long sec;
 
-    private void btn_validerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_validerKeyPressed
-        if(evt.getKeyCode() == 10){
-        
-            //this.modificationFichierConf();
-
-        }else if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        }else{
-            
-            System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
-    }//GEN-LAST:event_btn_validerKeyPressed
-
-    private void btn_annulerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_annulerKeyPressed
-        if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        } 
-    }//GEN-LAST:event_btn_annulerKeyPressed
-
-    private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
-        
-        if(evt.getKeyCode() == 10){
-        
-            //this.modificationFichierConf();
-
-        }else if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        }else{
-            
-            System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
-    }//GEN-LAST:event_txt_usernameKeyPressed
-
-    private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
-        if(evt.getKeyCode() == 10){
-        
-            //this.modificationFichierConf();
-
-        }else if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        }else{
-            
-            System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
-    }//GEN-LAST:event_txt_passwordKeyPressed
-
-    private void txt_nom_hoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_hoteKeyPressed
-        if(evt.getKeyCode() == 10){
-        
-            //this.modificationFichierConf();
-
-        }else if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        }else{
-            
-            System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
-    }//GEN-LAST:event_txt_nom_hoteKeyPressed
-
-    private void txt_portKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_portKeyPressed
-        if(evt.getKeyCode() == 10){
-        
-            //this.modificationFichierConf();
-
-        }else if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        }else{
-            
-            System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
-    }//GEN-LAST:event_txt_portKeyPressed
-
-    private void txt_nom_bddKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nom_bddKeyPressed
-        if(evt.getKeyCode() == 10){
-        
-            //this.modificationFichierConf();
-
-        }else if(evt.getKeyCode() == 27){
-        
-            this.setVisible(false);
-
-        }else{
-            
-            System.out.println("Autres touche touché ..." + evt.getKeyCode());
-        }
-    }//GEN-LAST:event_txt_nom_bddKeyPressed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -473,9 +812,7 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
 
-                
                 System.out.println("Tonga ato ny lozakaaaa");
                 
                 //new UserFormDialog(HOST, PORT, DBNAME, USER, PWD).setVisible(true);
@@ -485,16 +822,29 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_annuler;
+    private javax.swing.JButton btn_launche_process;
+    private javax.swing.JButton btn_rechercher;
     private javax.swing.JButton btn_valider;
+    private javax.swing.JButton btn_verifier_connexion;
+    private com.toedter.calendar.JDateChooser jDate_debut;
+    private com.toedter.calendar.JDateChooser jDate_fin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JComboBox<String> j_combo_critere;
+    private javax.swing.JComboBox<String> j_combo_select_critere;
+    private javax.swing.JLabel j_label_info_base_source;
+    private javax.swing.JLabel j_label_info_critere_recherche;
     private javax.swing.JLabel j_label_nom_bdd;
     private javax.swing.JLabel j_label_nom_hote;
     private javax.swing.JLabel j_label_port;
+    private javax.swing.JLabel jlabel_base_source;
+    private javax.swing.JLabel jlabel_name_base_source;
+    private javax.swing.JPanel jpanel_en_tete;
     private javax.swing.JTextField txt_nom_bdd;
     private javax.swing.JTextField txt_nom_hote;
     private javax.swing.JTextField txt_password;

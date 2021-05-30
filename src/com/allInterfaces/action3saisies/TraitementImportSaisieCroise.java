@@ -5,9 +5,13 @@
  */
 package com.allInterfaces.action3saisies;
 
+import com.classes.action3saisie.Querry;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.sql.Connection;
+import java.util.HashMap;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +26,7 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
     private static String BDD_USER = "";
     private static String BDD_PWD = "";
     private static String type_operation;
+    private final String c = "Séléctionner une critère de recherche";
     
     
     /**
@@ -45,6 +50,9 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
         
         initComponents();
         this.jlabel_base_source.setText("Base de données source : " + TraitementImportSaisieCroise.BDD_DBNAME);
+        this.jpan_critere_entre_deux_date.setEnabled(false);
+        this.jpan_critere_combo_lot_et_utilisateur.setEnabled(false);
+        
     }
 
     /**
@@ -62,8 +70,13 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
         jpan_critere_entre_deux_date = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jDate_fin = new com.toedter.calendar.JDateChooser();
+        jDate_debut = new com.toedter.calendar.JDateChooser();
+        jpan_critere_combo_lot_et_utilisateur = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        j_combo_select_critere = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        btn_valider_recherche = new javax.swing.JButton();
         jpanel_pers_physique = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_personne_phys = new javax.swing.JTable();
@@ -78,6 +91,11 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
 
         j_combo_critere.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
         j_combo_critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère de recherche", "Par Date", "Intervale de date", "Par Utilisateurs", "Par Lot" }));
+        j_combo_critere.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                j_combo_critereItemStateChanged(evt);
+            }
+        });
 
         jLabel1.setText("Date et Heure fin");
 
@@ -93,12 +111,12 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
                     .addGroup(jpan_critere_entre_deux_dateLayout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jDate_fin, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jpan_critere_entre_deux_dateLayout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(275, Short.MAX_VALUE))
+                        .addComponent(jDate_debut, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jpan_critere_entre_deux_dateLayout.setVerticalGroup(
             jpan_critere_entre_deux_dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,14 +124,63 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jpan_critere_entre_deux_dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jpan_critere_entre_deux_dateLayout.createSequentialGroup()
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jDate_debut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(jDate_fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jpan_critere_entre_deux_dateLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)))
                 .addGap(10, 10, 10))
+        );
+
+        jLabel4.setText("Séléctionner votre choix");
+
+        j_combo_select_critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner" }));
+
+        javax.swing.GroupLayout jpan_critere_combo_lot_et_utilisateurLayout = new javax.swing.GroupLayout(jpan_critere_combo_lot_et_utilisateur);
+        jpan_critere_combo_lot_et_utilisateur.setLayout(jpan_critere_combo_lot_et_utilisateurLayout);
+        jpan_critere_combo_lot_et_utilisateurLayout.setHorizontalGroup(
+            jpan_critere_combo_lot_et_utilisateurLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpan_critere_combo_lot_et_utilisateurLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(j_combo_select_critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jpan_critere_combo_lot_et_utilisateurLayout.setVerticalGroup(
+            jpan_critere_combo_lot_et_utilisateurLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpan_critere_combo_lot_et_utilisateurLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jpan_critere_combo_lot_et_utilisateurLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(j_combo_select_critere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btn_valider_recherche.setText("Valider");
+        btn_valider_recherche.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_valider_rechercheActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addComponent(btn_valider_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(149, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(btn_valider_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jpanel_en_teteLayout = new javax.swing.GroupLayout(jpanel_en_tete);
@@ -123,21 +190,34 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
             .addGroup(jpanel_en_teteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_base_source, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_combo_critere, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                        .addComponent(j_combo_critere, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
+                    .addComponent(jlabel_base_source, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addComponent(jpan_critere_entre_deux_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(414, 414, 414))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpan_critere_combo_lot_et_utilisateur, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jpanel_en_teteLayout.setVerticalGroup(
             jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpanel_en_teteLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(j_combo_critere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(jlabel_base_source)
-                .addContainerGap())
             .addComponent(jpan_critere_entre_deux_date, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_en_teteLayout.createSequentialGroup()
+                .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jpanel_en_teteLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jpanel_en_teteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jpan_critere_combo_lot_et_utilisateur, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpanel_en_teteLayout.createSequentialGroup()
+                                .addComponent(jlabel_base_source)
+                                .addGap(18, 18, 18)
+                                .addComponent(j_combo_critere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
 
         jpanel_pers_physique.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Demande Personne Physique", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial Narrow", 1, 18))); // NOI18N
@@ -180,7 +260,7 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
         jpanel_pers_morale.setLayout(jpanel_pers_moraleLayout);
         jpanel_pers_moraleLayout.setHorizontalGroup(
             jpanel_pers_moraleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1278, Short.MAX_VALUE)
         );
         jpanel_pers_moraleLayout.setVerticalGroup(
             jpanel_pers_moraleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,6 +293,58 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_valider_rechercheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_valider_rechercheActionPerformed
+        String critere = (String)this.j_combo_critere.getSelectedItem();
+        
+        System.out.println("Le critère sélectionner est : " + critere);
+
+        
+        
+    }//GEN-LAST:event_btn_valider_rechercheActionPerformed
+
+    private void j_combo_critereItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_critereItemStateChanged
+        String selected = "";
+
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+
+            selected += evt.getItem();
+
+            if (selected.equals(c)) {
+                 JOptionPane.showMessageDialog(null, "Veuillez selectionner une critère de recherche","Séléction critère", JOptionPane.INFORMATION_MESSAGE);
+                 return;
+             }
+             //Séléctionner une critère de recherche, Par Date, Intervale de date, Par Utilisateurs, Par Lot
+             else if (selected.equals("Par Date")) {
+                 jDate_fin.setEnabled(false);
+                 j_combo_select_critere.setEnabled(false);
+
+                 jDate_debut.setEnabled(true);
+             }
+             else if (selected.equals("Intervale de date")) {
+                 j_combo_select_critere.setEnabled(false);
+
+                 jDate_fin.setEnabled(true);
+                 jDate_debut.setEnabled(true);
+             }
+             else if (selected.equals("Par Utilisateurs")) {
+                jDate_fin.setEnabled(false);
+                jDate_debut.setEnabled(false);
+
+                j_combo_select_critere.setEnabled(true);
+                j_combo_select_critere.removeAllItems();
+                j_combo_select_critere.addItem("Séléctionner Utilisateur");
+             }
+             else {
+                jDate_fin.setEnabled(false);
+                jDate_debut.setEnabled(false);
+                
+                j_combo_select_critere.setEnabled(true);
+                j_combo_select_critere.removeAllItems();
+                j_combo_select_critere.addItem("Séléctionner Lot");
+             }
+        }
+    }//GEN-LAST:event_j_combo_critereItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -248,14 +380,19 @@ public class TraitementImportSaisieCroise extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JButton btn_valider_recherche;
+    private com.toedter.calendar.JDateChooser jDate_debut;
+    private com.toedter.calendar.JDateChooser jDate_fin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable_personne_phys;
     private javax.swing.JComboBox<String> j_combo_critere;
+    private javax.swing.JComboBox<String> j_combo_select_critere;
     private javax.swing.JLabel jlabel_base_source;
+    private javax.swing.JPanel jpan_critere_combo_lot_et_utilisateur;
     private javax.swing.JPanel jpan_critere_entre_deux_date;
     private javax.swing.JPanel jpanel_en_tete;
     private javax.swing.JPanel jpanel_pers_morale;

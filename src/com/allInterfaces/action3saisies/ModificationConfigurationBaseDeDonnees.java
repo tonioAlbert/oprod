@@ -135,7 +135,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         j_label_nom_bdd.setText("Nom Base de données");
 
         txt_port.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_port.setToolTipText("Nom d'utilisateur");
+        txt_port.setToolTipText("N° de port");
         txt_port.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_portKeyPressed(evt);
@@ -143,7 +143,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         });
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_password.setToolTipText("Nom d'utilisateur");
+        txt_password.setToolTipText("Entrer ici votre mot de passe");
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_passwordKeyPressed(evt);
@@ -151,7 +151,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         });
 
         txt_nom_hote.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_nom_hote.setToolTipText("Nom d'utilisateur");
+        txt_nom_hote.setToolTipText("Nom d'hôte ou adresse IP");
         txt_nom_hote.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_nom_hoteKeyPressed(evt);
@@ -159,7 +159,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
         });
 
         txt_nom_bdd.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_nom_bdd.setToolTipText("Nom d'utilisateur");
+        txt_nom_bdd.setToolTipText("Nom de la base de données");
         txt_nom_bdd.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_nom_bddKeyPressed(evt);

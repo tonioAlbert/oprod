@@ -179,6 +179,8 @@ public class Home extends javax.swing.JFrame {
         j_menu_export_listes_demandeurs = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_anomalies = new javax.swing.JMenuItem();
+        j_menu_export_listes_anomalies_vecto_saisie = new javax.swing.JMenuItem();
+        j_menu_export_listes_anomalies_csv_lola_ = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         j_menu_export_listes_dossiers_pret_cqe = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
@@ -523,13 +525,26 @@ public class Home extends javax.swing.JFrame {
 
         j_menu_export_listes_anomalies.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         j_menu_export_listes_anomalies.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_export_listes_anomalies.setText("Listes Anomalies");
+        j_menu_export_listes_anomalies.setText("Registres Anomalies Saisies ( Fiche 9 )");
         j_menu_export_listes_anomalies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_export_listes_anomaliesActionPerformed(evt);
             }
         });
         j_menu_exports.add(j_menu_export_listes_anomalies);
+
+        j_menu_export_listes_anomalies_vecto_saisie.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_export_listes_anomalies_vecto_saisie.setText("Registres Anomalies Vecto");
+        j_menu_exports.add(j_menu_export_listes_anomalies_vecto_saisie);
+
+        j_menu_export_listes_anomalies_csv_lola_.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_menu_export_listes_anomalies_csv_lola_.setText("Anomalies CSV ( Lola ) ( Pour rapport hebdo )");
+        j_menu_export_listes_anomalies_csv_lola_.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j_menu_export_listes_anomalies_csv_lola_ActionPerformed(evt);
+            }
+        });
+        j_menu_exports.add(j_menu_export_listes_anomalies_csv_lola_);
         j_menu_exports.add(jSeparator5);
 
         j_menu_export_listes_dossiers_pret_cqe.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -1698,6 +1713,15 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
                 });
     }//GEN-LAST:event_j_menu_importation_saisie_croiseActionPerformed
 
+    private void j_menu_export_listes_anomalies_csv_lola_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_anomalies_csv_lola_ActionPerformed
+        // TODO add your handling code here:
+        
+        ExportRegistreAnomalieCSVLola r_anomalie_lola = new ExportRegistreAnomalieCSVLola(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(r_anomalie_lola);
+        r_anomalie_lola.show();
+        
+    }//GEN-LAST:event_j_menu_export_listes_anomalies_csv_lola_ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1765,6 +1789,8 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JMenuItem j_menu_controles_saisie;
     private javax.swing.JMenu j_menu_controllesSaisies;
     private javax.swing.JMenuItem j_menu_export_listes_anomalies;
+    private javax.swing.JMenuItem j_menu_export_listes_anomalies_csv_lola_;
+    private javax.swing.JMenuItem j_menu_export_listes_anomalies_vecto_saisie;
     private javax.swing.JMenuItem j_menu_export_listes_cf_editer_par_commune;
     private javax.swing.JMenuItem j_menu_export_listes_demandeurs;
     private javax.swing.JMenuItem j_menu_export_listes_dossiers_pret_cqe;

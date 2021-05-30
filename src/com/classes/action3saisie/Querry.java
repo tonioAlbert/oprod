@@ -57,17 +57,156 @@ public class Querry {
         connectDatabasePLOF = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
     }
     
+
+
+
+public String Insert(String table, String[] colonnes, String[] datas){
+    
+    String formatColonne = "";
+    String formatData = "";
+    int tailleTableauColonneTable = colonnes.length;
+    String sql = "";
+    
+  
+    sql += "INSERT INTO public."+table+"(";
+    
+    for (int i = 0; i < tailleTableauColonneTable; i++) {
+        
+        if (i == tailleTableauColonneTable) {
+            sql += colonnes[i];
+        }else{
+            sql += colonnes[i]+",";
+        }
+
+    }
+    
+    //sql.length();
+    
+    sql += sql.substring(1, sql.length()-1);
+    
+    sql += ") VALUES (";
     
     
+    for (int i = 0; i < datas.length; i++) {
+        
+        if (i == datas.length) {
+            sql += datas[i];
+        }else{
+            sql += datas[i]+","; 
+        }
+
+    }
+    
+    sql += sql.substring(1, sql.length()-1);
+    
+    sql += ");";
+
+
+    System.out.println("dans la méthode getSaisieParOperateur\n\n" + sql);
+        
+        String lastValue = "";
+
+ 
+
+        return lastValue;
+    }
     
     
-public Long getValSequenceTableDemande(){
+public String getInfoParam(){
+        
+        String nomAtelier = "";
+        
+        try {
+            
+            String q = "SELECT * FROM param";
+
+            st = connectDatabase.prepareStatement(q);    
+            rs = st.executeQuery();
+            
+
+            while(rs.next()){      
+                //System.out.println("Nom de atelier est : " + rs.getString("valeur"));
+                nomAtelier += rs.getString("valeur");
+            }    
+
+            st.close();
+            rs.close();
+            
+            
+        } catch (SQLException ex) {
+                System.out.println("Impossible de récupéré le nom de l'atelier !");
+                JOptionPane.showMessageDialog(null, "Impossible de récupéré le nom de l'atelier !","Erreur récupération nom de l'atelier", JOptionPane.INFORMATION_MESSAGE);
+        }
+    
+        return nomAtelier;
+    }
+    
+  
+public List <String[] > getSaisieCroise(String reg, String demarche, String critere, JDateChooser dateDebut, JDateChooser DateFin, String lotOrUser){
+        
+        String filtreOperation ="";
+        
+                
+        if (critere.equals("Par Date")) {
+            filtreOperation = " NOT FALSE";
+        }
+        else if (critere.equals("Par intervale de date")) {
+            filtreOperation = " AND demande.demande_date::TIMESTAMP::DATE BETWEEN '"+Formats.convertUtilToSql(dateDebut.getDate())+"' AND '"+Formats.convertUtilToSql(DateFin.getDate())+ "'; ";
+        }
+        else if (critere.equals("Par Utilisateurs")) {
+            filtreOperation = " AND demande.demande_user = "+ "\"; ";
+        }
+        else {
+            filtreOperation = " AND demande.lot = \"" + lotOrUser + "\"; ";
+        }
+        
+        List <String[]> saisies = new ArrayList<String[]>() ;
+            
+            //System.out.println("dans la méthode getSaisieParOperateur");
+            
+            try {
+
+                String sql = "select * from demande, persphys, proprietaire_pp, utilisateur \n" +
+                " WHERE demande.id_demande = proprietaire_pp.id_demande\n" +
+                " AND proprietaire_pp.id_persphys = persphys.id_persphys\n" +
+                " AND utilisateur.id_utilisateur = demande.demande_user "+
+                "\n AND demande.type_op = ? " + filtreOperation;
+
+
+                st = connectDatabase.prepareStatement(sql);
+                st.setString(1, demarche);
+                rs = st.executeQuery();
+                
+                //System.out.println("REQUETTE EXCECUTER : " + st);
+               
+            
+                                
+                int n = 1;
+
+                while(rs.next()){
+                    String[] vectos = { rs.getString("id_demande"), rs.getString("id_fiplof"), rs.getString("id_hameau"), rs.getString("num_parcelle") };          
+                    saisies.add(vectos);
+                    n++; 
+                }
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+
+        return saisies;
+    }    
+    
+    
+public Long getValSequenceTable(String nomSequence){
         
         long lastValue = 0;
 
             try {
 
-                String sql = "SELECT last_value, increment_by FROM seq_pk_demande_id_demande";
+                String sql = "SELECT last_value, increment_by FROM "+ nomSequence;
             
                 st = connectDatabasePLOF.prepareStatement(sql);
                 rs = st.executeQuery();

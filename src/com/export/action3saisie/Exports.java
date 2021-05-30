@@ -846,7 +846,312 @@ public void ExportTableToExcel(JTable table, String nameOfSheet, String[] EnTete
        
 }
     
+// --------------------------------------------------------------------------------
+
+
+public List<String> GetAnomaliesCSVLola(String reg, String path){
+
+        List retour = new ArrayList();
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
+        Date date = new Date(System.currentTimeMillis());
+        
+        
+        //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
+        String dateAujourdhui = dateFormat.format(new Date());
     
+    
+        String realPath = "";
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAntenne = "";
+        String sql = "";
+        List <String> enTeteTableau = new ArrayList();
+        
+        switch (nomAtelier){
+            case "ATS":
+                nomAntenne= "ANTENNE : ATSINANANA";
+                break;
+            case "VAK":
+                nomAntenne= "ANTENNE : VAKINANKARATRA";
+                break;
+            default:
+                if (reg.toUpperCase().equals("ANALAMANGA")) {
+                    nomAntenne= "ANTENNE : ANALAMANGA";
+                }else{
+                    nomAntenne= "ANTENNE : ITASY";
+                }
+                
+                break;
+        }
+        
+        int RowResultSet = 0;
+        
+        try {
+            
+            if (reg.equals("all")) {
+                
+                sql = " SELECT region.nom AS region, district.nom AS District, commune.nom AS commune, demande.id_registre AS numero_demande,\n" +
+                "lst_type_anomalie.valeur AS type_anomalie, anomalie.description AS description\n" +
+                "FROM demande, district, commune, fokontany, hameau, region, anomalie, lst_type_anomalie\n" +
+                "WHERE   demande.id_hameau=hameau.id_hameau\n" +
+                "AND region.id_region::text = district.id_region::text \n" +
+                "AND district.id_district = commune.id_district\n" +
+                "AND hameau.id_fokontany = fokontany.id_fokontany\n" +
+                "AND fokontany.id_commune = commune.id_commune\n" +
+                "AND district.id_region = region.id_region\n" +
+                "AND lst_type_anomalie.id_lst_type_anomalie = anomalie.id_lst_type_anomalie\n" +
+                "AND  demande.id_demande = anomalie.id_demande\n" +
+                "AND demande.val_anomalie IS TRUE\n" +
+                "AND demande.type_op = ? \n" +
+                "AND demande.id_certificat IS NULL \n" +
+                "AND lst_type_anomalie.valeur NOT LIKE '%Formulaire corri%'\n" +
+                "GROUP BY region, district, commune,fokontany.code_fokontany, hameau.code_hameau, demande.num_registre, numero_demande, type_anomalie,description\n" +
+                "ORDER BY district, commune,fokontany.code_fokontany, hameau.code_hameau, demande.num_registre, numero_demande, type_anomalie,description";
+                
+                st = connectDatabase.prepareStatement(sql);    
+                st.setString(1, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
+                rs = st.executeQuery();
+                
+                enTeteTableau.add("Région");
+                enTeteTableau.add("District");
+                enTeteTableau.add("Commune");
+                enTeteTableau.add("Numéro_demande");
+                enTeteTableau.add("Type_anomalie");
+                enTeteTableau.add("Description");
+                
+                realPath = path+"\\"+this.TYPE_OPERATION.toUpperCase()+"_RegAnomalieCSV_Rapport_Hebdo_"+formatter.format(date)+"_ALL_REGION_"+".xlsx";
+                
+            }else{
+                
+                sql = " SELECT region.nom AS region, district.nom AS District, commune.nom AS commune, demande.id_registre AS numero_demande,\n" +
+                "lst_type_anomalie.valeur AS type_anomalie, anomalie.description AS description\n" +
+                "FROM demande, district, commune, fokontany, hameau, region, anomalie, lst_type_anomalie\n" +
+                "WHERE   demande.id_hameau=hameau.id_hameau\n" +
+                "AND region.id_region::text = district.id_region::text \n" +
+                "AND district.id_district = commune.id_district\n" +
+                "AND hameau.id_fokontany = fokontany.id_fokontany\n" +
+                "AND fokontany.id_commune = commune.id_commune\n" +
+                "AND district.id_region = region.id_region\n" +
+                "AND lst_type_anomalie.id_lst_type_anomalie = anomalie.id_lst_type_anomalie\n" +
+                "AND  demande.id_demande = anomalie.id_demande\n" +
+                "AND demande.val_anomalie IS TRUE\n" +
+                "  AND region.nom = ? \n" +
+                "AND demande.type_op = ? \n" +
+                "AND demande.id_certificat IS NULL \n" +
+                "AND lst_type_anomalie.valeur NOT LIKE '%Formulaire corri%'\n" +
+                "GROUP BY region, district, commune,fokontany.code_fokontany, hameau.code_hameau, demande.num_registre, numero_demande, type_anomalie,description\n" +
+                "ORDER BY district, commune,fokontany.code_fokontany, hameau.code_hameau, demande.num_registre, numero_demande, type_anomalie,description";
+
+                st = connectDatabase.prepareStatement(sql);    
+                st.setString(1, reg);
+                st.setString(2, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
+                rs = st.executeQuery();
+                
+                enTeteTableau.add("Région");
+                enTeteTableau.add("District");
+                enTeteTableau.add("Commune");
+                enTeteTableau.add("Numéro_demande");
+                enTeteTableau.add("Type_anomalie");
+                enTeteTableau.add("Description");
+                
+                realPath = path+"\\"+this.TYPE_OPERATION.toUpperCase()+"_RegAnomalieCSV_Rapport_Hebdo_"+formatter.format(date)+"_Reg_"+reg+".xlsx";
+            }
+            
+
+                try{
+                    
+                    // CREATION DU FICHIER
+                    String nameOfSheet = "AnomaliesSaisie";
+                    XSSFWorkbook excelDataCreate = new XSSFWorkbook();
+                    FileOutputStream out = new FileOutputStream(new File(realPath));
+                    XSSFSheet excelSheet = excelDataCreate.createSheet(nameOfSheet);
+
+                    
+                    excelDataCreate.write(out);
+                    out.close();
+                    
+                    // REMPLISSAGE DANS LE FICHIER
+                    File src = new File(realPath);
+                    FileInputStream fis = new FileInputStream(src);
+                    XSSFWorkbook  wb = new XSSFWorkbook(fis);
+                    XSSFSheet sheet = wb.getSheet(nameOfSheet);
+                    
+
+                // MISE EN PAGE ET MISE EN FORME DU FICHIER
+                sheet.getHeader().setRight("LISTE DES ANOMALIES SAISIE");
+                sheet.getHeader().setLeft("CASEF / GEOX2");
+                sheet.getFooter().setLeft(nomAntenne);
+                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                
+                sheet.getPrintSetup().setLandscape(true);
+                PrintSetup printsetup = sheet.getPrintSetup();
+                sheet.getPrintSetup().setPaperSize(printsetup.A4_PAPERSIZE);
+
+                String[] cellAFixer = ("$1:$1").split(":");
+                CellReference startCellFixed = new CellReference(cellAFixer[0]);
+                CellReference endCellFixed = new CellReference(cellAFixer[1]);
+                CellRangeAddress addressCellAFixer = new CellRangeAddress(startCellFixed.getRow(),
+                endCellFixed.getRow(), startCellFixed.getCol(), endCellFixed.getCol());
+
+                sheet.setRepeatingRows(addressCellAFixer);
+                
+                
+                
+                // FIN MISE EN PAGE ET MISE EN FORME DU FICHIER
+                
+                // create table with data
+                XSSFCellStyle cadre = wb.createCellStyle();
+                cadre.setBorderBottom(BorderStyle.THIN);
+                cadre.setBorderTop(BorderStyle.THIN);
+                cadre.setBorderLeft(BorderStyle.THIN);
+                cadre.setBorderRight(BorderStyle.THIN);
+                
+            //RegionUtil.setBorderBottom(BorderStyle.DOUBLE,
+            //CellRangeAddress.valueOf("A1:B7"), sheet);
+
+            XSSFCellStyle cellStyleBold = wb.createCellStyle();
+            Font headerFont = wb.createFont();
+            headerFont.setBold(true);
+            cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
+            cellStyleBold.setFont(headerFont);
+
+        
+            cellStyleBold.setBorderBottom(BorderStyle.THIN);  
+            cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setBorderRight(BorderStyle.THIN);  
+            cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
+            
+            cellStyleBold.setBorderTop(BorderStyle.THIN);  
+            cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
+
+        
+            cellStyleBold.setBorderLeft(BorderStyle.THIN);  
+            cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            cellStyleBold.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
+            
+            
+
+            Row headerRow0 = sheet.createRow(0);
+            
+            for (int i = 0; i < enTeteTableau.size(); i++) {
+                
+                Cell headerCell0 = headerRow0.createCell(i);
+                headerCell0.setCellValue(enTeteTableau.get(i));
+                headerCell0.setCellStyle(cadre);
+                headerCell0.setCellStyle(cellStyleBold);         
+            }
+
+
+
+        int n = 1;
+        
+            while (rs.next()) {
+                
+                RowResultSet++;
+                    
+                    Row headerRow7 = sheet.createRow(n);
+
+                    Cell headerCell7 = headerRow7.createCell(0);
+                    headerCell7.setCellValue(rs.getString("region"));
+
+                    Cell headerCell8 = headerRow7.createCell(1);
+                    headerCell8.setCellValue(rs.getString("district"));
+                    
+                    Cell headerCell9 = headerRow7.createCell(2);
+                    headerCell9.setCellValue(rs.getString("commune"));
+                    
+                    Cell headerCel20 = headerRow7.createCell(3);
+                    headerCel20.setCellValue(rs.getString("numero_demande"));
+                    
+                    Cell headerCel21 = headerRow7.createCell(4);
+                    headerCel21.setCellValue(rs.getString("type_anomalie"));
+                    
+                    Cell headerCel22 = headerRow7.createCell(5);
+                    headerCel22.setCellValue(rs.getString("description"));
+                    
+                    n++;
+            }
+            
+            
+                String[] CelluleAMettreDeBordure = {"A", "B", "C", "D", "E", "F"};
+
+
+                for(int i = 0; i < CelluleAMettreDeBordure.length; i++){
+
+                    for(int a = 2; a<n+1; a++){
+
+                        String rangCellule = CelluleAMettreDeBordure[i]+a;
+
+                        RegionUtil.setBorderBottom(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderTop(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderRight(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet);
+
+                        RegionUtil.setBorderLeft(BorderStyle.THIN,
+                        CellRangeAddress.valueOf(rangCellule), sheet); 
+                    }
+
+                }
+
+  
+                    FileOutputStream fout = new FileOutputStream(src);
+                    
+                    wb.write(fout);
+                    wb.close();
+                    out.close();
+                    fout.close();
+                    
+
+
+                }catch(Exception createFileErreur){
+
+                    //System.out.println("ERREUR DANS  get registre anomalie = " +createFileErreur.getMessage());
+                    
+                    JOptionPane.showMessageDialog(null, "Classes export registre anomalies csv erreur",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                }
+                     
+            rs.close();
+            st.close();
+            
+            if(RowResultSet == 0){
+                //System.out.println("val fiale de RowResultSet = " + RowResultSet);
+                retour.add("empty-anomalie-bloquante");
+                retour.add(realPath);
+                //Files.deleteIfExists(Paths.get(realPath));
+                
+                //JOptionPane.showMessageDialog(null, "Aucune anomalie bloquante a été trouvé sur la : \n\ncommune: "+com+"\n"+"Fokontany : "+fkt+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+this.op, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+            }else{
+                retour.add("success-anomalie-bloquante");
+                retour.add(realPath);
+                //JOptionPane.showMessageDialog(null, "Export registre d'anomalie effectué avec succès !", "Export registre d'anomalie effectué avec succès", JOptionPane.INFORMATION_MESSAGE);
+                // ouverture de l'emplacement selectionner par l'utiisateur
+                //Desktop.getDesktop().open(new File(path));
+            }
+  
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+            //throw new RuntimeException();
+            retour.add("error-anomalie-bloquante");
+            retour.add("Error executing query: " +ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Impossible de lancer la requette de récupération des anomalies\n\nRetour : "+ex.getMessage(), "Erreur SQL trouvé", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        //System.out.println(demandes);
+        return retour;
+        
+    }
+
+
+
 
 public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist, String c_com, String com, String c_fkt, String fkt, String c_hameau, String hameau, String path){
 
