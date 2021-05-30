@@ -303,17 +303,17 @@ public class ExportRegistreAnomalieCSVLola extends javax.swing.JInternalFrame {
             Thread.sleep(2000);
                 
             
-            List reponseAnomaliesBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesCSVLola(allRegion, j_label_folder_export.getText());
+            List reponseAnomaliesBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesSaisieCSVLola(allRegion, j_label_folder_export.getText());
             
             String responseBloquante = (String)reponseAnomaliesBloquantes.get(0);
-            String EmplacementFichierExcelExporterAnomalieBloquante = (String)reponseAnomaliesBloquantes.get(1);
+            String EmplacementFichierExcelExporterCSVLola = (String)reponseAnomaliesBloquantes.get(1);
             String ReponseAnomalieVecto = "";
             
             
             if(responseBloquante.equals("success-anomalie-bloquante")){
 
                     // ON ESSEAI DE RECUPERER LES ANOMALIES DE VECTORISATION
-                    //List reponseAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
+                    List reponseAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesVectoCSVLola(allRegion , EmplacementFichierExcelExporterCSVLola);
 
                     int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "Registre anomalie(s) exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -337,11 +337,11 @@ public class ExportRegistreAnomalieCSVLola extends javax.swing.JInternalFrame {
 
                 }else if(responseBloquante.equals("empty-anomalie-bloquante")){
 
-                    List ReRecuperationDesAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesCSVLola(selected_region, EmplacementFichierExcelExporterAnomalieBloquante);
+                    List RecuperationAnomaliesVectos = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesSaisieCSVLola(selected_region, EmplacementFichierExcelExporterCSVLola);
 
-                    ReponseAnomalieVecto = (String)ReRecuperationDesAnomaliesNonBloquantes.get(0);
+                    ReponseAnomalieVecto = (String)RecuperationAnomaliesVectos.get(0);
 
-                    if(ReponseAnomalieVecto.equals("success-anomalie-non-bloquante")){
+                    if(ReponseAnomalieVecto.equals("success-anomalie-vecto")){
 
                         int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "Registre anomalie(s) exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -359,32 +359,32 @@ public class ExportRegistreAnomalieCSVLola extends javax.swing.JInternalFrame {
                                 return null;
                             }
                         }  
-                    }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReponseAnomalieVecto.equals("empty-anomalie-non-bloquante")){
+                    }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReponseAnomalieVecto.equals("empty-anomalie-vecto")){
 
 
                     try {
 
-                        Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterAnomalieBloquante));
-                        JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\n"+"Type d'opération : "+type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+                        Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterCSVLola));
+                        JOptionPane.showMessageDialog(null, "Aucune anomalie(s) saisie et vecto a été trouvé sur la : \n\n"+"Type d'opération : "+type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
 
                         return null;
 
                     } catch (IOException ex) {
                         //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
 
-                                JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ex.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ex.getMessage(), JOptionPane.INFORMATION_MESSAGE);
 
                     }
                 }
-                }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReponseAnomalieVecto.equals("empty-anomalie-non-bloquante")){
+                }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReponseAnomalieVecto.equals("empty-anomalie-vecto")){
                     try {
-                        Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterAnomalieBloquante));
-                        JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\n"+"Type d'opération : "+type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+                        Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterCSVLola));
+                        JOptionPane.showMessageDialog(null, "Aucune anomalie(s) saisie et vecto a été trouvé sur la : \n\n"+"Type d'opération : "+type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
 
                     } catch (IOException ex) {
                         //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
 
-                                JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ex.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !\n\nRetour: "+ex.getMessage(), JOptionPane.INFORMATION_MESSAGE);
 
                     }
 
