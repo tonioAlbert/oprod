@@ -194,7 +194,10 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
             
                 // create table with data
                 XSSFCellStyle cadre = wb.createCellStyle();
-                cadre.setBorderBottom(BorderStyle.THIN);  
+                cadre.setBorderBottom(BorderStyle.THIN); 
+                cadre.setBorderTop(BorderStyle.THIN); 
+                cadre.setBorderLeft(BorderStyle.THIN);
+                cadre.setBorderRight(BorderStyle.THIN);
 
                 cellStyleBold.setBorderBottom(BorderStyle.THIN);  
                 cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
@@ -548,7 +551,10 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
             
                 // create table with data
                 XSSFCellStyle cadre = wb.createCellStyle();
-                cadre.setBorderBottom(BorderStyle.THIN);  
+                cadre.setBorderBottom(BorderStyle.THIN); 
+                cadre.setBorderTop(BorderStyle.THIN); 
+                cadre.setBorderLeft(BorderStyle.THIN);
+                cadre.setBorderRight(BorderStyle.THIN);
 
                 cellStyleBold.setBorderBottom(BorderStyle.THIN);  
                 cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
@@ -3318,7 +3324,11 @@ public List<String> getListesCfEditerWithoutFilterDate(String reg, String c_dist
             
                 // create table with data
                 XSSFCellStyle cadre = wb.createCellStyle();
-                cadre.setBorderBottom(BorderStyle.THIN);  
+                cadre.setBorderBottom(BorderStyle.THIN);
+                cadre.setBorderTop(BorderStyle.THIN); 
+                cadre.setBorderRight(BorderStyle.THIN);
+                cadre.setBorderLeft(BorderStyle.THIN); 
+                
 
                 cellStyleBold.setBorderBottom(BorderStyle.THIN);  
                 cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
@@ -4062,7 +4072,10 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
             XSSFCellStyle cadre = wb.createCellStyle();
             
             
-            cadre.setBorderBottom(BorderStyle.THIN);  
+            cadre.setBorderBottom(BorderStyle.THIN); 
+            cadre.setBorderTop(BorderStyle.THIN); 
+            cadre.setBorderLeft(BorderStyle.THIN);
+            cadre.setBorderRight(BorderStyle.THIN); 
         
             cellStyleBold.setBorderBottom(BorderStyle.THIN);  
             cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
@@ -4471,7 +4484,10 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
             
             // create table with data
             XSSFCellStyle cadre = wb.createCellStyle();
-            cadre.setBorderBottom(BorderStyle.THIN);  
+            cadre.setBorderBottom(BorderStyle.THIN); 
+            cadre.setBorderTop(BorderStyle.THIN); 
+            cadre.setBorderLeft(BorderStyle.THIN);
+            cadre.setBorderRight(BorderStyle.THIN);  
         
             cellStyleBold.setBorderBottom(BorderStyle.THIN);  
             cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
