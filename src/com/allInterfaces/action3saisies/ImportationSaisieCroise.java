@@ -60,7 +60,7 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
         this.txt_password.setText(password);
         this.j_label_info_base_source.setVisible(false);
         
-        btn_launche_process.setEnabled(false);
+
         this.jlabel_base_source.setText("Base de données source : ");
         j_combo_select_critere.setEnabled(false);
         
@@ -69,7 +69,7 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
         this.jDate_debut.setEnabled(false);        
         this.jDate_fin.setEnabled(false);
         this.btn_rechercher.setEnabled(false); 
-            
+        btn_launche_process.setEnabled(false);
 
     }
 
@@ -460,11 +460,16 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_launche_processActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_launche_processActionPerformed
-        // RECUPERATIONO SEQUENCE DE LA TABLE demande
-        sec  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getValSequenceTable("seq_pk_demande_id_demande");
-        long s = Long.parseLong(sec.toString());
+        // ACTIVATION ET OUT ESACTIVATION DE LA BOUTTON DE LANCEMENT
+        
+        //System.out.print("j_label_info_base_source = " + j_label_info_base_source.getText());
 
-        //System.out.print("SEQ VAUT = " + s);
+            // RECUPERATIONO SEQUENCE DE LA TABLE demande
+            //sec  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getValSequenceTable("seq_pk_demande_id_demande");
+            //long s = Long.parseLong(sec.toString());
+
+        System.out.print("VITA AAAAA ");
+
     }//GEN-LAST:event_btn_launche_processActionPerformed
 
     private void btn_verifier_connexionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_verifier_connexionKeyPressed
@@ -473,6 +478,7 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
 
     private void btn_verifier_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_verifier_connexionActionPerformed
         this.j_label_info_base_source.setText("");
+        
         try{
 
             connectDatabase = new ConnectDb(this.txt_nom_hote.getText(),Integer.parseInt(this.txt_port.getText()), this.txt_nom_bdd.getText(), this.txt_username.getText(), this.txt_password.getText()).getConnection();
@@ -480,16 +486,27 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
             if(connectDatabase == null){
                 this.j_label_info_base_source.setText("");
                 this.j_label_info_base_source.setVisible(false);
+                btn_launche_process.setEnabled(false);
                 System.out.println("Impossible de se connecter vers la base de données source!");
                 JOptionPane.showMessageDialog(null, "Impossible de se connecter vers la base source !\n\nVérifier les champs","Connexion vers la base source impossible !", JOptionPane.INFORMATION_MESSAGE);
 
             }else{
-
+                
                 this.j_label_info_base_source.setVisible(true);
                 this.btn_valider.setEnabled(true);
-                btn_launche_process.setVisible(true);
                 this.j_label_info_base_source.setText("Connexion vers la base source ok !. Les configuration de la base source à été enregistré temporairement !");
+                
+                
+                if (j_label_info_critere_recherche.getText().equals("") || j_label_info_base_source.getText().equals("")) {
+                    //JOptionPane.showMessageDialog(null, "Vérifier s'il existe des données à importer","Recherche des données", JOptionPane.INFORMATION_MESSAGE);
+                    btn_launche_process.setEnabled(false);
+                    return;
+                }else{
+                    btn_launche_process.setEnabled(true);
+                }
+                            
             }
+            
         }catch(Exception e){
             this.j_label_info_base_source.setText("");
             this.j_label_info_base_source.setVisible(false);
@@ -694,12 +711,14 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
         String choix = this.j_combo_critere.getSelectedItem().toString();
   
         if (choix.equals("Séléctionner une critère de recherche")) {
+            btn_launche_process.setEnabled(false);
             JOptionPane.showMessageDialog(null, "Veuillez selectionner une critère de recherche","Séléction critère", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         
         
         if (choix.equals("Par Intervale de date")) {
+            
             if(this.jDate_debut.getDate() == null && this.jDate_fin.getDate() == null){
                         System.out.println("Veuillez remplir les dates (début et fin) de saisie");
                         JOptionPane.showMessageDialog(null, "Dates (début et/ou fin) de saisie vide ou incorrect !","Séléctionner les dates de saisie", JOptionPane.INFORMATION_MESSAGE); 
@@ -710,6 +729,9 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
                         System.out.println("Veuillez remplir le date fin");
                         JOptionPane.showMessageDialog(null, "Date fin de saisie vide ou incorrect !","SErreur lors remplissage date Fin de saisie", JOptionPane.INFORMATION_MESSAGE); 
                     }else{
+                        
+                       // saisieDesOperateurs.clear();
+
                         String[] colonneTableDemande = {"id_demande","id_fiplof",
                             "id_hameau","num_parcelle","id_parcelle","num_registre",
                             "id_registre","date_demande","lieu_dit","code_equipe",
@@ -745,10 +767,22 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
                             JOptionPane.showMessageDialog(null, "Aucun résultat trouvé !","Aucun résultat trouvé", JOptionPane.INFORMATION_MESSAGE);
                       
                         }else{
-                            saisieDesOperateurs.clear();
-                            // réinisialisation des cjhamps
-                            //Formats.resetTable(tableau);
+                                 
+                            j_label_info_critere_recherche.setText("Des données ont été trouvé !");
                             
+                            
+                            if (j_label_info_critere_recherche.getText().equals("") || j_label_info_base_source.getText().equals("")) {
+                                //JOptionPane.showMessageDialog(null, "Vérifier s'il existe des données à importer","Recherche des données", JOptionPane.INFORMATION_MESSAGE);
+                                btn_launche_process.setEnabled(false);
+                                return;
+                            }else{
+                                btn_launche_process.setEnabled(true);
+                            }
+
+                            for (int a = 0; a < saisieDesOperateurs.size(); a++) {
+
+                                System.out.println("id_demande = " + saisieDesOperateurs.get(a)[0] +" id_fiplof = " + saisieDesOperateurs.get(a)[1]+" id_hameau = " + saisieDesOperateurs.get(a)[2]+" num_parcelle = " + saisieDesOperateurs.get(a)[3]);
+                            }
                             // récupération des valeurs dans la table param ( chamo valeur )
                             String idParamAtelier  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getInfoParam();
                             
@@ -756,8 +790,8 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
                             Long seqTableDemande = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getValSequenceTable("seq_pk_demande_id_demande");
                             
                             //saisieDesOperateurs.get(0)[0].toString());
-                            System.out.println("seqTableDemande = " + seqTableDemande);
-                            String insertTbale = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).Insert("demande", colonneTableDemande, data);
+                            //System.out.println("seqTableDemande = " + seqTableDemande);
+                            //String insertTbale = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).Insert("demande", colonneTableDemande, data);
                             
                             //JOptionPane.showMessageDialog(null, idParamAtelier,"VALUER DANS TABLE PARAMETRE", JOptionPane.INFORMATION_MESSAGE);
                         

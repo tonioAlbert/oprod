@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import com.classes.action3saisie.Querry;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,7 +105,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
             //contrainte = " IS NOT TRUE ";
             
             
-            sql = " SELECT region.nom as region, district.nom AS district, commune.nom AS commune, c_parcelle, id_lot AS numero_planche_plof, limitrophe, superficie, coord_x, coord_y\n" +
+            sql = " SELECT region.nom as region, district.nom AS district, commune.nom AS commune, c_parcelle, id_lot AS numero_planche_plof, limitrophe, superficie, coord_x, coord_y, anomalie\n" +
             "   FROM parcelle_cf, region,\n" +
             "    district,\n" +
             "    commune\n" +
@@ -121,7 +122,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
             "  AND parcelle_cf.c_commune::text = commune.code_commune::text "; 
             
         }else{
-            sql ="SELECT region.nom as region, district.nom AS district, commune.nom AS commune, CONCAT('M-', c_district, '-', c_commune, '-F-', c_fokontany, c_hameau, '-',num_parcelle ) AS c_parcelle, id_lot AS numero_planche_plof, limitrophe, superficie, coord_x, coord_y\n" +
+            sql ="SELECT region.nom as region, district.nom AS district, commune.nom AS commune, c_parcelle, CONCAT('M-', c_district, '-', c_commune, '-F-', c_fokontany, c_hameau, '-',num_parcelle ) AS c_parcelle, id_lot AS numero_planche_plof, limitrophe, superficie, coord_x, coord_y, anomalie\n" +
             "              FROM parcelle_cf, region,\n" +
             "               district,\n" +
             "               commune\n" +
@@ -150,7 +151,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
             st.setString(3, com);
             rs = st.executeQuery();
             
-            System.out.println("RETOUR SQL = " + st);
+            //System.out.println("RETOUR SQL = " + st);
             
 
             
@@ -268,8 +269,8 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
 
                 String[] TextEnTeteTableau = {};
                 
-                String Str1 = "id_parcelle, numéro_planche_plof, limitrophe, superficie, coord_x, coord_y";
-                String Str2 = "id_registre, numéro_planche_plof, limitrophe, superficie, coord_x, coord_y";
+                String Str1 = "id_parcelle, numéro_planche_plof, limitrophe, superficie, coord_x, coord_y, présence anomalie vecto ?";
+                String Str2 = "id_parcelle, numéro_planche_plof, limitrophe, superficie, coord_x, coord_y, présence anomalie vecto ?";
             
             
                 if (this.TYPE_OPERATION.equals("OGCF")) {
@@ -304,9 +305,11 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
 
                         RowResultSet++;
                         
+                        Row headerRow4 = sheet.createRow(n);
+                        
                         if (this.TYPE_OPERATION.equals("OCFM")) {
                             
-                            Row headerRow4 = sheet.createRow(n);
+                            
                         
                             Cell headerCell8 = headerRow4.createCell(0);
                             headerCell8.setCellValue(rs.getString("c_parcelle"));
@@ -342,7 +345,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
                             
                         }else{
                             
-                            Row headerRow4 = sheet.createRow(n);
+                            //Row headerRow4 = sheet.createRow(n);
                         
                             Cell headerCell8 = headerRow4.createCell(0);
                             headerCell8.setCellValue(rs.getString("c_parcelle"));
@@ -376,7 +379,17 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
                             headerCell_14.setCellStyle(cadre);
                         }
                         
-
+                        
+                            if (rs.getString("anomalie").equals("f")) {
+                                newLimitrophe = "NON";
+                            }else{
+                                newLimitrophe = "OUI";
+                            }
+                            
+                            Cell headerCell_15 = headerRow4.createCell(6);
+                            headerCell_15.setCellValue(newLimitrophe);
+                            headerCell_15.setCellStyle(cadre);
+                        
 
                         n++;
                     }
@@ -439,49 +452,51 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
         
         try {
             
-            String sql = " SELECT \n" +
-            "    region.nom AS region,\n" +
-            "    commune.code_commune AS c_commune,\n" +
-            "    commune.nom AS commune,\n" +
-            "    fokontany.code_fokontany AS c_fkt,\n" +
-            "    fokontany.nom AS fkt,\n" +
-            "    hameau.code_hameau AS c_hameau,\n" +
-            "    hameau.nom AS hameau,\n" +
-            "	CASE\n" +
-            "		WHEN persphys.prenom IS NULL THEN persphys.nom\n" +
-            "		ELSE CONCAT(persphys.nom, ' ',persphys.prenom)\n" +
-            "	END AS nom_et_prenom,\n" +
-            "    demande.id_registre,\n" +
-            "    demande.id_parcelle,\n" +
-            "	\n" +
-            "    CASE \n" +
-            "    	WHEN persphys.adresse IS NULL THEN ''\n" +
-            "        ELSE persphys.adresse\n" +
-            "    END\n" +
-            "   FROM demande,\n" +
-            "    persphys,\n" +
-            "    proprietaire_pp,\n" +
-            "    hameau,\n" +
-            "    fokontany,\n" +
-            "    commune,\n" +
-            "    district,\n" +
-            "    region\n" +
-            "  WHERE demande.cf_annule IS NOT TRUE \n" +
-            "  AND demande.id_hameau::text = hameau.id_hameau::text \n" +
-            "  AND hameau.id_fokontany::text = fokontany.id_fokontany::text \n" +
-            "  AND fokontany.id_commune::text = commune.id_commune::text \n" +
-            "  AND district.id_district::text = commune.id_district::text \n" +
-            "  AND region.id_region::text = district.id_region::text \n" +
-            "  AND demande.id_demande::text = proprietaire_pp.id_demande::text \n" +
-            "  AND proprietaire_pp.id_persphys::text = persphys.id_persphys::text \n" +
-            "  AND proprietaire_pp.type_demandeur::text = 'DM'::text\n" +
-            "           AND region.nom = ?  \n" +
+            String sql = " SELECT region.nom AS region,\n" +
+"    commune.code_commune AS c_commune,\n" +
+"    commune.nom AS commune,\n" +
+"    fokontany.code_fokontany AS c_fkt,\n" +
+"    fokontany.nom AS fkt,\n" +
+"    hameau.code_hameau AS c_hameau,\n" +
+"    hameau.nom AS hameau,\n" +
+"        CASE\n" +
+"            WHEN persphys.prenom IS NULL THEN persphys.nom::text\n" +
+"            ELSE concat(persphys.nom, ' ', persphys.prenom)\n" +
+"        END AS nom_et_prenom,\n" +
+"    demande.id_registre,\n" +
+"    demande.id_parcelle,\n" +
+"    demande.v_nord,\n" +
+"    demande.v_sud,\n" +
+"    demande.v_est,\n" +
+"    demande.v_ouest,\n" +
+"        CASE\n" +
+"            WHEN persphys.adresse IS NULL THEN ''::character varying\n" +
+"            ELSE persphys.adresse\n" +
+"        END AS adresse\n" +
+"   FROM demande,\n" +
+"    persphys,\n" +
+"    proprietaire_pp,\n" +
+"    hameau,\n" +
+"    fokontany,\n" +
+"    commune,\n" +
+"    district,\n" +
+"    region\n" +
+"  WHERE demande.cf_annule IS NOT TRUE "
+                    + "AND demande.id_hameau::text = hameau.id_hameau::text "
+                    + "AND hameau.id_fokontany::text = fokontany.id_fokontany::text "
+                    + "AND fokontany.id_commune::text = commune.id_commune::text "
+                    + "AND district.id_district::text = commune.id_district::text "
+                    + "AND region.id_region::text = district.id_region::text "
+                    + "AND demande.id_demande::text = proprietaire_pp.id_demande::text "
+                    + "AND proprietaire_pp.id_persphys::text = persphys.id_persphys::text"
+                    + " AND proprietaire_pp.type_demandeur::text = 'DM'::text "
+            +"           AND region.nom = ?  \n" +
             "		  AND district.nom = ?        \n" +
             "			  AND commune.nom = ? \n" +
-            "			AND demande.type_op = ?  \n" +
-            "   AND NOT (demande.id_parcelle::text IN ( SELECT parcelle_cf.c_parcelle\n" +
-            "           FROM parcelle_cf))\n" +
-            "  ORDER BY demande.num_registre ASC"; 
+            "			AND demande.type_op = ?  \n" 
+                    + "AND NOT (demande.id_parcelle::text IN ( SELECT parcelle_cf.c_parcelle\n" +
+"           FROM parcelle_cf))\n" +
+"  ORDER BY demande.num_registre ASC"; 
             
             st = connectDatabase.prepareStatement(sql);    
             st.setString(1, reg);
@@ -490,7 +505,7 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
             st.setString(4, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION.toLowerCase()));
             rs = st.executeQuery();
             
-            System.out.println("saisie sans vecto : "+ st);
+            //System.out.println("saisie sans vecto : "+ st);
             
 
             
@@ -608,8 +623,9 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
 
                 String[] TextEnTeteTableau = {};
                 
-                String Str1 = "id_registre, nom_et_prénom(s), adresse";
-                String Str2 = "id_registre , id_parcelle, nom_et_prénom(s), adresse";
+                String Str1 = "id_registre, nom_et_prénom(s), adresse, v_nord, v_sud, v_est, v_ouest";
+                
+                String Str2 = "id_registre , id_parcelle, nom_et_prénom(s), adresse, voisin nord, voisin sud, voisin est, voisin ouest";
             
             
                 if (this.TYPE_OPERATION.equals("OCFM")) {
@@ -660,6 +676,22 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
                             headerCell_11.setCellValue(rs.getString("adresse"));
                             headerCell_11.setCellStyle(cadre);
                             
+                            Cell headerCell_12 = headerRow4.createCell(3);
+                            headerCell_12.setCellValue(rs.getString("v_nord"));
+                            headerCell_12.setCellStyle(cadre);
+                            
+                            Cell headerCell_13 = headerRow4.createCell(4);
+                            headerCell_13.setCellValue(rs.getString("v_sud"));
+                            headerCell_13.setCellStyle(cadre);
+                            
+                            Cell headerCell_14 = headerRow4.createCell(5);
+                            headerCell_14.setCellValue(rs.getString("v_est"));
+                            headerCell_14.setCellStyle(cadre);
+                            
+                            Cell headerCell_15 = headerRow4.createCell(6);
+                            headerCell_15.setCellValue(rs.getString("v_ouest"));
+                            headerCell_15.setCellStyle(cadre);
+                            
                         }else{
                             
                             Row headerRow4 = sheet.createRow(n);
@@ -679,6 +711,22 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
                             Cell headerCell_11 = headerRow4.createCell(3);
                             headerCell_11.setCellValue(rs.getString("adresse"));
                             headerCell_11.setCellStyle(cadre);
+                            
+                            Cell headerCell_12 = headerRow4.createCell(4);
+                            headerCell_12.setCellValue(rs.getString("v_nord"));
+                            headerCell_12.setCellStyle(cadre);
+                            
+                            Cell headerCell_13 = headerRow4.createCell(5);
+                            headerCell_13.setCellValue(rs.getString("v_sud"));
+                            headerCell_13.setCellStyle(cadre);
+                            
+                            Cell headerCell_14 = headerRow4.createCell(6);
+                            headerCell_14.setCellValue(rs.getString("v_est"));
+                            headerCell_14.setCellStyle(cadre);
+                            
+                            Cell headerCell_15 = headerRow4.createCell(7);
+                            headerCell_15.setCellValue(rs.getString("v_ouest"));
+                            headerCell_15.setCellStyle(cadre);
                         }
                         
 
@@ -853,12 +901,54 @@ public List<String> GetAnomaliesVectoCSVLola(String reg, String path){
 
         List retour = new ArrayList();
         
-        HashMap<String, String> ListesAnomaliesVectos = new HashMap<String, String>();
+        List cutObsAnomalie = new ArrayList();
         
-        ListesAnomaliesVectos.put("27", "Hors Limite Hameau et FKT"); 
-        ListesAnomaliesVectos.put("14", "Chevauchement avec titre existant"); 
-        ListesAnomaliesVectos.put("17", "Chevauchement avec parcelle existant"); 
+        HashMap<String, String> AnomaliesBloquantesAvecType = new HashMap<>();
+        
+        HashMap<String, String> AnomaliesNonBloquantesAvecType = new HashMap<>();
+        
+        HashMap<String, String> AutresTypesAvecType = new HashMap<>();
+       
+        
+        AnomaliesBloquantesAvecType.put("03", "Délimitation non fermée");
+        AnomaliesBloquantesAvecType.put("05", "Acheval sans la 2è portion");
+        AnomaliesBloquantesAvecType.put("06", "Parcelle acheval mais des codes hameaux ou fokontany ou numéro de parcelles différents");
+        AnomaliesBloquantesAvecType.put("07", "1 parcelle a plusieurs (> = 2 ) codes");
+        AnomaliesBloquantesAvecType.put("08", "Numéro illisible(ou information illisible)");
+        AnomaliesBloquantesAvecType.put("09", "Parcelle sans numéro (ou introuvable sur la planche)");
+        AnomaliesBloquantesAvecType.put("10", "Sans code hameau et/ou Fokontany");
+        AnomaliesBloquantesAvecType.put("11", "Sans délimitation hameau ou incompréhensible");
+        AnomaliesBloquantesAvecType.put("12", "Demande annulée");
+        AnomaliesBloquantesAvecType.put("13", "Annulée après CQ du BS TOPO");
+        AnomaliesBloquantesAvecType.put("14", "Chevauchement avec titre existant");
+        AnomaliesBloquantesAvecType.put("15", "Chevauchement avec cadastre existant");
+        AnomaliesBloquantesAvecType.put("16", "Chevauchement avec certificat existant");
+        AnomaliesBloquantesAvecType.put("17", "Chevauchement avec des parcelles existantes");
+        AnomaliesBloquantesAvecType.put("18", "Annulée à cause du reserve route");
+        AnomaliesBloquantesAvecType.put("20", "Supérficie supérieur à 10 ha");
+        AnomaliesBloquantesAvecType.put("21", "Code hameau et/ou Fokontany et/ou numéro de parcelle de la planche PLOF et le fiche de levé GPS différent");
+        AnomaliesBloquantesAvecType.put("22", "Parcelle déformée à cause des points GPS abérant non supprimable");
+        // AJOUT ANOMALIE NON BLOQUANTE
+        AnomaliesNonBloquantesAvecType.put("01", "Parcelle non RL");
+        AnomaliesNonBloquantesAvecType.put("02", "2 ou plusieurs parcelles ayant le même code");
+        AnomaliesNonBloquantesAvecType.put("04", "Délimitation non précise");
+        AnomaliesNonBloquantesAvecType.put("25", "Parcelle située en déhors de la Commune");
+        AnomaliesNonBloquantesAvecType.put("26", "Parcelle située en déhors du Fokontany");
+        AnomaliesNonBloquantesAvecType.put("27", "Parcelle située en déhors du Hameau");
+        
+        //AJOUT AUTRE INFO
+        AutresTypesAvecType.put("19", "Ajustée suivant reserve route");
+        AutresTypesAvecType.put("23", "Parcelle tracée à partir des coordonnées GPS");
+        AutresTypesAvecType.put("24", "Charge à mentionner dans la formulaire de demande");
+        
+        
+        // PREPARATION BOUCLE SUR HASHMAP DES ANOMALIES VECTOS
+        //Iterator it = AnomaliesAvecType.entrySet().iterator();
 
+
+        
+        //HashMap<String, HashMap> ListesAnomaliesVectosAvecIdentifiant = new HashMap<>();
+  
 
         //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
@@ -897,7 +987,7 @@ public List<String> GetAnomaliesVectoCSVLola(String reg, String path){
         
         try {
             
-            
+
             
 if (reg.equals("all")) {
                 
@@ -1045,53 +1135,130 @@ if (reg.equals("all")) {
 
                         RowResultSet++;
 
-                            Row headerRow7 = sheet.createRow(n);
                             
-                            if (rs.getString("observation").length() == 2) {
+                            
+                            if (nomAtelier.equals("ATS")) {
+                            
                                 
-                            Cell headerCell7 = headerRow7.createCell(0);
-                            headerCell7.setCellValue(rs.getString("region"));
+                                if (rs.getString("observation").length() == 2) {
+                                    
+                                    Row headerRow7 = sheet.createRow(n);
 
-                            Cell headerCell8 = headerRow7.createCell(1);
-                            headerCell8.setCellValue(rs.getString("district"));
+                                    Cell headerCell7 = headerRow7.createCell(0);
+                                    headerCell7.setCellValue(rs.getString("region"));
 
-                            Cell headerCell9 = headerRow7.createCell(2);
-                            headerCell9.setCellValue(rs.getString("commune"));
+                                    Cell headerCell8 = headerRow7.createCell(1);
+                                    headerCell8.setCellValue(rs.getString("district"));
 
-                            Cell headerCel20 = headerRow7.createCell(3);
-                            headerCel20.setCellValue(rs.getString("numero_demande"));
+                                    Cell headerCell9 = headerRow7.createCell(2);
+                                    headerCell9.setCellValue(rs.getString("commune"));
 
-                            Cell headerCel21 = headerRow7.createCell(4);
-                            headerCel21.setCellValue(rs.getString("c_parcelle"));
-                            
-                            Cell headerCel22 = headerRow7.createCell(5);
-                            headerCel22.setCellValue("CONVERTIR SEULEMENT L'ANOMALIE -- ETO TYPE ANOMALIE");
+                                    Cell headerCel20 = headerRow7.createCell(3);
+                                    headerCel20.setCellValue(rs.getString("numero_demande"));
 
-                            Cell headerCel23 = headerRow7.createCell(6);
-                            headerCel23.setCellValue(ListesAnomaliesVectos.get(rs.getString("observation")));
-                        }else{
-                            Cell headerCell7 = headerRow7.createCell(0);
-                            headerCell7.setCellValue(rs.getString("region"));
+                                    Cell headerCel21 = headerRow7.createCell(4);
+                                    headerCel21.setCellValue(rs.getString("c_parcelle"));
 
-                            Cell headerCell8 = headerRow7.createCell(1);
-                            headerCell8.setCellValue(rs.getString("district"));
+                                    Cell headerCel22 = headerRow7.createCell(5);
+                                    
+                                    Cell headerCel23 = headerRow7.createCell(6);
+                                    
+                                    
+                                    if (rs.getString("observation").equals("03") || rs.getString("observation").equals("05") || rs.getString("observation").equals("06")
+                                            || rs.getString("observation").equals("07") || rs.getString("observation").equals("08") || rs.getString("observation").equals("09") || rs.getString("observation").equals("10")
+                                            || rs.getString("observation").equals("11") || rs.getString("observation").equals("12") || rs.getString("observation").equals("13") || rs.getString("observation").equals("14")
+                                            || rs.getString("observation").equals("15") || rs.getString("observation").equals("16") || rs.getString("observation").equals("17") || rs.getString("observation").equals("18")
+                                            || rs.getString("observation").equals("20") || rs.getString("observation").equals("21") || rs.getString("observation").equals("22")  ) {
+                                        
+                                        headerCel22.setCellValue("Anomalie bloquante");
+                                        headerCel23.setCellValue(AnomaliesBloquantesAvecType.get(rs.getString("observation")));
+                                        
+                                        
+                                    }else if (rs.getString("observation").equals("01") || rs.getString("observation").equals("02") || rs.getString("observation").equals("04")
+                                            || rs.getString("observation").equals("25") || rs.getString("observation").equals("26") || rs.getString("observation").equals("27") ){
+                                        
+                                        headerCel22.setCellValue("Anomalie Non Bloquante");
+                                        headerCel23.setCellValue(AnomaliesNonBloquantesAvecType.get(rs.getString("observation")));
 
-                            Cell headerCell9 = headerRow7.createCell(2);
-                            headerCell9.setCellValue(rs.getString("commune"));
+                                    }else{
+                                        headerCel22.setCellValue("Autre Information");
+                                        headerCel23.setCellValue(AutresTypesAvecType.get(rs.getString("observation")));
+                                    }
 
-                            Cell headerCel20 = headerRow7.createCell(3);
-                            headerCel20.setCellValue(rs.getString("numero_demande"));
+                                    
+                                    //headerCel23.setCellValue(ListesAnomaliesVectos.get(rs.getString("observation")));
+                                }else{
+                                    
+                                    
+                                    Row headerRow7 = sheet.createRow(0);
+                                    
+                                    Cell headerCell7 = headerRow7.createCell(0);
+                                    headerCell7.setCellValue(rs.getString("region"));
 
-                            Cell headerCel21 = headerRow7.createCell(4);
-                            headerCel21.setCellValue(rs.getString("c_parcelle"));
-                            
-                            Cell headerCel22 = headerRow7.createCell(5);
-                            headerCel22.setCellValue("IL FAUT TRAITER");
+                                    Cell headerCell8 = headerRow7.createCell(1);
+                                    headerCell8.setCellValue(rs.getString("district"));
 
-                            Cell headerCel23 = headerRow7.createCell(6);
-                            headerCel23.setCellValue(rs.getString("observation"));
+                                    Cell headerCell9 = headerRow7.createCell(2);
+                                    headerCell9.setCellValue(rs.getString("commune"));
+
+                                    Cell headerCel20 = headerRow7.createCell(3);
+                                    headerCel20.setCellValue(rs.getString("numero_demande"));
+
+                                    Cell headerCel21 = headerRow7.createCell(4);
+                                    headerCel21.setCellValue(rs.getString("c_parcelle"));
+                                    
+                                    
+                                    cutObsAnomalie.add(rs.getString("observation").split("\\"));
+                                    
+
+                                    
+                                    for (int i = 0; i < cutObsAnomalie.size(); i++) {
+                                        
+                                    //Row headerRow7 = sheet.createRow(0);
+                                        
+                                        
+                                    
+                                    Cell headerCel22 = headerRow7.createCell(5+i);
+                                    Cell headerCel23 = headerRow7.createCell(6+i);
+                                        
+                                        if (rs.getString("observation").equals("03") || rs.getString("observation").equals("05") || rs.getString("observation").equals("06")
+                                                || rs.getString("observation").equals("07") || rs.getString("observation").equals("08") || rs.getString("observation").equals("09") || rs.getString("observation").equals("10")
+                                                || rs.getString("observation").equals("11") || rs.getString("observation").equals("12") || rs.getString("observation").equals("13") || rs.getString("observation").equals("14")
+                                                || rs.getString("observation").equals("15") || rs.getString("observation").equals("16") || rs.getString("observation").equals("17") || rs.getString("observation").equals("18")
+                                                || rs.getString("observation").equals("20") || rs.getString("observation").equals("21") || rs.getString("observation").equals("22")  ) {
+
+                                            headerCel22.setCellValue("Anomalie bloquante");
+                                            headerCel23.setCellValue(AnomaliesBloquantesAvecType.get(rs.getString("observation")));
+
+
+                                        }else if (rs.getString("observation").equals("01") || rs.getString("observation").equals("02") || rs.getString("observation").equals("04")
+                                                || rs.getString("observation").equals("25") || rs.getString("observation").equals("26") || rs.getString("observation").equals("27") ){
+
+                                            headerCel22.setCellValue("Anomalie Non Bloquante");
+                                            headerCel23.setCellValue(AnomaliesNonBloquantesAvecType.get(rs.getString("observation")));
+
+                                        }else{
+                                            headerCel22.setCellValue("Autre Information");
+                                            headerCel23.setCellValue(AutresTypesAvecType.get(rs.getString("observation")));
+                                        }
+                                        
+                                    }
+
+
+                                    //headerCel22.setCellValue("IL FAUT TRAITER");
+                                    
+                                    
+                                    //headerCel23.setCellValue(rs.getString("observation"));
+                                }
+                                
+                            }else if(nomAtelier.equals("VAK")){
+
+                            }else{
+                                
+                                // ATELIER AMA
+
                             }
-
+                            
 
 
 
@@ -1170,7 +1337,6 @@ if (reg.equals("all")) {
         return retour;
         
     }
-
 
 
 
@@ -1281,7 +1447,7 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
                 enTeteTableau.add("Type_anomalie");
                 enTeteTableau.add("Description");
                 
-                realPath = path+"\\"+this.TYPE_OPERATION.toUpperCase()+"_RegAnomalieCSV_Rapport_Hebdo_"+formatter.format(date)+"_Reg_"+reg+".xlsx";
+                realPath = path+"\\"+this.TYPE_OPERATION.toUpperCase()+"_RegAnomaliesCSV_Rapport_Hebdo_"+formatter.format(date)+"_Reg_"+reg+".xlsx";
             }
             
 

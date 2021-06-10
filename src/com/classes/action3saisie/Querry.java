@@ -632,6 +632,8 @@ public Long getValSequenceTable(String nomSequence){
                     "  AND region.id_region::text = district.id_region::text\n" +
                     "  AND demande.num_certificat IS NULL \n" +
                     "  AND demande.avis_crl IS TRUE \n" +
+                    "  AND date_soumission_cqe IS NULL \n" +  
+                            
                     "  AND (demande.date_crl - demande.date_demande) >= 15\n" +
                     "  AND region.nom = ? \n" +
                     "  AND demande.type_op = ? \n" +
@@ -811,19 +813,20 @@ public Long getValSequenceTable(String nomSequence){
             
             try {
 
-                String sql = "SELECT utilisateur.id_utilisateur as id, utilisateur.login, commune.nom AS commune,   \n" +
-"                             COUNT(*) AS nb_saisie\n" +
+                String sql = "SELECT utilisateur.id_utilisateur as id, utilisateur.login, commune.nom AS commune, CONCAT(district.code_district , '-', commune.code_commune) AS c_commune,\n" +
+"                        COUNT(*) AS nb_saisie" +
 "                             FROM commune,  \n" +
 "                                  fokontany, \n" +
 "                                  hameau,   \n" +
-"                                  demande, utilisateur  \n" +
+"                                  demande, utilisateur , district  \n" +
 "                              WHERE commune.id_commune::text = fokontany.id_commune::text  \n" +
+"                               AND district.id_district = commune.id_district  \n" +
 "                              AND fokontany.id_fokontany::text = hameau.id_fokontany::text  \n" +
 "                              AND demande.id_hameau::text = hameau.id_hameau::text  \n" +
 "                              AND demande.demande_user = utilisateur.id_utilisateur  \n" +
 "                              AND demande.demande_date::TIMESTAMP::DATE = ? \n" +
 "							  AND demande.type_op = ? \n" +
-"                              GROUP BY utilisateur.id_utilisateur, utilisateur.login, commune.nom";
+"                             GROUP BY utilisateur.id_utilisateur, utilisateur.login, commune.nom, c_commune";
             
             
             //System.out.println("date_sql: " +dateDebut.getDate());
@@ -840,7 +843,7 @@ public Long getValSequenceTable(String nomSequence){
 
                 while(rs.next()){
                     
-                    String[] saisie = { rs.getString("login"), rs.getString("commune"), rs.getString("nb_saisie") };          
+                    String[] saisie = { rs.getString("login"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("nb_saisie") };          
                     
                     saisies.add( saisie);
                     
@@ -869,19 +872,20 @@ public Long getValSequenceTable(String nomSequence){
             
             try {
 
-                String sql = "SELECT utilisateur.id_utilisateur as id, utilisateur.login, commune.nom AS commune,   \n" +
-"                         COUNT(*) AS nb_saisie\n" +
+                String sql = "SELECT utilisateur.id_utilisateur as id, utilisateur.login, commune.nom AS commune, CONCAT(district.code_district , '-', commune.code_commune) AS c_commune,\n" +
+"                        COUNT(*) AS nb_saisie" +
 "                         FROM commune,  \n" +
 "                              fokontany, \n" +
 "                              hameau,   \n" +
-"                              demande, utilisateur  \n" +
+"                              demande, utilisateur , district  \n" +
 "                          WHERE commune.id_commune::text = fokontany.id_commune::text  \n" +
+"                          AND district.id_district = commune.id_district  \n" +
 "                          AND fokontany.id_fokontany::text = hameau.id_fokontany::text  \n" +
 "                          AND demande.id_hameau::text = hameau.id_hameau::text  \n" +
 "                          AND demande.demande_user = utilisateur.id_utilisateur  \n" +
 "                          AND demande.demande_date::TIMESTAMP::DATE BETWEEN ? AND ?  \n" +
 "						  AND demande.type_op = ?  \n" +
-"                          GROUP BY utilisateur.id_utilisateur, utilisateur.login, commune.nom";
+"                          GROUP BY utilisateur.id_utilisateur, utilisateur.login, commune.nom, c_commune";
             
             
             //System.out.println("date_sql: " +dateDebut.getDate());
@@ -898,7 +902,7 @@ public Long getValSequenceTable(String nomSequence){
                 int n = 0;
 
                 while(rs.next()){
-                    String[] saisie = { rs.getString("login"), rs.getString("commune"), rs.getString("nb_saisie") };          
+                    String[] saisie = { rs.getString("login"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("nb_saisie") };          
                     saisies.add( saisie);
                     n++;
                 }
@@ -922,19 +926,20 @@ public Long getValSequenceTable(String nomSequence){
             
             try {
 
-                String sql = "SELECT utilisateur.id_utilisateur as id, utilisateur.login, commune.nom AS commune,   \n" +
-"                         COUNT(*) AS nb_saisie\n" +
+                String sql = "SELECT utilisateur.id_utilisateur as id, utilisateur.login, commune.nom AS commune, CONCAT(district.code_district , '-', commune.code_commune) AS c_commune,\n" +
+"                        COUNT(*) AS nb_saisie\n" +
 "                         FROM commune,  \n" +
 "                              fokontany, \n" +
 "                              hameau,   \n" +
-"                              demande, utilisateur  \n" +
+"                              demande, utilisateur , district  \n" +
 "                          WHERE commune.id_commune::text = fokontany.id_commune::text  \n" +
+"                           AND district.id_district = commune.id_district \n" +
 "                          AND fokontany.id_fokontany::text = hameau.id_fokontany::text  \n" +
 "                          AND demande.id_hameau::text = hameau.id_hameau::text  \n" +
 "                          AND demande.demande_user = utilisateur.id_utilisateur  \n" +
 "                          AND utilisateur.login = ?  \n" +
 "						  AND demande.type_op = ?  \n" +
-"                          GROUP BY utilisateur.id_utilisateur, utilisateur.login, commune.nom";
+"                          GROUP BY utilisateur.id_utilisateur, utilisateur.login, commune.nom, c_commune";
             
                 st = connectDatabase.prepareStatement(sql); 
                 st.setString(1, username);
@@ -945,7 +950,7 @@ public Long getValSequenceTable(String nomSequence){
                 int n = 0;
 
                 while(rs.next()){
-                    String[] saisie = { rs.getString("login"), rs.getString("commune"), rs.getString("nb_saisie") };          
+                    String[] saisie = { rs.getString("login"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("nb_saisie") };          
                     saisies.add( saisie);
                     n++;
                 }

@@ -7,7 +7,6 @@ package com.allInterfaces.action3saisies;
 
 import com.classes.action3saisie.Formats;
 import com.connectDb.ConnectDb;
-import java.awt.event.ItemEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -87,7 +86,7 @@ public class ExportRegistreAnomalieCSVLola extends javax.swing.JInternalFrame {
         }else{
             
             this.j_combo_region.addItem(selectRegion);
-            System.out.println("tous les regions : "+ regions.isEmpty());
+            //System.out.println("tous les regions : "+ regions.isEmpty());
 
             Iterator it = regions.entrySet().iterator();
 
@@ -253,6 +252,7 @@ public class ExportRegistreAnomalieCSVLola extends javax.swing.JInternalFrame {
         String locationFile = "";
         JFileChooser fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fc.setDialogTitle("Sélectionner un dossier");
         int response = fc.showOpenDialog(this);
 
         if(response == JFileChooser.APPROVE_OPTION){

@@ -472,6 +472,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         String locationFile = "";
         JFileChooser fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fc.setDialogTitle("Sélectionner un dossier");
         int response = fc.showOpenDialog(this);
 
         if(response == JFileChooser.APPROVE_OPTION){

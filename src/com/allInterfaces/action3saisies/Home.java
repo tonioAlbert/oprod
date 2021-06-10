@@ -112,7 +112,7 @@ public class Home extends javax.swing.JFrame {
             this.lbl_type_operation.setText("Type d'opération séléctionné : OCFM");
         }
         
-        this.lbl_test.setText("Bonjour " + username + " !");
+        //this.lbl_test.setText("Bonjour " + username + " !");
         
         
         String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
@@ -132,7 +132,10 @@ public class Home extends javax.swing.JFrame {
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         
+     //j_menu_export_listes_anomalies_csv_lola_.setEnabled(false);
      
+     //j_menu_export_listes_anomalies_vecto_saisie.setEnabled(false);
+     //jMenu2.setVisible(false);
 
     }
 
@@ -202,12 +205,6 @@ public class Home extends javax.swing.JFrame {
         j_menu_controles_saisie = new javax.swing.JMenuItem();
         j_menu_parametres = new javax.swing.JMenu();
         j_menu_config_bdd = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         j_menu_importation_saisie_croise = new javax.swing.JMenuItem();
 
@@ -616,7 +613,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_stats.add(j_menu_stat_saisie_par_operateur);
 
         j_menu_stat_anomalies_par_commune.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_menu_stat_anomalies_par_commune.setText("Anomalie Saisie par Commune(s)");
+        j_menu_stat_anomalies_par_commune.setText("Anomalie Bloquantes Saisie par Commune(s)");
         j_menu_stat_anomalies_par_commune.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_menu_stat_anomalies_par_communeActionPerformed(evt);
@@ -697,36 +694,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         j_menu_parametres.add(j_menu_config_bdd);
-
-        jMenu1.setText(" changer de thème");
-        jMenu1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-
-        jMenuItem1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        jMenuItem1.setText("Windows");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        jMenuItem2.setText("Windows Classique");
-        jMenu1.add(jMenuItem2);
-
-        jMenuItem3.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        jMenuItem3.setText("Nimbus");
-        jMenu1.add(jMenuItem3);
-
-        jMenuItem4.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        jMenuItem4.setText("Dracula");
-        jMenu1.add(jMenuItem4);
-
-        jMenuItem5.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        jMenuItem5.setText("Métal");
-        jMenu1.add(jMenuItem5);
-
-        j_menu_parametres.add(jMenu1);
 
         jMenuBar1.add(j_menu_parametres);
 
@@ -828,13 +795,10 @@ public class Home extends javax.swing.JFrame {
                 
                 if(mapentry.getValue() != null){
                     
-                   // System.out.println("clé: "+mapentry.getKey()  + " | valeur: " + mapentry.getValue());
-                   
-                    //System.out.println("clé: "+mapentry.getKey()  + " | valeur: " + mapentry.getValue().toString().trim());
                     idPersphys = mapentry.getKey().toString();
                     newFirstName = Formats.formatFirtsName(mapentry.getValue().toString().trim());
                     
-                    // IL FAUT METTRE A JOUR LA BASE DE DONNEES
+                    // MISE A JOUR LA BASE DE DONNEES
                     
                     String q2 = "UPDATE "+nameOfTable+" SET "+col_updated+" = ? WHERE "+id_table+" = ? ;";
                     
@@ -843,9 +807,7 @@ public class Home extends javax.swing.JFrame {
                     st.setString(2, idPersphys);
                     st.executeUpdate();
                     
-                    //System.out.println("SQL = "+ st);
-                    //System.out.println("MISE A JOUR : "+st);
-                    //Persphys.setPrenom(idPersphys, newFirstName);
+                    
                     retour = "ok";
                     newFirstName = "";
                     idPersphys = "";
@@ -1683,25 +1645,6 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         vectoSansSaisie.show();
     }//GEN-LAST:event_j_menu_export_listes_vecto_sans_saisieActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void j_menu_importation_saisie_croiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_importation_saisie_croiseActionPerformed
                 SwingUtilities.invokeLater(() -> {
                     
@@ -1765,14 +1708,8 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar_home;
     private javax.swing.JPopupMenu.Separator jSeparator1;
