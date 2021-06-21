@@ -632,6 +632,7 @@ public Long getValSequenceTable(String nomSequence){
                     "  AND region.id_region::text = district.id_region::text\n" +
                     "  AND demande.num_certificat IS NULL \n" +
                     "  AND demande.avis_crl IS TRUE \n" +
+                    "  AND demande.opposition IS FALSE \n" +
                     "  AND date_soumission_cqe IS NULL \n" +  
                             
                     "  AND (demande.date_crl - demande.date_demande) >= 15\n" +
@@ -1065,19 +1066,42 @@ public Long getValSequenceTable(String nomSequence){
         return communes;
     }
     
-    public HashMap<String, String> getHameau(String c){
+    public HashMap<String, String> getHameau(String reg, String dist, String com, String fkt){
         
         HashMap<String, String> communes = new HashMap<String, String>();
 
         try {
-            String q = "SELECT hameau.code_hameau, hameau.nom as hameau\n" +
-"            FROM fokontany, hameau\n" +
-"            WHERE hameau.id_fokontany = fokontany.id_fokontany\n" +
-"             AND fokontany.nom = ? ORDER BY hameau ASC";
+            String q = "        \n" +
+" SELECT DISTINCT region.nom AS region,\n" +
+"    district.code_district AS code_district,\n" +
+"    district.nom AS district,\n" +
+"    commune.code_commune AS code_commune,\n" +
+"    commune.nom AS commune,\n" +
+"    fokontany.code_fokontany AS code_fkt,\n" +
+"    fokontany.nom AS fkt,\n" +
+"    hameau.code_hameau AS code_hameau,\n" +
+"    hameau.nom AS hameau\n" +
+"   FROM district,\n" +
+"    region,\n" +
+"    hameau,\n" +
+"    commune,\n" +
+"    fokontany\n" +
+"  WHERE hameau.id_fokontany::text = fokontany.id_fokontany::text \n" +
+"  AND commune.id_commune::text = fokontany.id_commune::text \n" +
+"  AND district.id_district::text = commune.id_district::text \n" +
+"  AND region.id_region::text = district.id_region::text\n" +
+"  AND region.nom = ? \n" +
+"        AND district.nom = ? \n" +
+"        AND commune.nom = ? \n" +
+"        AND fokontany.nom = ? \n" +
+"  ORDER BY hameau ASC";
             
             
             st = connectDatabase.prepareStatement(q);    
-            st.setString(1, c);
+            st.setString(1, reg);
+            st.setString(2, dist);
+            st.setString(3, com);
+            st.setString(4, fkt);
         
             rs = st.executeQuery();
  

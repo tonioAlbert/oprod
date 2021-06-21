@@ -3,15 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/ExportRegistreAnomalieCSVLola.java</file>
             <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/ExportRegistreAnomalie.java</file>
             <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/ExportSaisieSansVectorisation.java</file>
             <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/ExportCFEditerParCommunes.java</file>
             <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/RapportCfEditableParCommune.java</file>
-            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/ExportVectorisationSansSaisie.java</file>
             <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/ImportationSaisieCroise.java</file>
             <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/classes/action3saisie/Querry.java</file>
             <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/Home.java</file>
-            <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/allInterfaces/action3saisies/SaisieParOperateur.java</file>
             <file>file:/C:/Users/RAP/Documents/NetBeansProjects/A3_suivi_saisie/src/com/export/action3saisie/Exports.java</file>
         </group>
     </open-files>

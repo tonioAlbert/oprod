@@ -451,10 +451,22 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                 this.j_combo_hameau.setEnabled(false);
 
                 if(containsStr){
+                    
+                String selected_region = (String)this.j_combo_region.getSelectedItem();
+                String selected_district = (String)this.j_combo_district.getSelectedItem();
+                String selected_commune = (String)this.j_combo_commune.getSelectedItem();
+                //String selected_fokontany = (String)this.j_combo_fokontany.getSelectedItem();
+                
+
+                String district = selected_district.split("  _  ")[1].trim();
+                String commune = selected_commune.split("  _  ")[1].trim();
+                //String fokontany = selected_fokontany.split("  _  ")[1];
+                
+                System.out.println("selection vaut = REG :  "+selected_region +" Dist : "+ district +" Com : "+commune + " Fkt : " + selected.split("  _  ")[1]);
 
                     this.j_combo_hameau.removeAllItems();
                     this.j_combo_hameau.addItem(selectHameau);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getHameau(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getHameau(selected_region.trim(),district, commune, selected.split("  _  ")[1].trim());
 
                     for (String i : com.keySet()) {
                         this.j_combo_hameau.addItem( i + "  _  " + com.get(i));

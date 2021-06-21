@@ -468,6 +468,7 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
 "        END AS nom_et_prenom,\n" +
 "    demande.id_registre,\n" +
 "    demande.id_parcelle,\n" +
+"    demande.planche_plof,\n" +
 "    demande.v_nord,\n" +
 "    demande.v_sud,\n" +
 "    demande.v_est,\n" +
@@ -629,9 +630,9 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
 
                 String[] TextEnTeteTableau = {};
                 
-                String Str1 = "id_registre, nom_et_prénom(s), adresse, v_nord, v_sud, v_est, v_ouest";
+                String Str1 = "id_registre,code_planche_plof_sur_formulaire, nom_et_prénom(s) demandeur principale, adresse, v_nord, v_sud, v_est, v_ouest";
                 
-                String Str2 = "id_registre , id_parcelle, nom_et_prénom(s), adresse, voisin nord, voisin sud, voisin est, voisin ouest";
+                String Str2 = "id_registre , id_parcelle,code_planche_plof_sur_formulaire, nom_et_prénom(s), adresse, voisin nord, voisin sud, voisin est, voisin ouest";
             
             
                 if (this.TYPE_OPERATION.equals("OCFM")) {
@@ -675,28 +676,35 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
                             headerCell8.setCellStyle(cadre);
                             
                             Cell headerCell_10 = headerRow4.createCell(1);
-                            headerCell_10.setCellValue(rs.getString("nom_et_prenom"));
+                            headerCell_10.setCellValue(rs.getString("planche_plof"));
                             headerCell_10.setCellStyle(cadre);
                             
+                            
                             Cell headerCell_11 = headerRow4.createCell(2);
-                            headerCell_11.setCellValue(rs.getString("adresse"));
+                            headerCell_11.setCellValue(rs.getString("nom_et_prenom"));
                             headerCell_11.setCellStyle(cadre);
                             
+                            
+                            
                             Cell headerCell_12 = headerRow4.createCell(3);
-                            headerCell_12.setCellValue(rs.getString("v_nord"));
+                            headerCell_12.setCellValue(rs.getString("adresse"));
                             headerCell_12.setCellStyle(cadre);
                             
                             Cell headerCell_13 = headerRow4.createCell(4);
-                            headerCell_13.setCellValue(rs.getString("v_sud"));
+                            headerCell_13.setCellValue(rs.getString("v_nord"));
                             headerCell_13.setCellStyle(cadre);
                             
                             Cell headerCell_14 = headerRow4.createCell(5);
-                            headerCell_14.setCellValue(rs.getString("v_est"));
+                            headerCell_14.setCellValue(rs.getString("v_sud"));
                             headerCell_14.setCellStyle(cadre);
                             
                             Cell headerCell_15 = headerRow4.createCell(6);
-                            headerCell_15.setCellValue(rs.getString("v_ouest"));
+                            headerCell_15.setCellValue(rs.getString("v_est"));
                             headerCell_15.setCellStyle(cadre);
+                            
+                            Cell headerCell_16 = headerRow4.createCell(7);
+                            headerCell_16.setCellValue(rs.getString("v_ouest"));
+                            headerCell_16.setCellStyle(cadre);
                             
                         }else{
                             
@@ -711,28 +719,32 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
                             headerCell9.setCellStyle(cadre);
                             
                             Cell headerCell_10 = headerRow4.createCell(2);
-                            headerCell_10.setCellValue(rs.getString("nom_et_prenom"));
+                            headerCell_10.setCellValue(rs.getString("planche_plof"));
                             headerCell_10.setCellStyle(cadre);
                             
                             Cell headerCell_11 = headerRow4.createCell(3);
-                            headerCell_11.setCellValue(rs.getString("adresse"));
+                            headerCell_11.setCellValue(rs.getString("nom_et_prenom"));
                             headerCell_11.setCellStyle(cadre);
                             
                             Cell headerCell_12 = headerRow4.createCell(4);
-                            headerCell_12.setCellValue(rs.getString("v_nord"));
+                            headerCell_12.setCellValue(rs.getString("adresse"));
                             headerCell_12.setCellStyle(cadre);
                             
                             Cell headerCell_13 = headerRow4.createCell(5);
-                            headerCell_13.setCellValue(rs.getString("v_sud"));
+                            headerCell_13.setCellValue(rs.getString("v_nord"));
                             headerCell_13.setCellStyle(cadre);
                             
                             Cell headerCell_14 = headerRow4.createCell(6);
-                            headerCell_14.setCellValue(rs.getString("v_est"));
+                            headerCell_14.setCellValue(rs.getString("v_sud"));
                             headerCell_14.setCellStyle(cadre);
                             
                             Cell headerCell_15 = headerRow4.createCell(7);
-                            headerCell_15.setCellValue(rs.getString("v_ouest"));
+                            headerCell_15.setCellValue(rs.getString("v_est"));
                             headerCell_15.setCellStyle(cadre);
+                            
+                            Cell headerCell_16 = headerRow4.createCell(8);
+                            headerCell_16.setCellValue(rs.getString("v_ouest"));
+                            headerCell_16.setCellStyle(cadre);
                         }
                         
 

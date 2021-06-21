@@ -803,6 +803,7 @@ public class Home extends javax.swing.JFrame {
                     String q2 = "UPDATE "+nameOfTable+" SET "+col_updated+" = ? WHERE "+id_table+" = ? ;";
                     
                     st = connectDatabase.prepareStatement(q2);
+                     
                     st.setString(1, newFirstName);
                     st.setString(2, idPersphys);
                     st.executeUpdate();
