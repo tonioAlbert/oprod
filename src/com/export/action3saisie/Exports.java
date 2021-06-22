@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import com.classes.action3saisie.Querry;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -69,7 +70,7 @@ public class Exports {
     PreparedStatement st;
     ResultSet rs;
     Connection connectDatabase;
-    
+    HashSet equipe = new HashSet();
 
     public Exports(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String operation) {
         
@@ -2069,6 +2070,8 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
                     Cell headerCell7 = headerRow7.createCell(0);
                     headerCell7.setCellValue(rs.getString("lot") + " (Equipe : " +rs.getString("code_equipe") + ")");
                     headerCell7.setCellStyle(cadre);
+                    
+                    equipe.add(rs.getString("code_equipe").trim());
 
 
                     Cell headerCell8 = headerRow7.createCell(1);
@@ -2083,6 +2086,23 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
                     n++;
             }
             
+                    if (RowResultSet > 0) {
+                        String eq = "";
+                        
+                        Iterator it = equipe.iterator();
+                        while(it.hasNext())
+                        //System.out.println("valeur de l'iteration = "+it.next());
+
+                        eq += " \\ "+it.next();
+
+                        eq.substring(3);
+
+                        System.out.println("valeur de eq = "+eq.substring(3));
+
+
+                        headerCell0 = headerRow0.createCell(9);
+                        headerCell0.setCellValue(eq.substring(3));  
+                    }
             
                         RegionUtil.setBorderBottom(BorderStyle.THIN,
                         CellRangeAddress.valueOf("J1:J1"), sheet);
@@ -2601,8 +2621,20 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
                     n++;
             }
             
-            
-            
+                    if (RowResultSet > 0) {
+                        String eq = "";
+                        
+                        Iterator it = equipe.iterator();
+                        while(it.hasNext())
+                        //System.out.println("valeur de l'iteration = "+it.next());
+
+                        eq += " \\ "+it.next();
+
+                        eq.substring(3);
+
+                        headerCell0 = headerRow0.createCell(9);
+                        headerCell0.setCellValue(eq.substring(3));  
+                    }
                         RegionUtil.setBorderBottom(BorderStyle.THIN,
                         CellRangeAddress.valueOf("J1:J1"), sheet);
 
