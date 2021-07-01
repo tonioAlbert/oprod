@@ -296,7 +296,7 @@ public class A3_suivi_saisie {
             
             
             // recuperation des démarches
-            Querry d = new Querry(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password);
+            Querry d = new Querry(json_host, Integer.parseInt(json_port), json_dbname, json_user, json_password, "");
             List<String> demarches = new ArrayList<String>();
             
             Iterator it = d.getAllDemarche().entrySet().iterator();

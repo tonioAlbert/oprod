@@ -43,7 +43,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
     private final String selectFokontany = "Séléctionner une fokontany";
     private final String selectHameau = "Séléctionner un hameau";
     
-    private String type_operation = "";
+    private String demarche = "";
     
     
     /**
@@ -56,7 +56,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
-        this.type_operation = TYPE_OPERATION;
+        this.demarche = TYPE_OPERATION;
         
         initComponents();
 
@@ -295,7 +295,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
 
-                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
+                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getRegions(selected);
 
                 for (String i : reg.keySet()) {
                     this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -331,7 +331,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
 
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -365,7 +365,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
 
                     this.j_combo_fokontany.removeAllItems();
                     this.j_combo_fokontany.addItem(selectFokontany);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getFokontany(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getFokontany(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_fokontany.addItem( i + "  _  " + com.get(i));
@@ -406,7 +406,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
 
                     this.j_combo_hameau.removeAllItems();
                     this.j_combo_hameau.addItem(selectHameau);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getHameau(selected_region,district, commune, selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getHameau(selected_region,district, commune, selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_hameau.addItem( i + "  _  " + com.get(i));
@@ -496,7 +496,7 @@ public class FormatageDesDonnees extends javax.swing.JInternalFrame {
 
             //Boolean RP = new Querry().getRegistreParcellaireProvisoire(selected_region, selected_district.split("  _  ")[1], selected_commune.split("  _  ")[1], this.j_label_folder_export.getText());
 
-            System.out.println("System Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getRegistreAnomalieBloquanteSeulement(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
+            System.out.println("System Dans btn exporter ... "+new Exports(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getRegistreAnomalieBloquanteSeulement(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , this.j_label_folder_export.getText()));
         }
 
     }//GEN-LAST:event_j_button_exporterActionPerformed

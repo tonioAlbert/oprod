@@ -51,7 +51,7 @@ public class ExportVectorisationSansSaisie extends javax.swing.JInternalFrame {
     private final String selectCommune = "Séléctionner une commune";
     private final String selectDateEdition = "Séléctionner une date";
     
-    private String type_operation = "";
+    private String demarche = "";
     
     
     /**
@@ -64,7 +64,7 @@ public class ExportVectorisationSansSaisie extends javax.swing.JInternalFrame {
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
-        this.type_operation = TYPE_OPERATION;
+        this.demarche = TYPE_OPERATION;
         
         initComponents();
         
@@ -311,7 +311,7 @@ public class ExportVectorisationSansSaisie extends javax.swing.JInternalFrame {
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
 
-                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getRegions(selected);
+                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getRegions(selected);
 
                 for (String i : reg.keySet()) {
                     this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -343,7 +343,7 @@ public class ExportVectorisationSansSaisie extends javax.swing.JInternalFrame {
 
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -435,7 +435,7 @@ public class ExportVectorisationSansSaisie extends javax.swing.JInternalFrame {
 
                     //System.out.println("sans date edition appelé");
 
-                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(type_operation)).getListesVectorisationSansSaisie(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
+                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(demarche)).getListesVectorisationSansSaisie(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
 
                     if(reponse.get(0).equals("success")){
 
@@ -452,7 +452,7 @@ public class ExportVectorisationSansSaisie extends javax.swing.JInternalFrame {
                     return "ok-exports";
                     
                     }else{
-                        JOptionPane.showMessageDialog(null, "Aucune véctorisation sans saisie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export véctorisation sans saisie impossible", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Aucune véctorisation sans saisie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export véctorisation sans saisie impossible", JOptionPane.INFORMATION_MESSAGE);
                     }
 
                     return null;

@@ -28,6 +28,8 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
     private final String com_critere_intervale_de_date = "Intervale de date";
     private final String com_par_login = "Par Utilisateurs";
     private final String com_select_username = "Séléctionner un nom d'utilisateur";
+    private final String comb_commune = "Par Commune";
+    private final String comb_txt_select_username = "Séléctionner une commune";
     String dateDebut = "";
     String dateFin = "";
     String username = "";
@@ -166,7 +168,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
         j_date_fin.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
 
         j_comb_select_critere_date.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_comb_select_critere_date.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère", "Par Date", "Intervale de date", "Par Utilisateurs" }));
+        j_comb_select_critere_date.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère", "Par Date", "Intervale de date", "Par Utilisateurs", "Par Commune" }));
         j_comb_select_critere_date.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_comb_select_critere_dateActionPerformed(evt);
@@ -296,7 +298,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     }else{
                         
 
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSimpleSaisieParOperateur( this.j_date_debut, demarcheFormater);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getSimpleSaisieParOperateur( this.j_date_debut, demarcheFormater);
 
                         DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
 
@@ -337,7 +339,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(null, "Date fin de saisie vide ou incorrect !","SErreur lors remplissage date Fin de saisie", JOptionPane.INFORMATION_MESSAGE); 
                     }else{
                         
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieParOperateurBetweenTwoDate(this.j_date_debut, this.j_date_fin, demarcheFormater);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getSaisieParOperateurBetweenTwoDate(this.j_date_debut, this.j_date_fin, demarcheFormater);
                         
                         DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
                         
@@ -375,7 +377,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     }else{
                         
                         username = selected.split("  _  ")[1];
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieWithLogin(demarcheFormater, username);
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getSaisieWithLogin(demarcheFormater, username);
                         
                         if(saisieDesOperateurs.size() <1){
                         
@@ -462,10 +464,34 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                 this.j_comb_login.addItem(com_select_username);
                     
                     
-                HashMap<String, String> users = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getAllUsers();
+                HashMap<String, String> users = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getAllUsers();
 
                 for (String i : users.keySet()) {
                     this.j_comb_login.addItem("Id : "+ i + "  _  " + users.get(i));
+                    //System.out.println("IDDDDD : " + users.get(i));
+                 } 
+                this.j_label_login.setVisible(true);
+                this.j_comb_login.setVisible(true);
+                break;
+                
+            case comb_commune :
+                
+                this.j_date_debut.setDate(null);
+                this.j_date_debut.setEnabled(false);
+
+                this.j_date_fin.setDate(null);
+                this.j_date_fin.setEnabled(false);
+                
+                this.j_comb_login.removeAllItems();
+                
+
+                this.j_comb_login.addItem(com_select_username);
+                    
+                    
+                HashMap<String, String> communes = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getAllUsers();
+
+                for (String i : communes.keySet()) {
+                    this.j_comb_login.addItem("Id : "+ i + "  _  " + communes.get(i));
                     //System.out.println("IDDDDD : " + users.get(i));
                  } 
                 this.j_label_login.setVisible(true);

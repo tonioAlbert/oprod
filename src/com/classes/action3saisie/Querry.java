@@ -32,6 +32,7 @@ public class Querry {
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
+    private String demarche = "";
     
     PreparedStatement st;
     ResultSet rs;
@@ -43,13 +44,14 @@ public class Querry {
     List <String[]> valeurDeRetour = new ArrayList<String[]>() ;
     
     
-    public Querry(String HOST, Integer PORT, String DBNAME, String USER, String PWD){
+    public Querry(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String operation){
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
+        this.demarche = operation;
         
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
         
@@ -1006,16 +1008,39 @@ public Long getValSequenceTable(String nomSequence){
         HashMap<String, String> communes = new HashMap<String, String>();
 
         try {
-            String q = "SELECT commune.code_commune, commune.nom as commune\n" +
-            "FROM district, commune \n" +
-            "WHERE commune.id_district = district.id_district\n" +
-            "AND district.nom = ? ORDER BY commune ASC";
+            String q = " SELECT DISTINCT region.nom AS region,\n" +
+"   district.code_district AS code_district,\n" +
+"   district.nom AS district,\n" +
+"   commune.code_commune AS code_commune,\n" +
+"   commune.nom AS commune,\n" +
+"   fokontany.code_fokontany AS code_fkt,\n" +
+"   fokontany.nom AS fkt,\n" +
+"   hameau.code_hameau AS code_hameau,\n" +
+"   hameau.nom AS hameau\n" +
+"  FROM district,\n" +
+"   region,\n" +
+"   hameau,\n" +
+"   commune,\n" +
+"   fokontany, demande\n" +
+" WHERE hameau.id_fokontany::text = fokontany.id_fokontany::text \n" +
+" AND commune.id_commune::text = fokontany.id_commune::text \n" +
+" AND district.id_district::text = commune.id_district::text \n" +
+" AND region.id_region::text = district.id_region::text\n" +
+"AND demande.id_hameau = hameau.id_hameau\n" +
+"AND district.nom = ? \n" +
+"AND demande.type_op = ?\n" +
+"ORDER BY commune.nom";
             
             
             st = connectDatabase.prepareStatement(q);    
             st.setString(1, c);
+            st.setString(2,Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
         
             rs = st.executeQuery();
+            
+            
+            System.out.println("Méthode get commune : " + st);
+
  
             while(rs.next()){
                 //System.out.println("Méthode get commune : " + rs.getString("code_commune") + " ::  " + rs.getString("commune"));

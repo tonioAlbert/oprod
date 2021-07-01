@@ -53,20 +53,20 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
     private final String selectDistrict = "Séléctionner un district";
     private final String selectCommune = "Séléctionner une commune";
     
-    private String type_operation = "";
+    private String demarche = "";
     
     
     /**
      * Creates new form SaisieParOperateur
      */
-    public ExportRegistreParcellaire(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
+    public ExportRegistreParcellaire(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String demarche) {
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
-        this.type_operation = TYPE_OPERATION;
+        this.demarche = demarche;
         
         initComponents();
         
@@ -314,7 +314,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
 
-                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
+                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getRegions(selected);
 
                 for (String i : reg.keySet()) {
                     this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -346,7 +346,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
 
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -428,7 +428,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             String commune = selected_commune.split("  _  ")[1];
             
 
-            List reponsePersPhysique = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonnePhysique(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
+            List reponsePersPhysique = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche).toLowerCase()).getRegistreParcellaireProvisoirePersonnePhysique(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
 
             
 
@@ -441,7 +441,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                         
             if(responsePersonnePhysique.equals("success-personne-physique")){
                 
-            List reponsePersMorale = new ArrayList(new Exports(BDD_HOST, BDD_PORT,BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
+            List reponsePersMorale = new ArrayList(new Exports(BDD_HOST, BDD_PORT,BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
 
                 int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "RP provisoire exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 
@@ -459,7 +459,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
 
             }else if(responsePersonnePhysique.equals("empty-personne-physique")){
                 
-                List ReRecuperationRpPersonneMorale = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
+                List ReRecuperationRpPersonneMorale = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche).toLowerCase()).getRegistreParcellaireProvisoirePersonneMorale(selected_region, code_district , district , code_commune , commune , EmplacementFichierExcelExporterRP));
 
                 responsePersonneMorale = (String)ReRecuperationRpPersonneMorale.get(0);
                 
@@ -484,7 +484,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                 try {
                     
                     Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterRP));
-                    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
                 
                 } catch (IOException ex) {
                     //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
@@ -498,7 +498,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
                 
                 try {
                     Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterRP));
-                    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
                 
                 } catch (IOException ex) {
                     //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
@@ -509,7 +509,7 @@ public class ExportRegistreParcellaire extends javax.swing.JInternalFrame {
             }
             
             //else{
-            //    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
+            //    JOptionPane.showMessageDialog(null, "Aucun registre parcellaire pret à être exporté sur : \n\ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.demarche, "Export RP provisoire impossible", JOptionPane.INFORMATION_MESSAGE);
             //}
                 return null;
             }

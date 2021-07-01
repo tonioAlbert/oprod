@@ -115,7 +115,7 @@ public class Home extends javax.swing.JFrame {
         //this.lbl_test.setText("Bonjour " + username + " !");
         
         
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation).getNomAtelier();
         //System.out.println("Nom de latelier sur home : " + nomAtelier);
         if(nomAtelier.equals("ATS")){
             this.j_menu_item_rapports_sig.setEnabled(true);
@@ -1010,7 +1010,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         if(option == JOptionPane.OK_OPTION){
             
             // recuperation des démarches
-            Iterator it = new Querry(this.BDD_HOST,this.BDD_PORT,this.BDD_DBNAME,this.BDD_USER,this.BDD_PWD).getAllDemarche().entrySet().iterator();
+            Iterator it = new Querry(this.BDD_HOST,this.BDD_PORT,this.BDD_DBNAME,this.BDD_USER,this.BDD_PWD, this.type_operation).getAllDemarche().entrySet().iterator();
             List<String> demarches = new ArrayList<String>();
 
 	    while (it.hasNext()) {

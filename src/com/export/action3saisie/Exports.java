@@ -65,7 +65,7 @@ public class Exports {
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
-    private String TYPE_OPERATION= "";
+    private String demarche = "";
     private String op = "";
     PreparedStatement st;
     ResultSet rs;
@@ -81,9 +81,9 @@ public class Exports {
         this.BDD_PWD = PWD;
         
 
-        this.TYPE_OPERATION = Formats.ConvertOcmToOcfm(operation);
+        this.demarche = Formats.ConvertOcmToOcfm(operation);
         
-        System.out.println("operation vaut = " + this.TYPE_OPERATION);
+        System.out.println("operation vaut = " + this.demarche);
         //connectDatabase = new ConnectDb("192.168.88.10", 5432, "oprod", "C@seF&Ge0X2", "postgres").getConnection();
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
     }
@@ -96,13 +96,13 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
         
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
         Date date = new Date(System.currentTimeMillis());
-        String realPath = path+"\\"+this.TYPE_OPERATION+"_"+formatter.format(date)+"_VECTO_SANS_SAISIE_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
+        String realPath = path+"\\"+this.demarche+"_"+formatter.format(date)+"_VECTO_SANS_SAISIE_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
         String sql = "";
         String contrainte =" IS TRUE";
         
-        System.out.println("TYPE OPERATION DANS vecto sans saisie = " + this.TYPE_OPERATION);
+        System.out.println("TYPE OPERATION DANS vecto sans saisie = " + this.demarche);
         
-        if (this.TYPE_OPERATION.equals("OGCF")) {
+        if (this.demarche.equals("OGCF")) {
             //contrainte = " IS NOT TRUE ";
             
             
@@ -227,7 +227,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
                 headerCell0.setCellStyle(cadre);
 
                 headerCell0 = headerRow0.createCell(3);
-                headerCell0.setCellValue(this.TYPE_OPERATION);
+                headerCell0.setCellValue(this.demarche);
                 headerCell0.setCellStyle(cadre);
             
 
@@ -277,7 +277,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
                 String Str2 = "id_parcelle, numéro_planche_plof, limitrophe, superficie, coord_x, coord_y, présence anomalie vecto ?";
             
             
-                if (this.TYPE_OPERATION.equals("OGCF")) {
+                if (this.demarche.equals("OGCF")) {
                     TextEnTeteTableau = Str1.split(",");
                 }else{
                     TextEnTeteTableau = Str2.split(",");
@@ -311,7 +311,7 @@ public List<String> getListesVectorisationSansSaisie(String reg, String c_dist, 
                         
                         Row headerRow4 = sheet.createRow(n);
                         
-                        if (this.TYPE_OPERATION.equals("OCFM")) {
+                        if (this.demarche.equals("OCFM")) {
                             
                             
                         
@@ -450,7 +450,7 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
         
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_'a'_HH'h'mm'mn'ss'sec'");
         Date date = new Date(System.currentTimeMillis());
-        String realPath = path+"\\"+this.TYPE_OPERATION+"_"+formatter.format(date)+"_SAISIE_SANS_VECTO_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
+        String realPath = path+"\\"+this.demarche+"_"+formatter.format(date)+"_SAISIE_SANS_VECTO_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+com+".xls";
 
         int RowResultSet = 0;
         
@@ -507,7 +507,7 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
             st.setString(1, reg);
             st.setString(2, dist);
             st.setString(3, com);;
-            st.setString(4, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION.toLowerCase()));
+            st.setString(4, Formats.ConvertOcfmToOcm(this.demarche.toLowerCase()));
             rs = st.executeQuery();
             
             //System.out.println("saisie sans vecto : "+ st);
@@ -585,7 +585,7 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
                 headerCell0.setCellStyle(cadre);
 
                 headerCell0 = headerRow0.createCell(3);
-                headerCell0.setCellValue(this.TYPE_OPERATION);
+                headerCell0.setCellValue(this.demarche);
                 headerCell0.setCellStyle(cadre);
             
 
@@ -636,7 +636,7 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
                 String Str2 = "id_registre , id_parcelle,code_planche_plof_sur_formulaire, nom_et_prénom(s), adresse, voisin nord, voisin sud, voisin est, voisin ouest";
             
             
-                if (this.TYPE_OPERATION.equals("OCFM")) {
+                if (this.demarche.equals("OCFM")) {
                     TextEnTeteTableau = Str1.split(",");
                 }else{
                     TextEnTeteTableau = Str2.split(",");
@@ -668,7 +668,7 @@ public List<String> getListesSaisieSansVectorisation(String reg, String c_dist, 
 
                         RowResultSet++;
                         
-                        if (this.TYPE_OPERATION.equals("OCFM")) {
+                        if (this.demarche.equals("OCFM")) {
                             
                             Row headerRow4 = sheet.createRow(n);
                         
@@ -975,7 +975,7 @@ public List<String> GetAnomaliesVectoCSVLola(String reg, String path){
     
     
         String realPath = path;
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getNomAtelier();
         String nomAntenne = "";
         String sql ="";
         List <String> enTeteTableau = new ArrayList();
@@ -998,7 +998,7 @@ public List<String> GetAnomaliesVectoCSVLola(String reg, String path){
                 break;
         }
         
-        if (Formats.ConvertOcfmToOcm(TYPE_OPERATION).equals("ocm")) {
+        if (Formats.ConvertOcfmToOcm(demarche).equals("ocm")) {
         newOp = " IS TRUE";
     }
         
@@ -1089,7 +1089,7 @@ if (reg.equals("all")) {
                     sheet.getHeader().setRight("LISTE DES ANOMALIES VECTOS");
                     sheet.getHeader().setLeft("CASEF / GEOX2");
                     sheet.getFooter().setLeft(nomAntenne);
-                    sheet.getFooter().setRight("Opération "+ Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                    sheet.getFooter().setRight("Opération "+ Formats.ConvertOcmToOcfm(this.demarche).toUpperCase());
 
                     sheet.getPrintSetup().setLandscape(true);
                     PrintSetup printsetup = sheet.getPrintSetup();
@@ -1374,7 +1374,7 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
     
     
         String realPath = "";
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getNomAtelier();
         String nomAntenne = "";
         String sql = "";
         List <String> enTeteTableau = new ArrayList();
@@ -1421,7 +1421,7 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
                 "ORDER BY district, commune,fokontany.code_fokontany, hameau.code_hameau, demande.num_registre, numero_demande, type_anomalie,description";
                 
                 st = connectDatabase.prepareStatement(sql);    
-                st.setString(1, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
+                st.setString(1, Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
                 rs = st.executeQuery();
                 
                 enTeteTableau.add("Région");
@@ -1431,7 +1431,7 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
                 enTeteTableau.add("Type_anomalie");
                 enTeteTableau.add("Description");
                 
-                realPath = path+"\\"+this.TYPE_OPERATION.toUpperCase()+"_RegAnomalieCSV_Rapport_Hebdo_"+formatter.format(date)+"_ALL_REGION_"+".xlsx";
+                realPath = path+"\\"+this.demarche.toUpperCase()+"_RegAnomalieCSV_Rapport_Hebdo_"+formatter.format(date)+"_ALL_REGION_"+".xlsx";
                 
             }else{
                 
@@ -1456,7 +1456,7 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
 
                 st = connectDatabase.prepareStatement(sql);    
                 st.setString(1, reg);
-                st.setString(2, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
+                st.setString(2, Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
                 rs = st.executeQuery();
                 
                 enTeteTableau.add("Région");
@@ -1466,7 +1466,7 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
                 enTeteTableau.add("Type_anomalie");
                 enTeteTableau.add("Description");
                 
-                realPath = path+"\\"+this.TYPE_OPERATION.toUpperCase()+"_RegAnomaliesCSV_Rapport_Hebdo_"+formatter.format(date)+"_Reg_"+reg+".xlsx";
+                realPath = path+"\\"+this.demarche.toUpperCase()+"_RegAnomaliesCSV_Rapport_Hebdo_"+formatter.format(date)+"_Reg_"+reg+".xlsx";
             }
             
 
@@ -1493,7 +1493,7 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
                 sheet.getHeader().setRight("LISTE DES ANOMALIES SAISIE");
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
-                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.demarche).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -1676,8 +1676,8 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
         String dateAujourdhui = dateFormat.format(new Date());
     
     
-        String realPath = path+"\\"+this.TYPE_OPERATION.toUpperCase()+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String realPath = path+"\\"+this.demarche.toUpperCase()+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getNomAtelier();
         String nomAntenne = "";
         
         switch (nomAtelier){
@@ -1757,7 +1757,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
             st.setString(3, com);
             st.setString(4, fkt);
             st.setString(5, hameau);
-            st.setString(6, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
+            st.setString(6, Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
             rs = st.executeQuery();
 
                 try{
@@ -1784,7 +1784,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
                 sheet.getFooter().setCenter("LISTE(S) DE(S) ANOMALIE(S) BLOQUANTE(S)");
-                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.demarche).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -2215,7 +2215,7 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
     
     
         String realPath = path;
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getNomAtelier();
         String nomAntenne = "";
         
         switch (nomAtelier){
@@ -2297,7 +2297,7 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
             st.setString(3, com);
             st.setString(4, fkt);
             st.setString(5, hameau);
-            st.setString(6, Formats.ConvertOcfmToOcm(TYPE_OPERATION).toLowerCase());
+            st.setString(6, Formats.ConvertOcfmToOcm(demarche).toLowerCase());
             rs = st.executeQuery();
 
                 try{
@@ -2321,7 +2321,7 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
                 sheet.getFooter().setCenter("LISTE(S) DE(S) ANOMALIE(S) NON BLOQUANTE(S)");
-                sheet.getFooter().setRight("Opération "+ Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                sheet.getFooter().setRight("Opération "+ Formats.ConvertOcmToOcfm(this.demarche).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -2741,7 +2741,7 @@ public List<String> getRegistreAnomalieBloquanteSeulement(String reg, String c_d
         
         List retour = new ArrayList();
         
-        if(this.TYPE_OPERATION.equals("OCM")){
+        if(this.demarche.equals("OCM")){
             this.op = "OCFM";
         }else{
             this.op = "OGCF";
@@ -2758,7 +2758,7 @@ public List<String> getRegistreAnomalieBloquanteSeulement(String reg, String c_d
     
     
         String realPath = path+"\\"+this.op+"_RegAnomalieSaisie_"+formatter.format(date)+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+"_FKT_"+Formats.ConvertSlashToUnderscore(fkt)+"_Ham_"+Formats.ConvertSlashToUnderscore(hameau)+".xlsx";
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getNomAtelier();
         String nomAntenne = "";
         
         switch (nomAtelier){
@@ -2838,7 +2838,7 @@ public List<String> getRegistreAnomalieBloquanteSeulement(String reg, String c_d
             st.setString(3, com);
             st.setString(4, fkt);
             st.setString(5, hameau);
-            st.setString(6, this.TYPE_OPERATION.toLowerCase());
+            st.setString(6, this.demarche.toLowerCase());
             rs = st.executeQuery();
 
                 try{
@@ -2864,7 +2864,7 @@ public List<String> getRegistreAnomalieBloquanteSeulement(String reg, String c_d
                 sheet.getHeader().setRight("Fiche 9 – LISTE DES ANOMALIES SUR LES FORMULAIRES");
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 sheet.getFooter().setLeft(nomAntenne);
-                sheet.getFooter().setRight("Opération "+this.TYPE_OPERATION.toUpperCase());
+                sheet.getFooter().setRight("Opération "+this.demarche.toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -3240,7 +3240,7 @@ public List<String> getListesCfEditerWithoutFilterDate(String reg, String c_dist
         
         List retour = new ArrayList();
         
-        if(this.TYPE_OPERATION.equals("OCM")){
+        if(this.demarche.equals("OCM")){
             this.op = "OCFM";
         }else{
             this.op = "OGCF";
@@ -3326,7 +3326,7 @@ public List<String> getListesCfEditerWithoutFilterDate(String reg, String c_dist
             st.setString(1, reg);
             st.setString(2, dist);
             st.setString(3, com);;
-            st.setString(4, this.TYPE_OPERATION.toLowerCase());
+            st.setString(4, this.demarche.toLowerCase());
             rs = st.executeQuery();
             
             try{
@@ -3588,7 +3588,7 @@ public List<String> getListesCfEditerWithFilterDate(String reg, String c_dist, S
         
         List retour = new ArrayList();
         
-        if(this.TYPE_OPERATION.equals("OCM")){
+        if(this.demarche.equals("OCM")){
             this.op = "OCFM";
         }else{
             this.op = "OGCF";
@@ -3676,7 +3676,7 @@ public List<String> getListesCfEditerWithFilterDate(String reg, String c_dist, S
             st.setString(1, reg);
             st.setString(2, dist);
             st.setString(3, com);;
-            st.setString(4, this.TYPE_OPERATION.toLowerCase());
+            st.setString(4, this.demarche.toLowerCase());
             rs = st.executeQuery();
             
                 try{
@@ -3940,7 +3940,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
                     
         List retour = new ArrayList();
         
-        if(this.TYPE_OPERATION.equals("OCM")){
+        if(this.demarche.equals("OCM")){
             this.op = "OCFM";
         }else{
             this.op = "OGCF";
@@ -3952,7 +3952,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
     
         String realPath = path+"\\"+this.op+"_RP_prov ( LISTING )_"+formatter.format(date)+"_"+"_Reg_"+Formats.ConvertSlashToUnderscore(reg)+"_Com_"+Formats.ConvertSlashToUnderscore(com)+".xlsx";
         
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getNomAtelier();
         String nomAntenne = "";
         
         switch (nomAtelier){
@@ -4063,7 +4063,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
             st.setString(1, reg);
             st.setString(2, dist);
             st.setString(3, com);
-            st.setString(4, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
+            st.setString(4, Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
             rs = st.executeQuery();
             
                 try{
@@ -4084,7 +4084,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 //sheet.getFooter().setCenter("Page : &[ Page ] à &[ Pages ]");
                 sheet.getFooter().setLeft(nomAntenne);
-                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.demarche).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -4193,7 +4193,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
             headerCell2.setCellStyle(cadre);
 
             headerCell2 = headerRow2.createCell(3);
-            headerCell2.setCellValue(c_com);
+            headerCell2.setCellValue(c_dist+c_com);
             headerCell2.setCellStyle(cadre);
 // ============================================================================ 
 
@@ -4317,7 +4317,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonnePhysique(String reg,
                             headerCell_26.setCellStyle(cadre);
 
                             Cell headerCell_27 = headerRow4.createCell(20);
-                            headerCell_27.setCellValue(rs.getString("v_ouest"));
+                            headerCell_27.setCellValue(rs.getString("v_est"));
                             headerCell_27.setCellStyle(cadre);
                             
                             
@@ -4391,7 +4391,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
         List retour = new ArrayList();
         
         String realPath = path;
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getNomAtelier();
         String nomAntenne = "";
         
         switch (nomAtelier){
@@ -4475,7 +4475,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
             st.setString(1, reg);
             st.setString(2, dist);
             st.setString(3, com);
-            st.setString(4, Formats.ConvertOcfmToOcm(this.TYPE_OPERATION).toLowerCase());
+            st.setString(4, Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
             rs = st.executeQuery();
             
                 try{
@@ -4498,7 +4498,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
                 sheet.getHeader().setLeft("CASEF / GEOX2");
                 //sheet.getFooter().setCenter("Page : &[ Page ] à &[ Pages ]");
                 sheet.getFooter().setLeft(nomAntenne);
-                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+                sheet.getFooter().setRight("Opération "+Formats.ConvertOcmToOcfm(this.demarche).toUpperCase());
                 
                 sheet.getPrintSetup().setLandscape(true);
                 PrintSetup printsetup = sheet.getPrintSetup();
@@ -4564,7 +4564,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
             headerCell0.setCellStyle(cadre);
 
             headerCell0 = headerRow0.createCell(3);
-            headerCell0.setCellValue(Formats.ConvertOcmToOcfm(this.TYPE_OPERATION).toUpperCase());
+            headerCell0.setCellValue(Formats.ConvertOcmToOcfm(this.demarche).toUpperCase());
             headerCell0.setCellStyle(cadre);
 
 //==============================================================================
@@ -4605,7 +4605,7 @@ public List<Querry> getRegistreParcellaireProvisoirePersonneMorale(String reg, S
             headerCell2.setCellStyle(cadre);
 
             headerCell2 = headerRow2.createCell(3);
-            headerCell2.setCellValue(c_com);
+            headerCell2.setCellValue(c_dist+c_com);
             headerCell2.setCellStyle(cadre);
 // ============================================================================ 
 

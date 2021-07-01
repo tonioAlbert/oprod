@@ -267,11 +267,12 @@
               <Font name="Arial Narrow" size="14" style="1"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
+              <StringArray count="5">
                 <StringItem index="0" value="S&#xe9;l&#xe9;ctionner une crit&#xe8;re"/>
                 <StringItem index="1" value="Par Date"/>
                 <StringItem index="2" value="Intervale de date"/>
                 <StringItem index="3" value="Par Utilisateurs"/>
+                <StringItem index="4" value="Par Commune"/>
               </StringArray>
             </Property>
           </Properties>

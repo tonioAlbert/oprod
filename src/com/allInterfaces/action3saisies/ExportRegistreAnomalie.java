@@ -54,7 +54,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
     private final String selectFokontany = "Séléctionner une fokontany";
     private final String selectHameau = "Séléctionner un hameau";
     
-    private String type_operation = "";
+    private String demarche = "";
     
     
     /**
@@ -67,7 +67,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
-        this.type_operation = TYPE_OPERATION;
+        this.demarche = TYPE_OPERATION;
         
         initComponents();
         
@@ -352,7 +352,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
 
-                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getRegions(selected);
+                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getRegions(selected);
 
                 for (String i : reg.keySet()) {
                     this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -388,7 +388,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -422,7 +422,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
                     this.j_combo_fokontany.removeAllItems();
                     this.j_combo_fokontany.addItem(selectFokontany);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getFokontany(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getFokontany(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_fokontany.addItem( i + "  _  " + com.get(i));
@@ -466,7 +466,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
                     this.j_combo_hameau.removeAllItems();
                     this.j_combo_hameau.addItem(selectHameau);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getHameau(selected_region.trim(),district, commune, selected.split("  _  ")[1].trim());
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getHameau(selected_region.trim(),district, commune, selected.split("  _  ")[1].trim());
 
                     for (String i : com.keySet()) {
                         this.j_combo_hameau.addItem( i + "  _  " + com.get(i));
@@ -562,7 +562,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             
             
             
-            List reponseAnomaliesBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , j_label_folder_export.getText());
+            List reponseAnomaliesBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).GetAnomaliesBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , j_label_folder_export.getText());
             
             String responseBloquante = (String)reponseAnomaliesBloquantes.get(0);
             String EmplacementFichierExcelExporterAnomalieBloquante = (String)reponseAnomaliesBloquantes.get(1);
@@ -572,7 +572,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             if(responseBloquante.equals("success-anomalie-bloquante")){
                 
                 // ON ESSEAI DE RECUPERER LES ANOMALIES NON BLOQUANTES S'IL EXISTE
-                List reponseAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
+                List reponseAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
 
                 int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "Registre anomalie(s) exporté avec succès", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 
@@ -596,7 +596,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
 
             }else if(responseBloquante.equals("empty-anomalie-bloquante")){
                 
-                List ReRecuperationDesAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(type_operation)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
+                List ReRecuperationDesAnomaliesNonBloquantes = new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_PWD, BDD_USER, Formats.ConvertOcfmToOcm(demarche)).GetAnomaliesNonBloquante(selected_region, code_district , district , code_commune , commune , code_fokontany, fokontany , code_hameau, hameau , EmplacementFichierExcelExporterAnomalieBloquante);
                 
                 ReresponseNonBloquante = (String)ReRecuperationDesAnomaliesNonBloquantes.get(0);
                 
@@ -624,7 +624,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                 try {
                     
                     Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterAnomalieBloquante));
-                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+demarche, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
                     
                     return null;
                     
@@ -638,7 +638,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }else if(responseBloquante.equals("empty-anomalie-bloquante") && ReresponseNonBloquante.equals("empty-anomalie-non-bloquante")){
                 try {
                     Files.deleteIfExists(Paths.get(EmplacementFichierExcelExporterAnomalieBloquante));
-                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+type_operation, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Aucune anomalie(s) (bloquante(s) / non bloquante(s) a été trouvé sur la : \n\ncommune: "+commune+"\n"+"Fokontany : "+fokontany+"\n"+"Hameau : "+hameau+"\n"+"Type d'opération : "+demarche, "Export du registre d'anonamlie impossible", JOptionPane.INFORMATION_MESSAGE);
  
                 } catch (IOException ex) {
                     //Logger.getLogger(ExportRegistreAnomalie.class.getName()).log(Level.SEVERE, null, ex);
@@ -651,7 +651,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
             }
             //if(reponse.get(0).equals("error-empty")){
                 
-                //JOptionPane.showMessageDialog(null, "Aucune anomalie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export registre anomalie impossible", JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "Aucune anomalie a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export registre anomalie impossible", JOptionPane.INFORMATION_MESSAGE);
  
             //}
                 

@@ -35,7 +35,7 @@ public class Home1 extends javax.swing.JFrame {
     private static ResultSet rs;
     private String userName;
     private String pswd;
-    private String type_operation;
+    private String demarche;
 
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -59,7 +59,7 @@ public class Home1 extends javax.swing.JFrame {
         
         this.userName = username;
         this.pswd = password;
-        this.type_operation = TYPE_OPERATION;
+        demarche = TYPE_OPERATION;
 
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
@@ -73,8 +73,8 @@ public class Home1 extends javax.swing.JFrame {
         this.j_labal_perc.setVisible(false);
 
         //System.out.println("Bonjour : " + username + "\nVotre mot de passe est : "+ password + "\nType d'opération : "+ type_op );
-        if(this.type_operation.equals("OGCF")){
-            this.lbl_type_operation.setText("Type d'opération séléctionné : "+this.type_operation);
+        if(demarche.equals("OGCF")){
+            this.lbl_type_operation.setText("Type d'opération séléctionné : "+demarche);
         }else{
             this.lbl_type_operation.setText("Type d'opération séléctionné : OCFM");
         }
@@ -82,7 +82,7 @@ public class Home1 extends javax.swing.JFrame {
         this.lbl_test.setText("Bonjour " + username + " !");
         
         
-        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getNomAtelier();
+        String nomAtelier = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getNomAtelier();
         System.out.println("Nom de latelier sur home : " + nomAtelier);
         if(nomAtelier.equals("ATS")){
             this.j_menu_item_rapport_sig.setEnabled(true);
@@ -576,7 +576,7 @@ public class Home1 extends javax.swing.JFrame {
     }//GEN-LAST:event_j_menu_statsActionPerformed
 
     private void j_menu_stat_saisie_par_operateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_stat_saisie_par_operateurActionPerformed
-        SaisieParOperateur s_par_op = new SaisieParOperateur(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.type_operation);
+        SaisieParOperateur s_par_op = new SaisieParOperateur(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, demarche);
         this.dpContent.add(s_par_op);
         s_par_op.show();
 
@@ -765,7 +765,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         if(option == JOptionPane.OK_OPTION){
             
             // recuperation des démarches
-            Iterator it = new Querry(this.BDD_HOST,this.BDD_PORT,this.BDD_DBNAME,this.BDD_USER,this.BDD_PWD).getAllDemarche().entrySet().iterator();
+            Iterator it = new Querry(this.BDD_HOST,this.BDD_PORT,this.BDD_DBNAME,this.BDD_USER,this.BDD_PWD, this.demarche).getAllDemarche().entrySet().iterator();
             List<String> demarches = new ArrayList<String>();
 
 	    while (it.hasNext()) {
@@ -885,7 +885,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_export_rp_provisoireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_rp_provisoireActionPerformed
         
-        ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER,this.type_operation);
+        ExportRegistreParcellaire rp_prov = new ExportRegistreParcellaire(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER,demarche);
         
         this.dpContent.add(rp_prov);
         rp_prov.show();
@@ -894,7 +894,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_export_listes_anomaliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_anomaliesActionPerformed
 
-        ExportRegistreAnomalie reg_anomaie = new ExportRegistreAnomalie(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        ExportRegistreAnomalie reg_anomaie = new ExportRegistreAnomalie(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche);
         this.dpContent.add(reg_anomaie);
         reg_anomaie.show();
         
@@ -988,7 +988,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_export_listes_cf_editer_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
         
-        ExportCFEditerParCommunes cf_editer = new ExportCFEditerParCommunes(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, type_operation);
+        ExportCFEditerParCommunes cf_editer = new ExportCFEditerParCommunes(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche);
         this.dpContent.add(cf_editer);
         cf_editer.show();
         
@@ -1000,25 +1000,25 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_j_menu_export_listes_cf_editer_par_communeActionPerformed
 
     private void j_menu_item_rapport_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_rapport_sigActionPerformed
-        RapportSIG v_rapport_sig = new RapportSIG(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        RapportSIG v_rapport_sig = new RapportSIG(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche);
         this.dpContent.add(v_rapport_sig);
         v_rapport_sig.show();
     }//GEN-LAST:event_j_menu_item_rapport_sigActionPerformed
 
     private void j_menu_item_rapport_saisieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_rapport_saisieActionPerformed
-        RapportSAISIE v_rapport_saisie = new RapportSAISIE(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        RapportSAISIE v_rapport_saisie = new RapportSAISIE(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche);
         this.dpContent.add(v_rapport_saisie);
         v_rapport_saisie.show();
     }//GEN-LAST:event_j_menu_item_rapport_saisieActionPerformed
 
     private void j_menu_cf_editableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_cf_editableActionPerformed
-        RapportCfEditableParCommune v_rapport_saisie_par_commune = new RapportCfEditableParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        RapportCfEditableParCommune v_rapport_saisie_par_commune = new RapportCfEditableParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche);
         this.dpContent.add(v_rapport_saisie_par_commune);
         v_rapport_saisie_par_commune.show();
     }//GEN-LAST:event_j_menu_cf_editableActionPerformed
 
     private void j_menu_stat_anomalies_par_communeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_stat_anomalies_par_communeActionPerformed
-        RapportAnomalieSaisieParCommune v_rapport_anomalies_saisie_par_commune = new RapportAnomalieSaisieParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        RapportAnomalieSaisieParCommune v_rapport_anomalies_saisie_par_commune = new RapportAnomalieSaisieParCommune(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche);
         this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
         v_rapport_anomalies_saisie_par_commune.show();
     }//GEN-LAST:event_j_menu_stat_anomalies_par_communeActionPerformed

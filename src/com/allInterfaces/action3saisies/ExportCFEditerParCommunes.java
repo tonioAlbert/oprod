@@ -51,7 +51,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
     private final String selectCommune = "Séléctionner une commune";
     private final String selectDateEdition = "Séléctionner une date";
     
-    private String type_operation = "";
+    private String demarche = "";
     
     
     /**
@@ -64,7 +64,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
         this.BDD_DBNAME = DBNAME;
         this.BDD_USER = USER;
         this.BDD_PWD = PWD;
-        this.type_operation = TYPE_OPERATION;
+        this.demarche = TYPE_OPERATION;
         
         initComponents();
         
@@ -333,7 +333,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                 this.j_combo_district.removeAllItems();
                 this.j_combo_district.addItem(selectDistrict);
 
-                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getRegions(selected);
+                HashMap<String, String> reg = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getRegions(selected);
 
                 for (String i : reg.keySet()) {
                     this.j_combo_district.addItem( i + "  _  " + reg.get(i));
@@ -366,7 +366,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
                     this.j_combo_commune.removeAllItems();
                     this.j_combo_commune.addItem(selectCommune);
-                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getCommunes(selected.split("  _  ")[1]);
+                    HashMap<String, String> com = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getCommunes(selected.split("  _  ")[1]);
 
                     for (String i : com.keySet()) {
                         this.j_combo_commune.addItem( i + "  _  " + com.get(i));
@@ -405,15 +405,15 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                 //System.out.println("j_combo_communeItemStateChanged selected_region vaut  = " + selected_region);
                 //System.out.println("j_combo_communeItemStateChanged district vaut  = " + district);
                 //System.out.println("j_combo_communeItemStateChanged commune vaut  = " + commune);
-                //System.out.println("j_combo_communeItemStateChanged this.type_operation vaut  = " +  this.type_operation.toLowerCase());
+                //System.out.println("j_combo_communeItemStateChanged this.demarche vaut  = " +  this.demarche.toLowerCase());
         
-                dateEditionCF  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getDistinctDateEditionCF(selected_region, district,commune , Formats.ConvertOcfmToOcm(this.type_operation).toLowerCase());
+                dateEditionCF  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getDistinctDateEditionCF(selected_region, district,commune , Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
                 
                 if(dateEditionCF.size() < 1){
                     this.j_combo_date_edition.setEnabled(false);
                     this.j_button_exporter_cf_editer.setEnabled(false);
                     
-                    JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.demarche, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
  
                 }else{
                 
@@ -505,7 +505,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
 
                     //System.out.println("sans date edition appelé");
 
-                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(type_operation)).getListesCfEditerWithoutFilterDate(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
+                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(demarche)).getListesCfEditerWithoutFilterDate(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
 
                     if(reponse.get(0).equals("success")){
 
@@ -522,14 +522,14 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                     return "ok-exports";
                     
                     }else{
-                        JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }else{
 
 
                     //System.out.println("avec date edition CF appelé");
                     String dateEdition = (String)j_combo_date_edition.getSelectedItem();
-                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(type_operation)).getListesCfEditerWithFilterDate(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText(), dateEdition.replace(" ", "")));
+                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(demarche)).getListesCfEditerWithFilterDate(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText(), dateEdition.replace(" ", "")));
 
                     if(reponse.get(0).equals("success")){
 
@@ -548,7 +548,7 @@ public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
                             return "ok-exports";
 
                     }else{
-                        JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+type_operation, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
 

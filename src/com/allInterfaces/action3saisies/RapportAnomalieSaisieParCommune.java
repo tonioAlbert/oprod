@@ -244,7 +244,7 @@ public class RapportAnomalieSaisieParCommune extends javax.swing.JInternalFrame 
             //this.setAlwaysOnTop(true);
         }else{
             
-                        traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).AnomaliesSaisieParCommune(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
+                        traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).AnomaliesSaisieParCommune(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
                         
                         DefaultTableModel tableau = (DefaultTableModel) j_table_rapport_sig.getModel();
                         

@@ -250,7 +250,7 @@ public class NombreDossiersPretCQEParCommune extends javax.swing.JInternalFrame 
             //this.setAlwaysOnTop(true);
         }else{
             
-                        traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getNombresDossiersPretCQE(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
+                        traitements  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche).getNombresDossiersPretCQE(selected_region, Formats.ConvertOcfmToOcm(this.demarche));
                         
                         DefaultTableModel tableau = (DefaultTableModel) j_table_dossiers_pret_cqe_par_commune.getModel();
                         

@@ -33,7 +33,7 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
     private String BDD_DBNAME = "";
     private String BDD_USER = "";
     private String BDD_PWD = "";
-    private static String type_operation;
+    private static String demarche;
     private final String c = "Séléctionner une critère de recherche";
     
     List <String[]> saisieDesOperateurs;
@@ -48,7 +48,7 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
         this.BDD_DBNAME = dbname;
         this.BDD_USER = user;
         this.BDD_PWD = password;
-        this.type_operation = operation;
+        this.demarche = operation;
         
         initComponents();
         
@@ -757,7 +757,7 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
                             "cf_annule","cf_annule_user","cf_annule_date","lot","val_cqe","date_soumission_cqe",
                             "date_affichage","cqi_complet","type_op","consistance"};
                         
-                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getSaisieCroise("region_vide", Formats.ConvertOcfmToOcm(type_operation), "Par intervale de date", this.jDate_debut, this.jDate_fin, "" );
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getSaisieCroise("region_vide", Formats.ConvertOcfmToOcm(this.demarche), "Par intervale de date", this.jDate_debut, this.jDate_fin, "" );
                         
                         //DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
                         
@@ -784,10 +784,10 @@ public class ImportationSaisieCroise extends javax.swing.JInternalFrame {
                                 System.out.println("id_demande = " + saisieDesOperateurs.get(a)[0] +" id_fiplof = " + saisieDesOperateurs.get(a)[1]+" id_hameau = " + saisieDesOperateurs.get(a)[2]+" num_parcelle = " + saisieDesOperateurs.get(a)[3]);
                             }
                             // récupération des valeurs dans la table param ( chamo valeur )
-                            String idParamAtelier  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getInfoParam();
+                            String idParamAtelier  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getInfoParam();
                             
                             // RECUPERATION SEQUENCE DE LA TABLE DEMANDE
-                            Long seqTableDemande = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getValSequenceTable("seq_pk_demande_id_demande");
+                            Long seqTableDemande = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getValSequenceTable("seq_pk_demande_id_demande");
                             
                             //saisieDesOperateurs.get(0)[0].toString());
                             //System.out.println("seqTableDemande = " + seqTableDemande);
