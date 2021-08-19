@@ -107,7 +107,6 @@
                               <Component id="j_bouton_search" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="j_button_reset" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane1" alignment="1" min="-2" pref="302" max="-2" attributes="0"/>
                   </Group>

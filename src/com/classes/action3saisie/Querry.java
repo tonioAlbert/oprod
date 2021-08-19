@@ -964,6 +964,74 @@ public Long getValSequenceTable(String nomSequence){
     }
     
     
+    
+    
+public List <String[] > getSaisieWithCommune(String demarche, String username){
+        
+        List <String[]> saisies = new ArrayList<String[]>() ;
+        
+        
+        //System.out.println(" Code commune passé  = " + username);
+            
+            try {
+
+                String sql = "SELECT region.nom as region, commune.nom AS commune, CONCAT(district.code_district , '-', commune.code_commune) AS c_commune,\n" +
+"                       COUNT(*) AS nb_saisie\n" +
+"                        FROM region, commune,  \n" +
+"                             fokontany, \n" +
+"                             hameau,   \n" +
+"                             demande, utilisateur , district  \n" +
+"                         WHERE\n" +
+"                         region.id_region = district.id_region\n" +
+"                         AND commune.id_commune::text = fokontany.id_commune::text  \n" +
+"                          AND district.id_district = commune.id_district \n" +
+"                         AND fokontany.id_fokontany::text = hameau.id_fokontany::text  \n" +
+"                         AND demande.id_hameau::text = hameau.id_hameau::text  \n" +
+"                         AND demande.demande_user = utilisateur.id_utilisateur  \n" +
+"                           AND commune.nom = ?  \n" +
+"                           AND demande.type_op = ?  \n" +
+"                       \n" +
+"                         GROUP BY region.nom ,district.nom, commune.nom, c_commune\n" +
+"                         order by region.nom ASC\n" +
+"                         ";
+            
+                st = connectDatabase.prepareStatement(sql); 
+                st.setString(1, username.trim());
+                st.setString(2, demarche.toLowerCase());
+
+                rs = st.executeQuery();
+                
+                //System.out.println("REQ = " + rs);
+                
+                int n = 0;
+
+                while(rs.next()){
+                    String[] saisie = { rs.getString("region"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("nb_saisie") };   
+                    
+                    
+                    System.out.println(rs.getString("region")+ rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )"+ rs.getString("nb_saisie"));
+  
+                    saisies.add( saisie);
+                    n++;
+                }
+                
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+
+        return saisies;
+    }
+    
+    
+    
+    
+    
+    
+    
       
     public HashMap<String, String> getRegions(String r){
         
@@ -1064,7 +1132,7 @@ public Long getValSequenceTable(String nomSequence){
                 rs = st.executeQuery();
             }
             
-            System.out.println("Méthode get commune : " + st);
+            //System.out.println("Méthode get commune : " + st);
 
  
             while(rs.next()){

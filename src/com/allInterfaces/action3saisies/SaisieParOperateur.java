@@ -34,6 +34,8 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
     String dateFin = "";
     String username = "";
     
+    private DefaultTableModel modelSaisieParCommune;
+    
     private String BDD_HOST = "";
     private Integer BDD_PORT;
     private String BDD_DBNAME = "";
@@ -254,8 +256,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                         .addGap(43, 43, 43)
                         .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(j_bouton_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(j_button_reset))
-                        .addGap(52, 52, 52))
+                            .addComponent(j_button_reset)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(j_bouton_exporter_rapport_vectorisation_par_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,6 +368,50 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     }
                     
                     
+                }else if(val_critere.equals(comb_commune)){
+
+                   String selected = this.j_comb_login.getSelectedItem().toString();
+                   
+                    if(selected.equals(comb_txt_select_Commune)){
+                            System.out.println("Aucune Commune selectionnée !");
+                            JOptionPane.showMessageDialog(null, "Veuillez sélectionner une commune !","Aucune Commune selectionné !", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        
+                        username = selected.split("  _  ")[1];
+                        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getSaisieWithCommune(demarcheFormater, username);
+                        //System.out.println("username = selected.split()[1]; ===== " + username);
+                        if(saisieDesOperateurs.size() <1){
+                        
+                            
+                            JOptionPane.showMessageDialog(null, "Aucune saisie sur la commune : "+username.toUpperCase()+" pendant l'opération "+this.demarche.toUpperCase()+" a été trouvé !","Aucune saisie trouvé", JOptionPane.INFORMATION_MESSAGE);
+                      
+                        }else{
+                            
+                            modelSaisieParCommune = new DefaultTableModel();
+                            
+
+                            modelSaisieParCommune.addColumn("Région");
+                            modelSaisieParCommune.addColumn("Commune");
+                            modelSaisieParCommune.addColumn("Nombres de saisies éffectuées");        
+                            j_table_saisie_par_operateur.setModel(modelSaisieParCommune);
+                            DefaultTableModel tableau = (DefaultTableModel) j_table_saisie_par_operateur.getModel();
+                            
+                            
+                            Formats.resetTable(tableau);
+
+
+                            // BOUCLE POUR INSERTION DES DONNEES DANS LE TABLEAU
+                            for (int a = 0; a < saisieDesOperateurs.size(); a++) {
+
+                                rowData[0] = saisieDesOperateurs.get(a)[0].toUpperCase();
+                                rowData[1] = saisieDesOperateurs.get(a)[1];
+                                rowData[2] = saisieDesOperateurs.get(a)[2];
+                                tableau.addRow(rowData);
+                            }
+                        }
+                    }
+                    
+
                 }else{
                     
                     String selected = this.j_comb_login.getSelectedItem().toString();
@@ -494,7 +539,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
 
                 for (String i : communes.keySet()) {
                     this.j_comb_login.addItem(i + "  _  " + communes.get(i));
-                    //System.out.println("IDDDDD : " + users.get(i));
+                    //System.out.println("IDDDDD : " + communes.get(i));
                  }
                 
                 //j_comb_login.setV
