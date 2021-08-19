@@ -6,6 +6,9 @@
 package com.allInterfaces.action3saisies;
 
 
+import com.allInterfaces.action3saisies.Exportations.ExportRegistreAnomalie;
+import com.allInterfaces.action3saisies.Exportations.ExportRegistreParcellaire;
+import com.allInterfaces.action3saisies.Exportations.ExportCFEditerParCommunes;
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
@@ -973,7 +976,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
 
     private void j_menu_controles_saisieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_controles_saisieActionPerformed
         
-        ControlleDesSaisies ctrl_saisie = new ControlleDesSaisies();
+        ControlleDesSaisies ctrl_saisie = new ControlleDesSaisies(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, this.demarche);
         this.dpContent.add(ctrl_saisie);
         ctrl_saisie.show();
     }//GEN-LAST:event_j_menu_controles_saisieActionPerformed

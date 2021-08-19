@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.allInterfaces.action3saisies;
+package com.allInterfaces.action3saisies.Exportations;
 
+import com.allInterfaces.action3saisies.Home;
 import com.classes.action3saisie.Formats;
 import com.connectDb.ConnectDb;
 import java.awt.event.ItemEvent;
@@ -34,7 +35,7 @@ import javax.swing.SwingWorker;
  *
  * @author RAP
  */
-public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
+public class ExportCFEditerParCommunes extends javax.swing.JInternalFrame {
     
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -57,7 +58,7 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
     /**
      * Creates new form SaisieParOperateur
      */
-    public ExportSaisieSansVectorisation(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
+    public ExportCFEditerParCommunes(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String TYPE_OPERATION) {
         
         this.BDD_HOST = HOST;
         this.BDD_PORT = PORT;
@@ -114,6 +115,8 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
         j_combo_district = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         j_combo_commune = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        j_combo_date_edition = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         j_label_folder_export = new javax.swing.JTextField();
         j_button_folder_export = new javax.swing.JButton();
@@ -125,7 +128,7 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        setTitle("Exportation Saisie Sans Véctorisation");
+        setTitle("Exportation CF éditer par commune");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(550, 450));
 
@@ -161,6 +164,18 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
         j_combo_commune.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 j_combo_communeItemStateChanged(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        jLabel5.setText("Date édition");
+
+        j_combo_date_edition.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
+        j_combo_date_edition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une date" }));
+        j_combo_date_edition.setEnabled(false);
+        j_combo_date_edition.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                j_combo_date_editionItemStateChanged(evt);
             }
         });
 
@@ -238,19 +253,22 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
                         .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(j_combo_region, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(j_combo_district, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(j_combo_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(j_combo_date_edition, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(j_combo_region, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(j_combo_district, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(j_combo_commune, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(93, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(180, 180, 180)
                                 .addComponent(j_button_exporter_cf_editer, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(j_panel_loading_export, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,7 +295,11 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j_combo_commune, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(45, 45, 45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(j_combo_date_edition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(j_button_folder_export, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -306,6 +328,7 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
             if(selected.equals(selectRegion)){
                 this.j_combo_district.setEnabled(false);
                 this.j_combo_commune.setEnabled(false);
+                this.j_combo_date_edition.setEnabled(false);
             }else{
 
                 this.j_combo_district.removeAllItems();
@@ -335,6 +358,7 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
 
             if(selected.equals(selectDistrict)){
                 this.j_combo_commune.setEnabled(false);
+                this.j_combo_date_edition.setEnabled(false);
             }else{
 
                 this.j_combo_commune.setEnabled(false);
@@ -358,7 +382,53 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
 
     private void j_combo_communeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_communeItemStateChanged
         
+        String selected = "";
+        String selected_region = (String)this.j_combo_region.getSelectedItem();
+        String selected_district = (String)this.j_combo_district.getSelectedItem();
+        String district = selected_district.split("  _  ")[1].trim();
+        List <String[]> dateEditionCF;
 
+        
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+
+            selected += evt.getItem();
+
+            if(selected.equals(selectCommune)){
+                this.j_combo_date_edition.setEnabled(false);
+            }else{
+                
+                this.j_combo_date_edition.removeAllItems();
+                this.j_combo_date_edition.addItem(selectDateEdition);
+                
+                String selected_commune = (String)this.j_combo_commune.getSelectedItem();
+                String commune = selected_commune.split("  _  ")[1].trim();
+                        
+                //System.out.println("j_combo_communeItemStateChanged selected_region vaut  = " + selected_region);
+                //System.out.println("j_combo_communeItemStateChanged district vaut  = " + district);
+                //System.out.println("j_combo_communeItemStateChanged commune vaut  = " + commune);
+                //System.out.println("j_combo_communeItemStateChanged this.demarche vaut  = " +  this.demarche.toLowerCase());
+        
+                dateEditionCF  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getDistinctDateEditionCF(selected_region, district,commune , Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
+                
+                if(dateEditionCF.size() < 1){
+                    this.j_combo_date_edition.setEnabled(false);
+                    this.j_button_exporter_cf_editer.setEnabled(false);
+                    
+                    JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+this.demarche, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+ 
+                }else{
+                
+                    this.j_combo_date_edition.setEnabled(true);
+                    this.j_button_exporter_cf_editer.setEnabled(true);
+
+                    for (int i =0; i < dateEditionCF.size(); i++) {
+                        this.j_combo_date_edition.addItem(dateEditionCF.get(i)[0]);
+                    }
+                }
+
+
+            }
+        }
 
     }//GEN-LAST:event_j_combo_communeItemStateChanged
 
@@ -432,14 +502,15 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
                 String district = selected_district.split("  _  ")[1];
                 String commune = selected_commune.split("  _  ")[1];
 
+                if(j_combo_date_edition.getSelectedItem().equals(selectDateEdition)){
 
                     //System.out.println("sans date edition appelé");
 
-                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(demarche)).getListesSaisieSansVectorisation(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
+                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(demarche)).getListesCfEditerWithoutFilterDate(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText()));
 
                     if(reponse.get(0).equals("success")){
 
-                        int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export ?", "Listes saisie sans véctorisation exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                             if(export == JOptionPane.YES_OPTION){
                                 // ouverture de l'emplacement selectionner par l'utiisateur
@@ -452,8 +523,35 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
                     return "ok-exports";
                     
                     }else{
-                        JOptionPane.showMessageDialog(null, "Aucune saisie sans vecto a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export saisie sans véctorisation impossible", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
                     }
+                }else{
+
+
+                    //System.out.println("avec date edition CF appelé");
+                    String dateEdition = (String)j_combo_date_edition.getSelectedItem();
+                    List reponse = new ArrayList(new Exports(BDD_HOST, BDD_PORT, BDD_DBNAME, BDD_USER, BDD_PWD, Formats.ConvertOcfmToOcm(demarche)).getListesCfEditerWithFilterDate(selected_region, code_district , district , code_commune , commune , j_label_folder_export.getText(), dateEdition.replace(" ", "")));
+
+                    if(reponse.get(0).equals("success")){
+
+                        int export = JOptionPane.showConfirmDialog(null, "Voulez-vous ouvrir le dossier de l'export du fichier exporté ?", "Listes CF éditer exporté avec succès !", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                            if(export == JOptionPane.YES_OPTION){
+                                // ouverture de l'emplacement selectionner par l'utiisateur
+                                try {
+                                    Desktop.getDesktop().open(new File(j_label_folder_export.getText()));
+                                }catch(Exception ee){
+                                    JOptionPane.showMessageDialog(null, "Suppression fichier d'export impossible", "Impossible de supprimer automatiquement le fichier d'export car vous l'avez supprimé manuellement !", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            
+                            
+                            return "ok-exports";
+
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Aucune CF édité a été trouvé sur la : \ncommune: "+commune+"\n"+"\n"+"Type d'opération : "+demarche, "Export Listes CF éditer impossible", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
 
                     return null;
                 }
@@ -471,7 +569,6 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
                             } 
                         }catch(NullPointerException exNull){
                             j_panel_loading_export.setVisible(false);
-                            System.out.println("VA RETOUR NULL aty @ thread saisie sans vecto");
                         }
                         
                         
@@ -492,6 +589,12 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_j_button_exporter_cf_editerActionPerformed
 
+    private void j_combo_date_editionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_j_combo_date_editionItemStateChanged
+        String selected = "";
+
+     
+    }//GEN-LAST:event_j_combo_date_editionItemStateChanged
+
     private void j_label_folder_exportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_j_label_folder_exportMouseClicked
         this.GetLocationToSaveFile();
     }//GEN-LAST:event_j_label_folder_exportMouseClicked
@@ -510,10 +613,12 @@ public class ExportSaisieSansVectorisation extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JButton j_button_exporter_cf_editer;
     private javax.swing.JButton j_button_folder_export;
     private javax.swing.JComboBox<String> j_combo_commune;
+    private javax.swing.JComboBox<String> j_combo_date_edition;
     private javax.swing.JComboBox<String> j_combo_district;
     private javax.swing.JComboBox<String> j_combo_region;
     private javax.swing.JTextField j_label_folder_export;

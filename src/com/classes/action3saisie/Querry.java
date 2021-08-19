@@ -60,6 +60,98 @@ public class Querry {
     }
     
 
+    
+    
+public List <String[] > getAnomaliesSaisiesOPCategoriesTerrain(String demarche, String[] enTete){
+        
+        List <String[]> saisies = new ArrayList<String[]>() ;
+        
+        
+        //System.out.println(" Code commune passé  = " + username);
+            
+            try {
+
+                String sql = "SELECT region.nom as region, commune.nom AS commune, CONCAT(district.code_district , '-', commune.code_commune) AS c_commune,\n" +
+"\n" +
+"demande.id_registre as numero_demande, demande.id_parcelle as code_parcelle,\n" +
+"\n" +
+"CASE\n" +
+"	WHEN  demande.cf_annule IS TRUE THEN 'oui'\n" +
+"    WHEN demande.cf_annule IS FALSE THEN 'non'\n" +
+"    ELSE 'non_renseigner'\n" +
+"END AS annuler\n" +
+",\n" +
+" \n" +
+"CASE\n" +
+"	WHEN  demande.opposition IS TRUE THEN 'oui'\n" +
+"    WHEN demande.opposition IS FALSE THEN 'non'\n" +
+"    ELSE 'non_renseigner'\n" +
+"END AS opposition\n" +
+" ,\n" +
+" \n" +
+"CASE\n" +
+"	WHEN  demande.val_chef_equipe IS TRUE THEN 'oui'\n" +
+"    WHEN demande.val_chef_equipe IS FALSE THEN 'non'\n" +
+"    ELSE 'pas_encore_validé'\n" +
+"END AS validation_cqi_1\n" +
+" \n" +
+"                      FROM region, commune,  \n" +
+"                           fokontany, \n" +
+"                           hameau,   \n" +
+"                           demande, utilisateur , district  \n" +
+"                       WHERE\n" +
+"                       region.id_region = district.id_region\n" +
+"                       AND commune.id_commune::text = fokontany.id_commune::text  \n" +
+"                        AND district.id_district = commune.id_district \n" +
+"                       AND fokontany.id_fokontany::text = hameau.id_fokontany::text  \n" +
+"                       AND demande.id_hameau::text = hameau.id_hameau::text  \n" +
+"                       AND demande.demande_user = utilisateur.id_utilisateur \n" +
+"                       \n" +
+"                        AND demande.cat_autre is false \n" +
+"                        AND demande.cat_bois is false \n" +
+"                        AND demande.cat_champ is false \n" +
+"                        AND demande.cat_cour is false \n" +
+"                        AND demande.cat_etable is false \n" +
+"                        AND demande.cat_etang is false\n" +
+"                        AND demande.cat_riz is false\n" +
+"                         \n" +
+"                         AND demande.type_op = ?  \n" +
+"                       order by region.nom , commune.nom , demande.num_registre ASC";
+            
+                st = connectDatabase.prepareStatement(sql); 
+                st.setString(1, demarche.toLowerCase());
+
+                rs = st.executeQuery();
+                
+                //System.out.println("REQ = " + st);
+                
+                int n = 0;
+
+                while(rs.next()){
+                    
+                    String[] saisie = { rs.getString("region"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("numero_demande"), rs.getString("code_parcelle"), rs.getString("annuler"), rs.getString("opposition"), rs.getString("validation_cqi_1") };   
+                    
+                    
+       System.out.println(rs.getString("region")+ rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )"+ rs.getString("numero_demande"));
+  
+                    saisies.add( saisie);
+                    n++;
+                }
+                
+
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+
+        return saisies;
+    }
+    
+    
+    
+    
 
 
 public String Insert(String table, String[] colonnes, String[] datas){

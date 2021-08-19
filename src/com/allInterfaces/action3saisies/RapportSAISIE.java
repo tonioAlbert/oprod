@@ -63,12 +63,12 @@ public class RapportSAISIE extends javax.swing.JInternalFrame {
         HashMap<String, String> regions = new Region(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER).getAllRegions();
         
         if(regions.isEmpty()){
-            System.out.println("Impossible de récupérér les regions dans la base de données!");
+            //System.out.println("Impossible de récupérér les regions dans la base de données!");
             System.exit(0);
         }else{
             
             this.j_combo_region.addItem(selectRegion);
-            System.out.println("tous les regions : "+ regions.isEmpty());
+            //System.out.println("tous les regions : "+ regions.isEmpty());
 
             Iterator it = regions.entrySet().iterator();
 

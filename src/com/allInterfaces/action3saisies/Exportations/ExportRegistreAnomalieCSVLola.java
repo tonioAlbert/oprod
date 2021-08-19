@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.allInterfaces.action3saisies;
+package com.allInterfaces.action3saisies.Exportations;
 
+import com.allInterfaces.action3saisies.Home;
 import com.classes.action3saisie.Formats;
 import com.connectDb.ConnectDb;
 import java.sql.Connection;

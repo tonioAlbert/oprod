@@ -6,9 +6,14 @@
 package com.allInterfaces.action3saisies;
 
 
+import com.classes.action3saisie.Formats;
+import com.classes.action3saisie.Querry;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,20 +21,54 @@ import javax.swing.JOptionPane;
  */
 public class ControlleDesSaisies extends javax.swing.JInternalFrame {
     
-    private final String comb_demarche = "Séléctionner une démarche";
-    //static String comb_annee_saisie = "Séléctionner une année";
-    private final String com_critere_date = "Séléctionner une critère de date";
-    private final String com_critere_par_date = "Par Date";
-    private final String com_critere_intervale_de_date = "Intervale de date";
-    String dateDebut = "";
-    String dateFin = "";
+    private DefaultTableModel modeleAnomaliesCategoriesTerrain;
+    List <String[]> saisieDesOperateurs = null;
+    private String BDD_HOST = "";
+    private Integer BDD_PORT;
+    private String BDD_DBNAME = "";
+    private String BDD_USER = "";
+    private String BDD_PWD = "";
+    private String demarche = "";
+    
+        String[] EnTeteTableauAnomaliesCategoriesTerrain = {"Région", "Commune", "Numéro demande", "Code Parcelle", "Annulé ?", "En opposition ?", "Validation CQI niveau 1"};
+        
+    
     /**
      * Creates new form SaisieParOperateur
      */
-    public ControlleDesSaisies() {
+    public ControlleDesSaisies(String HOST, Integer PORT, String DBNAME, String PWD, String USER, String DEM) {
+        
+        this.BDD_HOST = HOST;
+        this.BDD_PORT = PORT;
+        this.BDD_DBNAME = DBNAME;
+        this.BDD_USER = USER;
+        this.BDD_PWD = PWD;
+        this.demarche = Formats.ConvertOcfmToOcm(DEM);
+        
         initComponents();
         
-        this.j_date_debut.setEnabled(false);
+        modeleAnomaliesCategoriesTerrain = new DefaultTableModel();
+        
+
+        CreateTables(EnTeteTableauAnomaliesCategoriesTerrain,modeleAnomaliesCategoriesTerrain, J_Table_Anomalies_Categories_Terrain );
+
+    }
+    
+    
+    private Boolean CreateTables (String[] enTete, DefaultTableModel models, JTable tables){
+
+        for (String enTete1 : enTete) {
+            models.addColumn(enTete1);
+        }
+        
+        if(enTete.length != models.getColumnCount()){
+            return false;
+        }
+        
+        
+        tables.setModel(models);
+        
+        return true;
     }
 
     /**
@@ -41,21 +80,32 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        j_panel_saisie_par_op = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        j_table_saisie_par_operateur = new javax.swing.JTable();
-        j_label_date_saisie = new javax.swing.JLabel();
-        j_date_debut = new com.toedter.calendar.JDateChooser();
-        j_label_annee_saisie1 = new javax.swing.JLabel();
-        j_comb_demarche = new javax.swing.JComboBox<>();
-        j_bouton_search = new javax.swing.JButton();
-        j_button_reset = new javax.swing.JButton();
-        j_label_date_saisie1 = new javax.swing.JLabel();
-        j_date_fin = new com.toedter.calendar.JDateChooser();
-        j_comb_select_critere_date = new javax.swing.JComboBox<>();
-        j_label_annee_saisie2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        J_Table_Anomalies_Categories_Terrain = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        search_anomalies_actegories = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        search_anomalies_avis_CRL_et_Opposition1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        J_Table_Anomalies_Avis_CRL_et_Opposition1 = new javax.swing.JTable();
+        jPanel10 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        J_Table_Anomalies_Avis_CRL_et_Opposition = new javax.swing.JTable();
+        jPanel11 = new javax.swing.JPanel();
+        search_anomalies_avis_CRL_et_Opposition = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -64,287 +114,370 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
         setTitle("Contrôles Des Saisies");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/logo geox2~2.png"))); // NOI18N
 
-        j_table_saisie_par_operateur.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setText("Contrôlle saisies des opérateurs et CQI des chefs d'équipes");
+
+        J_Table_Anomalies_Categories_Terrain.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        J_Table_Anomalies_Categories_Terrain.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Opérateur", "Commune", "Nombre de Saisie"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
+        ));
+        jScrollPane1.setViewportView(J_Table_Anomalies_Categories_Terrain);
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(j_table_saisie_par_operateur);
-        if (j_table_saisie_par_operateur.getColumnModel().getColumnCount() > 0) {
-            j_table_saisie_par_operateur.getColumnModel().getColumn(2).setResizable(false);
-        }
-
-        j_label_date_saisie.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_label_date_saisie.setText("Date de début");
-
-        j_date_debut.setToolTipText("");
-        j_date_debut.setDateFormatString("dd/MM/yyyy");
-        j_date_debut.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-
-        j_label_annee_saisie1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_label_annee_saisie1.setText("Démarche");
-
-        j_comb_demarche.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_comb_demarche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une démarche", "OGCF", "OCFM" }));
-
-        j_bouton_search.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_bouton_search.setText("Rechercher");
-        j_bouton_search.addActionListener(new java.awt.event.ActionListener() {
+        search_anomalies_actegories.setText("Rechercher ...");
+        search_anomalies_actegories.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_bouton_searchActionPerformed(evt);
+                search_anomalies_actegoriesActionPerformed(evt);
             }
         });
 
-        j_button_reset.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_button_reset.setText("Réinitialiser");
+        jButton2.setText("Exporter");
 
-        j_label_date_saisie1.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_label_date_saisie1.setText("Date de fin");
-
-        j_date_fin.setDateFormatString("dd/MM/yyyy");
-        j_date_fin.setEnabled(false);
-        j_date_fin.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-
-        j_comb_select_critere_date.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_comb_select_critere_date.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Séléctionner une critère de date", "Par Date", "Intervale de date" }));
-        j_comb_select_critere_date.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                j_comb_select_critere_dateActionPerformed(evt);
-            }
-        });
-
-        j_label_annee_saisie2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
-        j_label_annee_saisie2.setText("Critère Date");
-
-        javax.swing.GroupLayout j_panel_saisie_par_opLayout = new javax.swing.GroupLayout(j_panel_saisie_par_op);
-        j_panel_saisie_par_op.setLayout(j_panel_saisie_par_opLayout);
-        j_panel_saisie_par_opLayout.setHorizontalGroup(
-            j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(492, 492, 492)
+                .addComponent(search_anomalies_actegories)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap(515, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                        .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                                .addComponent(j_bouton_search)
-                                .addGap(18, 18, 18)
-                                .addComponent(j_button_reset))
-                            .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                                    .addComponent(j_label_date_saisie1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(j_date_fin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                                    .addComponent(j_label_date_saisie, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(j_date_debut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                                    .addComponent(j_label_annee_saisie1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(j_comb_demarche, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, j_panel_saisie_par_opLayout.createSequentialGroup()
-                                    .addComponent(j_label_annee_saisie2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(j_comb_select_critere_date, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 773, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(search_anomalies_actegories)
+                    .addComponent(jButton2))
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        j_panel_saisie_par_opLayout.setVerticalGroup(
-            j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_comb_demarche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_annee_saisie1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_comb_select_critere_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_annee_saisie2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(j_label_date_saisie)
-                    .addComponent(j_date_debut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(j_label_date_saisie1)
-                    .addComponent(j_date_fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(j_bouton_search)
-                    .addComponent(j_button_reset))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setText("Contrôlle des saisies des opérateurs");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Anomalies Catégories", jPanel1);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1225, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 444, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Autocontrôle Opérateurs", jPanel2);
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1219, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 444, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Vlidé CQI niveau 1 ?", jPanel3);
+
+        search_anomalies_avis_CRL_et_Opposition1.setText("Rechercher ...");
+        search_anomalies_avis_CRL_et_Opposition1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_anomalies_avis_CRL_et_Opposition1ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Exporter");
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGap(492, 492, 492)
+                .addComponent(search_anomalies_avis_CRL_et_Opposition1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addContainerGap(527, Short.MAX_VALUE))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(search_anomalies_avis_CRL_et_Opposition1)
+                    .addComponent(jButton4))
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        J_Table_Anomalies_Avis_CRL_et_Opposition1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(J_Table_Anomalies_Avis_CRL_et_Opposition1);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Avis CRL et Opposition", jPanel4);
+
+        J_Table_Anomalies_Avis_CRL_et_Opposition.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(J_Table_Anomalies_Avis_CRL_et_Opposition);
+
+        search_anomalies_avis_CRL_et_Opposition.setText("Rechercher ...");
+        search_anomalies_avis_CRL_et_Opposition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_anomalies_avis_CRL_et_OppositionActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Exporter");
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(492, 492, 492)
+                .addComponent(search_anomalies_avis_CRL_et_Opposition)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addContainerGap(527, Short.MAX_VALUE))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(search_anomalies_avis_CRL_et_Opposition)
+                    .addComponent(jButton3))
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("tab5", jPanel10);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(339, 339, 339)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(381, 381, 381)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(324, 324, 324))
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(309, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(274, 274, 274))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(35, 35, 35)
-                .addComponent(j_panel_saisie_par_op, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void search_anomalies_avis_CRL_et_OppositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_anomalies_avis_CRL_et_OppositionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_anomalies_avis_CRL_et_OppositionActionPerformed
+
+    private void search_anomalies_actegoriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_anomalies_actegoriesActionPerformed
+        //System.out.println("Search catégories ...");
+        DefaultTableModel tableau = (DefaultTableModel) J_Table_Anomalies_Categories_Terrain.getModel();
+        Formats.resetTable(tableau);
+
+        Object rowData[] = new Object[7];
+
+        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getAnomaliesSaisiesOPCategoriesTerrain(this.demarche, EnTeteTableauAnomaliesCategoriesTerrain);
+        for (int a = 0; a < saisieDesOperateurs.size(); a++) {
+
+            //for (int i = 0; i < EnTeteTableauAnomaliesCategoriesTerrain.length; i++) {
+
+                rowData[0] = saisieDesOperateurs.get(a)[0].toUpperCase();
+                rowData[1] = saisieDesOperateurs.get(a)[1];
+                rowData[2] = saisieDesOperateurs.get(a)[2];
+                rowData[3] = saisieDesOperateurs.get(a)[3];
+                rowData[4] = saisieDesOperateurs.get(a)[4];
+                rowData[5] = saisieDesOperateurs.get(a)[5];
+                rowData[6] = saisieDesOperateurs.get(a)[6];
+
+                tableau.addRow(rowData);
+                //}
+
+        }
+    }//GEN-LAST:event_search_anomalies_actegoriesActionPerformed
+
+    private void search_anomalies_avis_CRL_et_Opposition1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_anomalies_avis_CRL_et_Opposition1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_anomalies_avis_CRL_et_Opposition1ActionPerformed
+
  
     
-    private void j_bouton_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_bouton_searchActionPerformed
-
-        String demarche = (String)this.j_comb_demarche.getSelectedItem();
-        DateFormat df = new SimpleDateFormat("dd/MM/YYYY");
-        String val_critere = this.j_comb_select_critere_date.getSelectedItem().toString();
-        
-        if(demarche.equals(comb_demarche)){
-            
-            System.out.println("Veuillez séléctionner une démarche");
-            JOptionPane.showMessageDialog(null, "Veuillez séléctionner une démarche !","Séléctionner une démarche", JOptionPane.INFORMATION_MESSAGE);
-
-        }else{
-            
-            if(val_critere.equals(com_critere_date)){
-                System.out.println("Veuillez séléctionner une critère de date");
-                JOptionPane.showMessageDialog(null, "Veuillez séléctionner une critère de date!","Séléctionner critère de date", JOptionPane.INFORMATION_MESSAGE);
-            }else{
-                         
-                if(val_critere.equals(com_critere_par_date)){
-
-                    if(this.j_date_debut.getDate() == null){
-                        System.out.println("Veuillez remplir le date fin");
-                        JOptionPane.showMessageDialog(null, "Date début de saisie vide ou incorrect !","Erreur lors remplissage date de début de saisie", JOptionPane.INFORMATION_MESSAGE); 
-                    }else{
-
-                        dateDebut += df.format(this.j_date_debut.getDate());
-                        System.out.println("ok simple date : "+ com_critere_par_date + dateDebut); 
-                    }
-
-                     
-                }else{
-                    
-                    
-                    if(this.j_date_debut.getDate() == null && this.j_date_fin.getDate() == null){
-                        System.out.println("Veuillez remplir les dates (début et fin) de saisie");
-                        JOptionPane.showMessageDialog(null, "Dates (début et/ou fin) de saisie vide ou incorrect !","Séléctionner les dates de saisie", JOptionPane.INFORMATION_MESSAGE); 
-                    }else if(this.j_date_debut.getDate() == null){
-                        System.out.println("Veuillez remplir le date début");
-                        JOptionPane.showMessageDialog(null, "Date début de saisie vide ou incorrect !","Erreur lors remplissage date début de saisie", JOptionPane.INFORMATION_MESSAGE); 
-                    }else if(this.j_date_fin.getDate() == null){
-                        System.out.println("Veuillez remplir le date fin");
-                        JOptionPane.showMessageDialog(null, "Date fin de saisie vide ou incorrect !","SErreur lors remplissage date Fin de saisie", JOptionPane.INFORMATION_MESSAGE); 
-                    }else{
-                        
-                        dateDebut += df.format(this.j_date_debut.getDate());
-                        dateFin += df.format(this.j_date_fin.getDate());
-                        System.out.println("ok intervale : \n\n"+ "date début = "+ dateDebut + " date fin = " + dateFin);
-                        
-                        //String d  = new Demande().getSaisieParOperateur(dateDebut, dateFin);
-                    }
-                    
-                    
-                }
-
-            }
-        
-        }
-    
-    }//GEN-LAST:event_j_bouton_searchActionPerformed
-
-    private void j_comb_select_critere_dateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_comb_select_critere_dateActionPerformed
-        
-        this.j_date_debut.setEnabled(false);
-        this.j_date_fin.setEnabled(false);
-        String selectedValue = this.j_comb_select_critere_date.getSelectedItem().toString();
-        
-        
-        switch(selectedValue){
-            
-            case  com_critere_date : 
-
-                this.j_date_debut.setCalendar(null);
-                this.j_date_fin.setCalendar(null);
-                this.j_date_debut.setEnabled(false);
-                this.j_date_fin.setEnabled(false);
-                break;
-                
-            case  com_critere_intervale_de_date : 
-                
-                this.j_date_debut.setEnabled(true);
-                this.j_date_fin.setEnabled(true);
-                break;
-            
-            default :
-                
-                this.j_date_fin.setCalendar(null);
-                this.j_date_debut.setEnabled(true);
-                break;
-        }
-
-    }//GEN-LAST:event_j_comb_select_critere_dateActionPerformed
-
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable J_Table_Anomalies_Avis_CRL_et_Opposition;
+    private javax.swing.JTable J_Table_Anomalies_Avis_CRL_et_Opposition1;
+    private javax.swing.JTable J_Table_Anomalies_Categories_Terrain;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JButton j_bouton_search;
-    private javax.swing.JButton j_button_reset;
-    private javax.swing.JComboBox<String> j_comb_demarche;
-    private javax.swing.JComboBox<String> j_comb_select_critere_date;
-    private com.toedter.calendar.JDateChooser j_date_debut;
-    private com.toedter.calendar.JDateChooser j_date_fin;
-    private javax.swing.JLabel j_label_annee_saisie1;
-    private javax.swing.JLabel j_label_annee_saisie2;
-    private javax.swing.JLabel j_label_date_saisie;
-    private javax.swing.JLabel j_label_date_saisie1;
-    private javax.swing.JPanel j_panel_saisie_par_op;
-    private javax.swing.JTable j_table_saisie_par_operateur;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton search_anomalies_actegories;
+    private javax.swing.JButton search_anomalies_avis_CRL_et_Opposition;
+    private javax.swing.JButton search_anomalies_avis_CRL_et_Opposition1;
     // End of variables declaration//GEN-END:variables
 }
