@@ -614,30 +614,24 @@ public Long getValSequenceTable(String nomSequence){
 
                 try {
 
-                    String sql = "  SELECT region.nom AS region,\n" +
-                    "    district.nom AS district,\n" +
-                    "    commune.nom AS commune,\n" +
-                    "    count(*) AS cf\n" +
-                    "   FROM region,\n" +
-                    "    district,\n" +
-                    "    commune,\n" +
-                    "    fokontany,\n" +
-                    "    hameau,\n" +
-                    "    demande\n" +
-                    "     JOIN parcelle_cf ON demande.id_parcelle::text = parcelle_cf.c_parcelle::text\n" +
-                    "  WHERE demande.val_anomalie = false AND parcelle_cf.limitrophe = false \n" +
-                    "  AND parcelle_cf.anomalie = false AND demande.val_chef_equipe = true \n" +
-                    "  AND commune.id_commune::text = fokontany.id_commune::text \n" +
-                    "  AND fokontany.id_fokontany::text = hameau.id_fokontany::text \n" +
-                    "  AND commune.id_district::text = district.id_district::text \n" +
-                    "  AND demande.id_hameau::text = hameau.id_hameau::text \n" +
-                    "  AND region.id_region::text = district.id_region::text\n" +
-                    "  AND demande.num_certificat IS NULL \n" +
-                    "  AND demande.avis_crl IS TRUE \n" +
-                    "  AND demande.opposition IS FALSE \n" +
-                    "  AND date_soumission_cqe IS NULL \n" +  
+                    String sql = "select region.nom as region, district.nom AS district, commune.nom as commune,count(*) as cf\n" +
+                    "from demande, parcelle_cf, district, commune, fokontany, hameau, region\n" +
+                    "where demande.id_parcelle = parcelle_cf.c_parcelle\n" +
+                    "and demande.id_hameau=hameau.id_hameau\n" +
+                    "and district.id_district=commune.id_district\n" +
+                    "and hameau.id_fokontany=fokontany.id_fokontany\n" +
+                    "and fokontany.id_commune=commune.id_commune\n" +
+                    "and demande.val_anomalie=false\n" +
+                    "and parcelle_cf.anomalie=false\n" +
+                    "and demande.opposition is false\n" +
+                    "and district.id_region=region.id_region\n" +
+                    "and val_chef_equipe is true\n" +
+                    "and demande.opposition is false\n" +
+                    "AND (demande.date_crl - demande.date_affichage) >= 15\n" +
+                    "AND avis_crl is true\n" +
+                    "AND demande.num_certificat IS NULL\n" +
                             
-                    "  AND (demande.date_crl - demande.date_demande) >= 15\n" +
+                            
                     "  AND region.nom = ? \n" +
                     "  AND demande.type_op = ? \n" +
                     "  GROUP BY region.nom, district.nom, commune.nom\n" +
@@ -649,7 +643,7 @@ public Long getValSequenceTable(String nomSequence){
                     st.setString(2, operation.toLowerCase());
                     rs = st.executeQuery();
 
-                //System.out.println("SAISIE :: " + sql);
+                System.out.println("SAISIE :: " + st);
 
                     int n = 0;
 
@@ -1008,36 +1002,67 @@ public Long getValSequenceTable(String nomSequence){
         HashMap<String, String> communes = new HashMap<String, String>();
 
         try {
-            String q = " SELECT DISTINCT region.nom AS region,\n" +
-"   district.code_district AS code_district,\n" +
-"   district.nom AS district,\n" +
-"   commune.code_commune AS code_commune,\n" +
-"   commune.nom AS commune,\n" +
-"   fokontany.code_fokontany AS code_fkt,\n" +
-"   fokontany.nom AS fkt,\n" +
-"   hameau.code_hameau AS code_hameau,\n" +
-"   hameau.nom AS hameau\n" +
-"  FROM district,\n" +
-"   region,\n" +
-"   hameau,\n" +
-"   commune,\n" +
-"   fokontany, demande\n" +
-" WHERE hameau.id_fokontany::text = fokontany.id_fokontany::text \n" +
-" AND commune.id_commune::text = fokontany.id_commune::text \n" +
-" AND district.id_district::text = commune.id_district::text \n" +
-" AND region.id_region::text = district.id_region::text\n" +
-"AND demande.id_hameau = hameau.id_hameau\n" +
-"AND district.nom = ? \n" +
-"AND demande.type_op = ?\n" +
-"ORDER BY commune.nom";
+            
+
+            String q = "";
             
             
-            st = connectDatabase.prepareStatement(q);    
-            st.setString(1, c);
-            st.setString(2,Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
-        
-            rs = st.executeQuery();
             
+            if (c.equals("")) {
+                
+                q = " SELECT DISTINCT region.nom AS region,\n" +
+"                  district.code_district AS code_district,\n" +
+"                  district.nom AS district,\n" +
+"                  commune.code_commune AS code_commune,\n" +
+"                  commune.nom AS commune\n" +
+"                 FROM district,\n" +
+"                  region,\n" +
+"                  hameau,\n" +
+"                  commune,\n" +
+"                  fokontany, demande\n" +
+"                WHERE hameau.id_fokontany::text = fokontany.id_fokontany::text \n" +
+"                AND commune.id_commune::text = fokontany.id_commune::text \n" +
+"                AND district.id_district::text = commune.id_district::text \n" +
+"                AND region.id_region::text = district.id_region::text\n" +
+"                AND demande.id_hameau = hameau.id_hameau\n" +
+"                AND demande.type_op = ? \n" +
+"                ORDER BY commune.nom ASC";
+                
+                st = connectDatabase.prepareStatement(q);    
+                st.setString(1,Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
+
+                rs = st.executeQuery();
+            }else{
+
+                q = " SELECT DISTINCT region.nom AS region,\n" +
+                "   district.code_district AS code_district,\n" +
+                "   district.nom AS district,\n" +
+                "   commune.code_commune AS code_commune,\n" +
+                "   commune.nom AS commune,\n" +
+                "   fokontany.code_fokontany AS code_fkt,\n" +
+                "   fokontany.nom AS fkt,\n" +
+                "   hameau.code_hameau AS code_hameau,\n" +
+                "   hameau.nom AS hameau\n" +
+                "  FROM district,\n" +
+                "   region,\n" +
+                "   hameau,\n" +
+                "   commune,\n" +
+                "   fokontany, demande\n" +
+                " WHERE hameau.id_fokontany::text = fokontany.id_fokontany::text \n" +
+                " AND commune.id_commune::text = fokontany.id_commune::text \n" +
+                " AND district.id_district::text = commune.id_district::text \n" +
+                " AND region.id_region::text = district.id_region::text\n" +
+                "AND demande.id_hameau = hameau.id_hameau\n" +
+                "AND district.nom = ? \n" +
+                "AND demande.type_op = ?\n" +
+                "ORDER BY commune.nom ASC";
+                
+                st = connectDatabase.prepareStatement(q);    
+                st.setString(1, c);
+                st.setString(2,Formats.ConvertOcfmToOcm(this.demarche).toLowerCase());
+                
+                rs = st.executeQuery();
+            }
             
             System.out.println("Méthode get commune : " + st);
 
@@ -1045,7 +1070,7 @@ public Long getValSequenceTable(String nomSequence){
             while(rs.next()){
                 //System.out.println("Méthode get commune : " + rs.getString("code_commune") + " ::  " + rs.getString("commune"));
 
-                communes.put(rs.getString("code_commune"), rs.getString("commune")); 
+                communes.put(rs.getString("code_district")+"-"+rs.getString("code_commune"), rs.getString("commune")); 
             }    
 
             st.close();

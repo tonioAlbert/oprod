@@ -2621,20 +2621,29 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
                     n++;
             }
             
+                    // RENSIEGNEMENT VALEUR EQUIPE SUR L'EXPORTATION VERS EXCEL
                     if (RowResultSet > 0) {
                         String eq = "";
                         
-                        Iterator it = equipe.iterator();
-                        while(it.hasNext())
-                        //System.out.println("valeur de l'iteration = "+it.next());
+                        System.out.println("equipe dia manana valeur = "+equipe);
+                        
+                        if(!equipe.isEmpty()){
+                            Iterator it = equipe.iterator();
+                            while(it.hasNext())
+                            //System.out.println("valeur de l'iteration = "+it.next());
 
-                        eq += " \\ "+it.next();
+                            eq += " \\ "+it.next();
 
-                        eq.substring(3);
+                            eq.substring(3);
 
-                        headerCell0 = headerRow0.createCell(9);
-                        headerCell0.setCellValue(eq.substring(3));  
+                            headerCell0 = headerRow0.createCell(9);
+                            headerCell0.setCellValue(eq.substring(3));  
+                        }
+                        
+
                     }
+                    
+                    
                         RegionUtil.setBorderBottom(BorderStyle.THIN,
                         CellRangeAddress.valueOf("J1:J1"), sheet);
 

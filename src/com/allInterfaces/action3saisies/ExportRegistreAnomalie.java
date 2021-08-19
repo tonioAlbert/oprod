@@ -547,7 +547,7 @@ public class ExportRegistreAnomalie extends javax.swing.JInternalFrame {
                 
             j_panel_loading_export.setVisible(true);
                  
-            Thread.sleep(2000);
+            //Thread.sleep(2000);
                 
             String code_district = selected_district.split("  _  ")[0].trim();
             String code_commune = selected_commune.split("  _  ")[0].trim();

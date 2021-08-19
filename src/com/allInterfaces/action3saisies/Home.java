@@ -78,7 +78,7 @@ public class Home extends javax.swing.JFrame {
 
         initComponents();
         
-        this.j_menu_controllesSaisies.setEnabled(false);
+        //this.j_menu_controllesSaisies.setEnabled(false);
         this.j_menu_export_listes_demandeurs.setEnabled(false);
         //this.j_menu_parametres.setEnabled(false);
         
@@ -771,9 +771,9 @@ public class Home extends javax.swing.JFrame {
         
         if (nameOfTable.toLowerCase().equals("demande")) {
             if (operation.toLowerCase().equals("ogcf")) {
-                filtreOperation = " WHERE type_op = 'ogcf' AND "+col_updated + " IS NOT NULL ";
+                filtreOperation = " WHERE type_op = 'ogcf' AND "+col_updated + " IS NOT NULL AND id_certificat IS NULL ";
             }else{
-                filtreOperation = " WHERE type_op = 'ocm' AND "+col_updated + " IS NOT NULL ";
+                filtreOperation = " WHERE type_op = 'ocm' AND "+col_updated + " IS NOT NULL AND id_certificat IS NULL ";
             }
         }
 
@@ -783,6 +783,8 @@ public class Home extends javax.swing.JFrame {
             
             st = connectDatabase.prepareStatement(q);    
             rs = st.executeQuery();
+            
+            System.out.println("REQ : " +  st);
             
             while(rs.next()){
                 tabPrenoms.put(rs.getString(id_table), rs.getString(col_updated));
@@ -796,7 +798,8 @@ public class Home extends javax.swing.JFrame {
                 if(mapentry.getValue() != null){
                     
                     idPersphys = mapentry.getKey().toString();
-                    newFirstName = Formats.formatFirtsName(mapentry.getValue().toString().trim());
+                    //newFirstName = Formats.formatFirtsName(mapentry.getValue().toString());
+                    newFirstName = Formats.formatFirtsName(mapentry.getValue().toString());
                     
                     // MISE A JOUR LA BASE DE DONNEES
                     
@@ -804,7 +807,7 @@ public class Home extends javax.swing.JFrame {
                     
                     st = connectDatabase.prepareStatement(q2);
                      
-                    st.setString(1, newFirstName);
+                    st.setString(1, newFirstName.trim());
                     st.setString(2, idPersphys);
                     st.executeUpdate();
                     
@@ -858,7 +861,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
                    
                     //System.out.println("clé: "+mapentry.getKey()  + " | valeur: " + mapentry.getValue().toString().trim());
                     idTable = mapentry.getKey().toString();
-                    newFirstName = Formats.formatFirtsName(mapentry.getValue().toString().trim()).toUpperCase();
+                    newFirstName = Formats.formatFirtsName(mapentry.getValue().toString().trim()).toUpperCase().trim();
                     
                     // IL FAUT METTRE A JOUR LA BASE DE DONNEES
                     

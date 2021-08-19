@@ -29,7 +29,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
     private final String com_par_login = "Par Utilisateurs";
     private final String com_select_username = "Séléctionner un nom d'utilisateur";
     private final String comb_commune = "Par Commune";
-    private final String comb_txt_select_username = "Séléctionner une commune";
+    private final String comb_txt_select_Commune = "Séléctionner une commune";
     String dateDebut = "";
     String dateFin = "";
     String username = "";
@@ -206,8 +206,8 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     .addComponent(j_label_annee_saisie1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(j_label_annee_saisie2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(j_label_date_saisie, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(j_label_login, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                    .addComponent(j_label_login, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(j_panel_saisie_par_opLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(j_panel_saisie_par_opLayout.createSequentialGroup()
                         .addComponent(j_bouton_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -219,7 +219,7 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                     .addComponent(j_comb_demarche, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(j_comb_select_critere_date, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, j_panel_saisie_par_opLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -462,12 +462,13 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                 
 
                 this.j_comb_login.addItem(com_select_username);
+                this.j_label_login.setText("Sélectionner un Login");
                     
                     
                 HashMap<String, String> users = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getAllUsers();
 
                 for (String i : users.keySet()) {
-                    this.j_comb_login.addItem("Id : "+ i + "  _  " + users.get(i));
+                    this.j_comb_login.addItem("ID : "+ i + "  _  " + users.get(i));
                     //System.out.println("IDDDDD : " + users.get(i));
                  } 
                 this.j_label_login.setVisible(true);
@@ -485,15 +486,18 @@ public class SaisieParOperateur extends javax.swing.JInternalFrame {
                 this.j_comb_login.removeAllItems();
                 
 
-                this.j_comb_login.addItem(com_select_username);
+                this.j_comb_login.addItem(comb_txt_select_Commune);
+                this.j_label_login.setText("Sélectionner une commune");
                     
                     
-                HashMap<String, String> communes = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getAllUsers();
+                HashMap<String, String> communes = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getCommunes("");
 
                 for (String i : communes.keySet()) {
-                    this.j_comb_login.addItem("Id : "+ i + "  _  " + communes.get(i));
+                    this.j_comb_login.addItem(i + "  _  " + communes.get(i));
                     //System.out.println("IDDDDD : " + users.get(i));
-                 } 
+                 }
+                
+                //j_comb_login.setV
                 this.j_label_login.setVisible(true);
                 this.j_comb_login.setVisible(true);
                 break;

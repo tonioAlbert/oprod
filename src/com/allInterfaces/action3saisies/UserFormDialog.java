@@ -156,7 +156,7 @@ public class UserFormDialog extends javax.swing.JFrame {
         jLabel2.setText("Mot de passe");
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_password.setText("2021+");
+        txt_password.setText("+2021+");
         txt_password.setToolTipText("Mot de passe");
         txt_password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
