@@ -8,8 +8,6 @@ package com.allInterfaces.action3saisies;
 
 import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -21,7 +19,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ControlleDesSaisies extends javax.swing.JInternalFrame {
     
-    private DefaultTableModel modeleAnomaliesCategoriesTerrain;
+    private final DefaultTableModel modeleAnomaliesCategoriesTerrain;
+    private final DefaultTableModel modeleAnomaliesAvis;
+    private final DefaultTableModel modeleAnomaliesCqiNieau1;
     List <String[]> saisieDesOperateurs = null;
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -30,9 +30,13 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
     private String BDD_PWD = "";
     private String demarche = "";
     
-        String[] EnTeteTableauAnomaliesCategoriesTerrain = {"Région", "Commune", "Numéro demande", "Code Parcelle", "Annulé ?", "En opposition ?", "Validation CQI niveau 1"};
-        
+    String[] EnTeteTableauAnomaliesCategoriesTerrain = {"Région", "Commune", "Numéro demande", "Code Parcelle", "Annulé ?", "En opposition ?", "Validation CQI niveau 1"};
     
+    String[] EnTeteTableauAnomaliesAvisCRLEtOpposition = {"Opération", "Région", "Commune", "Numéro demande", "Code Parcelle", "Avis CRL", "En opposition ?","Annulé ?", "Validation CQI niveau 1", "Validateur", "Opérateur Traiteur" };
+    
+    
+    String[] EnTeteTableauAnomaliesCqiNiveau1 = {"Opération", "Région", "Commune", "Numéro demande", "Code Parcelle", "Avis CRL", "En opposition ?", "Validation CQI niveau 1", "Annulé ?"};
+        
     /**
      * Creates new form SaisieParOperateur
      */
@@ -47,10 +51,40 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
         
         initComponents();
         
+        
+        this.txt_information.setVisible(false);
+        this.txt_information_valide_cqi_1.setVisible(false);
+        this.txt_information_anomalies_actegories.setVisible(false);
+        
         modeleAnomaliesCategoriesTerrain = new DefaultTableModel();
         
-
+        
+        
+        if (modeleAnomaliesCategoriesTerrain.getRowCount() <=0) {
+            this.J_Button_Export_AnomaliesCategories.setEnabled(false);
+        }
         CreateTables(EnTeteTableauAnomaliesCategoriesTerrain,modeleAnomaliesCategoriesTerrain, J_Table_Anomalies_Categories_Terrain );
+        
+        
+        
+        
+        modeleAnomaliesAvis =  new DefaultTableModel();
+        if (modeleAnomaliesAvis.getRowCount() <=0) {
+            this.J_Button_Export_Avis_CRL.setEnabled(false);
+        }
+        CreateTables(EnTeteTableauAnomaliesAvisCRLEtOpposition,modeleAnomaliesAvis, J_Table_Anomalies_Avis_CRL_et_Opposition );
+        
+        
+        
+        
+        modeleAnomaliesCqiNieau1 =  new DefaultTableModel();
+        if (modeleAnomaliesCqiNieau1.getRowCount() <=0) {
+            this.J_Button_Export_valide_cq_niveau_1.setEnabled(false);
+        }
+        CreateTables(EnTeteTableauAnomaliesCqiNiveau1,modeleAnomaliesCqiNieau1, J_Table_valide_cq_niveau_1 );
+        
+        
+        
 
     }
     
@@ -88,24 +122,30 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
         J_Table_Anomalies_Categories_Terrain = new javax.swing.JTable();
         jPanel9 = new javax.swing.JPanel();
         search_anomalies_actegories = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        J_Button_Export_AnomaliesCategories = new javax.swing.JButton();
+        jPanel15 = new javax.swing.JPanel();
+        txt_information_anomalies_actegories = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        J_Table_valide_cq_niveau_1 = new javax.swing.JTable();
+        jPanel13 = new javax.swing.JPanel();
+        txt_information_valide_cqi_1 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        J_Button_Export_valide_cq_niveau_1 = new javax.swing.JButton();
+        search_valide_cq_niveau_1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
-        search_anomalies_avis_CRL_et_Opposition1 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        J_Table_Anomalies_Avis_CRL_et_Opposition1 = new javax.swing.JTable();
         jPanel10 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        J_Table_Anomalies_Avis_CRL_et_Opposition = new javax.swing.JTable();
-        jPanel11 = new javax.swing.JPanel();
+        J_Button_Export_Avis_CRL = new javax.swing.JButton();
         search_anomalies_avis_CRL_et_Opposition = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jPanel11 = new javax.swing.JPanel();
+        txt_information = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        J_Table_Anomalies_Avis_CRL_et_Opposition = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
@@ -129,6 +169,11 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        J_Table_Anomalies_Categories_Terrain.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                J_Table_Anomalies_Categories_TerrainMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(J_Table_Anomalies_Categories_Terrain);
 
         search_anomalies_actegories.setText("Rechercher ...");
@@ -138,18 +183,18 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Exporter");
+        J_Button_Export_AnomaliesCategories.setText("Exporter");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(492, 492, 492)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap(41, Short.MAX_VALUE)
                 .addComponent(search_anomalies_actegories)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addContainerGap(515, Short.MAX_VALUE))
+                .addComponent(J_Button_Export_AnomaliesCategories)
+                .addGap(157, 157, 157))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,29 +202,51 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(search_anomalies_actegories)
-                    .addComponent(jButton2))
-                .addContainerGap(8, Short.MAX_VALUE))
+                    .addComponent(J_Button_Export_AnomaliesCategories))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        txt_information_anomalies_actegories.setFont(new java.awt.Font("Dialog", 3, 14)); // NOI18N
+        txt_information_anomalies_actegories.setText("jLabel2");
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txt_information_anomalies_actegories, javax.swing.GroupLayout.DEFAULT_SIZE, 847, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txt_information_anomalies_actegories, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -202,7 +269,7 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1225, Short.MAX_VALUE)
+            .addGap(0, 1281, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,15 +289,93 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Autocontrôle Opérateurs", jPanel2);
 
+        J_Table_valide_cq_niveau_1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        J_Table_valide_cq_niveau_1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(J_Table_valide_cq_niveau_1);
+
+        txt_information_valide_cqi_1.setFont(new java.awt.Font("Dialog", 3, 14)); // NOI18N
+        txt_information_valide_cqi_1.setText("jLabel2");
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txt_information_valide_cqi_1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(88, Short.MAX_VALUE))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txt_information_valide_cqi_1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        J_Button_Export_valide_cq_niveau_1.setText("Exporter");
+
+        search_valide_cq_niveau_1.setText("Rechercher ...");
+        search_valide_cq_niveau_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_valide_cq_niveau_1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addGap(109, 109, 109)
+                .addComponent(search_valide_cq_niveau_1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(J_Button_Export_valide_cq_niveau_1)
+                .addContainerGap(265, Short.MAX_VALUE))
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(search_valide_cq_niveau_1)
+                    .addComponent(J_Button_Export_valide_cq_niveau_1)))
+        );
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1219, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 444, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -248,37 +393,79 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Vlidé CQI niveau 1 ?", jPanel3);
 
-        search_anomalies_avis_CRL_et_Opposition1.setText("Rechercher ...");
-        search_anomalies_avis_CRL_et_Opposition1.addActionListener(new java.awt.event.ActionListener() {
+        J_Button_Export_Avis_CRL.setText("Exporter");
+
+        search_anomalies_avis_CRL_et_Opposition.setText("Rechercher ...");
+        search_anomalies_avis_CRL_et_Opposition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                search_anomalies_avis_CRL_et_Opposition1ActionPerformed(evt);
+                search_anomalies_avis_CRL_et_OppositionActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Exporter");
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(109, 109, 109)
+                .addComponent(search_anomalies_avis_CRL_et_Opposition)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(J_Button_Export_Avis_CRL)
+                .addContainerGap(220, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(search_anomalies_avis_CRL_et_Opposition)
+                    .addComponent(J_Button_Export_Avis_CRL)))
+        );
+
+        txt_information.setFont(new java.awt.Font("Dialog", 3, 14)); // NOI18N
+        txt_information.setText("jLabel2");
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txt_information, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txt_information, javax.swing.GroupLayout.PREFERRED_SIZE, 16, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addGap(492, 492, 492)
-                .addComponent(search_anomalies_avis_CRL_et_Opposition1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addContainerGap(527, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(51, 51, 51)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(search_anomalies_avis_CRL_et_Opposition1)
-                    .addComponent(jButton4))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        J_Table_Anomalies_Avis_CRL_et_Opposition1.setModel(new javax.swing.table.DefaultTableModel(
+        J_Table_Anomalies_Avis_CRL_et_Opposition.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        J_Table_Anomalies_Avis_CRL_et_Opposition.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -289,15 +476,15 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(J_Table_Anomalies_Avis_CRL_et_Opposition1);
+        jScrollPane3.setViewportView(J_Table_Anomalies_Avis_CRL_et_Opposition);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane3)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -307,8 +494,8 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -324,72 +511,6 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
         );
 
         jTabbedPane1.addTab("Avis CRL et Opposition", jPanel4);
-
-        J_Table_Anomalies_Avis_CRL_et_Opposition.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(J_Table_Anomalies_Avis_CRL_et_Opposition);
-
-        search_anomalies_avis_CRL_et_Opposition.setText("Rechercher ...");
-        search_anomalies_avis_CRL_et_Opposition.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                search_anomalies_avis_CRL_et_OppositionActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("Exporter");
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(492, 492, 492)
-                .addComponent(search_anomalies_avis_CRL_et_Opposition)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addContainerGap(527, Short.MAX_VALUE))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(search_anomalies_avis_CRL_et_Opposition)
-                    .addComponent(jButton3))
-                .addContainerGap(8, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("tab5", jPanel10);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -413,10 +534,6 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void search_anomalies_avis_CRL_et_OppositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_anomalies_avis_CRL_et_OppositionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_anomalies_avis_CRL_et_OppositionActionPerformed
-
     private void search_anomalies_actegoriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_anomalies_actegoriesActionPerformed
         //System.out.println("Search catégories ...");
         DefaultTableModel tableau = (DefaultTableModel) J_Table_Anomalies_Categories_Terrain.getModel();
@@ -425,27 +542,129 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
         Object rowData[] = new Object[7];
 
         saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getAnomaliesSaisiesOPCategoriesTerrain(this.demarche, EnTeteTableauAnomaliesCategoriesTerrain);
-        for (int a = 0; a < saisieDesOperateurs.size(); a++) {
 
-            //for (int i = 0; i < EnTeteTableauAnomaliesCategoriesTerrain.length; i++) {
+        
+        int nbreEnregistrement = saisieDesOperateurs.size();
+        
+        if (nbreEnregistrement <=0) {
+            this.J_Button_Export_AnomaliesCategories.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Aucun résultat trouvé", "", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            
+            this.J_Button_Export_AnomaliesCategories.setEnabled(true);
+            this.txt_information_anomalies_actegories.setText(nbreEnregistrement + " Enregistrement(s) trouvés - \nDont Catégories Terrain (Rizière, Cour, Etang, Etable, Boisement, ect.) non coché dans BDD.");
+            this.txt_information_anomalies_actegories.setVisible(true);
+            
+            for (int a = 0; a < saisieDesOperateurs.size(); a++) {
 
-                rowData[0] = saisieDesOperateurs.get(a)[0].toUpperCase();
-                rowData[1] = saisieDesOperateurs.get(a)[1];
-                rowData[2] = saisieDesOperateurs.get(a)[2];
-                rowData[3] = saisieDesOperateurs.get(a)[3];
-                rowData[4] = saisieDesOperateurs.get(a)[4];
-                rowData[5] = saisieDesOperateurs.get(a)[5];
-                rowData[6] = saisieDesOperateurs.get(a)[6];
+                //for (int i = 0; i < EnTeteTableauAnomaliesCategoriesTerrain.length; i++) {
 
-                tableau.addRow(rowData);
-                //}
+                    rowData[0] = " "+Formats.ConvertOcmToOcfm(saisieDesOperateurs.get(a)[0]).toUpperCase();
+                    rowData[1] = saisieDesOperateurs.get(a)[1];
+                    rowData[2] = saisieDesOperateurs.get(a)[2];
+                    rowData[3] = saisieDesOperateurs.get(a)[3];
+                    rowData[4] = saisieDesOperateurs.get(a)[4];
+                    rowData[5] = saisieDesOperateurs.get(a)[5];
+                    rowData[6] = saisieDesOperateurs.get(a)[6];
 
+                    tableau.addRow(rowData);
+                    //}
+
+            }
+            
         }
+        
+
+        
+
+        
     }//GEN-LAST:event_search_anomalies_actegoriesActionPerformed
 
-    private void search_anomalies_avis_CRL_et_Opposition1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_anomalies_avis_CRL_et_Opposition1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_anomalies_avis_CRL_et_Opposition1ActionPerformed
+    private void search_anomalies_avis_CRL_et_OppositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_anomalies_avis_CRL_et_OppositionActionPerformed
+        //System.out.println("Search catégories ...");
+        DefaultTableModel tableau = (DefaultTableModel) J_Table_Anomalies_Avis_CRL_et_Opposition.getModel();
+        Formats.resetTable(tableau);
+
+        Object rowData[] = new Object[11];
+
+        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getAnomaliesOPAvisCRLetOpposition(this.demarche, EnTeteTableauAnomaliesCategoriesTerrain);
+
+        int nbreEnregistrement = saisieDesOperateurs.size();
+        
+        
+        if (nbreEnregistrement <=0) {
+            this.J_Button_Export_Avis_CRL.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Aucun résultat trouvé", "", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            
+            this.J_Button_Export_Avis_CRL.setEnabled(true);
+            this.txt_information.setText(nbreEnregistrement + " Enregistrement(s) trouvés - Dont avis CRL et/ou Opposition a comme valuer NULL dans BDD.");
+            this.txt_information.setVisible(true);
+            
+            for (int a = 0; a < saisieDesOperateurs.size(); a++) {
+
+                    rowData[0] = " "+Formats.ConvertOcmToOcfm(saisieDesOperateurs.get(a)[0]).toUpperCase();
+                    rowData[1] = saisieDesOperateurs.get(a)[1].toUpperCase();
+                    rowData[2] = saisieDesOperateurs.get(a)[2];
+                    rowData[3] = saisieDesOperateurs.get(a)[3];
+                    rowData[4] = saisieDesOperateurs.get(a)[4];
+                    rowData[5] = saisieDesOperateurs.get(a)[5];
+                    rowData[6] = saisieDesOperateurs.get(a)[6];
+                    rowData[7] = saisieDesOperateurs.get(a)[7];
+                    rowData[8] = saisieDesOperateurs.get(a)[8];
+                    rowData[9] = saisieDesOperateurs.get(a)[9];
+                    rowData[10] = saisieDesOperateurs.get(a)[10];
+
+                    tableau.addRow(rowData);
+            }
+            
+        }
+
+    }//GEN-LAST:event_search_anomalies_avis_CRL_et_OppositionActionPerformed
+
+    private void J_Table_Anomalies_Categories_TerrainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_J_Table_Anomalies_Categories_TerrainMouseClicked
+        //System.out.println("Clciked = " + evt.getSource());
+        
+    }//GEN-LAST:event_J_Table_Anomalies_Categories_TerrainMouseClicked
+
+    private void search_valide_cq_niveau_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_valide_cq_niveau_1ActionPerformed
+//System.out.println("Search catégories ...");
+        DefaultTableModel tableau = (DefaultTableModel) J_Table_valide_cq_niveau_1.getModel();
+        Formats.resetTable(tableau);
+
+        Object rowData[] = new Object[9];
+
+        saisieDesOperateurs  = new Querry(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD, this.demarche).getAnomaliesOPAvisCRLetOpposition(this.demarche, EnTeteTableauAnomaliesCategoriesTerrain);
+
+        int nbreEnregistrement = saisieDesOperateurs.size();
+        
+        
+        if (nbreEnregistrement <=0) {
+            this.J_Button_Export_valide_cq_niveau_1.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Aucun résultat trouvé", "", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            
+            this.J_Button_Export_valide_cq_niveau_1.setEnabled(true);
+            this.txt_information_valide_cqi_1.setText(nbreEnregistrement + " Enregistrement(s) trouvés - Dont valeur CQI niveau 1 est NULL.");
+            this.txt_information_valide_cqi_1.setVisible(true);
+            
+            for (int a = 0; a < saisieDesOperateurs.size(); a++) {
+
+                    rowData[0] = " "+Formats.ConvertOcmToOcfm(saisieDesOperateurs.get(a)[0]).toUpperCase();
+                    rowData[1] = saisieDesOperateurs.get(a)[1].toUpperCase();
+                    rowData[2] = saisieDesOperateurs.get(a)[2];
+                    rowData[3] = saisieDesOperateurs.get(a)[3];
+                    rowData[4] = saisieDesOperateurs.get(a)[4];
+                    rowData[5] = saisieDesOperateurs.get(a)[5];
+                    rowData[6] = saisieDesOperateurs.get(a)[6];
+                    rowData[7] = saisieDesOperateurs.get(a)[7];
+                    rowData[8] = saisieDesOperateurs.get(a)[8];
+
+                    tableau.addRow(rowData);
+            }
+            
+        }
+    }//GEN-LAST:event_search_valide_cq_niveau_1ActionPerformed
 
  
     
@@ -453,17 +672,20 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton J_Button_Export_AnomaliesCategories;
+    private javax.swing.JButton J_Button_Export_Avis_CRL;
+    private javax.swing.JButton J_Button_Export_valide_cq_niveau_1;
     private javax.swing.JTable J_Table_Anomalies_Avis_CRL_et_Opposition;
-    private javax.swing.JTable J_Table_Anomalies_Avis_CRL_et_Opposition1;
     private javax.swing.JTable J_Table_Anomalies_Categories_Terrain;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JTable J_Table_valide_cq_niveau_1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -473,11 +695,14 @@ public class ControlleDesSaisies extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton search_anomalies_actegories;
     private javax.swing.JButton search_anomalies_avis_CRL_et_Opposition;
-    private javax.swing.JButton search_anomalies_avis_CRL_et_Opposition1;
+    private javax.swing.JButton search_valide_cq_niveau_1;
+    private javax.swing.JLabel txt_information;
+    private javax.swing.JLabel txt_information_anomalies_actegories;
+    private javax.swing.JLabel txt_information_valide_cqi_1;
     // End of variables declaration//GEN-END:variables
 }

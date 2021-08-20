@@ -41,7 +41,7 @@ public class Querry {
     
     HashMap <String, String> m = new HashMap <> () ;
     
-    List <String[]> valeurDeRetour = new ArrayList<String[]>() ;
+    List <String[]> valeurDeRetour = new ArrayList<>() ;
     
     
     public Querry(String HOST, Integer PORT, String DBNAME, String USER, String PWD, String operation){
@@ -59,7 +59,141 @@ public class Querry {
         connectDatabasePLOF = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
     }
     
+    
+    
+    
+    
+public List <String[] > getAnomaliesValChefEquipeNULL(String demarche, String[] enTete){
+        
+        List <String[]> saisies = new ArrayList<>() ;
+        
+            try {
 
+                String sql = " SELECT demande.id_demande,\n" +
+                "    demande.id_registre AS numero_demande,\n" +
+                "        CASE\n" +
+                "            WHEN demande.type_op::text = 'ogcf'::text THEN \"left\"(demande.id_registre::text, 6)\n" +
+                "            ELSE \"right\"(\"left\"(demande.id_registre::text, 8), 6)\n" +
+                "        END AS c_commune,\n" +
+                "    demande.id_parcelle AS code_parcelle,\n" +
+                "        CASE\n" +
+                "            WHEN demande.cf_annule IS TRUE THEN 'oui'::text\n" +
+                "            WHEN demande.cf_annule IS FALSE THEN 'non'::text\n" +
+                "            ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
+                "        END AS annuler,\n" +
+                "        CASE\n" +
+                "            WHEN demande.opposition IS TRUE THEN 'oui'::text\n" +
+                "            WHEN demande.opposition IS FALSE THEN 'non'::text\n" +
+                "            ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
+                "        END AS opposition,\n" +
+                "        CASE\n" +
+                "            WHEN demande.avis_crl IS TRUE THEN 'oui'::text\n" +
+                "            WHEN demande.avis_crl IS FALSE THEN 'non'::text\n" +
+                "            ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
+                "        END AS avis_crl,\n" +
+                "        CASE\n" +
+                "            WHEN demande.val_chef_equipe IS TRUE THEN 'oui'::text\n" +
+                "            WHEN demande.val_chef_equipe IS FALSE THEN 'non'::text\n" +
+                "            ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
+                "        END AS validation_cqi_1,\n" +
+                "        CASE\n" +
+                "            WHEN demande.id_certificat IS NULL THEN 'demande_pas_encore_édité'::character varying\n" +
+                "            ELSE demande.id_certificat\n" +
+                "        END AS deja_imprimer_en_cf,\n" +
+                "    demande.type_op AS operation\n" +
+                "   FROM demande\n" +
+                "  WHERE demande.val_chef_equipe IS NULL\n" +
+                "AND demande.type_op::text = ? \n" +
+                "  ORDER BY operation DESC";
+            
+                st = connectDatabase.prepareStatement(sql); 
+                st.setString(1, demarche.toLowerCase());
+                rs = st.executeQuery();
+                
+                int n = 0;
+
+                while(rs.next()){
+                    
+                    String[] saisie = { rs.getString("operation"), rs.getString("region"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("numero_demande"), rs.getString("code_parcelle"), rs.getString("avis_crl"), rs.getString("opposition"), rs.getString("validation_cqi_1"), rs.getString("annuler") };   
+                    
+                    saisies.add( saisie);
+                    n++;
+                }
+                
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, " " + ex.getMessage(), "Excécution requette impossible !", JOptionPane.INFORMATION_MESSAGE);
+            } 
+
+        return saisies;
+    }
+    
+    
+    
+    
+    
+    
+
+    
+    
+   public List <String[] > getAnomaliesOPAvisCRLetOpposition(String demarche, String[] enTete){
+        
+        List <String[]> saisies = new ArrayList<String[]>() ;
+        
+        
+        //System.out.println(" Code commune passé  = " + username);
+            
+            try {
+
+                String sql = "SELECT DISTINCT \n" +
+                "public.decoupage_admin.region,\n" +
+                "public.decoupage_admin.commune,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".id_demande,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".numero_demande,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".code_parcelle,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".c_commune,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".annuler,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".opposition,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".validation_cqi_1,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".deja_imprimer_en_cf,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".login_validateur,\n" +
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".login_op,\n" +
+                        
+                        
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".operation ,\n" +
+                " public.\"AnomaliesAvisCrlouOppositionNULL\".avis_crl \n" +
+                " FROM public.\"AnomaliesAvisCrlouOppositionNULL\", public.decoupage_admin\n" +
+                "WHERE public.\"AnomaliesAvisCrlouOppositionNULL\".c_commune = public.decoupage_admin.code_commune\n" +
+                    " AND public.\"AnomaliesAvisCrlouOppositionNULL\".operation = ? " +
+                "ORDER BY public.\"AnomaliesAvisCrlouOppositionNULL\".operation DESC";
+            
+                st = connectDatabase.prepareStatement(sql); 
+                st.setString(1, demarche.toLowerCase());
+                rs = st.executeQuery();
+                
+                int n = 0;
+
+                while(rs.next()){
+                    
+                    String[] saisie = { rs.getString("operation"), rs.getString("region"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("numero_demande"), rs.getString("code_parcelle"), rs.getString("avis_crl"), rs.getString("opposition"),rs.getString("annuler"), rs.getString("validation_cqi_1"),rs.getString("login_validateur"), rs.getString("login_op") };   
+                    
+                    saisies.add( saisie);
+                    n++;
+                }
+                
+                st.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, " " + ex.getMessage(), "Excécution requette impossible !", JOptionPane.INFORMATION_MESSAGE);
+            } 
+
+        return saisies;
+    }
+    
+    
     
     
 public List <String[] > getAnomaliesSaisiesOPCategoriesTerrain(String demarche, String[] enTete){
@@ -1351,7 +1485,8 @@ public List <String[] > getSaisieWithCommune(String demarche, String username){
             
             
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            //System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Impossible de récupérer les démarches\n\n" + ex.getMessage(), " Récupération impossible !", JOptionPane.INFORMATION_MESSAGE);
         }
              
         return demarches;

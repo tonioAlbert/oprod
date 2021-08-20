@@ -252,12 +252,12 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                 connectDatabase = new ConnectDb(this.txt_nom_hote.getText(),Integer.parseInt(this.txt_port.getText()), this.txt_nom_bdd.getText(), this.txt_username.getText(), this.txt_password.getText()).getConnection();
             
                 if(connectDatabase == null){
-                    System.out.println("Impossible de se connecter à la base de données !");
-                    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifier les champs","Connexion dans la base impossible !", JOptionPane.INFORMATION_MESSAGE); 
+                    //System.out.println("Impossible de se connecter à la base de données !");
+                    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifier les champs","Connexion dans la base impossible !", JOptionPane.ERROR_MESSAGE); 
 
                 }else{
                     
-                    System.out.println("Tous ok\nConnection dans la base de données OK.");
+                    //System.out.println("Tous ok\nConnection dans la base de données OK.");
                     
                     
                     // Modification du ficiher de configuration
@@ -300,39 +300,39 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                                     fileJson.write(j.toString());
                                     fileJson.close();
 
-                                    System.out.println("Modification ficihier de configuration effectuée avec succès !");
-                                    JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
+                                    //System.out.println("Modification ficihier de configuration effectuée avec succès !");
+                                    JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.","Modification fichier conf Ok.", JOptionPane.ERROR_MESSAGE);
 
-                                    System.out.println("dossier et fichier conf trouvé ! .......");
+                                    //System.out.println("dossier et fichier conf trouvé ! .......");
 
                                 }catch(IOException e){
 
                                     e.printStackTrace(); 
 
-                                    System.out.println("Erreur remplissage fichier de configuration");
-                                    JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+                                    //System.out.println("Erreur remplissage fichier de configuration");
+                                    JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.ERROR_MESSAGE);
                                 }
                             }
                     }else{
                         
                             try(FileWriter fileJson = new FileWriter(filePathAndName)){
 
-                                System.out.println("Remplissage du fichier de conf ...");
+                               // System.out.println("Remplissage du fichier de conf ...");
 
                                 fileJson.write(j.toString());
                                 fileJson.close();
 
-                                System.out.println("Modification ficihier de configuration effectuée avec succès !");
-                                JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la modification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
+                                //System.out.println("Modification ficihier de configuration effectuée avec succès !");
+                                JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la modification apporter.","Modification fichier conf Ok.", JOptionPane.ERROR_MESSAGE);
 
-                                System.out.println("Dossier et fichier conf trouvé ! .......");
+                                //System.out.println("Dossier et fichier conf trouvé ! .......");
 
                             }catch(IOException e){
 
                                 e.printStackTrace(); 
 
-                                System.out.println("Erreur remplissage fichier de configuration");
-                                JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+                                //System.out.println("Erreur remplissage fichier de configuration");
+                                JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                         
@@ -340,7 +340,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                 }
             }catch(Exception e){
                     System.out.println("Impossible de se connecter à la base de données !");
-                    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifier les champs","Connexion dans la base impossible !", JOptionPane.INFORMATION_MESSAGE); 
+                    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifier les champs","Connexion dans la base impossible !", JOptionPane.ERROR_MESSAGE); 
  
             }
             
@@ -516,7 +516,7 @@ public class ModificationConfigurationBaseDeDonnees extends javax.swing.JInterna
                 
 
                 
-                System.out.println("Tonga ato ny lozakaaaa");
+                //System.out.println("Tonga ato ny lozakaaaa");
                 
                 //new UserFormDialog(HOST, PORT, DBNAME, USER, PWD).setVisible(true);
             }

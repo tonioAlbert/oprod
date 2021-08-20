@@ -9,17 +9,9 @@ import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
 import java.awt.event.ItemEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
-import java.util.Base64;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import org.json.simple.JSONObject;
 
 
 /**

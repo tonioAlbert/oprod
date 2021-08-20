@@ -71,19 +71,19 @@ public class A3_suivi_saisie {
         // SI LE DOSSIER DE CONF N'EXISTE PAS
         if(!folder.exists()){
             
-            System.out.println("Dossier de configuration introuvable !");
+            //System.out.println("Dossier de configuration introuvable !");
             JOptionPane jop = new JOptionPane();
             int option = jop.showConfirmDialog(null, "Dossier de configuration introuvable !\nVoulez-vous lancer le procédure de création du dossier et du fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if(option == JOptionPane.OK_OPTION){
                 
                 // creation du dossier de configuration
-                System.out.println("Creation dossier ...");
+                //System.out.println("Creation dossier ...");
                 folder.mkdir();
                 
                     try{
                         
                         
-                        System.out.println("Creation fichier conf ...");
+                        //System.out.println("Creation fichier conf ...");
                         file.createNewFile();
                         
                         JTextField HoteName = new JTextField();
@@ -105,7 +105,7 @@ public class A3_suivi_saisie {
 
                         }else{
                             
-                            System.out.println("Voulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?");
+                            //System.out.println("Voulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?");
                             JOptionPane jopCreateFolderAndFile = new JOptionPane();
                             int option2 = jopCreateFolderAndFile.showConfirmDialog(null, "Annulation processus de création (dossier et fichier de conf) !\nVoulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                             
@@ -142,20 +142,25 @@ public class A3_suivi_saisie {
                         try{
                             
                             FileWriter fileJson = new FileWriter(filePathAndName);
-                            System.out.println("Remplissage du fichier de conf ...");
+                            //System.out.println("Remplissage du fichier de conf ...");
                             
                             fileJson.write(j.toString());
                             fileJson.close();
                             
                             
-                            System.out.println("dossier et fichier conf trouvé ! .......");
+                            //System.out.println("dossier et fichier conf trouvé ! .......");
 
                         }catch(IOException e){
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            
+                            JOptionPane.showMessageDialog(null, "Ecriture impossible" + e.getMessage(), "Impossible d'écrire sur le fichier config.json", JOptionPane.ERROR_MESSAGE);
+
                         }
 
                     }catch(IOException f){
-                        f.printStackTrace();
+                        //f.printStackTrace();
+                        
+                        JOptionPane.showMessageDialog(null, "Ecriture impossible" + f.getMessage(), "Impossible de lancer le pocessus de création du fichier de configuration", JOptionPane.ERROR_MESSAGE);
                     } 
             }
    
@@ -165,7 +170,7 @@ public class A3_suivi_saisie {
             
             if(!file.exists()){
                 
-                System.out.println("Fichier de configuration introuvable !");
+                //System.out.println("Fichier de configuration introuvable !");
                 
                 JOptionPane jop2 = new JOptionPane();
                 int option2 = jop2.showConfirmDialog(null, "Fichier de configuration introuvable !\nVoulez-vous maintenant procéder à la création du fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -176,7 +181,7 @@ public class A3_suivi_saisie {
                     try{
                         
                         
-                        System.out.println("Creation fichier conf ...");
+                        //System.out.println("Creation fichier conf ...");
                         file.createNewFile();
                         
                         JTextField HoteName = new JTextField();
@@ -196,7 +201,7 @@ public class A3_suivi_saisie {
 
                         }else{
                             
-                            System.out.println("Voulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?");
+                            //System.out.println("Voulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?");
                             JOptionPane jopCreateFolderAndFile = new JOptionPane();
                             int optionFileCreate = jopCreateFolderAndFile.showConfirmDialog(null, "Annulation processus de création (dossier et fichier de conf) !\nVoulez-vous vraimenet quitter le processus de création du dossier et fichier de configuration ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                             
@@ -230,21 +235,25 @@ public class A3_suivi_saisie {
   
                         try(FileWriter fileJson = new FileWriter(filePathAndName)){
                             
-                            System.out.println("Remplissage du fichier de conf ...");
+                            //System.out.println("Remplissage du fichier de conf ...");
                             
                             fileJson.write(j.toString());
                             fileJson.close();
                             
                             
-                            System.out.println("dossier et fichier conf trouvé ! .......");
+                            //System.out.println("dossier et fichier conf trouvé ! .......");
 
                         }catch(IOException e){
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            
+                            JOptionPane.showMessageDialog(null, "Ecriture impossible" + e.getMessage(), "Impossible d'écrire sur le fichier config.json", JOptionPane.ERROR_MESSAGE);
                             
                         }
 
                     }catch(IOException f){
                         f.printStackTrace();
+                        
+                        JOptionPane.showMessageDialog(null, "Ecriture impossible" + f.getMessage(), "Impossible de lancer le pocessus de création du fichier de configuration", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }   // FIN !file.exists()
@@ -278,12 +287,12 @@ public class A3_suivi_saisie {
             String json_password = new String(decodPassword, "UTF-8");
             
             
-            System.out.println("Les valeur dans le fichier de conf sont : ");
-            System.out.println("json_host " + json_host);
-            System.out.println("json_port " + json_port);
-            System.out.println("json_dbname " + json_dbname);
-            System.out.println("json_user " + json_user);
-            System.out.println("json_password " + json_password);
+            //System.out.println("Les valeur dans le fichier de conf sont : ");
+            //System.out.println("json_host " + json_host);
+            //System.out.println("json_port " + json_port);
+            //System.out.println("json_dbname " + json_dbname);
+           // System.out.println("json_user " + json_user);
+            //System.out.println("json_password " + json_password);
             
             f_read.close();
             
@@ -304,12 +313,12 @@ public class A3_suivi_saisie {
             
 	    while (it.hasNext()) {
 	        Map.Entry<String, String> val = (Map.Entry)it.next();
-	        System.out.println( " = " + val.getValue().toString());
+	        //System.out.println( " = " + val.getValue().toString());
                 demarches.add(val.getValue().toString());  
 	    }
             
        
-            System.out.println("\nTout est Ok!\nLancement de l'application...  : ");
+            //System.out.println("\nTout est Ok!\nLancement de l'application...  : ");
             
             
             SwingUtilities.invokeLater(() -> {
@@ -323,13 +332,13 @@ public class A3_suivi_saisie {
 
         }catch(FileNotFoundException exc_file){
             
-            System.out.println(exc_file.getMessage());
+            //System.out.println(exc_file.getMessage());
             //JOptionPane.showMessageDialog(null, "Impossible de se connecter à la basez de données !\n\nVérifier votre fichier de configuration", "Connexion dans la base de données impossible", JOptionPane.INFORMATION_MESSAGE);
-            JOptionPane.showMessageDialog(null, "Fichier de configuration introuvable\n\n" + exc_file.getMessage(), "Impossible de trouver la fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Fichier de configuration introuvable\n\n" + exc_file.getMessage(), "Impossible de trouver la fichier de configuration", JOptionPane.ERROR_MESSAGE);
 
         }catch(Exception ex){
             
-            System.out.println(ex.getMessage());
+            //System.out.println(ex.getMessage());
             
              if(ex.getMessage().equals("Last unit does not have enough valid bits")){
                  
@@ -337,19 +346,19 @@ public class A3_suivi_saisie {
                     
                     Files.deleteIfExists(Paths.get(filePathAndName));
                     
-                    System.out.println("Suppression fichier ok");
+                    //System.out.println("Suppression fichier ok");
              
                 }catch(Exception e){
-
+                    JOptionPane.showMessageDialog(null, "Suppression impossible" + e.getMessage(), "Impossible de supprimer le fichier de configuration", JOptionPane.ERROR_MESSAGE);
                 }
 
                 lancement();
-                System.out.println("oui mitovy ");
+                //System.out.println("oui mitovy ");
             }
              
              if(ex.getMessage().equals("Input byte array has wrong 4-byte ending unit")){
 
-                System.out.println("oui mitovy ");
+                //System.out.println("oui mitovy ");
             }
 
             //JOptionPane.showMessageDialog(null, "Impossible de se connecter à la basez de données !\n\nVérifier votre fichier de configuration", "Connexion dans la base de données impossible", JOptionPane.INFORMATION_MESSAGE);
@@ -367,7 +376,7 @@ public class A3_suivi_saisie {
 
                     Files.deleteIfExists(Paths.get(filePathAndName));
                     lancement();
-                    System.out.println("Suppression fichier ok");
+                    //System.out.println("Suppression fichier ok");
              
                     
                 }catch(Exception e){
