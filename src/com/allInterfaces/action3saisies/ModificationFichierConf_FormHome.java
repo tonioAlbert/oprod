@@ -6,6 +6,7 @@
 package com.allInterfaces.action3saisies;
 
 import com.connectDb.ConnectDb;
+import com.createForm.tonio.CreateUI;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +21,7 @@ import org.json.simple.JSONObject;
  *
  * @author RAP
  */
-public class ModificationFichierConf extends javax.swing.JFrame {
+public class ModificationFichierConf_FormHome extends javax.swing.JFrame {
     private static Connection connectDatabase;
     private String BDD_HOST = "";
     private Integer BDD_PORT;
@@ -30,7 +31,7 @@ public class ModificationFichierConf extends javax.swing.JFrame {
     /**
      * Creates new form ModificationFichierConf
      */
-    public ModificationFichierConf(String host, Integer port, String dbname, String user, String password) {
+    public ModificationFichierConf_FormHome(String host, Integer port, String dbname, String user, String password) {
         
         this.BDD_HOST = host;
         this.BDD_PORT = port;
@@ -128,7 +129,7 @@ public class ModificationFichierConf extends javax.swing.JFrame {
         j_label_nom_bdd.setText("Nom Base de données");
 
         txt_port.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_port.setToolTipText("Nom d'utilisateur");
+        txt_port.setToolTipText("Enter ici le numéro du Port");
         txt_port.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_portKeyPressed(evt);
@@ -136,7 +137,7 @@ public class ModificationFichierConf extends javax.swing.JFrame {
         });
 
         txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_password.setToolTipText("Nom d'utilisateur");
+        txt_password.setToolTipText("Entrer ici le mot de passe");
         txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_passwordKeyPressed(evt);
@@ -144,7 +145,7 @@ public class ModificationFichierConf extends javax.swing.JFrame {
         });
 
         txt_nom_hote.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_nom_hote.setToolTipText("Nom d'utilisateur");
+        txt_nom_hote.setToolTipText("Enter ici le nom d'hôte ou adresse IP");
         txt_nom_hote.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_nom_hoteKeyPressed(evt);
@@ -152,7 +153,7 @@ public class ModificationFichierConf extends javax.swing.JFrame {
         });
 
         txt_nom_bdd.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        txt_nom_bdd.setToolTipText("Nom d'utilisateur");
+        txt_nom_bdd.setToolTipText("Enter ici le nom de la base de données");
         txt_nom_bdd.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_nom_bddKeyPressed(evt);
@@ -234,13 +235,12 @@ private void modificationFichierConf(){
                 connectDatabase = new ConnectDb(this.txt_nom_hote.getText(),Integer.parseInt(this.txt_port.getText()), this.txt_nom_bdd.getText(), this.txt_username.getText(), this.txt_password.getText()).getConnection();
             
                 if(connectDatabase == null){
-                    System.out.println("Impossible de se connecter à la base de données !");
-                    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifier les champs","Connexion dans la base impossible !", JOptionPane.INFORMATION_MESSAGE); 
+                   // System.out.println("connectDatabase === " + connectDatabase);
+                    //System.out.println(this);
+                //    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifier les champs","Connexion dans la base impossible !", JOptionPane.INFORMATION_MESSAGE); 
+                    CreateUI.CreateDialogForm(this, "Connexion dans la base impossible !", "Impossible de se connecter à la base de données !\n\nVérifier les champs", JOptionPane.ERROR_MESSAGE);
 
                 }else{
-                    
-                    System.out.println("Tous ok\nConnection dans la base de données OK.");
-                    
                     
                     // Modification du ficiher de configuration
                     // ENCODAGE DES DONNEES
@@ -270,8 +270,6 @@ private void modificationFichierConf(){
                         
                         if (file.exists()) {
                     
-                            //System.out.println("fichier de conf existe déjà...");
-                            
                             // suppression du fichier de configuration
                             if(Files.deleteIfExists(Paths.get(filePathAndName))){
                         
@@ -282,17 +280,15 @@ private void modificationFichierConf(){
                                     fileJson.write(j.toString());
                                     fileJson.close();
 
-                                    System.out.println("Modification ficihier de configuration effectuée avec succès !");
-                                    JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
-
-                                    //System.out.println("dossier et fichier conf trouvé ! .......");
+                                    CreateUI.CreateDialogForm(this,"Modification fichier conf Ok.", "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.", JOptionPane.INFORMATION_MESSAGE);
 
                                 }catch(IOException e){
 
                                     e.printStackTrace(); 
 
-                                    //System.out.println("Erreur remplissage fichier de configuration");
-                                    JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+                                    CreateUI.CreateDialogForm(this,"Erreur remplissage fichier de configuration", "Erreur remplissage fichier de configuration\n\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
+
+                                    //JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
                     }else{
@@ -305,7 +301,7 @@ private void modificationFichierConf(){
                                 fileJson.close();
 
                                 //System.out.println("Modification ficihier de configuration effectuée avec succès !");
-                                JOptionPane.showMessageDialog(null, "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la modification apporter.","Modification fichier conf Ok.", JOptionPane.INFORMATION_MESSAGE);
+                                CreateUI.CreateDialogForm(this,"Modification fichier conf Ok.", "Modification ficihier de configuration effectuée avec succès !\n\nVeuillez redemarrer l'application pour prendre en compte la madification apporter.", JOptionPane.INFORMATION_MESSAGE);
 
                                 //System.out.println("Dossier et fichier conf trouvé ! .......");
 
@@ -313,17 +309,14 @@ private void modificationFichierConf(){
 
                                 e.printStackTrace(); 
 
-                                //System.out.println("Erreur remplissage fichier de configuration");
-                                JOptionPane.showMessageDialog(null, "Erreur remplissage fichier de configuration\n\n"+e.getMessage(),"Erreur remplissage fichier de configuration", JOptionPane.INFORMATION_MESSAGE);
+                                    CreateUI.CreateDialogForm(this,"Erreur remplissage fichier de configuration", "Erreur remplissage fichier de configuration\n\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
                             }
                         }
                         
                     
                 }
             }catch(Exception e){
-                    //System.out.println("Impossible de se connecter à la base de données !");
-                    JOptionPane.showMessageDialog(null, "Impossible de se connecter à la base de données !\n\nVérifier les champs","Connexion dans la base impossible !", JOptionPane.INFORMATION_MESSAGE); 
- 
+                CreateUI.CreateDialogForm(this,"Connexion dans la base impossible ! ", "Impossible de se connecter à la base de données !\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
             }
             
     }
@@ -351,14 +344,11 @@ private void modificationFichierConf(){
         //this.j_menu_parametres.
         // hime eto this.getParent().getParent().getParent().getParent().getParent()
         //System.out.println("this.getParent().getParent().getParent() vaut = "+this.getParent().getParent().getParent().getParent().getParent());
-
     }//GEN-LAST:event_btn_annulerActionPerformed
 
     private void btn_annulerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_annulerKeyPressed
         if(evt.getKeyCode() == 27){
-
             this.setVisible(false);
-
         }
     }//GEN-LAST:event_btn_annulerKeyPressed
 
@@ -366,27 +356,34 @@ private void modificationFichierConf(){
 
         if(this.txt_username.getText().equals("") && this.txt_nom_bdd.getText().equals("") && this.txt_nom_hote.getText().equals("") && this.txt_port.getText().equals("")&& this.txt_password.getText().equals("")){
            // System.out.println("Tous les champs sont requises !");
-            JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE);
+         //   JOptionPane.showMessageDialog(null, "Tous le champs sont requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE);
+            CreateUI.CreateDialogForm(this,"Tous le champs sont requises !", "Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE);
 
         }else if(this.txt_username.getText().equals("")){
             //System.out.println("Le champ Nom d'utilisateur est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE);
+           // JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur vide !","Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE);
+            
+            CreateUI.CreateDialogForm(this,"Le champ Nom d'utilisateur vide !", "Le champ Nom d'utilisateur est requis", JOptionPane.INFORMATION_MESSAGE);
 
         }else if(this.txt_nom_bdd.getText().equals("")){
            // System.out.println("Le champ Nom base de données est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE);
+           // JOptionPane.showMessageDialog(null, "Le champ Nom base de données vide !","Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE);
+            CreateUI.CreateDialogForm(this,"Le champ Nom base de données vide !", "Le champ Nom base de données est requis", JOptionPane.INFORMATION_MESSAGE);
 
         }else if(this.txt_nom_hote.getText().equals("")){
             //System.out.println("Le champ Nom d'hôte est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE);
+           // JOptionPane.showMessageDialog(null, "Le champ Nom d'hôte vide !","Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE);
+            CreateUI.CreateDialogForm(this,"Le champ Nom d'hôte vide !", "Le champ Nom d'hôte est requis", JOptionPane.INFORMATION_MESSAGE);
 
         }else if(this.txt_port.getText().equals("")){
            // System.out.println("Le champ Port est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE);
+          //  JOptionPane.showMessageDialog(null, "Le champ Port vide !","Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE);
+            CreateUI.CreateDialogForm(this,"Le champ Port vide !", "Le champ Port est requis", JOptionPane.INFORMATION_MESSAGE);
 
         }else if(this.txt_password.getText().equals("")){
            // System.out.println("Le champ Mot de passe est requis !");
-            JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE);
+          //  JOptionPane.showMessageDialog(null, "Le champ Mot de passe vide !","Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE);
+            CreateUI.CreateDialogForm(this,"Le champ Mot de passe vide !", "Le champ Mot de passe est requis", JOptionPane.INFORMATION_MESSAGE);
 
         }else{
 
@@ -487,20 +484,21 @@ private void modificationFichierConf(){
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificationFichierConf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificationFichierConf_FormHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificationFichierConf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificationFichierConf_FormHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificationFichierConf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificationFichierConf_FormHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificationFichierConf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificationFichierConf_FormHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //new ModificationFichierConf().setVisible(true);
+                //new ModificationFichierConf_FormHome().setVisible(true);
             }
         });
     }

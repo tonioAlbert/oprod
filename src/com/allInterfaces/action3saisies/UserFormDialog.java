@@ -11,6 +11,7 @@ import com.classes.action3saisie.Utilisateurs;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import com.createForm.tonio.CreateUI;
 
 
 /**
@@ -245,20 +246,36 @@ public class UserFormDialog extends javax.swing.JFrame {
         if((txt_username.equals("") || txt_username.equals(placheHolder)) && txt_password.equals("") && demarche.equals(txt_demarche)){
             
             System.out.println("Le champ Nom d'utilisateur, mot de passe et démarche sont tous requises !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur, mot de passe et démarche sont tous requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
+            //JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur, mot de passe et démarche sont tous requises !","Tous le champs sont requises", JOptionPane.INFORMATION_MESSAGE); 
+          
+            //  JDialog dialogD = new JOptionPane("Le champ Nom d'utilisateur, mot de passe et démarche sont tous requises !").createDialog(this, "Tous le champs sont requises");
+          //  Point dialogLoc = dialogD.getLocation();
+          //  Point parentLoc = this.getLocation();
+          //  dialogD.setLocation(parentLoc.x + this.getWidth(), dialogLoc.y);
+           // dialogD.setVisible(true);
+            
+            
+            CreateUI.CreateDialogForm(this, "Tous le champs sont requises", "Le champ Nom d'utilisateur, mot de passe et démarche sont tous requises !", JOptionPane.INFORMATION_MESSAGE);
+            
             
         }else if(txt_username.equals("") || txt_username.equals(placheHolder)){
             
             System.out.println("Champ nom d'utilisateur requise !");
-            JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur est requise !","Champ nom d'utilisateur requise", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Le champ Nom d'utilisateur est requise !","Champ nom d'utilisateur requise", JOptionPane.INFORMATION_MESSAGE);
+            
+            CreateUI.CreateDialogForm(this, "Champ nom d'utilisateur requise", "Le champ Nom d'utilisateur est requise !", JOptionPane.INFORMATION_MESSAGE);
             
         }else if(txt_password.equals("")){
             System.out.println("Champ mot de passe requise !");
-            JOptionPane.showMessageDialog(null, "Le champ mot de passe est requise !","Champ mot de passe requise", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Le champ mot de passe est requise !","Champ mot de passe requise", JOptionPane.INFORMATION_MESSAGE);
+            
+            CreateUI.CreateDialogForm(this, "Champ mot de passe requise", "Le champ mot de passe est requise !", JOptionPane.INFORMATION_MESSAGE);
             
         }else if(demarche.equals(txt_demarche)){
             System.out.println("Veuillez sélectionner une démarche");
-            JOptionPane.showMessageDialog(null, "Veuillez sélectionner une démarche","Aucune selectione du champ démarche", JOptionPane.INFORMATION_MESSAGE);
+           // JOptionPane.showMessageDialog(null, "Veuillez sélectionner une démarche","Aucune selectione du champ démarche", JOptionPane.INFORMATION_MESSAGE);
+            
+            CreateUI.CreateDialogForm(this, "Aucune selectione du champ démarche", "Veuillez sélectionner une démarche !", JOptionPane.INFORMATION_MESSAGE);
         }else{
             
             
@@ -275,7 +292,9 @@ public class UserFormDialog extends javax.swing.JFrame {
         
             if(user_login_bdd == null || user_id_profilDroits == null){
                 System.out.println("Nom d'utilisateur n'existe pas dans la base de données !");
-                JOptionPane.showMessageDialog(null, "Nom d'utilisateur n'existe pas dans la base de données !","Nom d'utilisateur incorrect et/ou introuvable", JOptionPane.INFORMATION_MESSAGE); 
+                //JOptionPane.showMessageDialog(null, "Nom d'utilisateur n'existe pas dans la base de données !","Nom d'utilisateur incorrect et/ou introuvable", JOptionPane.INFORMATION_MESSAGE); 
+                
+                CreateUI.CreateDialogForm(this, "Nom d'utilisateur incorrect et/ou introuvable", "Nom d'utilisateur n'existe pas dans la base de données !", JOptionPane.INFORMATION_MESSAGE);
             }else{
             
                 if (hash_txt_password.equals(user_mot_de_passe_bdd)){
@@ -288,8 +307,11 @@ public class UserFormDialog extends javax.swing.JFrame {
 
 
                 }else{
-                    System.out.print("Mot de passe incorrect !");
-                    JOptionPane.showMessageDialog(null, "Mot de passe incorrect !","Erreur Mot de passe", JOptionPane.INFORMATION_MESSAGE); 
+                 //   System.out.print("Mot de passe incorrect !");
+                   // JOptionPane.showMessageDialog(null, "Mot de passe incorrect !","Erreur Mot de passe", JOptionPane.INFORMATION_MESSAGE); 
+                    
+                    
+                    CreateUI.CreateDialogForm(this, "Erreur Mot de passe", "Mot de passe incorrect !", JOptionPane.INFORMATION_MESSAGE);
                 }
 
             }
@@ -316,7 +338,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 SwingUtilities.invokeLater(() -> {
                     
                     System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
-                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    ModificationFichierConf_FormHome v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf_FormHome(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
                     //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
                     v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
                     v_rapport_anomalies_saisie_par_commune.setVisible(true);
@@ -339,7 +361,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 SwingUtilities.invokeLater(() -> {
                     
                     System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
-                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    ModificationFichierConf_FormHome v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf_FormHome(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
                     //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
                     v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
                     v_rapport_anomalies_saisie_par_commune.setVisible(true);
@@ -366,7 +388,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 SwingUtilities.invokeLater(() -> {
                     
                     System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
-                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    ModificationFichierConf_FormHome v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf_FormHome(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
                     //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
                     v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
                     v_rapport_anomalies_saisie_par_commune.setVisible(true);
@@ -393,7 +415,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 SwingUtilities.invokeLater(() -> {
                     
                     System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
-                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    ModificationFichierConf_FormHome v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf_FormHome(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
                     //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
                     v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
                     v_rapport_anomalies_saisie_par_commune.setVisible(true);
@@ -435,7 +457,7 @@ public class UserFormDialog extends javax.swing.JFrame {
                 SwingUtilities.invokeLater(() -> {
                     
                     //System.out.println("THREAD EN COURS DANS invokeLater menu conf = " + Thread.currentThread().getName());
-                    ModificationFichierConf v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
+                    ModificationFichierConf_FormHome v_rapport_anomalies_saisie_par_commune = new ModificationFichierConf_FormHome(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD);
                     //this.dpContent.add(v_rapport_anomalies_saisie_par_commune);
                     v_rapport_anomalies_saisie_par_commune.setLocationRelativeTo(null);
                     v_rapport_anomalies_saisie_par_commune.setVisible(true);

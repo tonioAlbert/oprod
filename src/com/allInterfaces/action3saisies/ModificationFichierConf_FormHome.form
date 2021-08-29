@@ -206,7 +206,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial Narrow" size="18" style="0"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
+            <Property name="toolTipText" type="java.lang.String" value="Enter ici le num&#xe9;ro du Port"/>
           </Properties>
           <Events>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_portKeyPressed"/>
@@ -217,7 +217,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial Narrow" size="18" style="0"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
+            <Property name="toolTipText" type="java.lang.String" value="Entrer ici le mot de passe"/>
           </Properties>
           <Events>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_passwordKeyPressed"/>
@@ -228,7 +228,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial Narrow" size="18" style="0"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
+            <Property name="toolTipText" type="java.lang.String" value="Enter ici le nom d&apos;h&#xf4;te ou adresse IP"/>
           </Properties>
           <Events>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_nom_hoteKeyPressed"/>
@@ -239,7 +239,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial Narrow" size="18" style="0"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Nom d&apos;utilisateur"/>
+            <Property name="toolTipText" type="java.lang.String" value="Enter ici le nom de la base de donn&#xe9;es"/>
           </Properties>
           <Events>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_nom_bddKeyPressed"/>

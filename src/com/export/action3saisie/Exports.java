@@ -37,6 +37,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.TreeMap;
 import com.classes.action3saisie.Querry;
+import com.createForm.tonio.CreateUI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1626,7 +1627,9 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
 
                     //System.out.println("ERREUR DANS  get registre anomalie = " +createFileErreur.getMessage());
                     
-                    JOptionPane.showMessageDialog(null, "Classes export registre anomalies csv erreur",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                 //   JOptionPane.showMessageDialog(null, "Classes export registre anomalies csv erreur",createFileErreur.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+                    
+                     CreateUI.CreateDialogForm(null, "Classes export registre anomalies csv erreur", createFileErreur.getMessage(), JOptionPane.ERROR_MESSAGE);
                 }
                      
             rs.close();
@@ -1653,7 +1656,9 @@ public List<String> GetAnomaliesSaisieCSVLola(String reg, String path){
             //throw new RuntimeException();
             retour.add("error-anomalie-bloquante");
             retour.add("Error executing query: " +ex.getMessage());
-            JOptionPane.showMessageDialog(null, "Impossible de lancer la requette de récupération des anomalies\n\nRetour : "+ex.getMessage(), "Erreur SQL trouvé", JOptionPane.INFORMATION_MESSAGE);
+           // JOptionPane.showMessageDialog(null, "Impossible de lancer la requette de récupération des anomalies\n\nRetour : "+ex.getMessage(), "Erreur SQL trouvé", JOptionPane.INFORMATION_MESSAGE);
+            
+            CreateUI.CreateDialogForm(null, "Erreur SQL trouvé", "Impossible de lancer la requette de récupération des anomalies\n\nRetour : "+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
         
         //System.out.println(demandes);

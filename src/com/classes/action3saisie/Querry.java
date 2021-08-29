@@ -54,8 +54,6 @@ public class Querry {
         this.demarche = operation;
         
         connectDatabase = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
-        
-        
         connectDatabasePLOF = new ConnectDb(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_USER, this.BDD_PWD).getConnection();
     }
     
@@ -70,41 +68,52 @@ public List <String[] > getAnomaliesValChefEquipeNULL(String demarche, String[] 
             try {
 
                 String sql = " SELECT demande.id_demande,\n" +
-                "    demande.id_registre AS numero_demande,\n" +
-                "        CASE\n" +
-                "            WHEN demande.type_op::text = 'ogcf'::text THEN \"left\"(demande.id_registre::text, 6)\n" +
-                "            ELSE \"right\"(\"left\"(demande.id_registre::text, 8), 6)\n" +
-                "        END AS c_commune,\n" +
-                "    demande.id_parcelle AS code_parcelle,\n" +
-                "        CASE\n" +
-                "            WHEN demande.cf_annule IS TRUE THEN 'oui'::text\n" +
-                "            WHEN demande.cf_annule IS FALSE THEN 'non'::text\n" +
-                "            ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
-                "        END AS annuler,\n" +
-                "        CASE\n" +
-                "            WHEN demande.opposition IS TRUE THEN 'oui'::text\n" +
-                "            WHEN demande.opposition IS FALSE THEN 'non'::text\n" +
-                "            ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
-                "        END AS opposition,\n" +
-                "        CASE\n" +
-                "            WHEN demande.avis_crl IS TRUE THEN 'oui'::text\n" +
-                "            WHEN demande.avis_crl IS FALSE THEN 'non'::text\n" +
-                "            ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
-                "        END AS avis_crl,\n" +
-                "        CASE\n" +
-                "            WHEN demande.val_chef_equipe IS TRUE THEN 'oui'::text\n" +
-                "            WHEN demande.val_chef_equipe IS FALSE THEN 'non'::text\n" +
-                "            ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
-                "        END AS validation_cqi_1,\n" +
-                "        CASE\n" +
-                "            WHEN demande.id_certificat IS NULL THEN 'demande_pas_encore_édité'::character varying\n" +
-                "            ELSE demande.id_certificat\n" +
-                "        END AS deja_imprimer_en_cf,\n" +
-                "    demande.type_op AS operation\n" +
-                "   FROM demande\n" +
-                "  WHERE demande.val_chef_equipe IS NULL\n" +
-                "AND demande.type_op::text = ? \n" +
-                "  ORDER BY operation DESC";
+"                   demande.id_registre AS numero_demande,\n" +
+"                       CASE\n" +
+"                           WHEN demande.type_op::text = 'ogcf'::text THEN left(demande.id_registre::text, 6)\n" +
+"                           ELSE right(LEFT(demande.id_registre::text, 8), 6)\n" +
+"                       END AS c_commune,\n" +
+"                   demande.id_parcelle AS code_parcelle,\n" +
+"                       CASE\n" +
+"                           WHEN demande.cf_annule IS TRUE THEN 'oui'::text\n" +
+"                           WHEN demande.cf_annule IS FALSE THEN 'non'::text\n" +
+"                           ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
+"                       END AS annuler,\n" +
+"                       CASE\n" +
+"                           WHEN demande.opposition IS TRUE THEN 'oui'::text\n" +
+"                           WHEN demande.opposition IS FALSE THEN 'non'::text\n" +
+"                           ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
+"                       END AS opposition,\n" +
+"                       CASE\n" +
+"                           WHEN demande.avis_crl IS TRUE THEN 'oui'::text\n" +
+"                           WHEN demande.avis_crl IS FALSE THEN 'non'::text\n" +
+"                           ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
+"                       END AS avis_crl,\n" +
+"                       CASE\n" +
+"                           WHEN demande.val_chef_equipe IS TRUE THEN 'oui'::text\n" +
+"                           WHEN demande.val_chef_equipe IS FALSE THEN 'non'::text\n" +
+"                           ELSE 'NULL c-à-d non FALSE et/ou TRUE'::text\n" +
+"                       END AS validation_cqi_1,\n" +
+"                       CASE\n" +
+"                           WHEN demande.id_certificat IS NULL THEN 'demande_pas_encore_édité'::character varying\n" +
+"                           ELSE demande.id_certificat\n" +
+"                       END AS deja_imprimer_en_cf,\n" +
+"                   demande.type_op AS operation,\n" +
+"				   region.nom as region, \n" +
+"				   district.nom as district, \n" +
+"				   commune.nom as commune, \n" +
+"				   fokontany.nom as fokontany, \n" +
+"				   hameau.nom as hameau\n" +
+"                  FROM demande, region ,district, commune, fokontany , hameau\n" +
+"                 WHERE \n" +
+"				region.id_region = district.id_region\n" +
+"                       AND commune.id_commune::text = fokontany.id_commune::text  \n" +
+"                        AND district.id_district = commune.id_district \n" +
+"                       AND fokontany.id_fokontany::text = hameau.id_fokontany::text  \n" +
+"                       AND demande.id_hameau::text = hameau.id_hameau::text  \n" +
+"               AND demande.type_op::text = ? \n" +
+"			   AND demande.val_chef_equipe IS NULL\n" +
+"                 ORDER BY operation DESC";
             
                 st = connectDatabase.prepareStatement(sql); 
                 st.setString(1, demarche.toLowerCase());
@@ -114,7 +123,9 @@ public List <String[] > getAnomaliesValChefEquipeNULL(String demarche, String[] 
 
                 while(rs.next()){
                     
-                    String[] saisie = { rs.getString("operation"), rs.getString("region"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("numero_demande"), rs.getString("code_parcelle"), rs.getString("avis_crl"), rs.getString("opposition"), rs.getString("validation_cqi_1"), rs.getString("annuler") };   
+                    String[] saisie = { rs.getString("operation"), rs.getString("region"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )",
+                        rs.getString("numero_demande"), rs.getString("code_parcelle"), rs.getString("avis_crl"), rs.getString("opposition"),
+                        rs.getString("validation_cqi_1"), rs.getString("annuler") };   
                     
                     saisies.add( saisie);
                     n++;
@@ -160,7 +171,7 @@ public List <String[] > getAnomaliesValChefEquipeNULL(String demarche, String[] 
                 "public.\"AnomaliesAvisCrlouOppositionNULL\".deja_imprimer_en_cf,\n" +
                 "public.\"AnomaliesAvisCrlouOppositionNULL\".login_validateur,\n" +
                 "public.\"AnomaliesAvisCrlouOppositionNULL\".login_op,\n" +
-                        
+                "public.\"AnomaliesAvisCrlouOppositionNULL\".lot,\n" +
                         
                 "public.\"AnomaliesAvisCrlouOppositionNULL\".operation ,\n" +
                 " public.\"AnomaliesAvisCrlouOppositionNULL\".avis_crl \n" +
@@ -177,7 +188,9 @@ public List <String[] > getAnomaliesValChefEquipeNULL(String demarche, String[] 
 
                 while(rs.next()){
                     
-                    String[] saisie = { rs.getString("operation"), rs.getString("region"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", rs.getString("numero_demande"), rs.getString("code_parcelle"), rs.getString("avis_crl"), rs.getString("opposition"),rs.getString("annuler"), rs.getString("validation_cqi_1"),rs.getString("login_validateur"), rs.getString("login_op") };   
+                    String[] saisie = { rs.getString("operation"), rs.getString("region"), rs.getString("commune") + "  ( " + rs.getString("c_commune") + " )", 
+                        rs.getString("numero_demande"), rs.getString("code_parcelle"), rs.getString("avis_crl"), rs.getString("opposition"),rs.getString("annuler"),
+                        rs.getString("validation_cqi_1"),rs.getString("login_validateur"), rs.getString("login_op"), rs.getString("lot") };   
                     
                     saisies.add( saisie);
                     n++;

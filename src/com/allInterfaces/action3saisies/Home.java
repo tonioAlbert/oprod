@@ -16,6 +16,7 @@ import com.classes.action3saisie.Formats;
 import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
+import com.createForm.tonio.CreateUI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,6 +84,9 @@ public class Home extends javax.swing.JFrame {
         
 
         initComponents();
+        
+        CreateUI.setFontAndPolicyMenuBar(this.jMenu_Consultations);
+           
         
         //this.j_menu_controllesSaisies.setEnabled(false);
         this.j_menu_export_listes_demandeurs.setEnabled(false);
@@ -211,6 +215,7 @@ public class Home extends javax.swing.JFrame {
         j_menu_controles_saisie = new javax.swing.JMenuItem();
         j_menu_parametres = new javax.swing.JMenu();
         j_menu_config_bdd = new javax.swing.JMenuItem();
+        jMenu_Consultations = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         j_menu_importation_saisie_croise = new javax.swing.JMenuItem();
 
@@ -702,6 +707,14 @@ public class Home extends javax.swing.JFrame {
         j_menu_parametres.add(j_menu_config_bdd);
 
         jMenuBar1.add(j_menu_parametres);
+
+        jMenu_Consultations.setText("Consultations");
+        jMenu_Consultations.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu_ConsultationsMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu_Consultations);
 
         jMenu2.setText("Saisie croisé");
         jMenu2.setFont(new java.awt.Font("Arial Narrow", 1, 14)); // NOI18N
@@ -1675,6 +1688,10 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
         
     }//GEN-LAST:event_j_menu_export_listes_anomalies_csv_lola_ActionPerformed
 
+    private void jMenu_ConsultationsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu_ConsultationsMouseClicked
+        System.out.println("Mouse Click sur menu pple consultations...");
+    }//GEN-LAST:event_jMenu_ConsultationsMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1720,6 +1737,7 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenu_Consultations;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar_home;
     private javax.swing.JPopupMenu.Separator jSeparator1;
