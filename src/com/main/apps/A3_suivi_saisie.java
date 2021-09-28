@@ -21,6 +21,7 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -49,7 +50,9 @@ public class A3_suivi_saisie {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    
+        //this.
+       // this.setLocation(parentLoc.x + JFrame.getWidth(), dialogLoc.y);
+        //pane.setLocation(parentLoc.x , dialogLoc.y);
         lancement();
         
     }  // FIN CLASS MAIN

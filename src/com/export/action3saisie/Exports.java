@@ -1813,144 +1813,47 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
                 cadre.setBorderTop(BorderStyle.THIN);
                 cadre.setBorderLeft(BorderStyle.THIN);
                 cadre.setBorderRight(BorderStyle.THIN);
+
                 
-            //RegionUtil.setBorderBottom(BorderStyle.DOUBLE,
-            //CellRangeAddress.valueOf("A1:B7"), sheet);
-
             Row headerRow0 = sheet.createRow(0);
-
-
-            XSSFCellStyle cellStyleBold = wb.createCellStyle();
-            Font headerFont = wb.createFont();
-            headerFont.setBold(true);
-            cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
-            cellStyleBold.setFont(headerFont);
-
-        
-            cellStyleBold.setBorderBottom(BorderStyle.THIN);  
-            cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
-            
-            cellStyleBold.setBorderRight(BorderStyle.THIN);  
-            cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
-            
-            cellStyleBold.setBorderTop(BorderStyle.THIN);  
-            cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
-
-        
-            cellStyleBold.setBorderLeft(BorderStyle.THIN);  
-            cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
-            
-            cellStyleBold.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            cellStyleBold.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
-            
             Cell headerCell0 = headerRow0.createCell(0);
-            headerCell0.setCellValue("Commune :");
-            headerCell0.setCellStyle(cadre);
-            headerCell0.setCellStyle(cellStyleBold);
-
-            
-            headerCell0 = headerRow0.createCell(1);
-            headerCell0.setCellValue(com);
-            headerCell0.setCellStyle(cadre);
-
- 
-            headerCell0 = headerRow0.createCell(2);
-            headerCell0.setCellValue("Code Com : " + c_com);
-            headerCell0.setCellStyle(cadre);
-
-            //headerCell0 = headerRow0.createCell(3);
-            //headerCell0.setCellValue(c_com);
-
-            headerCell0 = headerRow0.createCell(4);
-            headerCell0.setCellValue("Fokontany :");
-            headerCell0.setCellStyle(cadre);
-            headerCell0.setCellStyle(cellStyleBold);
-            
-        
-            headerCell0 = headerRow0.createCell(5);
-            headerCell0.setCellValue(fkt);
-            headerCell0.setCellStyle(cadre);
-
-            headerCell0 = headerRow0.createCell(6);
-            headerCell0.setCellValue("Code FKT :");
-            headerCell0.setCellStyle(cadre);
-            headerCell0.setCellStyle(cellStyleBold);
-            
-
-            headerCell0 = headerRow0.createCell(7);
-            headerCell0.setCellValue(c_fkt);
-            headerCell0.setCellStyle(cadre);
             
             
-
-            headerCell0 = headerRow0.createCell(8);
-            headerCell0.setCellValue("N° Equipe :");
-            headerCell0.setCellStyle(cadre);
-            headerCell0.setCellStyle(cellStyleBold);
+            CreateUI.HeaderCell(wb, headerRow0, 0, "Commune : ", true);
+            CreateUI.HeaderCell(wb, headerRow0, 1, com, false);
+            CreateUI.HeaderCell(wb, headerRow0, 2, "Code Commune : ", true);
+            CreateUI.HeaderCell(wb, headerRow0, 3, c_com, false);
             
-
-            //headerCell0 = headerRow0.createCell(9);
-            //headerCell0.setCellValue("xxxxx n° equipe");
+            CreateUI.HeaderCell(wb, headerRow0, 5, "Fokontany :", true);
+            CreateUI.HeaderCell(wb, headerRow0, 6, fkt, false);
+            CreateUI.HeaderCell(wb, headerRow0, 7, "Code Fokontany :", true);
+            CreateUI.HeaderCell(wb, headerRow0, 8, (String)c_fkt, false);
+            CreateUI.HeaderCell(wb, headerRow0, 9, "N° Equipe :", true);
+           // CreateUI.HeaderCell(wb, headerRow0, 10, "XXXX", false);
+            
 
 
             Row headerRow1 = sheet.createRow(1);
+            //Cell headerCell1 = headerRow1.createCell(0);
 
-            Cell headerCell1 = headerRow1.createCell(0);
-            headerCell1.setCellValue("Hameau :");
-            headerCell1.setCellStyle(cadre);
-            headerCell1.setCellStyle(cellStyleBold);
+            CreateUI.HeaderCell(wb, headerRow1, 0, "Hameau :", true);
+            CreateUI.HeaderCell(wb, headerRow1, 1, hameau, false);
+            CreateUI.HeaderCell(wb, headerRow1, 2, "Code Ham : ", true);
+            CreateUI.HeaderCell(wb, headerRow1, 3, (String) c_hameau, false);
             
+            CreateUI.HeaderCell(wb, headerRow1, 5, "Atelier :", true);
+            CreateUI.HeaderCell(wb, headerRow1, 6, nomAtelier, false);
+            CreateUI.HeaderCell(wb, headerRow1, 7, "Date d’envoi :", true);
+            CreateUI.HeaderCell(wb, headerRow1, 8, dateAujourdhui, false);
+            CreateUI.HeaderCell(wb, headerRow1, 9, "Date de retour :", true);
 
-
-            headerCell1 = headerRow1.createCell(1);
-            headerCell1.setCellValue(hameau);
-            headerCell1.setCellStyle(cadre);
-
-            headerCell1 = headerRow1.createCell(2);
-            headerCell1.setCellValue("Code Ham : " + (String) c_hameau);
-            headerCell1.setCellStyle(cadre);
-
-            //headerCell1 = headerRow1.createCell(3);
-            //headerCell1.setCellValue(c_hameau);
-
-            headerCell1 = headerRow1.createCell(4);
-            headerCell1.setCellValue("Atelier :");
-            headerCell1.setCellStyle(cadre);
-            headerCell1.setCellStyle(cellStyleBold);
+       
             
-
             
-            headerCell1 = headerRow1.createCell(5);
-            headerCell1.setCellValue(nomAtelier);
-            headerCell1.setCellStyle(cadre);
-
-            headerCell1 = headerRow1.createCell(6);
-            headerCell1.setCellValue("Date d’envoi :");
-            headerCell1.setCellStyle(cadre);
-            headerCell1.setCellStyle(cellStyleBold);
-            
-
-        
-        
-            headerCell1 = headerRow1.createCell(7);
-            headerCell1.setCellValue(dateAujourdhui);
-            headerCell1.setCellStyle(cadre);
-
-            headerCell1 = headerRow1.createCell(8);
-            headerCell1.setCellValue("Date de retour :");
-            headerCell1.setCellStyle(cadre);
-            headerCell1.setCellStyle(cellStyleBold);
-            
-
 
             Row headerRow4 = sheet.createRow(4);
-
-            Cell headerCell4 = headerRow4.createCell(0);
-            headerCell4.setCellValue("Atelier");
-            headerCell4.setCellStyle(cadre);
-            headerCell4.setCellStyle(cellStyleBold);
+            //Cell headerCell4 = headerRow4.createCell(0);
             
-
             // fusionnage des cellules pour atelier
             String[] cellStrings = ("A5:C5").split(":");
             CellReference start = new CellReference(cellStrings[0]);
@@ -1958,13 +1861,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
             CellRangeAddress address = new CellRangeAddress(start.getRow(),
             end.getRow(), start.getCol(), end.getCol());
             sheet.addMergedRegion(address);
-
-            headerCell4 = headerRow4.createCell(3);
-            headerCell4.setCellValue("Correction (Antenne / Terrain)");
-            headerCell4.setCellStyle(cadre);
-            headerCell4.setCellStyle(cellStyleBold);
             
-
             // fusionnage des cellules pour antenne / terrain
             String[] cellStrings2 = ("D5:H5").split(":");
             CellReference start2 = new CellReference(cellStrings2[0]);
@@ -1973,13 +1870,7 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
             end2.getRow(), start2.getCol(), end2.getCol());
             sheet.addMergedRegion(address2);
 
-            headerCell4 = headerRow4.createCell(8);
-            headerCell4.setCellValue("Contrôles");
-            headerCell4.setCellStyle(cadre);
-            headerCell4.setCellStyle(cellStyleBold);
             
-            //headerCell4.setCellStyle(cellStyleCenter);
-
             // fusionnage des cellules pour contrôle ( signature AGF, AFO, ect.
             String[] cellStrings3 = ("I5:L5").split(":");
             CellReference start3 = new CellReference(cellStrings3[0]);
@@ -1987,81 +1878,29 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
             CellRangeAddress address3 = new CellRangeAddress(start3.getRow(),
             end3.getRow(), start3.getCol(), end3.getCol());
             sheet.addMergedRegion(address3);
-        
-       
+            
+                                
+            CreateUI.HeaderCell(wb, headerRow4, 0, "Atelier", true);
+            CreateUI.HeaderCell(wb, headerRow4, 3, "Correction (Antenne / Terrain)", true);
+            CreateUI.HeaderCell(wb, headerRow4, 8, "Contrôles", true);
+
+
             Row headerRow5 = sheet.createRow(5);
-
-            Cell headerCell5 = headerRow5.createCell(0);
-            headerCell5.setCellValue("Lot");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
+            //Cell headerCell5 = headerRow5.createCell(0);
             
-
-            headerCell5 = headerRow5.createCell(1);
-            headerCell5.setCellValue("N° Demande");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
+            CreateUI.HeaderCell(wb, headerRow5, 0, "Lot", true);
+            CreateUI.HeaderCell(wb, headerRow5, 1, "N° Demande", true);
+            CreateUI.HeaderCell(wb, headerRow5, 2, "Description anomalie(s) - Bloquante", true);
+            CreateUI.HeaderCell(wb, headerRow5, 3, "Corrigé", true);
+            CreateUI.HeaderCell(wb, headerRow5, 4, "Non Corrigé", true);
+            CreateUI.HeaderCell(wb, headerRow5, 5, "Date correction", true);
+            CreateUI.HeaderCell(wb, headerRow5, 6, "Observation sur la correction", true);
+            CreateUI.HeaderCell(wb, headerRow5, 7, "Signature ADA", true);
+            CreateUI.HeaderCell(wb, headerRow5, 8, "Date", true);
+            CreateUI.HeaderCell(wb, headerRow5, 9, "Signature AGF", true);
+            CreateUI.HeaderCell(wb, headerRow5, 10, "Date", true);
+            CreateUI.HeaderCell(wb, headerRow5, 11, "Signature AFO", true);
             
-
-            headerCell5 = headerRow5.createCell(2);
-            headerCell5.setCellValue("Description anomalie(s) - Bloquante");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
-
-            headerCell5 = headerRow5.createCell(3);
-            headerCell5.setCellValue("Corrigé");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
- 
-            headerCell5 = headerRow5.createCell(4);
-            headerCell5.setCellValue("Non corrigé");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
-
-            headerCell5 = headerRow5.createCell(5);
-            headerCell5.setCellValue("Date correction");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
-
-            headerCell5 = headerRow5.createCell(6);
-            headerCell5.setCellValue("Observation sur la correction");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
-
-            headerCell5 = headerRow5.createCell(7);
-            headerCell5.setCellValue("Signature ADA");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
-
-            headerCell5 = headerRow5.createCell(8);
-            headerCell5.setCellValue("Date");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
-            
-
-            headerCell5 = headerRow5.createCell(9);
-            headerCell5.setCellValue("Signature AGF");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
-
-            headerCell5 = headerRow5.createCell(10);
-            headerCell5.setCellValue("Date");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
-            
-
-            headerCell5 = headerRow5.createCell(11);
-            headerCell5.setCellValue("Signature AFO");
-            headerCell5.setCellStyle(cadre);
-            headerCell5.setCellStyle(cellStyleBold);
             
 
         int n = 6;
@@ -2094,19 +1933,23 @@ public List<String> GetAnomaliesBloquante(String reg, String c_dist, String dist
                     if (RowResultSet > 0) {
                         String eq = "";
                         
-                        Iterator it = equipe.iterator();
-                        while(it.hasNext())
-                        //System.out.println("valeur de l'iteration = "+it.next());
+                        if(!equipe.isEmpty()  || equipe != null){
+                        
+                            Iterator it = equipe.iterator();
+                            while(it.hasNext())
+                            //System.out.println("valeur de l'iteration = "+it.next());
 
-                        eq += " \\ "+it.next();
+                            eq += " \\ "+it.next();
 
-                        eq.substring(3);
+                            eq.substring(3);
 
-                        System.out.println("valeur de eq = "+eq.substring(3));
+                            System.out.println("valeur de eq = "+eq.substring(3));
 
 
-                        headerCell0 = headerRow0.createCell(9);
-                        headerCell0.setCellValue(eq.substring(3));  
+                            headerCell0 = headerRow0.createCell(10);
+                            headerCell0.setCellValue(eq.substring(3));
+                        }
+  
                     }
             
                         RegionUtil.setBorderBottom(BorderStyle.THIN,
@@ -2632,7 +2475,8 @@ public List<String> GetAnomaliesNonBloquante(String reg, String c_dist, String d
                         
                         System.out.println("equipe dia manana valeur = "+equipe);
                         
-                        if(!equipe.isEmpty()){
+                        if(!equipe.isEmpty() || equipe != null){
+                            
                             Iterator it = equipe.iterator();
                             while(it.hasNext())
                             //System.out.println("valeur de l'iteration = "+it.next());

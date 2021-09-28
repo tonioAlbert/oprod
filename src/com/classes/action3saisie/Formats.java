@@ -67,7 +67,7 @@ public class Formats {
                           || comp_ch2.equals("E.P.P")|| comp_ch2.equals("EPP")|| comp_ch2.equals("(EPP)")|| comp_ch2.equals("C.E.G")|| comp_ch2.equals("(C.E.G)")|| comp_ch2.equals("CEG")|| comp_ch2.equals("FKT")|| comp_ch2.equals("IVE")
                           || comp_ch2.equals("BIS")|| comp_ch2.equals("B.I.S") || comp_ch2.equals("KT") || comp_ch2.equals("K.T") || comp_ch2.equals("P.N.D") ||comp_ch2.equals("pnd") ||comp_ch2.equals("Pnd") ||
                           comp_ch2.equals("FLM")|| comp_ch2.equals("(FLM)")|| comp_ch2.equals("F.L.M")|| comp_ch2.equals("FJKM")|| comp_ch2.equals("F.J.K.M")|| comp_ch2.equals("ppnt")
-                          || comp_ch2.equals("p.p.n.t")|| comp_ch2.equals("P.p.n.t")|| comp_ch2.equals("Ppnt")   ){
+                          || comp_ch2.equals("p.p.n.t")|| comp_ch2.equals("P.p.n.t")|| comp_ch2.equals("Ppnt")|| comp_ch2.equals("MTM")|| comp_ch2.equals("M.T.M")|| comp_ch2.equals("mtm")   ){
                       
                       
                       // Mise en majuscule des chaines trouvé  Fenerive-est

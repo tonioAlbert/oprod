@@ -11,6 +11,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 /**
  *
@@ -21,17 +30,26 @@ public class CreateUI {
     
     
     
+    public static boolean CreateYesOrNonDialogForm(JFrame jf, String title, String messages, int typeMessage){
+        
+        Object[] message = {messages};
+
+        JOptionPane pane = new JOptionPane(message, typeMessage);
+        JDialog getTopicDialog =  pane.createDialog(jf, title);
+        Point dialogLoc = getTopicDialog.getLocation();
+        Point parentLoc = jf.getLocation();
+        pane.setLocation(parentLoc.x + jf.getWidth(), dialogLoc.y);
+        pane.setLocation(parentLoc.x , dialogLoc.y);
+
+        getTopicDialog.setVisible(true); 
+        
+        return true;
+    }
+    
+    
     
     public static void CreateDialogForm(JFrame jf, String title, String messages, int typeMessage){
         
-        
-        //JOptionPane.showMessageDialog(null, "Le champ mot de passe est requise !","Champ mot de passe requise", JOptionPane.INFORMATION_MESSAGE);
-        
-        
-        //JTextField topicTitle = new JTextField();
-        //JTextField topicDesc = new JTextField();
-        //Object[] message = {"Title: ", topicTitle, "Description: ", topicDesc};
-
         Object[] message = {messages};
 
         JOptionPane pane = new JOptionPane(message, typeMessage);
@@ -42,16 +60,7 @@ public class CreateUI {
         pane.setLocation(parentLoc.x , dialogLoc.y);
 
         getTopicDialog.setVisible(true);
-
-        
-           // JDialog dialogD = new JOptionPane(messages).createDialog(jf, title);
-           // Point dialogLoc = dialogD.getLocation();
-            //Point parentLoc = jf.getLocation();
-           // dialogD.setLocation(parentLoc.x + jf.getWidth(), dialogLoc.y);
-           //dialogD.setLocation(parentLoc.x , dialogLoc.y);
-           // dialogD.setVisible(true);
-
-        
+ 
     }
     
     
@@ -60,6 +69,56 @@ public class CreateUI {
     public static void setFontAndPolicyMenuBar(JMenu j){
         Font fonte = new Font("Arial Narrow",Font.BOLD,14);
         j.setFont(fonte);
+    }
+     //Row headerRow5 = sheet.createRow(5);
+    
+    public static void HeaderCell(XSSFWorkbook wb,  Row headerRow, Integer createNumberCell, String cellValue, Boolean bold){
+        
+        
+                // create table with data
+                XSSFCellStyle cadre = wb.createCellStyle();
+                cadre.setBorderBottom(BorderStyle.THIN);
+                cadre.setBorderTop(BorderStyle.THIN);
+                cadre.setBorderLeft(BorderStyle.THIN);
+                cadre.setBorderRight(BorderStyle.THIN);
+                
+                
+            XSSFCellStyle cellStyleBold = wb.createCellStyle();
+            org.apache.poi.ss.usermodel.Font headerFont = wb.createFont();
+            headerFont.setBold(true);
+            cellStyleBold.setAlignment(HorizontalAlignment.CENTER);
+            cellStyleBold.setFont(headerFont);
+
+        
+            cellStyleBold.setBorderBottom(BorderStyle.THIN);  
+            cellStyleBold.setBottomBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setBorderRight(BorderStyle.THIN);  
+            cellStyleBold.setRightBorderColor(IndexedColors.BLACK.getIndex());  
+            
+            cellStyleBold.setBorderTop(BorderStyle.THIN);  
+            cellStyleBold.setTopBorderColor(IndexedColors.BLACK.getIndex()); 
+
+        
+            cellStyleBold.setBorderLeft(BorderStyle.THIN);  
+            cellStyleBold.setLeftBorderColor(IndexedColors.BLACK.getIndex()); 
+            
+            cellStyleBold.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            cellStyleBold.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
+            
+            if(bold == true){
+                Cell headerCell5 = headerRow.createCell(createNumberCell);
+                headerCell5.setCellValue(cellValue);
+                headerCell5.setCellStyle(cadre);
+                headerCell5.setCellStyle(cellStyleBold);
+            }else{
+                Cell headerCell5 = headerRow.createCell(createNumberCell);
+                headerCell5.setCellValue(cellValue);
+                headerCell5.setCellStyle(cadre);
+               // headerCell5.setCellStyle(cellStyleBold);
+            }
+        
+
     }
     
     

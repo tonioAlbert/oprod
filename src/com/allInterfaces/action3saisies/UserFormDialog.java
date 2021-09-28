@@ -12,6 +12,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import com.createForm.tonio.CreateUI;
+import java.awt.Point;
+import javax.swing.JFrame;
 
 
 /**
@@ -57,6 +59,14 @@ public class UserFormDialog extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(UserFormDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        
+       // Point dialogLoc = getTopicDialog.getLocation();
+        Point parentLoc = this.getLocation();
+       // this.setLocation(parentLoc.x + jf.getWidth(), dialogLoc.y);
+        //this.setLocation(parentLoc.x , dialogLoc.y);
+        this.setLocation(parentLoc.x + this.getWidth(), parentLoc.y);
+        this.setLocation(parentLoc.x , parentLoc.y);
+        
         
         initComponents();
         
@@ -275,7 +285,7 @@ public class UserFormDialog extends javax.swing.JFrame {
             System.out.println("Veuillez sélectionner une démarche");
            // JOptionPane.showMessageDialog(null, "Veuillez sélectionner une démarche","Aucune selectione du champ démarche", JOptionPane.INFORMATION_MESSAGE);
             
-            CreateUI.CreateDialogForm(this, "Aucune selectione du champ démarche", "Veuillez sélectionner une démarche !", JOptionPane.INFORMATION_MESSAGE);
+            CreateUI.CreateDialogForm(this, "Aucune selection du champ démarche", "Veuillez sélectionner une démarche !", JOptionPane.INFORMATION_MESSAGE);
         }else{
             
             
@@ -295,12 +305,17 @@ public class UserFormDialog extends javax.swing.JFrame {
                 //JOptionPane.showMessageDialog(null, "Nom d'utilisateur n'existe pas dans la base de données !","Nom d'utilisateur incorrect et/ou introuvable", JOptionPane.INFORMATION_MESSAGE); 
                 
                 CreateUI.CreateDialogForm(this, "Nom d'utilisateur incorrect et/ou introuvable", "Nom d'utilisateur n'existe pas dans la base de données !", JOptionPane.INFORMATION_MESSAGE);
-            }else{
             
+            }else{
+                
                 if (hash_txt_password.equals(user_mot_de_passe_bdd)){
                     
                 SwingUtilities.invokeLater(() -> {
-                        Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, Formats.ConvertOcmToOcfm(demarche), user_id_profilDroits);
+                    
+                        Home home = new Home(this.BDD_HOST, this.BDD_DBNAME, this.BDD_PORT, this.BDD_USER, this.BDD_PWD, txt_username, txt_password, Formats.ConvertOcmToOcfm(demarche), user_id_profilDroits, this.getLocation().x, this.getLocation().y);
+                        home.setLocation(this.getLocation().x , this.getLocation().y);
+                        
+                        
                         home.setVisible(true);
                         this.setVisible(false);
                 });

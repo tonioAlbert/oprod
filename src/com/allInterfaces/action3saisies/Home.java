@@ -17,6 +17,7 @@ import com.classes.action3saisie.Querry;
 import com.connectDb.ConnectDb;
 import com.classes.action3saisie.Utilisateurs;
 import com.createForm.tonio.CreateUI;
+import java.awt.Point;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,8 +68,10 @@ public class Home extends javax.swing.JFrame {
      * @param password
      * @param TYPE_OPERATION
      * @param ID_PROFIL
+     * @param xx
+     * @param yy
      */
-    public Home(String HOST, String DBNAME, Integer PORT, String USER, String PWD , String username, String password, String TYPE_OPERATION, String[] ID_PROFIL) {
+    public Home(String HOST, String DBNAME, Integer PORT, String USER, String PWD , String username, String password, String TYPE_OPERATION, String[] ID_PROFIL, Integer xx, Integer yy) {
 
         
         this.userName = username;
@@ -1027,8 +1030,13 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_j_menu_item_lieu_ditActionPerformed
 
     private void j_menu_item_deconnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j_menu_item_deconnexionActionPerformed
+        
         JOptionPane jop = new JOptionPane();
+             
+       // CreateUI.CreateDialogForm(this, "Déconnection", "Voulez-vous vraiment se deconnecter ?", JOptionPane.QUESTION_MESSAGE);    
+        
         int option = jop.showConfirmDialog(null, "Voulez-vous vraiment se deconnecter ?","" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
         if(option == JOptionPane.OK_OPTION){
             
             // recuperation des démarches
@@ -1689,7 +1697,9 @@ private String formatsToUpper(String id_table, String nameOfTable, String col_up
     }//GEN-LAST:event_j_menu_export_listes_anomalies_csv_lola_ActionPerformed
 
     private void jMenu_ConsultationsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu_ConsultationsMouseClicked
-        System.out.println("Mouse Click sur menu pple consultations...");
+        Consultations Consultations = new Consultations(this.BDD_HOST, this.BDD_PORT, this.BDD_DBNAME, this.BDD_PWD, this.BDD_USER, type_operation);
+        this.dpContent.add(Consultations);
+        Consultations.show();
     }//GEN-LAST:event_jMenu_ConsultationsMouseClicked
 
     /**

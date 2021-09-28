@@ -853,28 +853,28 @@ public Long getValSequenceTable(String nomSequence){
 
                 try {
 
-                    String sql = "select region.nom as region, district.nom AS district, commune.nom as commune,count(*) as cf\n" +
-                    "from demande, parcelle_cf, district, commune, fokontany, hameau, region\n" +
-                    "where demande.id_parcelle = parcelle_cf.c_parcelle\n" +
-                    "and demande.id_hameau=hameau.id_hameau\n" +
-                    "and district.id_district=commune.id_district\n" +
-                    "and hameau.id_fokontany=fokontany.id_fokontany\n" +
-                    "and fokontany.id_commune=commune.id_commune\n" +
-                    "and demande.val_anomalie=false\n" +
-                    "and parcelle_cf.anomalie=false\n" +
-                    "and demande.opposition is false\n" +
-                    "and district.id_region=region.id_region\n" +
-                    "and val_chef_equipe is true\n" +
-                    "and demande.opposition is false\n" +
-                    "AND (demande.date_crl - demande.date_affichage) >= 15\n" +
-                    "AND avis_crl is true\n" +
-                    "AND demande.num_certificat IS NULL\n" +
-                            
-                            
-                    "  AND region.nom = ? \n" +
-                    "  AND demande.type_op = ? \n" +
-                    "  GROUP BY region.nom, district.nom, commune.nom\n" +
-                    "  ORDER BY region.nom, district.nom, commune.nom";
+                    String sql = "select demande.type_op as operation, region.nom as region, district.nom AS district, commune.nom as commune,count(*) as cf\n" +
+"                    from demande, parcelle_cf, district, commune, fokontany, hameau, region\n" +
+"                    where demande.id_parcelle = parcelle_cf.c_parcelle\n" +
+"                    and demande.id_hameau=hameau.id_hameau\n" +
+"                    and district.id_district=commune.id_district\n" +
+"                    and hameau.id_fokontany=fokontany.id_fokontany\n" +
+"                    and fokontany.id_commune=commune.id_commune\n" +
+"                    and demande.val_anomalie=false\n" +
+"                    and parcelle_cf.anomalie=false\n" +
+"                    and demande.opposition is false\n" +
+"                    and district.id_region=region.id_region\n" +
+"                    and val_chef_equipe is true\n" +
+"                    and demande.opposition is false\n" +
+"                    AND (demande.date_crl - demande.date_affichage) >= 15\n" +
+"                    AND avis_crl is true\n" +
+"                    AND demande.num_certificat IS NULL\n" +
+"                            \n" +
+"                            \n" +
+"                      AND region.nom = ? \n" +
+"                      AND demande.type_op = ? \n" +
+"                      GROUP BY demande.type_op,  region.nom, district.nom, commune.nom\n" +
+"                      ORDER BY demande.type_op, region.nom, district.nom, commune.nom";
 
 
                     st = connectDatabase.prepareStatement(sql);    
